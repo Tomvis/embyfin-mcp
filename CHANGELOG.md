@@ -7,6 +7,7 @@
 - `user_create`, `user_edit` and `user_delete`, in the `admin` toolset: make an ordinary account, give it a new password, say which libraries it sees, and remove it. An account always gets a password, since both servers let one without be logged into by its name alone, and the password is blanked in the log of write calls. `user_delete` is a delete tool, wants `confirm`, and never removes the last administrator
 - on Jellyfin `user_delete` waits three seconds first, and refuses an account that is playing: Jellyfin 12.2 stops, the whole server, when an account is deleted within half a second of its watch state changing
 - on Jellyfin `user_create` clears the new account of the watched marks, favourites, ratings and resume points of an account deleted before it, which Jellyfin 12.2 lists it with until the server is restarted, and says when there were any
+- one acceptance journey per server that goes from nothing to audited to fixed and back: it makes an account and a library, fixes every finding `audit_all` reports with the tools, makes a collection and a playlist, and removes all of it again, leaving the server holding what it held before
 - 92 tools: 62 read, 24 write, 6 delete
 
 ### Fixed
