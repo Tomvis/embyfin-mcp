@@ -365,8 +365,8 @@ func TestHistoryOfAUserNamedLikeAnother(t *testing.T) {
 	}
 }
 
-// createUser makes an account, with the suite's password, for the length of
-// a test; no tool makes one.
+// createUser makes an account, with the suite's password, for the length of a test, through the server's own API, so that a test of another tool
+// does not lean on user_create.
 func createUser(t *testing.T, name string) string {
 	t.Helper()
 
@@ -397,8 +397,12 @@ func createUser(t *testing.T, name string) string {
 func TestUserGet(t *testing.T) {
 	noLeftoverLibraries(t)
 	root := suite.Call(t, "user_get", nil)
-	if acc.Str(root["name"]) != "root" || acc.Str(root["id"]) != os.Getenv("EMBYFIN_TEST_ADMIN_ID") || !acc.BoolOf(root["admin"]) || !acc.BoolOf(root["all_libraries"]) || !acc.BoolOf(root["has_password"]) || acc.BoolOf(root["disabled"]) {
+	if acc.Str(root["name"]) != "root" || acc.Str(root["id"]) != os.Getenv("EMBYFIN_TEST_ADMIN_ID") || !acc.BoolOf(root["admin"]) || !acc.BoolOf(root["all_libraries"]) || acc.BoolOf(root["disabled"]) {
 		t.Errorf("user_get (the default) = %v", root)
+	}
+	// Emby says whether an account has a password. Jellyfin says every one has, one that logs in with none included, so there it is left out
+	if _, said := root["has_password"]; said == isJellyfin() || (said && !acc.BoolOf(root["has_password"])) {
+		t.Errorf("user_get has_password = %v (given: %v), want true on Emby and left out on Jellyfin", root["has_password"], said)
 	}
 	// an administrator may delete and connect from anywhere; Jellyfin keeps
 	// its accounts off the login screen from the start, Emby shows them

@@ -151,7 +151,7 @@ func userDataFromEmby(d *emby.UserItemDataDto) *UserData {
 	return &UserData{
 		Played: pointer.From(d.Played), PlayCount: d.PlayCount, IsFavourite: pointer.From(d.IsFavorite),
 		LastPlayedDate: d.LastPlayedDate, PlaybackPositionTicks: d.PlaybackPositionTicks,
-		PlayedPercentage: d.PlayedPercentage, UnplayedItemCount: d.UnplayedItemCount,
+		PlayedPercentage: d.PlayedPercentage, UnplayedItemCount: d.UnplayedItemCount, Rated: d.Rating != 0,
 	}
 }
 
@@ -188,7 +188,7 @@ func virtualFolderFromEmby(d *emby.VirtualFolderInfo) VirtualFolder {
 }
 
 func userFromEmby(d *emby.UserDto) User {
-	u := User{ID: d.Id, Name: d.Name, LastActivityDate: d.LastActivityDate, LastLoginDate: d.LastLoginDate, HasPassword: pointer.From(d.HasPassword)}
+	u := User{ID: d.Id, Name: d.Name, LastActivityDate: d.LastActivityDate, LastLoginDate: d.LastLoginDate, HasPassword: d.HasPassword}
 	if p := d.Policy; p != nil {
 		// Emby has one tag list: a block, or with IsTagBlockingModeInclusive
 		// the only tags shown. IncludeTags hid nothing on 4.10 in either

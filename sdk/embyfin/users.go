@@ -12,12 +12,13 @@ import (
 )
 
 type User struct {
-	ID               string     `json:"Id"`
-	Name             string     `json:"Name"`
-	LastActivityDate string     `json:"LastActivityDate,omitempty"`
-	LastLoginDate    string     `json:"LastLoginDate,omitempty"`
-	HasPassword      bool       `json:"HasPassword"`
-	Policy           UserPolicy `json:"Policy"`
+	ID               string `json:"Id"`
+	Name             string `json:"Name"`
+	LastActivityDate string `json:"LastActivityDate,omitempty"`
+	LastLoginDate    string `json:"LastLoginDate,omitempty"`
+	// HasPassword is nil on Jellyfin, which says true for every account, one that logs in with no password included (seen on 12.2).
+	HasPassword *bool      `json:"HasPassword,omitempty"`
+	Policy      UserPolicy `json:"Policy"`
 	// Preferences are how the account wants playback: which audio and
 	// subtitle languages, and when subtitles show. Both servers keep them
 	// on the user's configuration under the same names.

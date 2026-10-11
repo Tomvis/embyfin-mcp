@@ -55,6 +55,8 @@ type Client struct {
 	// saveGrain is how finely Emby tells one save of an item from the next:
 	// to the second (see unsavedFor)
 	saveGrain time.Duration
+	// userGrace is how long Jellyfin is given before an account is deleted (see DeleteUser)
+	userGrace time.Duration
 	// admin is the id of an account that sees everything, chosen once, for
 	// the reads only a user's view answers (see FullViewerID)
 	adminMu sync.Mutex
@@ -77,7 +79,7 @@ func New(backend Backend, baseURL, token string, opts ...apiclient.Option) (*Cli
 		return nil, errors.New("API token is required (--token / EMBYFIN_TOKEN)")
 	}
 
-	c := &Client{backend: backend, baseURL: strings.TrimRight(baseURL, "/"), settle: 250 * time.Millisecond, saveGrain: time.Second}
+	c := &Client{backend: backend, baseURL: strings.TrimRight(baseURL, "/"), settle: 250 * time.Millisecond, saveGrain: time.Second, userGrace: 3 * time.Second}
 	var err error
 	// this layer's rule for sending a read again, which a caller's own option replaces
 	opts = append([]apiclient.Option{apiclient.WithRetry(readRetry)}, opts...)

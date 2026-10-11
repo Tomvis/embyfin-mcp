@@ -423,10 +423,10 @@ func TestTheBinary(t *testing.T) {
 					t.Errorf("%s, a %s tool, is hinted read-only %v, destructive %v", tool.Name, kind, a.ReadOnlyHint, *a.DestructiveHint)
 				}
 			}
-			if len(kinds["read"]) != 62 || len(kinds["write"]) != 22 || len(kinds["delete"]) != 5 {
-				t.Errorf("read %d, write %d, delete %d, want 62, 22 and 5", len(kinds["read"]), len(kinds["write"]), len(kinds["delete"]))
+			if len(kinds["read"]) != 62 || len(kinds["write"]) != 24 || len(kinds["delete"]) != 6 {
+				t.Errorf("read %d, write %d, delete %d, want 62, 24 and 6", len(kinds["read"]), len(kinds["write"]), len(kinds["delete"]))
 			}
-			if want := []string{"collection_delete", "item_delete", "item_orphans_delete", "library_delete", "playlist_delete"}; !slices.Equal(acc.Sorted(kinds["delete"]), want) {
+			if want := []string{"collection_delete", "item_delete", "item_orphans_delete", "library_delete", "playlist_delete", "user_delete"}; !slices.Equal(acc.Sorted(kinds["delete"]), want) {
 				t.Errorf("delete tools = %v, want %v", kinds["delete"], want)
 			}
 			if !slices.Contains(kinds["read"], "library_export") {
@@ -444,7 +444,7 @@ func TestTheBinary(t *testing.T) {
 				}
 			}
 			if want := matching(every, func(n string) bool {
-				return !slices.Contains([]string{"collection_delete", "item_delete", "item_orphans_delete", "library_delete", "playlist_delete"}, n)
+				return !slices.Contains([]string{"collection_delete", "item_delete", "item_orphans_delete", "library_delete", "playlist_delete", "user_delete"}, n)
 			}); !slices.Equal(got, want) {
 				t.Errorf("tools = %v\nwant %v", got, want)
 			}
@@ -562,7 +562,7 @@ func TestTheBinary(t *testing.T) {
 		}{
 			{"a family", nil, []string{"--toolsets", "show"}, withCore(func(n string) bool { return strings.HasPrefix(n, "show_") })},
 			{"a list of families", nil, []string{"--toolsets", "show,user"}, withCore(func(n string) bool {
-				return strings.HasPrefix(n, "show_") || strings.HasPrefix(n, "user_")
+				return strings.HasPrefix(n, "show_") || (strings.HasPrefix(n, "user_") && n != "user_delete")
 			})},
 			{"a family from the environment", []string{"EMBYFIN_TOOLSETS=session"}, nil, withCore(func(n string) bool { return strings.HasPrefix(n, "session_") })},
 			{"allowed by name and glob", nil, []string{"--allow-tools", "library_*,item_get"}, matching(every, func(n string) bool {

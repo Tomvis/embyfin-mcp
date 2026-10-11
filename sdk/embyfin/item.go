@@ -143,6 +143,12 @@ type UserData struct {
 	PlaybackPositionTicks int64   `json:"PlaybackPositionTicks,omitempty"`
 	PlayedPercentage      float64 `json:"PlayedPercentage,omitempty"`
 	UnplayedItemCount     int     `json:"UnplayedItemCount,omitempty"` // a series or season's unwatched episodes
+	Rated                 bool    `json:"-"`                           // the user liked, disliked or rated it
+}
+
+// Any reports whether the user has left state of their own on the item: watched it or begun to, made it a favourite or rated it.
+func (d *UserData) Any() bool {
+	return d != nil && (d.Played || d.IsFavourite || d.Rated || d.PlayCount > 0 || d.PlaybackPositionTicks > 0 || d.LastPlayedDate != "")
 }
 
 type Item struct {

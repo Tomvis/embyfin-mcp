@@ -27,7 +27,7 @@ differences between them live in one package, and every tool is tested against b
 
 ### What else is in the box
 
-- **89 tools, in toolsets.** Search, browse and inspect, read a whole library's episodes at once, resolve a release name to a series, identify and re-identify, batch edits and renames, artwork, subtitles, watch state, people, playlists, collections, remote control, scans, tasks, logs and libraries. Each sits in a toolset a session can load on its own, so a client spends about two thousand tokens of context by default rather than thirty-five thousand.
+- **92 tools, in toolsets.** Search, browse and inspect, read a whole library's episodes at once, resolve a release name to a series, identify and re-identify, batch edits and renames, artwork, subtitles, watch state, people, playlists, collections, remote control, scans, tasks, logs, libraries and accounts. Each sits in a toolset a session can load on its own, so a client spends about two thousand tokens of context by default rather than thirty-six thousand.
 - **Three Go SDKs.** `sdk/emby`, `sdk/jf` and `sdk/tmdb` are complete typed clients for the Emby, Jellyfin and TMDB APIs - all 499, 346 and 152 operations, generated from their own OpenAPI documents (each package's `APIVersion` says which), standard library only, no knowledge of MCP. Useful on their own, whether or not you care about AI. `sdk/embyfin` is the thin layer that makes the two servers answer alike.
 - **Tested against real servers.** Every tool runs against a real Emby and a real Jellyfin in Docker, the suite fails if a registered tool has no test, and the servers' calls out to TMDB and TheTVDB are recorded once and replayed, so CI needs no network.
 
@@ -211,18 +211,18 @@ back as an error listing what exists. Timeframe-taking tools default to the last
 | artwork | `item_artwork` (current images plus remote candidates) → `item_artwork_set` (on Emby this deletes the poster file beside the media it replaces) |
 | subtitles | `item_subtitle_search` → `item_subtitle_download` |
 | shows | `show_seasons` (a show's episodes come from `library_episodes`), `show_episodes_exist` (does it have these episodes? up to 50 series a call, with the match score and any duplicate entries), `show_missing` (what a series is missing, and whether it could tell), `show_resolve` (a release name to a series, scored) |
-| users | `user_list`, `user_get` (permissions, libraries, playback preferences), `user_history`, `user_next_up` (the next episode of each series, and everything part way through, with positions), `user_stats` (films and episodes watched, in progress and favourited, hours, series finished, top genres and series, in one pass) |
+| users | `user_list`, `user_get` (permissions, libraries, playback preferences), `user_history`, `user_next_up` (the next episode of each series, and everything part way through, with positions), `user_stats` (films and episodes watched, in progress and favourited, hours, series finished, top genres and series, in one pass), `user_create` (an ordinary account, always with a password, seeing every library or only the ones named), `user_edit` (a new password, or which libraries it sees) |
 | quality | `quality_compare` (which of two copies is better, by how much, and why) |
 | plan | `plan_check` (before writing files: what is at each destination path now, which series it would join, which entries collide) |
 | sessions | `session_list` (what each device plays and how; `details` for the file and the transcode), `session_play`, `session_command`, `session_message` |
 | playlists | `playlist_list`, `playlist_get`, `playlist_create`, `playlist_edit` (rename, `add_items`, `remove_entries`, move an entry; a removal and a move name an entry by its entry id and the item it holds, plus the playlist's `fingerprint` when an item is held twice), `playlist_delete` |
 | collections | `collection_list`, `collection_get`, `collection_create`, `collection_edit` (rename, sort name, overview, `add_items`, `remove_items`), `collection_delete` |
 
-`item_delete` (permanently removes the item's files - a film alone in its folder or a series goes with the whole folder, and a film sharing a folder takes every sidecar whose name starts with its file's name, another film's too - and without `confirm` says what it would remove; it refuses collections, playlists, libraries, genres, studios, people and artists, naming the tool that removes each), `item_orphans_delete` (what a removed library left behind, once its folder is gone), `library_delete`, `playlist_delete` and `collection_delete` are only registered when `--enable-delete` / `EMBYFIN_ENABLE_DELETE` is set: none of them can be undone. `--read-only` registers the 55 read tools and nothing else, so a write tool is absent from `tools/list` rather than refused when called.
+`item_delete` (permanently removes the item's files - a film alone in its folder or a series goes with the whole folder, and a film sharing a folder takes every sidecar whose name starts with its file's name, another film's too - and without `confirm` says what it would remove; it refuses collections, playlists, libraries, genres, studios, people and artists, naming the tool that removes each), `item_orphans_delete` (what a removed library left behind, once its folder is gone), `library_delete`, `playlist_delete`, `collection_delete` and `user_delete` (never the last administrator; the account's playlists stay; on Jellyfin it waits three seconds first and refuses an account that is playing, because Jellyfin 12.2 stops when an account is deleted in the half second after its watch state changes) are only registered when `--enable-delete` / `EMBYFIN_ENABLE_DELETE` is set: none of them can be undone. `--read-only` registers the 62 read tools and nothing else, so a write tool is absent from `tools/list` rather than refused when called.
 
 ### Choosing which tools load
 
-**The default is `core`: six read-only tools, about 2,000 tokens.** The whole surface is around 35,600 tokens of tool definitions before anyone asks a question, which is a poor way to spend a client's context by default. `--toolsets` / `EMBYFIN_TOOLSETS` loads the groups a session actually needs, and `core` comes along with whatever else is asked for, because nothing else can find a library or open an item.
+**The default is `core`: six read-only tools, about 2,000 tokens.** The whole surface is around 36,600 tokens of tool definitions before anyone asks a question, which is a poor way to spend a client's context by default. `--toolsets` / `EMBYFIN_TOOLSETS` loads the groups a session actually needs, and `core` comes along with whatever else is asked for, because nothing else can find a library or open an item.
 
 **Curating a library needs `EMBYFIN_TOOLSETS=curation`** - every audit but `audit_orphans`, and everything that fixes what they find. Cleaning up after a removed library is in `admin` ([below](#cleaning-up-after-a-removed-library)). `EMBYFIN_TOOLSETS=all` restores every tool.
 
@@ -230,13 +230,13 @@ back as an error listing what exists. Timeframe-taking tools default to the last
 |---|---|---|---|
 | `core` *(default)* | 6 | 6 | 2,000 |
 | `remote` | 4 | 10 | 2,700 |
-| `admin` | 22 | 28 | 9,400 |
+| `admin` | 25 | 31 | 10,400 |
 | `watching` | 8 | 14 | 3,800 |
 | `organise` | 10 | 16 | 5,100 |
 | `curation` | 39 | 45 | 22,500 |
-| `all` | 89 | 89 | 35,600 |
+| `all` | 92 | 92 | 36,600 |
 
-Tokens are what the model sees: each tool's name, description and input schema, measured over a real `tools/list` at four bytes a token, with `--enable-delete`. Every tool also carries an output schema, another 59,000 tokens across `all`, but clients keep that to themselves to validate results rather than sending it to the model.
+Tokens are what the model sees: each tool's name, description and input schema, measured over a real `tools/list` at four bytes a token, with `--enable-delete`. Every tool also carries an output schema, another 66,000 tokens across `all`, but clients keep that to themselves to validate results rather than sending it to the model.
 
 `--toolsets` also takes a resource family - `library`, `item`, `audit`, `show`, `user`,
 `person`, `metadata`, `session`, `playlist`, `collection`, `server`, `task` - which is every

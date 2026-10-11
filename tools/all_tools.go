@@ -111,10 +111,11 @@ var Toolsets = map[string][]string{
 	},
 	// running the server rather than using it: statistics, activity, logs,
 	// scheduled tasks, scans, libraries, what a removed library leaves behind,
-	// and the tools that remove things
+	// the tools that remove things, and the accounts: making one, saying what it sees, removing it
 	"admin": {
 		"server_health", "server_stats", "server_activity", "server_devices", "server_plugins", "server_log", "server_log_search", "server_config", "server_config_edit",
 		"task_list", "task_get", "task_run", "task_stop", "task_edit", "library_scan", "library_options", "library_create", "library_edit", "library_delete", "item_delete", "audit_orphans", "item_orphans_delete",
+		"user_create", "user_edit", "user_delete",
 	},
 }
 
@@ -247,6 +248,10 @@ var toolHints = map[string]mcpregistry.Hints{
 	// entry, where a collection holds an item once
 	"playlist_edit":   {},
 	"collection_edit": {Idempotent: true},
+	// a new account takes nothing away; made again, its name is taken
+	"user_create": {Additive: true},
+	// libraries and a password written over, the same ones again the second time
+	"user_edit": {Idempotent: true},
 
 	// a read tool that writes a file on the machine embyfin-mcp runs on. The
 	// server is only read, so it stays a read tool and a read-only session
@@ -352,6 +357,7 @@ func queueTools(r *registry) {
 	registerResolveTools(r)
 	registerUserTools(r)
 	registerUserDetailTools(r)
+	registerAccountTools(r)
 	registerPersonTools(r)
 	registerSessionTools(r)
 	registerPlaylistTools(r)

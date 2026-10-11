@@ -996,7 +996,7 @@ func libraryIDs(t *testing.T) map[string]string {
 }
 
 // restrictAlice lets alice see only the named libraries until the test ends.
-// No tool changes a user's access, so it goes to the HTTP API.
+// It goes to the server's own API, so that the tests of the tools that read an account's view do not lean on user_edit.
 func restrictAlice(t *testing.T, libraries ...string) {
 	t.Helper()
 

@@ -70,7 +70,7 @@ func registerUserDetailTools(r *registry) {
 		Admin             bool     `json:"admin"`
 		Disabled          bool     `json:"disabled"`
 		Hidden            bool     `json:"hidden"                        jsonschema:"left off the login screen"`
-		HasPassword       bool     `json:"has_password"`
+		HasPassword       *bool    `json:"has_password,omitempty"        jsonschema:"Emby only. Jellyfin answers that every account has a password, one that can be logged into with none included, so it is left out there: it cannot be told from the server"`
 		CanDelete         bool     `json:"can_delete"                    jsonschema:"may delete media from the server"`
 		RemoteAccess      bool     `json:"remote_access"                 jsonschema:"may connect from outside the local network"`
 		Libraries         []string `json:"libraries"                     jsonschema:"the libraries the account can see; every library when all_libraries"`

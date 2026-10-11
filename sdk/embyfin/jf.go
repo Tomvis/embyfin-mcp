@@ -123,7 +123,7 @@ func userDataFromJF(d *jf.UserItemDataDto) *UserData {
 	return &UserData{
 		Played: pointer.From(d.Played), PlayCount: d.PlayCount, IsFavourite: pointer.From(d.IsFavorite),
 		LastPlayedDate: d.LastPlayedDate, PlaybackPositionTicks: d.PlaybackPositionTicks,
-		PlayedPercentage: d.PlayedPercentage, UnplayedItemCount: d.UnplayedItemCount,
+		PlayedPercentage: d.PlayedPercentage, UnplayedItemCount: d.UnplayedItemCount, Rated: d.Likes != nil || d.Rating != 0,
 	}
 }
 
@@ -156,7 +156,7 @@ func virtualFolderFromJF(d *jf.VirtualFolderInfo) VirtualFolder {
 }
 
 func userFromJF(d *jf.UserDto) User {
-	u := User{ID: d.Id, Name: d.Name, LastActivityDate: d.LastActivityDate, LastLoginDate: d.LastLoginDate, HasPassword: pointer.From(d.HasPassword)}
+	u := User{ID: d.Id, Name: d.Name, LastActivityDate: d.LastActivityDate, LastLoginDate: d.LastLoginDate}
 	if p := d.Policy; p != nil {
 		u.Policy = UserPolicy{
 			IsAdministrator: pointer.From(p.IsAdministrator), IsDisabled: pointer.From(p.IsDisabled), IsHidden: pointer.From(p.IsHidden),

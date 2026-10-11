@@ -101,8 +101,8 @@ func TestSurfaceSize(t *testing.T) {
 	for _, ti := range list {
 		kinds[ti.Kind]++
 	}
-	if len(list) != 89 || kinds["read"] != 62 || kinds["write"] != 22 || kinds["delete"] != 5 {
-		t.Errorf("surface = %d tools: %v, want 89 with 62 read, 22 write, 5 delete", len(list), kinds)
+	if len(list) != 92 || kinds["read"] != 62 || kinds["write"] != 24 || kinds["delete"] != 6 {
+		t.Errorf("surface = %d tools: %v, want 92 with 62 read, 24 write, 6 delete", len(list), kinds)
 	}
 	for _, gone := range []string{
 		"library_search", "user_favourites", "item_set_watched", "item_set_favourite", "item_set_progress", "item_batch_edit", "library_people", "audit_year_mismatch", "audit_title_mismatch", "audit_media_facts", "audit_unprobed", "audit_movie_ids", "user_in_progress", "show_episodes",
@@ -255,7 +255,7 @@ func TestAnAllowListBesideToolsets(t *testing.T) {
 		t.Errorf("essential beside core = %v, want %v", got, want)
 	}
 	// a pattern adds every tool it names, and nothing else comes with them
-	if got, want := register(t, Options{Toolsets: []string{"core"}, Allow: []string{"user_*"}}), with(core, "user_get", "user_history", "user_list", "user_next_up", "user_stats"); !slices.Equal(got, want) {
+	if got, want := register(t, Options{Toolsets: []string{"core"}, Allow: []string{"user_*"}}), with(core, "user_create", "user_edit", "user_get", "user_history", "user_list", "user_next_up", "user_stats"); !slices.Equal(got, want) {
 		t.Errorf("user_* beside core = %v, want %v", got, want)
 	}
 	// a tool of another set's, by name

@@ -2134,7 +2134,7 @@ func TestPersonAndUsers(t *testing.T) {
 		t.Fatal(err)
 	}
 	u := users[0]
-	if !u.HasPassword || u.LastLoginDate == "" || !u.Policy.IsAdministrator || !u.Policy.IsHidden || u.Policy.EnableAllFolders ||
+	if u.HasPassword == nil || !*u.HasPassword || u.LastLoginDate == "" || !u.Policy.IsAdministrator || !u.Policy.IsHidden || u.Policy.EnableAllFolders ||
 		!slices.Equal(u.Policy.EnabledFolders, []string{"9"}) || !u.Policy.EnableContentDeletion || u.Policy.MaxParentalRating == nil || *u.Policy.MaxParentalRating != 10 {
 		t.Errorf("user = %+v", u)
 	}
@@ -2164,7 +2164,7 @@ func TestPersonAndUsers(t *testing.T) {
 
 	c, f = newFake(t, Jellyfin, map[string]route{
 		"GET /Persons/Denis%20Villeneuve": ok(`{"Id":"p","Name":"Denis Villeneuve"}`),
-		"GET /Users": ok(`[{"Id":"u2","Name":"alice","Policy":{"IsDisabled":true,"EnableAllFolders":true}},
+		"GET /Users": ok(`[{"Id":"u2","Name":"alice","HasPassword":true,"Policy":{"IsDisabled":true,"EnableAllFolders":true}},
 			{"Id":"u3","Name":"kid","Policy":{"EnableAllFolders":true,"MaxParentalRating":0}}]`),
 	})
 	if p, err := c.Person(t.Context(), "Denis Villeneuve", "u2"); err != nil || p.Name != "Denis Villeneuve" || f.only("GET /Persons/Denis%20Villeneuve").query.Get("userId") != "u2" {
@@ -2173,6 +2173,10 @@ func TestPersonAndUsers(t *testing.T) {
 	users, err = c.Users(t.Context())
 	if err != nil || len(users) != 2 || !users[0].Policy.IsDisabled || !users[0].Policy.EnableAllFolders || users[0].Policy.IsAdministrator {
 		t.Fatalf("Users = %+v, %v", users, err)
+	}
+	// Jellyfin says every account has a password, one with none included, so what it says is not kept
+	if users[0].HasPassword != nil {
+		t.Errorf("a Jellyfin account's HasPassword = %v, want it left unsaid", *users[0].HasPassword)
 	}
 	// no limit is none, and a limit of 0 is Jellyfin's strictest (G, TV-G):
 	// read as the same, a child's account read as unrestricted
