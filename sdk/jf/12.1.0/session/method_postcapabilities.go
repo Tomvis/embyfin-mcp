@@ -27,6 +27,7 @@ func (c Client) PostCapabilities(ctx context.Context, options ...jf.PostCapabili
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostCapabilities",
 		OptionsObject: option,
 		Path:          "/Sessions/Capabilities",
 	}

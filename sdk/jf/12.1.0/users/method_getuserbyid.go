@@ -20,6 +20,7 @@ func (c Client) GetUserById(ctx context.Context, userId string) (result jf.GetUs
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetUserById",
 		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(userId)),
 	}
 

@@ -18,6 +18,7 @@ func (c Client) SyncPlaySetIgnoreWait(ctx context.Context, input jf.IgnoreWaitRe
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlaySetIgnoreWait",
 		Path:       "/SyncPlay/SetIgnoreWait",
 	}
 

@@ -29,6 +29,7 @@ func (c Client) GetVideoStreamByContainer(ctx context.Context, itemId string, co
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideoStreamByContainer",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Videos/%s/stream.%s", url.PathEscape(itemId), url.PathEscape(container)),
 		StreamResponse: true,

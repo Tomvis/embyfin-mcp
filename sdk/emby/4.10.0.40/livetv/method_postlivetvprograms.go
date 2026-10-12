@@ -29,6 +29,7 @@ func (c Client) PostLiveTvPrograms(ctx context.Context, input emby.ApiBaseItemsR
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostLiveTvPrograms",
 		OptionsObject: option,
 		Path:          "/LiveTv/Programs",
 	}

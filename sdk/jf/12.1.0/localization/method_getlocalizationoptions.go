@@ -17,6 +17,7 @@ func (c Client) GetLocalizationOptions(ctx context.Context) (result jf.GetLocali
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLocalizationOptions",
 		Path:       "/Localization/Options",
 	}
 

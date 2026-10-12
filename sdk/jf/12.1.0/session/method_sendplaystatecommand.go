@@ -28,6 +28,7 @@ func (c Client) SendPlaystateCommand(ctx context.Context, sessionId string, comm
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "SendPlaystateCommand",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Sessions/%s/Playing/%s", url.PathEscape(sessionId), url.PathEscape(string(command))),
 	}

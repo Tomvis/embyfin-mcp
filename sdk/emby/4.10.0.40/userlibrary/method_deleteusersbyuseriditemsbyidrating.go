@@ -21,6 +21,7 @@ func (c Client) DeleteUsersByUserIdItemsByIdRating(ctx context.Context, userId s
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteUsersByUserIdItemsByIdRating",
 		Path:       fmt.Sprintf("/Users/%s/Items/%s/Rating", url.PathEscape(userId), url.PathEscape(id)),
 	}
 

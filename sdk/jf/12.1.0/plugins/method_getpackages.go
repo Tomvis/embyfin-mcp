@@ -17,6 +17,7 @@ func (c Client) GetPackages(ctx context.Context) (result jf.GetPackagesResponse,
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPackages",
 		Path:       "/Packages",
 	}
 

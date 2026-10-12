@@ -30,6 +30,7 @@ func (c Client) GetPostedPlaybackInfo(ctx context.Context, itemId string, input 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "GetPostedPlaybackInfo",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(itemId)),
 	}

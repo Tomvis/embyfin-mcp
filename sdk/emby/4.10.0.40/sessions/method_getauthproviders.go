@@ -18,6 +18,7 @@ func (c Client) GetAuthProviders(ctx context.Context) (result emby.GetAuthProvid
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetAuthProviders",
 		Path:       "/Auth/Providers",
 	}
 

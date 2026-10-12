@@ -20,6 +20,7 @@ func (c Client) PostUsersForgotPassword(ctx context.Context, input emby.ForgotPa
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersForgotPassword",
 		Path:       "/Users/ForgotPassword",
 	}
 

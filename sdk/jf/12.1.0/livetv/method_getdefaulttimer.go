@@ -28,6 +28,7 @@ func (c Client) GetDefaultTimer(ctx context.Context, programId ...string) (resul
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetDefaultTimer",
 		OptionsObject: option,
 		Path:          "/LiveTv/Timers/Defaults",
 	}

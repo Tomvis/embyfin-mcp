@@ -19,6 +19,7 @@ func (c Client) Play(ctx context.Context, sessionId string, options jf.PlayOptio
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "Play",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/Sessions/%s/Playing", url.PathEscape(sessionId)),
 	}

@@ -19,6 +19,7 @@ func (c Client) RemoveUserFromPlaylist(ctx context.Context, playlistId string, u
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "RemoveUserFromPlaylist",
 		Path:       fmt.Sprintf("/Playlists/%s/Users/%s", url.PathEscape(playlistId), url.PathEscape(userId)),
 	}
 

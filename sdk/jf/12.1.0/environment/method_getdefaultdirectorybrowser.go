@@ -18,6 +18,7 @@ func (c Client) GetDefaultDirectoryBrowser(ctx context.Context) (result jf.GetDe
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetDefaultDirectoryBrowser",
 		Path:       "/Environment/DefaultDirectoryBrowser",
 	}
 

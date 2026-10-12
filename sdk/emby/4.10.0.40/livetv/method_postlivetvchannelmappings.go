@@ -22,6 +22,7 @@ func (c Client) PostLiveTvChannelMappings(ctx context.Context, input emby.ApiSet
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostLiveTvChannelMappings",
 		OptionsObject: option,
 		Path:          "/LiveTv/ChannelMappings",
 	}

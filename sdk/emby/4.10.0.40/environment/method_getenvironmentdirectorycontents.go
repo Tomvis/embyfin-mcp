@@ -18,6 +18,7 @@ func (c Client) GetEnvironmentDirectoryContents(ctx context.Context, options emb
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetEnvironmentDirectoryContents",
 		OptionsObject: options,
 		Path:          "/Environment/DirectoryContents",
 	}

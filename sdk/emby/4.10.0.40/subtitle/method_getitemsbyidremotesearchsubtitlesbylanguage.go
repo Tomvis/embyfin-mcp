@@ -20,6 +20,7 @@ func (c Client) GetItemsByIdRemoteSearchSubtitlesByLanguage(ctx context.Context,
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsByIdRemoteSearchSubtitlesByLanguage",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(id), url.PathEscape(language)),
 	}

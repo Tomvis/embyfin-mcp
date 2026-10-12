@@ -29,6 +29,7 @@ func (c Client) GetYears(ctx context.Context, options ...jf.GetYearsOptions) (re
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetYears",
 		OptionsObject: option,
 		Path:          "/Years",
 	}

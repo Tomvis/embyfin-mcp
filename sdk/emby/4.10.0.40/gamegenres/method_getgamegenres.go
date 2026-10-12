@@ -30,6 +30,7 @@ func (c Client) GetGameGenres(ctx context.Context, options ...emby.GetGameGenres
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetGameGenres",
 		OptionsObject: option,
 		Path:          "/GameGenres",
 	}

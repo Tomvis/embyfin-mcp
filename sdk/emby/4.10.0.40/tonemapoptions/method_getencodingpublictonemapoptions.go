@@ -19,6 +19,7 @@ func (c Client) GetEncodingPublicToneMapOptions(ctx context.Context) (result emb
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEncodingPublicToneMapOptions",
 		Path:       "/Encoding/PublicToneMapOptions",
 	}
 

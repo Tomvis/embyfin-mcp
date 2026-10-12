@@ -28,6 +28,7 @@ func (c Client) TvSeasonAccountStates(ctx context.Context, seriesId int, seasonN
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TvSeasonAccountStates",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/tv/%d/season/%d/account_states", seriesId, seasonNumber),
 	}

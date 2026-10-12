@@ -17,6 +17,7 @@ func (c Client) ConfigurationTimezones(ctx context.Context) (result tmdb.Configu
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "ConfigurationTimezones",
 		Path:       "/3/configuration/timezones",
 	}
 

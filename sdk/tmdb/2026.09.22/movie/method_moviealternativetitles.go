@@ -28,6 +28,7 @@ func (c Client) MovieAlternativeTitles(ctx context.Context, movieId int, country
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "MovieAlternativeTitles",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/movie/%d/alternative_titles", movieId),
 	}

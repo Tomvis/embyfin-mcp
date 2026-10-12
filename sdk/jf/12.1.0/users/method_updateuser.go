@@ -28,6 +28,7 @@ func (c Client) UpdateUser(ctx context.Context, input jf.UserDto, userId ...stri
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateUser",
 		OptionsObject: option,
 		Path:          "/Users",
 	}

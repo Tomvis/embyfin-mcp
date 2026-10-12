@@ -19,6 +19,7 @@ func (c Client) CreateUserByName(ctx context.Context, input jf.CreateUserByName)
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "CreateUserByName",
 		Path:       "/Users/New",
 	}
 

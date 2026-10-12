@@ -18,6 +18,7 @@ func (c Client) GetGuideInfo(ctx context.Context) (result jf.GetGuideInfoRespons
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetGuideInfo",
 		Path:       "/LiveTv/GuideInfo",
 	}
 

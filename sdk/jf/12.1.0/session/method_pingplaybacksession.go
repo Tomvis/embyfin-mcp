@@ -20,6 +20,7 @@ func (c Client) PingPlaybackSession(ctx context.Context, playSessionId string) (
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PingPlaybackSession",
 		OptionsObject: option,
 		Path:          "/Sessions/Playing/Ping",
 	}

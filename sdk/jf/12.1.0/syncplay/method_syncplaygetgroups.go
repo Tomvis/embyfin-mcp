@@ -17,6 +17,7 @@ func (c Client) SyncPlayGetGroups(ctx context.Context) (result jf.SyncPlayGetGro
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "SyncPlayGetGroups",
 		Path:       "/SyncPlay/List",
 	}
 

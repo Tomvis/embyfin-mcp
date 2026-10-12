@@ -20,6 +20,7 @@ func (c Client) PostLiveStreamsOpen(ctx context.Context, input emby.LiveStreamRe
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLiveStreamsOpen",
 		Path:       "/LiveStreams/Open",
 	}
 

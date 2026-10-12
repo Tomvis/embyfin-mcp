@@ -30,6 +30,7 @@ func (c Client) GetGameGenresByName(ctx context.Context, name string, userId ...
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetGameGenresByName",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/GameGenres/%s", url.PathEscape(name)),
 	}

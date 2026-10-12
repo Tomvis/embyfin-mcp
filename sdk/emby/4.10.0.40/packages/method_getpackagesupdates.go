@@ -21,6 +21,7 @@ func (c Client) GetPackagesUpdates(ctx context.Context, packageType string) (res
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPackagesUpdates",
 		OptionsObject: option,
 		Path:          "/Packages/Updates",
 	}

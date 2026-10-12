@@ -18,6 +18,7 @@ func (c Client) ReportPlaybackStopped(ctx context.Context, input jf.PlaybackStop
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "ReportPlaybackStopped",
 		Path:       "/Sessions/Playing/Stopped",
 	}
 

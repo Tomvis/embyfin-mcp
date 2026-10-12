@@ -20,6 +20,7 @@ func (c Client) DeleteAuthKeysByKey(ctx context.Context, key string) (result emb
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteAuthKeysByKey",
 		Path:       fmt.Sprintf("/Auth/Keys/%s", url.PathEscape(key)),
 	}
 

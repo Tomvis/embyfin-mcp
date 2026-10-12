@@ -19,6 +19,7 @@ func (c Client) DeleteLyrics(ctx context.Context, itemId string) (result jf.Dele
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteLyrics",
 		Path:       fmt.Sprintf("/Audio/%s/Lyrics", url.PathEscape(itemId)),
 	}
 

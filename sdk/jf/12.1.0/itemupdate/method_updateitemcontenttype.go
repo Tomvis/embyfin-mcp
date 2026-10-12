@@ -28,6 +28,7 @@ func (c Client) UpdateItemContentType(ctx context.Context, itemId string, conten
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateItemContentType",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/ContentType", url.PathEscape(itemId)),
 	}

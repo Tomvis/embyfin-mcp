@@ -32,6 +32,7 @@ func (c Client) PostUserImage(ctx context.Context, input io.Reader, contentType 
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostUserImage",
 		OptionsObject: option,
 		Path:          "/UserImage",
 	}

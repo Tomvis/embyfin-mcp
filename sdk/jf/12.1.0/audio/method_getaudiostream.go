@@ -29,6 +29,7 @@ func (c Client) GetAudioStream(ctx context.Context, itemId string, options ...jf
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetAudioStream",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Audio/%s/stream", url.PathEscape(itemId)),
 		StreamResponse: true,

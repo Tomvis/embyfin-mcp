@@ -18,6 +18,7 @@ func (c Client) InitiateQuickConnect(ctx context.Context) (result jf.InitiateQui
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "InitiateQuickConnect",
 		Path:       "/QuickConnect/Initiate",
 	}
 

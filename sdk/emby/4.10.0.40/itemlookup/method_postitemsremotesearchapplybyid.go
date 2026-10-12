@@ -30,6 +30,7 @@ func (c Client) PostItemsRemoteSearchApplyById(ctx context.Context, id string, i
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostItemsRemoteSearchApplyById",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/RemoteSearch/Apply/%s", url.PathEscape(id)),
 	}

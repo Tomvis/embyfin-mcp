@@ -19,6 +19,7 @@ func (c Client) GetSystemInfo(ctx context.Context) (result emby.GetSystemInfoRes
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemInfo",
 		Path:       "/System/Info",
 	}
 

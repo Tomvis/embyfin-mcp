@@ -20,6 +20,7 @@ func (c Client) GetPluginsByIdConfiguration(ctx context.Context, id string) (res
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPluginsByIdConfiguration",
 		Path:       fmt.Sprintf("/Plugins/%s/Configuration", url.PathEscape(id)),
 	}
 

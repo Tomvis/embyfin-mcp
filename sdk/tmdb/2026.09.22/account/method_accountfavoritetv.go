@@ -29,6 +29,7 @@ func (c Client) AccountFavoriteTv(ctx context.Context, accountId int, options ..
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "AccountFavoriteTv",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/account/%d/favorite/tv", accountId),
 	}

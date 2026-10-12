@@ -18,6 +18,7 @@ func (c Client) GetItemsRemoteSearchImage(ctx context.Context, options emby.GetI
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetItemsRemoteSearchImage",
 		OptionsObject:  options,
 		Path:           "/Items/RemoteSearch/Image",
 		StreamResponse: true,

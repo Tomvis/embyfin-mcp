@@ -22,7 +22,7 @@ import (
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
 	"github.com/katbyte/embyfin-mcp/tools"
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -347,7 +347,7 @@ func runSuite(m *testing.M) int {
 	// every registered tool must have answered something above, not only
 	// refused it. Only a whole-suite run can say that, so a -run or -skip
 	// filter skips the check.
-	if acc.WholeRun() {
+	if acctest.WholeRun() {
 		report, err := suite.CoverageReport()
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "\n"+err.Error())
@@ -364,7 +364,7 @@ func runSuite(m *testing.M) int {
 
 // cannotAnswer are the tools a throwaway server gives nothing to answer
 // with, so a call that fails is the only one a test can make, and why (see
-// acc.Suite.Uncovered).
+// acctest.Suite.Uncovered).
 var cannotAnswer = map[string]string{
 	"item_subtitle_download": "no subtitle provider is installed on a test server, so nothing is ever offered to download",
 }
@@ -402,7 +402,7 @@ func start() error {
 	if _, err := tools.RegisterAll(srv, client, tools.Options{EnableDelete: true, TMDBKey: tmdbKey(), ProviderTransport: providerTransport(), AnimeList: animeList}); err != nil {
 		return err
 	}
-	connected, err := acc.Connect(ctx, srv)
+	connected, err := acctest.Connect(ctx, srv)
 	if err != nil {
 		return err
 	}
@@ -431,7 +431,7 @@ func seed() error {
 		return err
 	}
 	have := map[string]bool{}
-	for _, row := range acc.RowsOf(existing["libraries"]) {
+	for _, row := range acctest.RowsOf(existing["libraries"]) {
 		if name, ok := row["name"].(string); ok {
 			have[name] = true
 		}
@@ -487,7 +487,7 @@ func waitForItems(library string, want int) error {
 }
 
 // scanUntil asks for a library scan and waits for the library to hold want
-// items of its kind (acc.Suite.ScanUntil).
+// items of its kind (acctest.Suite.ScanUntil).
 func scanUntil(library string, want int) error {
 	return suite.ScanUntil(library, primaryType(library), want)
 }
@@ -499,10 +499,10 @@ func findItem(t *testing.T, library, types, title string) string {
 
 	out := suite.Call(t, "library_items", map[string]any{"library": library, "types": types, "query": title, "limit": 50})
 	var ids []string
-	for _, row := range acc.Rows(t, out["items"], "items") {
+	for _, row := range acctest.Rows(t, out["items"], "items") {
 		// an unmatched film keeps its "(2001)" on Jellyfin and loses it on Emby
-		if strings.EqualFold(yearSuffix.ReplaceAllString(acc.Str(row["name"]), ""), title) {
-			ids = append(ids, acc.Str(row["id"]))
+		if strings.EqualFold(yearSuffix.ReplaceAllString(acctest.Str(row["name"]), ""), title) {
+			ids = append(ids, acctest.Str(row["id"]))
 		}
 	}
 	if len(ids) != 1 {

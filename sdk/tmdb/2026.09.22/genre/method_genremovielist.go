@@ -28,6 +28,7 @@ func (c Client) GenreMovieList(ctx context.Context, language ...string) (result 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GenreMovieList",
 		OptionsObject: option,
 		Path:          "/3/genre/movie/list",
 	}

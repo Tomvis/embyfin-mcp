@@ -22,6 +22,7 @@ func (c Client) PostLiveTvManageChannelsByIdDisabled(ctx context.Context, id str
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLiveTvManageChannelsByIdDisabled",
 		Path:       fmt.Sprintf("/LiveTv/Manage/Channels/%s/Disabled", url.PathEscape(id)),
 	}
 

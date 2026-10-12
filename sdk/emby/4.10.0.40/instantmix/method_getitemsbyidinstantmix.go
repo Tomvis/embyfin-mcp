@@ -31,6 +31,7 @@ func (c Client) GetItemsByIdInstantMix(ctx context.Context, id string, options .
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsByIdInstantMix",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/InstantMix", url.PathEscape(id)),
 	}

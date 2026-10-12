@@ -18,6 +18,7 @@ func (c Client) GetEnvironmentDrives(ctx context.Context) (result emby.GetEnviro
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEnvironmentDrives",
 		Path:       "/Environment/Drives",
 	}
 

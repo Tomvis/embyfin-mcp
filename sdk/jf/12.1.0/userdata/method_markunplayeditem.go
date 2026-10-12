@@ -29,6 +29,7 @@ func (c Client) MarkUnplayedItem(ctx context.Context, itemId string, userId ...s
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "MarkUnplayedItem",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/UserPlayedItems/%s", url.PathEscape(itemId)),
 	}

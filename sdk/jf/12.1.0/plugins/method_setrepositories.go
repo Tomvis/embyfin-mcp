@@ -18,6 +18,7 @@ func (c Client) SetRepositories(ctx context.Context, input []jf.RepositoryInfo) 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SetRepositories",
 		Path:       "/Repositories",
 	}
 

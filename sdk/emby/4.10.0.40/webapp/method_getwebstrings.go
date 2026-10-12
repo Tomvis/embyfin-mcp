@@ -28,6 +28,7 @@ func (c Client) GetWebStrings(ctx context.Context, options ...emby.GetWebStrings
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetWebStrings",
 		OptionsObject: option,
 		Path:          "/web/strings",
 	}

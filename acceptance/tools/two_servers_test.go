@@ -19,7 +19,7 @@ import (
 	"sync"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	"github.com/katbyte/embyfin-mcp/tools"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -145,7 +145,7 @@ func TestTwoInstancesServeTwoServers(t *testing.T) {
 	}
 	answersAsItsOwn := func(when string) {
 		for _, i := range instances {
-			if out, err := ask(i.cs); err != nil || acc.Str(out["backend"]) != i.server.backend || acc.Str(out["server_name"]) != i.name || acc.Str(out["server_version"]) != i.version {
+			if out, err := ask(i.cs); err != nil || acctest.Str(out["backend"]) != i.server.backend || acctest.Str(out["server_name"]) != i.name || acctest.Str(out["server_version"]) != i.version {
 				t.Errorf("%s, %s instance's server_info = %v, %v\nwant %s %q, version %s", when, i.which, out, err, i.server.backend, i.name, i.version)
 			}
 		}
@@ -171,10 +171,10 @@ func TestTwoInstancesServeTwoServers(t *testing.T) {
 	if got, want := listed(t, second), toolsFor(t, tools.Options{Toolsets: []string{"admin"}}); !slices.Equal(got, want) {
 		t.Errorf("the second instance's tools = %v\nwant %v", got, want)
 	}
-	if libraries := acc.RowsOf(callOn(t, first, "library_list", nil)["libraries"]); !slices.ContainsFunc(libraries, func(l map[string]any) bool { return acc.Str(l["name"]) == "Movies" }) {
+	if libraries := acctest.RowsOf(callOn(t, first, "library_list", nil)["libraries"]); !slices.ContainsFunc(libraries, func(l map[string]any) bool { return acctest.Str(l["name"]) == "Movies" }) {
 		t.Errorf("the first instance's libraries = %v, want the suite's own, Movies among them", libraries)
 	}
-	if libraries := acc.RowsOf(callOn(t, second, "library_list", nil)["libraries"]); len(libraries) != 0 {
+	if libraries := acctest.RowsOf(callOn(t, second, "library_list", nil)["libraries"]); len(libraries) != 0 {
 		t.Errorf("the second instance's libraries = %v, want none: its server has nothing in it", libraries)
 	}
 

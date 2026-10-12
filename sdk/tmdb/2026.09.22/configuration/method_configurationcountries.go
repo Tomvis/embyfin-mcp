@@ -27,6 +27,7 @@ func (c Client) ConfigurationCountries(ctx context.Context, language ...string) 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "ConfigurationCountries",
 		OptionsObject: option,
 		Path:          "/3/configuration/countries",
 	}

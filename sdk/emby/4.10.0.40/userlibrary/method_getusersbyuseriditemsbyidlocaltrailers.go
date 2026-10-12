@@ -29,6 +29,7 @@ func (c Client) GetUsersByUserIdItemsByIdLocalTrailers(ctx context.Context, user
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersByUserIdItemsByIdLocalTrailers",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Items/%s/LocalTrailers", url.PathEscape(userId), url.PathEscape(id)),
 	}

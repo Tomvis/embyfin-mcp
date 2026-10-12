@@ -18,6 +18,7 @@ func (c Client) GetEndpointInfo(ctx context.Context) (result jf.GetEndpointInfoR
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEndpointInfo",
 		Path:       "/System/Endpoint",
 	}
 

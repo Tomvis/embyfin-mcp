@@ -29,6 +29,7 @@ func (c Client) GetItemsByIdAncestors(ctx context.Context, id string, userId ...
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsByIdAncestors",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Ancestors", url.PathEscape(id)),
 	}

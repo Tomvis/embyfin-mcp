@@ -18,6 +18,7 @@ func (c Client) GetSystemPing(ctx context.Context) (result emby.GetSystemPingRes
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemPing",
 		Path:       "/System/Ping",
 	}
 

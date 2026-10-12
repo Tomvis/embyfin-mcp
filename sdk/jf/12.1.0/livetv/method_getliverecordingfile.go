@@ -20,6 +20,7 @@ func (c Client) GetLiveRecordingFile(ctx context.Context, recordingId string) (r
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetLiveRecordingFile",
 		Path:           fmt.Sprintf("/LiveTv/LiveRecordings/%s/stream", url.PathEscape(recordingId)),
 		StreamResponse: true,
 	}

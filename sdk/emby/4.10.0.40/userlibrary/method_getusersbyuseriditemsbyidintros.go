@@ -30,6 +30,7 @@ func (c Client) GetUsersByUserIdItemsByIdIntros(ctx context.Context, userId stri
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersByUserIdItemsByIdIntros",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Items/%s/Intros", url.PathEscape(userId), url.PathEscape(id)),
 	}

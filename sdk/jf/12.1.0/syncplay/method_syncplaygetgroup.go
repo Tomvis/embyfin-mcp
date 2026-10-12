@@ -20,6 +20,7 @@ func (c Client) SyncPlayGetGroup(ctx context.Context, id string) (result jf.Sync
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "SyncPlayGetGroup",
 		Path:       fmt.Sprintf("/SyncPlay/%s", url.PathEscape(id)),
 	}
 

@@ -14,7 +14,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // playerDevice is the device this suite signs in as, so the session tools
@@ -212,8 +212,8 @@ func (p *playSession) stop(ticks int64) {
 func sessionOn(t *testing.T, device string) map[string]any {
 	t.Helper()
 
-	for _, s := range acc.Rows(t, suite.Call(t, "session_list", nil)["sessions"], "sessions") {
-		if acc.Str(s["device"]) == device {
+	for _, s := range acctest.Rows(t, suite.Call(t, "session_list", nil)["sessions"], "sessions") {
+		if acctest.Str(s["device"]) == device {
 			return s
 		}
 	}
@@ -226,18 +226,18 @@ func TestSessions(t *testing.T) {
 
 	out := suite.Call(t, "session_list", nil)
 	var player map[string]any
-	for _, s := range acc.Rows(t, out["sessions"], "sessions") {
-		if acc.Str(s["device"]) == device {
+	for _, s := range acctest.Rows(t, out["sessions"], "sessions") {
+		if acctest.Str(s["device"]) == device {
 			player = s
 		}
-		if acc.Str(s["id"]) == "" || acc.Str(s["device"]) == "" {
+		if acctest.Str(s["id"]) == "" || acctest.Str(s["device"]) == "" {
 			t.Errorf("session row = %v", s)
 		}
 	}
 	if player == nil {
 		t.Fatalf("the player is not among the sessions: %v", out["sessions"])
 	}
-	if acc.Str(player["user"]) != "alice" || acc.Str(player["app"]) != "embyfin-mcp acceptance" {
+	if acctest.Str(player["user"]) != "alice" || acctest.Str(player["app"]) != "embyfin-mcp acceptance" {
 		t.Errorf("the player's user and app = %v and %v, want alice and embyfin-mcp acceptance", player["user"], player["app"])
 	}
 	// nothing is playing on it, so nothing about a play is said
@@ -247,43 +247,43 @@ func TestSessions(t *testing.T) {
 
 	// a message, to the device by name (a case-insensitive substring)
 	msg := suite.Call(t, "session_message", map[string]any{"session": "ACCEPTANCE", "text": "dinner is ready", "header": "Kitchen", "timeout_ms": 1000})
-	if acc.Str(msg["sent_to"]) != device {
+	if acctest.Str(msg["sent_to"]) != device {
 		t.Errorf("session_message = %v", msg)
 	}
 
 	// play something on it: by session id, by device name, and in each mode
 	dune := findItem(t, "Movies", "Movie", "Dune")
 	arrival := findItem(t, "Movies", "Movie", "Arrival")
-	play := suite.Call(t, "session_play", map[string]any{"session": acc.Str(player["id"]), "item_ids": []any{dune}})
-	if acc.Str(play["playing_on"]) != device {
+	play := suite.Call(t, "session_play", map[string]any{"session": acctest.Str(player["id"]), "item_ids": []any{dune}})
+	if acctest.Str(play["playing_on"]) != device {
 		t.Errorf("session_play = %v", play)
 	}
 	for _, mode := range []string{"PlayNext", "PlayLast"} {
-		if play := suite.Call(t, "session_play", map[string]any{"session": device, "item_ids": []any{dune}, "mode": mode}); acc.Str(play["playing_on"]) != device {
+		if play := suite.Call(t, "session_play", map[string]any{"session": device, "item_ids": []any{dune}, "mode": mode}); acctest.Str(play["playing_on"]) != device {
 			t.Errorf("session_play %s = %v", mode, play)
 		}
 	}
 	// several items at once, in order
-	if play := suite.Call(t, "session_play", map[string]any{"session": device, "item_ids": []any{dune, arrival}}); acc.Str(play["playing_on"]) != device {
+	if play := suite.Call(t, "session_play", map[string]any{"session": device, "item_ids": []any{dune, arrival}}); acctest.Str(play["playing_on"]) != device {
 		t.Errorf("session_play of two items = %v", play)
 	}
 
 	// and drive it
 	for _, cmd := range []string{"Pause", "Unpause", "PlayPause", "NextTrack", "PreviousTrack", "Stop"} {
 		answer := suite.Call(t, "session_command", map[string]any{"session": device, "command": cmd})
-		if acc.Str(answer["sent"]) != cmd+" → "+device {
+		if acctest.Str(answer["sent"]) != cmd+" → "+device {
 			t.Errorf("session_command %s = %v", cmd, answer)
 		}
 	}
 	out = suite.Call(t, "session_command", map[string]any{"session": device, "command": "Seek", "seek_s": 60})
-	if acc.Str(out["sent"]) != "Seek → "+device {
+	if acctest.Str(out["sent"]) != "Seek → "+device {
 		t.Errorf("session_command Seek = %v", out)
 	}
 	// back to the start: a position of 0 is a position, and both servers take
 	// it (no player is listening, so that the server took it is all a test
 	// server can show)
 	out = suite.Call(t, "session_command", map[string]any{"session": device, "command": "Seek", "seek_s": 0})
-	if acc.Str(out["sent"]) != "Seek → "+device {
+	if acctest.Str(out["sent"]) != "Seek → "+device {
 		t.Errorf("session_command Seek to 0 = %v", out)
 	}
 
@@ -341,7 +341,7 @@ func TestSessionNamedTwice(t *testing.T) {
 	second := first + "-two"
 	token := signIn(t, os.Getenv("EMBYFIN_TEST_USER"), os.Getenv("EMBYFIN_TEST_PASSWORD"), second)
 	t.Cleanup(func() { signOut(t, token, second) })
-	if !acc.Eventually(func() bool { return sessionOn(t, second) != nil }) {
+	if !acctest.Eventually(func() bool { return sessionOn(t, second) != nil }) {
 		t.Fatalf("the second player is not among the sessions: %v", suite.Call(t, "session_list", nil)["sessions"])
 	}
 
@@ -352,13 +352,13 @@ func TestSessionNamedTwice(t *testing.T) {
 		}
 	}
 	// a whole name matched exactly beats one that is only a part of another
-	if out := suite.Call(t, "session_message", map[string]any{"session": first, "text": "the first"}); acc.Str(out["sent_to"]) != first {
+	if out := suite.Call(t, "session_message", map[string]any{"session": first, "text": "the first"}); acctest.Str(out["sent_to"]) != first {
 		t.Errorf("the first player by its whole name = %v", out)
 	}
-	if out := suite.Call(t, "session_message", map[string]any{"session": strings.ToUpper(second), "text": "the second"}); acc.Str(out["sent_to"]) != second {
+	if out := suite.Call(t, "session_message", map[string]any{"session": strings.ToUpper(second), "text": "the second"}); acctest.Str(out["sent_to"]) != second {
 		t.Errorf("the second player by its whole name = %v", out)
 	}
-	if out := suite.Call(t, "session_message", map[string]any{"session": acc.Str(sessionOn(t, second)["id"]), "text": "by id"}); acc.Str(out["sent_to"]) != second {
+	if out := suite.Call(t, "session_message", map[string]any{"session": acctest.Str(sessionOn(t, second)["id"]), "text": "by id"}); acctest.Str(out["sent_to"]) != second {
 		t.Errorf("the second player by its id = %v", out)
 	}
 }
@@ -369,39 +369,39 @@ func TestSessionNamedTwice(t *testing.T) {
 func TestSessionWhilePlaying(t *testing.T) {
 	device, token := signInPlayer(t)
 	dune := findItem(t, "Movies", "Movie", "Dune: Part Two")
-	idle := acc.Num(t, suite.Call(t, "server_stats", nil)["active_sessions"], "active_sessions")
+	idle := acctest.Num(t, suite.Call(t, "server_stats", nil)["active_sessions"], "active_sessions")
 
 	p := startPlaying(t, token, dune)
 	// half way into the film's 167 minutes, paused there
 	half, end := int64(5010)*10_000_000, int64(167*60)*10_000_000
 	p.report("/Sessions/Playing/Progress", half, true)
 	var row map[string]any
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		row = sessionOn(t, device)
-		return row != nil && acc.BoolOf(row["paused"])
+		return row != nil && acctest.BoolOf(row["paused"])
 	}) {
 		t.Fatalf("the player never showed as paused: %v", row)
 	}
-	if acc.Str(row["now_playing"]) != "Dune: Part Two" || acc.Str(row["position"]) != "1h23m30s / 2h47m0s" {
+	if acctest.Str(row["now_playing"]) != "Dune: Part Two" || acctest.Str(row["position"]) != "1h23m30s / 2h47m0s" {
 		t.Errorf("the playing session = %v, want Dune: Part Two, paused at 1h23m30s / 2h47m0s", row)
 	}
-	if n := acc.Num(t, suite.Call(t, "server_stats", nil)["active_sessions"], "active_sessions"); n != idle+1 {
+	if n := acctest.Num(t, suite.Call(t, "server_stats", nil)["active_sessions"], "active_sessions"); n != idle+1 {
 		t.Errorf("active_sessions while playing = %d, want %d", n, idle+1)
 	}
 
 	// playing again, then stopped at the end
 	p.report("/Sessions/Playing/Progress", half, false)
-	if !acc.Eventually(func() bool { row = sessionOn(t, device); return row != nil && !acc.BoolOf(row["paused"]) }) {
+	if !acctest.Eventually(func() bool { row = sessionOn(t, device); return row != nil && !acctest.BoolOf(row["paused"]) }) {
 		t.Errorf("the player never showed as playing again: %v", row)
 	}
 	p.report("/Sessions/Playing/Stopped", end, false)
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		row = sessionOn(t, device)
 		return row != nil && row["now_playing"] == nil
 	}) {
 		t.Errorf("the player still shows a play after it stopped: %v", row)
 	}
-	if n := acc.Num(t, suite.Call(t, "server_stats", nil)["active_sessions"], "active_sessions"); n != idle {
+	if n := acctest.Num(t, suite.Call(t, "server_stats", nil)["active_sessions"], "active_sessions"); n != idle {
 		t.Errorf("active_sessions after the play stopped = %d, want %d", n, idle)
 	}
 	// the stop marked it watched for alice, which is not this test's to keep
@@ -409,10 +409,10 @@ func TestSessionWhilePlaying(t *testing.T) {
 
 	// the device that played remembers who it played for
 	var seen bool
-	for _, d := range acc.Rows(t, suite.Call(t, "server_devices", nil)["devices"], "devices") {
-		if acc.Str(d["name"]) == device {
+	for _, d := range acctest.Rows(t, suite.Call(t, "server_devices", nil)["devices"], "devices") {
+		if acctest.Str(d["name"]) == device {
 			seen = true
-			if acc.Str(d["last_user"]) != "alice" || !strings.HasPrefix(acc.Str(d["app"]), "embyfin-mcp acceptance") {
+			if acctest.Str(d["last_user"]) != "alice" || !strings.HasPrefix(acctest.Str(d["app"]), "embyfin-mcp acceptance") {
 				t.Errorf("the player's device = %v, want alice's embyfin-mcp acceptance", d)
 			}
 		}

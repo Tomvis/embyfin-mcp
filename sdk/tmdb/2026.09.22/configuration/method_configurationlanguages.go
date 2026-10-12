@@ -17,6 +17,7 @@ func (c Client) ConfigurationLanguages(ctx context.Context) (result tmdb.Configu
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "ConfigurationLanguages",
 		Path:       "/3/configuration/languages",
 	}
 

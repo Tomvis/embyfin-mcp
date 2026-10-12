@@ -29,6 +29,7 @@ func (c Client) GetPersons(ctx context.Context, options ...jf.GetPersonsOptions)
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPersons",
 		OptionsObject: option,
 		Path:          "/Persons",
 	}

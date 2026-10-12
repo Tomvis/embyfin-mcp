@@ -19,6 +19,7 @@ func (c Client) MovieReleaseDates(ctx context.Context, movieId int) (result tmdb
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "MovieReleaseDates",
 		Path:       fmt.Sprintf("/3/movie/%d/release_dates", movieId),
 	}
 

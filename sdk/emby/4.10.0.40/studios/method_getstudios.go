@@ -30,6 +30,7 @@ func (c Client) GetStudios(ctx context.Context, options ...emby.GetStudiosOption
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetStudios",
 		OptionsObject: option,
 		Path:          "/Studios",
 	}

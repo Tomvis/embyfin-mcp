@@ -30,6 +30,7 @@ func (c Client) GetLiveTvEPG(ctx context.Context, options ...emby.GetLiveTvEPGOp
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLiveTvEPG",
 		OptionsObject: option,
 		Path:          "/LiveTv/EPG",
 	}

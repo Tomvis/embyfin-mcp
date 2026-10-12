@@ -17,6 +17,7 @@ func (c Client) ConfigurationPrimaryTranslations(ctx context.Context) (result tm
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "ConfigurationPrimaryTranslations",
 		Path:       "/3/configuration/primary_translations",
 	}
 

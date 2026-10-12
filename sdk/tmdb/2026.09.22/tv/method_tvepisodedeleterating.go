@@ -28,6 +28,7 @@ func (c Client) TvEpisodeDeleteRating(ctx context.Context, seriesId int, seasonN
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "TvEpisodeDeleteRating",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/tv/%d/season/%d/episode/%d/rating", seriesId, seasonNumber, episodeNumber),
 	}

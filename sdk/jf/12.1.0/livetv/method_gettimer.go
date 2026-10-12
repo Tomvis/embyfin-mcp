@@ -20,6 +20,7 @@ func (c Client) GetTimer(ctx context.Context, timerId string) (result jf.GetTime
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetTimer",
 		Path:       fmt.Sprintf("/LiveTv/Timers/%s", url.PathEscape(timerId)),
 	}
 

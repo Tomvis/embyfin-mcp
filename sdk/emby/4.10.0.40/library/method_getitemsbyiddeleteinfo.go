@@ -21,6 +21,7 @@ func (c Client) GetItemsByIdDeleteInfo(ctx context.Context, id string) (result e
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetItemsByIdDeleteInfo",
 		Path:       fmt.Sprintf("/Items/%s/DeleteInfo", url.PathEscape(id)),
 	}
 

@@ -28,6 +28,7 @@ func (c Client) WatchProvidersMovieList(ctx context.Context, options ...tmdb.Wat
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "WatchProvidersMovieList",
 		OptionsObject: option,
 		Path:          "/3/watch/providers/movie",
 	}

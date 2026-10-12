@@ -22,6 +22,7 @@ func (c Client) PostEncodingFullToneMapOptions(ctx context.Context, input io.Rea
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostEncodingFullToneMapOptions",
 		Path:       "/Encoding/FullToneMapOptions",
 	}
 

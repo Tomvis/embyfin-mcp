@@ -19,6 +19,7 @@ func (c Client) SearchRemoteLyrics(ctx context.Context, itemId string) (result j
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "SearchRemoteLyrics",
 		Path:       fmt.Sprintf("/Audio/%s/RemoteSearch/Lyrics", url.PathEscape(itemId)),
 	}
 

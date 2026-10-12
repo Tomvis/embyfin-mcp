@@ -18,6 +18,7 @@ func (c Client) GetPublicSystemInfo(ctx context.Context) (result jf.GetPublicSys
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPublicSystemInfo",
 		Path:       "/System/Info/Public",
 	}
 

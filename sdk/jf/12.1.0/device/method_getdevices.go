@@ -28,6 +28,7 @@ func (c Client) GetDevices(ctx context.Context, userId ...string) (result jf.Get
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetDevices",
 		OptionsObject: option,
 		Path:          "/Devices",
 	}

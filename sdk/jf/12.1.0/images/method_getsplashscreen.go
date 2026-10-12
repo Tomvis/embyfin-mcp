@@ -28,6 +28,7 @@ func (c Client) GetSplashscreen(ctx context.Context, options ...jf.GetSplashscre
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetSplashscreen",
 		OptionsObject:  option,
 		Path:           "/Branding/Splashscreen",
 		StreamResponse: true,

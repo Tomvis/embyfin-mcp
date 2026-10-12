@@ -29,6 +29,7 @@ func (c Client) PostCollections(ctx context.Context, options ...emby.PostCollect
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostCollections",
 		OptionsObject: option,
 		Path:          "/Collections",
 	}

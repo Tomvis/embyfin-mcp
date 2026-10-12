@@ -21,6 +21,7 @@ func (c Client) GetSystemLogsByNameLines(ctx context.Context, name string) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemLogsByNameLines",
 		Path:       fmt.Sprintf("/System/Logs/%s/Lines", url.PathEscape(name)),
 	}
 

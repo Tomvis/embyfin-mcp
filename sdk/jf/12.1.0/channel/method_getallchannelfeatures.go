@@ -17,6 +17,7 @@ func (c Client) GetAllChannelFeatures(ctx context.Context) (result jf.GetAllChan
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetAllChannelFeatures",
 		Path:       "/Channels/Features",
 	}
 

@@ -23,6 +23,7 @@ func (c Client) PostUsersAuthenticateByName(ctx context.Context, input emby.Auth
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostUsersAuthenticateByName",
 		OptionsObject: option,
 		Path:          "/Users/AuthenticateByName",
 	}

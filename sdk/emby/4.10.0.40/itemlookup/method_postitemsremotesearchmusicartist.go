@@ -19,6 +19,7 @@ func (c Client) PostItemsRemoteSearchMusicArtist(ctx context.Context, input emby
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostItemsRemoteSearchMusicArtist",
 		Path:       "/Items/RemoteSearch/MusicArtist",
 	}
 

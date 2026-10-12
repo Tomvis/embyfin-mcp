@@ -29,6 +29,7 @@ func (c Client) GetPackageInfo(ctx context.Context, name string, assemblyGuid ..
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPackageInfo",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Packages/%s", url.PathEscape(name)),
 	}

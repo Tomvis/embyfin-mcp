@@ -18,6 +18,7 @@ func (c Client) ValidatePath(ctx context.Context, input jf.ValidatePathDto) (res
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "ValidatePath",
 		Path:       "/Environment/ValidatePath",
 	}
 

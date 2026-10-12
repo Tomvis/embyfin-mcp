@@ -22,6 +22,7 @@ func (c Client) GetConnectExchange(ctx context.Context, connectUserId string) (r
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetConnectExchange",
 		OptionsObject: option,
 		Path:          "/Connect/Exchange",
 	}

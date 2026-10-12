@@ -22,6 +22,7 @@ func (c Client) PostDevicesCameraUploads(ctx context.Context, input io.Reader, c
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostDevicesCameraUploads",
 		OptionsObject: options,
 		Path:          "/Devices/CameraUploads",
 	}

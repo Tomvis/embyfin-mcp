@@ -18,6 +18,7 @@ func (c Client) PostLibrarySeriesAdded(ctx context.Context) (result emby.PostLib
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLibrarySeriesAdded",
 		Path:       "/Library/Series/Added",
 	}
 

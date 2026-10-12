@@ -21,6 +21,7 @@ func (c Client) PostUsersByUserIdHomeSectionsDelete(ctx context.Context, userId 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByUserIdHomeSectionsDelete",
 		Path:       fmt.Sprintf("/Users/%s/HomeSections/Delete", url.PathEscape(userId)),
 	}
 

@@ -29,6 +29,7 @@ func (c Client) MovieAddRating(ctx context.Context, movieId int, input tmdb.Movi
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "MovieAddRating",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/movie/%d/rating", movieId),
 	}

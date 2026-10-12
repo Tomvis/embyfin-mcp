@@ -29,6 +29,7 @@ func (c Client) GetStudios(ctx context.Context, options ...jf.GetStudiosOptions)
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetStudios",
 		OptionsObject: option,
 		Path:          "/Studios",
 	}

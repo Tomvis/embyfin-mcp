@@ -18,6 +18,7 @@ func (c Client) PersonLatestId(ctx context.Context) (result tmdb.PersonLatestIdR
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "PersonLatestId",
 		Path:       "/3/person/latest",
 	}
 

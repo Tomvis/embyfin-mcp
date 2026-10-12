@@ -22,6 +22,7 @@ func (c Client) UploadCustomSplashscreen(ctx context.Context, input io.Reader, c
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UploadCustomSplashscreen",
 		Path:       "/Branding/Splashscreen",
 	}
 

@@ -29,6 +29,7 @@ func (c Client) GetItemsCounts(ctx context.Context, options ...emby.GetItemsCoun
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsCounts",
 		OptionsObject: option,
 		Path:          "/Items/Counts",
 	}

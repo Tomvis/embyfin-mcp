@@ -29,6 +29,7 @@ func (c Client) GetSimilarItems(ctx context.Context, itemId string, options ...j
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSimilarItems",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Similar", url.PathEscape(itemId)),
 	}

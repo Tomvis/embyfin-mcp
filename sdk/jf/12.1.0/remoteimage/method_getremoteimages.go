@@ -29,6 +29,7 @@ func (c Client) GetRemoteImages(ctx context.Context, itemId string, options ...j
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetRemoteImages",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/RemoteImages", url.PathEscape(itemId)),
 	}

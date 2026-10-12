@@ -23,6 +23,7 @@ func (c Client) GetVideosByIdIndexBif(ctx context.Context, id string, width int)
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideosByIdIndexBif",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Videos/%s/index.bif", url.PathEscape(id)),
 		StreamResponse: true,

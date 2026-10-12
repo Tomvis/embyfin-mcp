@@ -18,6 +18,7 @@ func (c Client) GetKeys(ctx context.Context) (result jf.GetKeysResponse, err err
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetKeys",
 		Path:       "/Auth/Keys",
 	}
 

@@ -20,6 +20,7 @@ func (c Client) PostSyncJobs(ctx context.Context, input emby.SyncJobRequest) (re
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSyncJobs",
 		Path:       "/Sync/Jobs",
 	}
 

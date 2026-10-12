@@ -28,6 +28,7 @@ func (c Client) MovieDeleteRating(ctx context.Context, movieId int, options ...t
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "MovieDeleteRating",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/movie/%d/rating", movieId),
 	}

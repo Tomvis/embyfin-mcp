@@ -20,6 +20,7 @@ func (c Client) GetSeriesTimer(ctx context.Context, timerId string) (result jf.G
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSeriesTimer",
 		Path:       fmt.Sprintf("/LiveTv/SeriesTimers/%s", url.PathEscape(timerId)),
 	}
 

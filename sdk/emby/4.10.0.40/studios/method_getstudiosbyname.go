@@ -30,6 +30,7 @@ func (c Client) GetStudiosByName(ctx context.Context, name string, userId ...str
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetStudiosByName",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Studios/%s", url.PathEscape(name)),
 	}

@@ -30,6 +30,7 @@ func (c Client) GetSystemLogsQuery(ctx context.Context, options ...emby.GetSyste
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSystemLogsQuery",
 		OptionsObject: option,
 		Path:          "/System/Logs/Query",
 	}

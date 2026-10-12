@@ -17,6 +17,7 @@ func (c Client) GetCultures(ctx context.Context) (result jf.GetCulturesResponse,
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetCultures",
 		Path:       "/Localization/Cultures",
 	}
 

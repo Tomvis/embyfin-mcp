@@ -23,6 +23,7 @@ func (c Client) GetSubtitlePlaylist(ctx context.Context, itemId string, mediaSou
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetSubtitlePlaylist",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/subtitles.m3u8", url.PathEscape(itemId), url.PathEscape(mediaSourceId), index),
 		StreamResponse: true,

@@ -19,6 +19,7 @@ func (c Client) GetEncodingFfmpegOptions(ctx context.Context) (result emby.GetEn
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEncodingFfmpegOptions",
 		Path:       "/Encoding/FfmpegOptions",
 	}
 

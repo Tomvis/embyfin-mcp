@@ -21,6 +21,7 @@ func (c Client) PostUsersByIdPassword(ctx context.Context, id string, input emby
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByIdPassword",
 		Path:       fmt.Sprintf("/Users/%s/Password", url.PathEscape(id)),
 	}
 

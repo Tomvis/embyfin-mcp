@@ -18,6 +18,7 @@ func (c Client) SyncPlaySetPlaylistItem(ctx context.Context, input jf.SetPlaylis
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlaySetPlaylistItem",
 		Path:       "/SyncPlay/SetPlaylistItem",
 	}
 

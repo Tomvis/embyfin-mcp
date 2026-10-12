@@ -19,6 +19,7 @@ func (c Client) StopTask(ctx context.Context, taskId string) (result jf.StopTask
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "StopTask",
 		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(taskId)),
 	}
 

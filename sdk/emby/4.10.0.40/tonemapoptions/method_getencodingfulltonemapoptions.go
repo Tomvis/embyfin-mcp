@@ -19,6 +19,7 @@ func (c Client) GetEncodingFullToneMapOptions(ctx context.Context) (result emby.
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEncodingFullToneMapOptions",
 		Path:       "/Encoding/FullToneMapOptions",
 	}
 

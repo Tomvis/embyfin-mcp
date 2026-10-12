@@ -20,6 +20,7 @@ func (c Client) DeleteItemsById(ctx context.Context, id string) (result emby.Del
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteItemsById",
 		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(id)),
 	}
 

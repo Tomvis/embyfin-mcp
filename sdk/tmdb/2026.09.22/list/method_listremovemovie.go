@@ -23,6 +23,7 @@ func (c Client) ListRemoveMovie(ctx context.Context, listId int, input tmdb.List
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "ListRemoveMovie",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/list/%d/remove_item", listId),
 	}

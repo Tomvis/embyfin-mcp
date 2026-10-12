@@ -27,6 +27,7 @@ func (c Client) GetConfigurationPages(ctx context.Context, enableInMainMenu ...b
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetConfigurationPages",
 		OptionsObject: option,
 		Path:          "/web/ConfigurationPages",
 	}

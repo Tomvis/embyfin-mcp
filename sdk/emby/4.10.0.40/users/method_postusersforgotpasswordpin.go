@@ -20,6 +20,7 @@ func (c Client) PostUsersForgotPasswordPin(ctx context.Context, input emby.Forgo
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersForgotPasswordPin",
 		Path:       "/Users/ForgotPassword/Pin",
 	}
 

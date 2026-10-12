@@ -18,6 +18,7 @@ func (c Client) GetLocalizationCountries(ctx context.Context) (result emby.GetLo
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLocalizationCountries",
 		Path:       "/Localization/Countries",
 	}
 

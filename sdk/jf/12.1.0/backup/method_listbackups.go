@@ -17,6 +17,7 @@ func (c Client) ListBackups(ctx context.Context) (result jf.ListBackupsResponse,
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "ListBackups",
 		Path:       "/Backup",
 	}
 

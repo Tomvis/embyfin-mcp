@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // What goes with a film or a show and is not a copy of it: the messy
@@ -28,15 +28,15 @@ func TestExtrasAreNeitherCopiesNorEpisodes(t *testing.T) {
 	t.Run("a film's", func(t *testing.T) {
 		interstellar := findItem(t, "Messy Movies", "Movie", "Interstellar")
 		got := suite.Call(t, "item_get", map[string]any{"id": interstellar})
-		if acc.Str(got["path"]) != "/media/messy-movies/"+messyInterstellar+"/"+messyInterstellar+".mp4" || got["versions"] != nil {
+		if acctest.Str(got["path"]) != "/media/messy-movies/"+messyInterstellar+"/"+messyInterstellar+".mp4" || got["versions"] != nil {
 			t.Errorf("Interstellar = %v in versions %v, want its own file alone", got["path"], got["versions"])
 		}
-		films := acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "types": "Movie", "limit": 100})["items"], "items")
+		films := acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "types": "Movie", "limit": 100})["items"], "items")
 		if len(films) != messyMovies() {
 			t.Errorf("the messy library lists %d films, want %d", len(films), messyMovies())
 		}
 		for _, f := range films {
-			if isExtra(acc.Str(f["path"])) {
+			if isExtra(acctest.Str(f["path"])) {
 				t.Errorf("an extra listed as a film: %v", f)
 			}
 		}
@@ -50,8 +50,8 @@ func TestExtrasAreNeitherCopiesNorEpisodes(t *testing.T) {
 	t.Run("a season's", func(t *testing.T) {
 		const featurette = "/media/messy-shows/Severance/Season 01/Extras/Featurette.mp4"
 		var asEpisode map[string]any
-		for _, e := range acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"library": "Messy Shows", "limit": 200})["episodes"], "episodes") {
-			if acc.Str(e["path"]) == featurette {
+		for _, e := range acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"library": "Messy Shows", "limit": 200})["episodes"], "episodes") {
+			if acctest.Str(e["path"]) == featurette {
 				asEpisode = e
 			}
 		}
@@ -60,7 +60,7 @@ func TestExtrasAreNeitherCopiesNorEpisodes(t *testing.T) {
 			t.Errorf("Jellyfin holds the season's featurette as an episode: %v", asEpisode)
 		// Emby files it in season 0 though it sits in season one's folder, and
 		// gives it no number: episode null, not 0
-		case !isJellyfin() && (asEpisode == nil || acc.Str(asEpisode["series"]) != "Severance" || asEpisode["episode"] != nil || asEpisode["season"] == nil || acc.NumOr0(asEpisode["season"]) != 0):
+		case !isJellyfin() && (asEpisode == nil || acctest.Str(asEpisode["series"]) != "Severance" || asEpisode["episode"] != nil || asEpisode["season"] == nil || acctest.NumOr0(asEpisode["season"]) != 0):
 			t.Errorf("Emby holds the season's featurette as %v, want an episode of Severance in season 0 with no number", asEpisode)
 		}
 		for _, audit := range []string{"audit_quality", "audit_runtime", "audit_duplicate_episodes"} {
@@ -75,7 +75,7 @@ func TestExtrasAreNeitherCopiesNorEpisodes(t *testing.T) {
 			if audit != "audit_runtime" {
 				want = messyEpisodesJudged()
 			}
-			if n := acc.Num(t, out["items_scanned"], "items_scanned"); n != want {
+			if n := acctest.Num(t, out["items_scanned"], "items_scanned"); n != want {
 				t.Errorf("%s scanned %d, want %d and no extra", audit, n, want)
 			}
 		}

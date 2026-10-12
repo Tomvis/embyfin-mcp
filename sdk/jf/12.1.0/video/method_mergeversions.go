@@ -20,6 +20,7 @@ func (c Client) MergeVersions(ctx context.Context, ids []string) (result jf.Merg
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "MergeVersions",
 		OptionsObject: option,
 		Path:          "/Videos/MergeVersions",
 	}

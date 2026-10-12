@@ -18,6 +18,7 @@ func (c Client) PostSessionsCapabilities(ctx context.Context, options emby.PostS
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostSessionsCapabilities",
 		OptionsObject: options,
 		Path:          "/Sessions/Capabilities",
 	}

@@ -28,6 +28,7 @@ func (c Client) GetChannelMappingOptions(ctx context.Context, providerId ...stri
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetChannelMappingOptions",
 		OptionsObject: option,
 		Path:          "/LiveTv/ChannelMappingOptions",
 	}

@@ -20,6 +20,7 @@ func (c Client) GetTask(ctx context.Context, taskId string) (result jf.GetTaskRe
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetTask",
 		Path:       fmt.Sprintf("/ScheduledTasks/%s", url.PathEscape(taskId)),
 	}
 

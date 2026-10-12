@@ -30,6 +30,7 @@ func (c Client) PostItemsByIdRefresh(ctx context.Context, id string, input emby.
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostItemsByIdRefresh",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Refresh", url.PathEscape(id)),
 	}

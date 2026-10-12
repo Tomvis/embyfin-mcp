@@ -19,6 +19,7 @@ func (c Client) GetPartiesMessages(ctx context.Context) (result emby.GetPartiesM
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPartiesMessages",
 		Path:       "/Parties/Messages",
 	}
 

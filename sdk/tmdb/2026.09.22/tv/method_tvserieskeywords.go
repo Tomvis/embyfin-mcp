@@ -19,6 +19,7 @@ func (c Client) TvSeriesKeywords(ctx context.Context, seriesId int) (result tmdb
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "TvSeriesKeywords",
 		Path:       fmt.Sprintf("/3/tv/%d/keywords", seriesId),
 	}
 

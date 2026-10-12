@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 	"github.com/katbyte/go-kt/test/env"
@@ -30,7 +30,7 @@ func previewOptions(t *testing.T, library string, on bool) {
 		t.Fatalf("reading the libraries: HTTP %d: %.200s", status, raw)
 	}
 	for _, folder := range folders {
-		if acc.Str(folder["Name"]) != library {
+		if acctest.Str(folder["Name"]) != library {
 			continue
 		}
 		options := mediaacc.ObjectOf(folder["LibraryOptions"])
@@ -103,7 +103,7 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 	})
 	// its fetchers off: what a refresh fills, it fills from the nfo beside the film
 	suite.Call(t, "library_create", map[string]any{"name": library, "type": "movies", "paths": []any{"/media/previews"}, "scan": true, "save_nfo": false, "providers": false})
-	if !acc.EventuallyWithin(scanPatience, func() bool { return typeCount(t, library, "Movie") == len(films) }) {
+	if !acctest.EventuallyWithin(scanPatience, func() bool { return typeCount(t, library, "Movie") == len(films) }) {
 		t.Fatal("the library never held its films")
 	}
 	if err := suite.WaitForExpectedScan(isJellyfin()); err != nil {
@@ -111,7 +111,7 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 	}
 	ids := map[string]string{}
 	for path, it := range itemsUnder(t, library, "/media/previews") {
-		ids[filepath.Base(filepath.Dir(path))] = acc.Str(it["id"])
+		ids[filepath.Base(filepath.Dir(path))] = acctest.Str(it["id"])
 	}
 	if len(ids) != len(films) {
 		t.Fatalf("the films in the library are %v", ids)
@@ -121,19 +121,19 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 		t.Helper()
 		out = suite.Call(t, "audit_previews", args)
 
-		return out, acc.Rows(t, out["findings"], "findings")
+		return out, acctest.Rows(t, out["findings"], "findings")
 	}
 	// problems is what the audit of the whole library finds, a film and its
 	// problem a row
 	problems := func() []string {
 		t.Helper()
 		out, found := audit(map[string]any{"library": library})
-		if acc.Num(t, out["items_scanned"], "items_scanned") != len(films) || acc.Num(t, out["total_findings"], "total_findings") != len(found) || acc.Num(t, out["length_not_judged"], "length_not_judged") != 0 {
+		if acctest.Num(t, out["items_scanned"], "items_scanned") != len(films) || acctest.Num(t, out["total_findings"], "total_findings") != len(found) || acctest.Num(t, out["length_not_judged"], "length_not_judged") != 0 {
 			t.Errorf("the audit of the library = %v", out)
 		}
 		rows := make([]string, 0, len(found))
 		for _, f := range found {
-			rows = append(rows, filepath.Base(filepath.Dir(acc.Str(f["path"])))+": "+acc.Str(f["problem"]))
+			rows = append(rows, filepath.Base(filepath.Dir(acctest.Str(f["path"])))+": "+acctest.Str(f["problem"]))
 		}
 
 		return rows
@@ -142,18 +142,18 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 		t.Helper()
 		out = suite.Call(t, "item_previews_regenerate", args)
 
-		return out, acc.Rows(t, out["videos"], "videos")
+		return out, acctest.Rows(t, out["videos"], "videos")
 	}
 
 	// a library that makes none: nothing is missing, and nothing is asked for
 	out, found := audit(map[string]any{"library": library})
-	off := acc.Rows(t, out["libraries_off"], "libraries_off")
-	if acc.Num(t, out["items_scanned"], "items_scanned") != 0 || len(found) != 0 || len(off) != 1 || acc.Str(off[0]["library"]) != library || acc.Num(t, off[0]["videos"], "videos") != len(films) ||
-		!strings.HasPrefix(acc.Str(off[0]["why"]), "the library's options make no preview thumbnails") {
+	off := acctest.Rows(t, out["libraries_off"], "libraries_off")
+	if acctest.Num(t, out["items_scanned"], "items_scanned") != 0 || len(found) != 0 || len(off) != 1 || acctest.Str(off[0]["library"]) != library || acctest.Num(t, off[0]["videos"], "videos") != len(films) ||
+		!strings.HasPrefix(acctest.Str(off[0]["why"]), "the library's options make no preview thumbnails") {
 		t.Fatalf("with previews off the audit = %v", out)
 	}
 	out, rows := regenerate(map[string]any{"library": library})
-	if o := acc.Object(t, out["library_off"], "library_off"); len(rows) != 0 || acc.Num(t, out["made"], "made") != 0 || acc.Str(o["library"]) != library {
+	if o := acctest.Object(t, out["library_off"], "library_off"); len(rows) != 0 || acctest.Num(t, out["made"], "made") != 0 || acctest.Str(o["library"]) != library {
 		t.Fatalf("with previews off item_previews_regenerate = %v", out)
 	}
 
@@ -169,10 +169,10 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 		t.Helper()
 		was, _ := taskRun(t, task)
 		suite.Call(t, "task_run", map[string]any{"task": task})
-		if !acc.EventuallyWithin(scanPatience, func() bool {
+		if !acctest.EventuallyWithin(scanPatience, func() bool {
 			at, row := taskRun(t, task)
 
-			return at.After(was) && acc.Str(row["state"]) == "Idle"
+			return at.After(was) && acctest.Str(row["state"]) == "Idle"
 		}) {
 			t.Fatalf("the %s task never ran", task)
 		}
@@ -199,11 +199,11 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 	// is touched
 	before := env.TreeOf(t, filepath.Join(dir, bruno))
 	out, rows = regenerate(map[string]any{"ids": []any{ids[bruno]}})
-	if len(rows) != 1 || acc.Num(t, out["made"], "made") != 1 || acc.Num(t, out["videos_checked"], "videos_checked") != 1 || out["stopped"] != nil || out["note"] != nil {
+	if len(rows) != 1 || acctest.Num(t, out["made"], "made") != 1 || acctest.Num(t, out["videos_checked"], "videos_checked") != 1 || out["stopped"] != nil || out["note"] != nil {
 		t.Fatalf("item_previews_regenerate for one film = %v", out)
 	}
-	if r := rows[0]; acc.Str(r["id"]) != ids[bruno] || acc.Str(r["result"]) != "made" || acc.Str(r["was"]) != "missing: the server holds no preview thumbnails for it" ||
-		acc.Num(t, r["thumbnails"], "thumbnails") < 400 || acc.Str(r["library"]) != library || r["also_changed"] != nil {
+	if r := rows[0]; acctest.Str(r["id"]) != ids[bruno] || acctest.Str(r["result"]) != "made" || acctest.Str(r["was"]) != "missing: the server holds no preview thumbnails for it" ||
+		acctest.Num(t, r["thumbnails"], "thumbnails") < 400 || acctest.Str(r["library"]) != library || r["also_changed"] != nil {
 		t.Errorf("the film's row = %v, want it made, with eighty minutes of thumbnails and nothing else changed", r)
 	}
 	if made, err := os.Stat(file(bruno)); err != nil || made.Size() < 10_000 {
@@ -214,7 +214,7 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 		t.Errorf("made, the audit still finds %v", got)
 	}
 	// and asked for again, a sound file is left alone
-	if out, rows = regenerate(map[string]any{"ids": []any{ids[bruno]}}); len(rows) != 1 || acc.Str(rows[0]["result"]) != "skipped" || acc.Str(rows[0]["was"]) != "sound" || acc.Num(t, out["skipped"], "skipped") != 1 {
+	if out, rows = regenerate(map[string]any{"ids": []any{ids[bruno]}}); len(rows) != 1 || acctest.Str(rows[0]["result"]) != "skipped" || acctest.Str(rows[0]["was"]) != "sound" || acctest.Num(t, out["skipped"], "skipped") != 1 {
 		t.Errorf("item_previews_regenerate for a film whose thumbnails are sound = %v", out)
 	}
 
@@ -248,7 +248,7 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 		}
 		env.WriteFile(t, file(limitless), c.bytes)
 		_, found := audit(map[string]any{"ids": []any{ids[limitless]}})
-		if len(found) != 1 || acc.Str(found[0]["problem"]) != c.problem || !strings.Contains(acc.Str(found[0]["detail"]), c.detail) || acc.Str(found[0]["id"]) != ids[limitless] {
+		if len(found) != 1 || acctest.Str(found[0]["problem"]) != c.problem || !strings.Contains(acctest.Str(found[0]["detail"]), c.detail) || acctest.Str(found[0]["id"]) != ids[limitless] {
 			t.Errorf("a file %s is found as %v, want %s: %s", c.what, found, c.problem, c.detail)
 		}
 	}
@@ -265,18 +265,18 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 	// the library worked through, a film a call: the first is made, and the
 	// answer says where to go on
 	out, rows = regenerate(map[string]any{"library": library, "limit": 1})
-	if len(rows) != 1 || acc.Str(rows[0]["id"]) != ids[bruno] || acc.Str(rows[0]["result"]) != "made" || acc.Num(t, out["next_offset"], "next_offset") != 1 ||
-		acc.Str(out["stopped"]) != "the limit of 1 videos was reached" || acc.Num(t, out["videos_checked"], "videos_checked") != 1 {
+	if len(rows) != 1 || acctest.Str(rows[0]["id"]) != ids[bruno] || acctest.Str(rows[0]["result"]) != "made" || acctest.Num(t, out["next_offset"], "next_offset") != 1 ||
+		acctest.Str(out["stopped"]) != "the limit of 1 videos was reached" || acctest.Num(t, out["videos_checked"], "videos_checked") != 1 {
 		t.Fatalf("the first film of the library = %v", out)
 	}
 	// from there the second, and the last is passed over: its thumbnails are
 	// sound, and whether they or the runtime are wrong is not told from here
 	out, rows = regenerate(map[string]any{"library": library, "limit": 1, "offset": 1})
-	if len(rows) != 2 || acc.Str(rows[0]["id"]) != ids[dune] || acc.Str(rows[0]["result"]) != "made" || out["next_offset"] != nil || out["stopped"] != nil ||
-		acc.Num(t, out["made"], "made") != 1 || acc.Num(t, out["skipped"], "skipped") != 1 {
+	if len(rows) != 2 || acctest.Str(rows[0]["id"]) != ids[dune] || acctest.Str(rows[0]["result"]) != "made" || out["next_offset"] != nil || out["stopped"] != nil ||
+		acctest.Num(t, out["made"], "made") != 1 || acctest.Num(t, out["skipped"], "skipped") != 1 {
 		t.Fatalf("the second film of the library = %v", out)
 	}
-	if r := rows[1]; acc.Str(r["id"]) != ids[limitless] || acc.Str(r["result"]) != "skipped" || !strings.HasPrefix(acc.Str(r["was"]), "length: ") || !strings.Contains(acc.Str(r["detail"]), "pass length true") {
+	if r := rows[1]; acctest.Str(r["id"]) != ids[limitless] || acctest.Str(r["result"]) != "skipped" || !strings.HasPrefix(acctest.Str(r["was"]), "length: ") || !strings.Contains(acctest.Str(r["detail"]), "pass length true") {
 		t.Errorf("the film with another film's thumbnails = %v, want it passed over and length named", r)
 	}
 	if got, want := problems(), []string{limitless + ": length"}; !slices.Equal(got, want) {
@@ -284,8 +284,8 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 	}
 	// asked for, they are made again from the film there now
 	out, rows = regenerate(map[string]any{"library": library, "length": true})
-	if len(rows) != 1 || acc.Str(rows[0]["id"]) != ids[limitless] || acc.Str(rows[0]["result"]) != "made" || rows[0]["detail"] != nil || !strings.HasPrefix(acc.Str(rows[0]["was"]), "length: ") ||
-		out["next_offset"] != nil || acc.Num(t, out["videos_checked"], "videos_checked") != len(films) {
+	if len(rows) != 1 || acctest.Str(rows[0]["id"]) != ids[limitless] || acctest.Str(rows[0]["result"]) != "made" || rows[0]["detail"] != nil || !strings.HasPrefix(acctest.Str(rows[0]["was"]), "length: ") ||
+		out["next_offset"] != nil || acctest.Num(t, out["videos_checked"], "videos_checked") != len(films) {
 		t.Fatalf("with length, the last film of the library = %v", out)
 	}
 	if got := problems(); len(got) != 0 {
@@ -295,24 +295,24 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 	if now, err := os.Stat(file(limitless)); err != nil || now.Size() != int64(len(sound)) {
 		t.Errorf("the last film's thumbnails are %v, %v: want the %d bytes they were before another film's were put in their place", now, err, len(sound))
 	}
-	if out, rows = regenerate(map[string]any{"library": library}); len(rows) != 0 || acc.Num(t, out["made"], "made") != 0 || acc.Num(t, out["videos_checked"], "videos_checked") != len(films) || out["next_offset"] != nil {
+	if out, rows = regenerate(map[string]any{"library": library}); len(rows) != 0 || acctest.Num(t, out["made"], "made") != 0 || acctest.Num(t, out["videos_checked"], "videos_checked") != len(films) || out["next_offset"] != nil {
 		t.Errorf("with nothing left to make, item_previews_regenerate = %v", out)
 	}
 
 	// what the refresh does besides: an overview the item has empty comes
 	// back from the nfo beside the film, and the answer names it
 	updateItem(t, ids[limitless], map[string]any{"Overview": ""})
-	if !acc.Eventually(func() bool { return acc.Str(fullItem(t, ids[limitless])["Overview"]) == "" }) {
+	if !acctest.Eventually(func() bool { return acctest.Str(fullItem(t, ids[limitless])["Overview"]) == "" }) {
 		t.Fatal("the film's overview was not emptied")
 	}
 	if err := os.Remove(file(limitless)); err != nil {
 		t.Fatal(err)
 	}
 	out, rows = regenerate(map[string]any{"ids": []any{ids[limitless]}})
-	if len(rows) != 1 || acc.Str(rows[0]["result"]) != "made" || !slices.Equal(acc.Strs(t, rows[0]["also_changed"], "also_changed"), []string{"Overview"}) {
+	if len(rows) != 1 || acctest.Str(rows[0]["result"]) != "made" || !slices.Equal(acctest.Strs(t, rows[0]["also_changed"], "also_changed"), []string{"Overview"}) {
 		t.Errorf("for a film with an empty overview item_previews_regenerate = %v, want it made and the overview named as changed", out)
 	}
-	if got := acc.Str(fullItem(t, ids[limitless])["Overview"]); got == "" {
+	if got := acctest.Str(fullItem(t, ids[limitless])["Overview"]); got == "" {
 		t.Error("the overview named as changed reads empty")
 	}
 
@@ -325,15 +325,15 @@ func TestPreviewThumbnailsFoundAndMadeAgain(t *testing.T) {
 	scanUntilTrue(t, library, func() bool {
 		for path, it := range itemsUnder(t, library, "/media/previews/"+cut) {
 			if strings.HasSuffix(path, cut+".mp4") {
-				cutID = acc.Str(it["id"])
+				cutID = acctest.Str(it["id"])
 			}
 		}
 
 		return cutID != ""
 	})
 	out, rows = regenerate(map[string]any{"ids": []any{cutID}})
-	if len(rows) != 1 || acc.Str(rows[0]["result"]) != "not_made" || acc.Num(t, out["not_made"], "not_made") != 1 || acc.Num(t, out["made"], "made") != 0 ||
-		acc.Str(rows[0]["detail"]) != "Emby ran the refresh and the thumbnails are still missing: the server holds no preview thumbnails for it" {
+	if len(rows) != 1 || acctest.Str(rows[0]["result"]) != "not_made" || acctest.Num(t, out["not_made"], "not_made") != 1 || acctest.Num(t, out["made"], "made") != 0 ||
+		acctest.Str(rows[0]["detail"]) != "Emby ran the refresh and the thumbnails are still missing: the server holds no preview thumbnails for it" {
 		t.Errorf("for a video Emby cannot read item_previews_regenerate = %v", out)
 	}
 	if _, err := os.Stat(file(cut)); !os.IsNotExist(err) {

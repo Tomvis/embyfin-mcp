@@ -18,6 +18,7 @@ func (c Client) ConfigurationDetails(ctx context.Context) (result tmdb.Configura
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "ConfigurationDetails",
 		Path:       "/3/configuration",
 	}
 

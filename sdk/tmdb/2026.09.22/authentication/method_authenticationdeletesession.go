@@ -19,6 +19,7 @@ func (c Client) AuthenticationDeleteSession(ctx context.Context, input tmdb.Auth
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "AuthenticationDeleteSession",
 		Path:       "/3/authentication/session",
 	}
 

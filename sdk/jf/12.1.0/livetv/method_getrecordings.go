@@ -29,6 +29,7 @@ func (c Client) GetRecordings(ctx context.Context, options ...jf.GetRecordingsOp
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetRecordings",
 		OptionsObject: option,
 		Path:          "/LiveTv/Recordings",
 	}

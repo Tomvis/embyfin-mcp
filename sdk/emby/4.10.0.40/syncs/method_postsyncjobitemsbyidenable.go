@@ -20,6 +20,7 @@ func (c Client) PostSyncJobItemsByIdEnable(ctx context.Context, id string) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSyncJobItemsByIdEnable",
 		Path:       fmt.Sprintf("/Sync/JobItems/%s/Enable", url.PathEscape(id)),
 	}
 

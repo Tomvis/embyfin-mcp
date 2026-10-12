@@ -30,6 +30,7 @@ func (c Client) GetShowsUpcoming(ctx context.Context, options ...emby.GetShowsUp
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetShowsUpcoming",
 		OptionsObject: option,
 		Path:          "/Shows/Upcoming",
 	}

@@ -21,6 +21,7 @@ func (c Client) PutLiveTvChannelMappingOptions(ctx context.Context, providerId s
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPut,
+		Operation:     "PutLiveTvChannelMappingOptions",
 		OptionsObject: option,
 		Path:          "/LiveTv/ChannelMappingOptions",
 	}

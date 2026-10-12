@@ -20,6 +20,7 @@ func (c Client) SyncPlayCreateGroup(ctx context.Context, input jf.NewGroupReques
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayCreateGroup",
 		Path:       "/SyncPlay/New",
 	}
 

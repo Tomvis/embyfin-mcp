@@ -29,6 +29,7 @@ func (c Client) GetRecommendedPrograms(ctx context.Context, options ...jf.GetRec
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetRecommendedPrograms",
 		OptionsObject: option,
 		Path:          "/LiveTv/Programs/Recommended",
 	}

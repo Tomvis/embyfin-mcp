@@ -19,6 +19,7 @@ func (c Client) DisplayContent(ctx context.Context, sessionId string, options jf
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "DisplayContent",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/Sessions/%s/Viewing", url.PathEscape(sessionId)),
 	}

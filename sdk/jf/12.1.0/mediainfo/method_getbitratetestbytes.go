@@ -28,6 +28,7 @@ func (c Client) GetBitrateTestBytes(ctx context.Context, size ...int) (result jf
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetBitrateTestBytes",
 		OptionsObject:  option,
 		Path:           "/Playback/BitrateTest",
 		StreamResponse: true,

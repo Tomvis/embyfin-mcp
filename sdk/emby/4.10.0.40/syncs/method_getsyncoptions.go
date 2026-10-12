@@ -19,6 +19,7 @@ func (c Client) GetSyncOptions(ctx context.Context, options emby.GetSyncOptionsO
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSyncOptions",
 		OptionsObject: options,
 		Path:          "/Sync/Options",
 	}

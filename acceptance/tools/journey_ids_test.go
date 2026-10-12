@@ -12,7 +12,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 	"github.com/katbyte/go-kt/test/env"
@@ -82,12 +82,12 @@ func TestIdentifyingAnUnmatchedShow(t *testing.T) {
 	// with no id, the episode audit cannot ask anyone for its run
 	missing := func() (unknown bool, detail string) {
 		out := suite.Call(t, "audit_missing_episodes", map[string]any{"library": "Messy Shows", "provider": true})
-		for _, u := range acc.Rows(t, out["unknown"], "unknown") {
-			unknown = unknown || acc.Str(u["id"]) == tng
+		for _, u := range acctest.Rows(t, out["unknown"], "unknown") {
+			unknown = unknown || acctest.Str(u["id"]) == tng
 		}
-		for _, f := range acc.Rows(t, out["findings"], "findings") {
-			if acc.Str(f["id"]) == tng {
-				detail = acc.Str(f["detail"])
+		for _, f := range acctest.Rows(t, out["findings"], "findings") {
+			if acctest.Str(f["id"]) == tng {
+				detail = acctest.Str(f["detail"])
 			}
 		}
 		return unknown, detail
@@ -99,10 +99,10 @@ func TestIdentifyingAnUnmatchedShow(t *testing.T) {
 	// the title as the providers spell it, the same for the search and the
 	// apply so the candidates line up
 	const name = "Star Trek: The Next Generation"
-	cands := acc.Rows(t, suite.Call(t, "item_identify", map[string]any{"id": tng, "kind": "series", "name": name})["candidates"], "candidates")
+	cands := acctest.Rows(t, suite.Call(t, "item_identify", map[string]any{"id": tng, "kind": "series", "name": name})["candidates"], "candidates")
 	idx := -1
 	for i, c := range cands {
-		if ids := mediaacc.ObjectOf(c["metadata_provider_ids"]); idx < 0 && acc.Str(ids["tmdb"]) == "655" {
+		if ids := mediaacc.ObjectOf(c["metadata_provider_ids"]); idx < 0 && acctest.Str(ids["tmdb"]) == "655" {
 			idx = i
 		}
 	}
@@ -113,10 +113,10 @@ func TestIdentifyingAnUnmatchedShow(t *testing.T) {
 	// what the show's folder holds besides its videos, to put back: the
 	// servers write nfos of their own for a library that saves them
 	numbers := func() []int {
-		rows := acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": tng})["episodes"], "episodes")
+		rows := acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": tng})["episodes"], "episodes")
 		out := make([]int, 0, len(rows))
 		for _, e := range rows {
-			out = append(out, acc.NumOr0(e["episode"]))
+			out = append(out, acctest.NumOr0(e["episode"]))
 		}
 		slices.Sort(out)
 		return out
@@ -144,10 +144,10 @@ func TestIdentifyingAnUnmatchedShow(t *testing.T) {
 		// the files re-read, the episodes numbered as they were, and the
 		// show unmatched again
 		suite.Call(t, "item_refresh", map[string]any{"id": tng})
-		if !acc.Eventually(func() bool { return slices.Equal(numbers(), []int{1, 3}) }) {
+		if !acctest.Eventually(func() bool { return slices.Equal(numbers(), []int{1, 3}) }) {
 			t.Errorf("after putting the nfos back the show's episodes are %v", numbers())
 		}
-		if !acc.Eventually(func() bool { return slices.Contains(unmatched(), show) }) {
+		if !acctest.Eventually(func() bool { return slices.Contains(unmatched(), show) }) {
 			t.Errorf("after clearing its ids the show is not unmatched again: %v", providerIDs(t, tng))
 		}
 	})
@@ -159,10 +159,10 @@ func TestIdentifyingAnUnmatchedShow(t *testing.T) {
 	}
 	before := identity()
 	applied := suite.Call(t, "item_identify_apply", withCandidateIDs(t, map[string]any{"id": tng, "kind": "series", "candidate": idx, "name": name, "replace_all_images": true}))
-	if ids := mediaacc.ObjectOf(applied["metadata_provider_ids"]); acc.Str(ids["tmdb"]) != "655" {
+	if ids := mediaacc.ObjectOf(applied["metadata_provider_ids"]); acctest.Str(ids["tmdb"]) != "655" {
 		t.Fatalf("item_identify_apply = %v, want tmdb 655", applied)
 	}
-	if !strings.Contains(acc.Str(applied["note"]), "metadata fetchers off") {
+	if !strings.Contains(acctest.Str(applied["note"]), "metadata fetchers off") {
 		t.Errorf("item_identify_apply says nothing of the fetchers being off: %v", applied)
 	}
 	// with the fetchers off the ids are set by a plain edit, which changes
@@ -174,7 +174,7 @@ func TestIdentifyingAnUnmatchedShow(t *testing.T) {
 		t.Errorf("the match changed the show's name, year or overview: %v, was %v", after, before)
 	}
 	keeps := func() bool { return slices.Equal(numbers(), []int{1, 3}) }
-	if !acc.Holds(keeps) {
+	if !acctest.Holds(keeps) {
 		t.Errorf("after the match the show's episodes are numbered %v, want [1 3]", numbers())
 	}
 	// and the nfos beside the files still number them, whoever wrote them
@@ -200,7 +200,7 @@ func TestIdentifyingAnUnmatchedShow(t *testing.T) {
 
 	// and it stays matched: a scan of its library and a refresh of the show
 	// leave the id where the match put it, and its run known
-	tmdb := func() string { return acc.Str(providerIDs(t, tng)["tmdb"]) }
+	tmdb := func() string { return acctest.Str(providerIDs(t, tng)["tmdb"]) }
 	if err := suite.WaitForScan(); err != nil {
 		t.Fatal(err)
 	}
@@ -212,7 +212,7 @@ func TestIdentifyingAnUnmatchedShow(t *testing.T) {
 		t.Errorf("after a scan the show's tmdb id is %q, want 655", got)
 	}
 	suite.Call(t, "item_refresh", map[string]any{"id": tng})
-	if !acc.Holds(func() bool { return tmdb() == "655" }) {
+	if !acctest.Holds(func() bool { return tmdb() == "655" }) {
 		t.Errorf("after a refresh the show's tmdb id is %q, want 655", tmdb())
 	}
 	checkRun("after a scan and a refresh")
@@ -245,7 +245,7 @@ func TestAMismatchedIDPutRight(t *testing.T) {
 	if err := os.Remove(nfo); err != nil {
 		t.Fatal(err)
 	}
-	ids := maps.Clone(acc.Object(t, before["ProviderIds"], "ProviderIds"))
+	ids := maps.Clone(acctest.Object(t, before["ProviderIds"], "ProviderIds"))
 	const alien = "tt0078748"
 	for k := range ids {
 		if strings.EqualFold(k, "imdb") {
@@ -255,20 +255,20 @@ func TestAMismatchedIDPutRight(t *testing.T) {
 	updateItem(t, blade, map[string]any{"ProviderIds": ids})
 
 	crossed := func() []map[string]any {
-		return acc.Rows(t, suite.Call(t, "audit_provider", map[string]any{"library": "Movies", "checks": "ids", "types": "Movie"})["findings"], "findings")
+		return acctest.Rows(t, suite.Call(t, "audit_provider", map[string]any{"library": "Movies", "checks": "ids", "types": "Movie"})["findings"], "findings")
 	}
 	found := crossed()
-	if len(found) != 1 || acc.Str(found[0]["id"]) != blade {
+	if len(found) != 1 || acctest.Str(found[0]["id"]) != blade {
 		t.Fatalf("audit_provider ids = %v, want Blade Runner alone", found)
 	}
-	if ps := acc.Strs(t, found[0]["problems"], "problems"); len(ps) != 1 || !strings.Contains(ps[0], "whose IMDb id is tt0083658, not the "+alien+" it holds") {
+	if ps := acctest.Strs(t, found[0]["problems"], "problems"); len(ps) != 1 || !strings.Contains(ps[0], "whose IMDb id is tt0083658, not the "+alien+" it holds") {
 		t.Errorf("problems = %v", ps)
 	}
 	holders := func() []string {
-		rows := acc.Rows(t, suite.Call(t, "item_find_by_metadata_id", map[string]any{"metadata_provider": "imdb", "id": alien})["items"], "items")
+		rows := acctest.Rows(t, suite.Call(t, "item_find_by_metadata_id", map[string]any{"metadata_provider": "imdb", "id": alien})["items"], "items")
 		out := make([]string, 0, len(rows))
 		for _, it := range rows {
-			out = append(out, acc.Str(it["name"]))
+			out = append(out, acctest.Str(it["name"]))
 		}
 		slices.Sort(out)
 		return out
@@ -278,8 +278,8 @@ func TestAMismatchedIDPutRight(t *testing.T) {
 	}
 
 	idx := -1
-	for i, c := range acc.Rows(t, suite.Call(t, "item_identify", map[string]any{"id": blade, "kind": "movie"})["candidates"], "candidates") {
-		if ids := mediaacc.ObjectOf(c["metadata_provider_ids"]); idx < 0 && acc.Str(ids["tmdb"]) == "78" {
+	for i, c := range acctest.Rows(t, suite.Call(t, "item_identify", map[string]any{"id": blade, "kind": "movie"})["candidates"], "candidates") {
+		if ids := mediaacc.ObjectOf(c["metadata_provider_ids"]); idx < 0 && acctest.Str(ids["tmdb"]) == "78" {
 			idx = i
 		}
 	}
@@ -291,10 +291,10 @@ func TestAMismatchedIDPutRight(t *testing.T) {
 	// later, and the tool waits for it, so its answer is the item as the
 	// refresh left it on both
 	applied := suite.Call(t, "item_identify_apply", withCandidateIDs(t, map[string]any{"id": blade, "kind": "movie", "candidate": idx}))
-	if got := mediaacc.ObjectOf(applied["metadata_provider_ids"]); acc.Str(got["tmdb"]) != "78" || acc.Str(got["imdb"]) != "tt0083658" {
+	if got := mediaacc.ObjectOf(applied["metadata_provider_ids"]); acctest.Str(got["tmdb"]) != "78" || acctest.Str(got["imdb"]) != "tt0083658" {
 		t.Errorf("item_identify_apply = %v, want Blade Runner's own TMDB and IMDb ids", applied)
 	}
-	if ids := providerIDs(t, blade); acc.Str(ids["imdb"]) != "tt0083658" {
+	if ids := providerIDs(t, blade); acctest.Str(ids["imdb"]) != "tt0083658" {
 		t.Errorf("after the apply Blade Runner holds %v", ids)
 	}
 
@@ -328,7 +328,7 @@ func TestAFilmWithASeriesIDPutRight(t *testing.T) {
 	}
 	ids := func() map[string]any { return providerIDs(t, memento) }
 	holding := func(tmdb, imdb string) func() bool {
-		return func() bool { got := ids(); return acc.Str(got["tmdb"]) == tmdb && acc.Str(got["imdb"]) == imdb }
+		return func() bool { got := ids(); return acctest.Str(got["tmdb"]) == tmdb && acctest.Str(got["imdb"]) == imdb }
 	}
 	if !holding("", series)() {
 		t.Fatalf("Memento holds %v, want the series' IMDb id alone", ids())
@@ -337,15 +337,15 @@ func TestAFilmWithASeriesIDPutRight(t *testing.T) {
 	t.Cleanup(func() {
 		env.WriteFile(t, nfo, sidecar)
 		updateItem(t, memento, map[string]any{"ProviderIds": original})
-		if !acc.Eventually(holding("", series)) {
+		if !acctest.Eventually(holding("", series)) {
 			t.Errorf("Memento was not put back to the series' id alone: %v", ids())
 		}
 	})
 
 	problem := func() string {
-		for _, f := range acc.Rows(t, suite.Call(t, "audit_provider", map[string]any{"library": "Messy Movies", "checks": "ids", "types": "Movie"})["findings"], "findings") {
-			if acc.Str(f["id"]) == memento {
-				return strings.Join(acc.Strs(t, f["problems"], "problems"), "; ")
+		for _, f := range acctest.Rows(t, suite.Call(t, "audit_provider", map[string]any{"library": "Messy Movies", "checks": "ids", "types": "Movie"})["findings"], "findings") {
+			if acctest.Str(f["id"]) == memento {
+				return strings.Join(acctest.Strs(t, f["problems"], "problems"), "; ")
 			}
 		}
 		return ""
@@ -355,8 +355,8 @@ func TestAFilmWithASeriesIDPutRight(t *testing.T) {
 	}
 
 	idx := -1
-	for i, c := range acc.Rows(t, suite.Call(t, "item_identify", map[string]any{"id": memento, "kind": "movie"})["candidates"], "candidates") {
-		if cids := mediaacc.ObjectOf(c["metadata_provider_ids"]); idx < 0 && acc.Str(cids["tmdb"]) == "77" {
+	for i, c := range acctest.Rows(t, suite.Call(t, "item_identify", map[string]any{"id": memento, "kind": "movie"})["candidates"], "candidates") {
+		if cids := mediaacc.ObjectOf(c["metadata_provider_ids"]); idx < 0 && acctest.Str(cids["tmdb"]) == "77" {
 			idx = i
 		}
 	}
@@ -367,13 +367,13 @@ func TestAFilmWithASeriesIDPutRight(t *testing.T) {
 	// the server's provider, asked by that id, gives Memento's IMDb id, and
 	// the edit sets both in place of the ids the film held
 	applied := suite.Call(t, "item_identify_apply", withCandidateIDs(t, map[string]any{"id": memento, "kind": "movie", "candidate": idx}))
-	if got := mediaacc.ObjectOf(applied["metadata_provider_ids"]); acc.Str(got["tmdb"]) != "77" || acc.Str(got["imdb"]) != film {
+	if got := mediaacc.ObjectOf(applied["metadata_provider_ids"]); acctest.Str(got["tmdb"]) != "77" || acctest.Str(got["imdb"]) != film {
 		t.Errorf("item_identify_apply = %v, want Memento's TMDB and IMDb ids", applied)
 	}
 	// and the note says the nfo beside the file may bring the old id back:
 	// Emby's messy library saves no nfo, and a refresh reads it again;
 	// Jellyfin's wrote the new ids into it and kept the old one beside them
-	note := acc.Str(applied["note"])
+	note := acctest.Str(applied["note"])
 	nfoSaid := "does not save nfo files, so a refresh reads the nfo beside the file (movie.nfo)"
 	if isJellyfin() {
 		nfoSaid = "wrote the new ids into the nfo beside the file (movie.nfo), but keeps any id there it had no new value for"
@@ -392,7 +392,7 @@ func TestAFilmWithASeriesIDPutRight(t *testing.T) {
 		raw, err := os.ReadFile(nfo) //nolint:gosec // a fixture under the test data dir
 		return err == nil && strings.Contains(string(raw), ">"+film+"<")
 	}
-	if isJellyfin() && !acc.Eventually(nfoNamesFilm) || !isJellyfin() && nfoNamesFilm() {
+	if isJellyfin() && !acctest.Eventually(nfoNamesFilm) || !isJellyfin() && nfoNamesFilm() {
 		t.Errorf("after the apply the nfo beside Memento names the film's own IMDb id: %v, want it to only where the library saves nfos", nfoNamesFilm())
 	}
 
@@ -400,10 +400,10 @@ func TestAFilmWithASeriesIDPutRight(t *testing.T) {
 	// Jellyfin's the film
 	suite.Call(t, "item_refresh", map[string]any{"id": memento})
 	if isJellyfin() {
-		if !acc.Holds(holding("77", film)) {
+		if !acctest.Holds(holding("77", film)) {
 			t.Errorf("after a refresh Memento holds %v, want the ids the apply wrote into the nfo", ids())
 		}
-	} else if !acc.Eventually(func() bool { return acc.Str(ids()["imdb"]) == series }) {
+	} else if !acctest.Eventually(func() bool { return acctest.Str(ids()["imdb"]) == series }) {
 		t.Errorf("after a refresh Memento holds %v, want the nfo's %s back as the note warned", ids(), series)
 	}
 
@@ -414,7 +414,7 @@ func TestAFilmWithASeriesIDPutRight(t *testing.T) {
 	env.WriteFile(t, nfo, []byte(right))
 	updateItem(t, memento, map[string]any{"ProviderIds": map[string]any{"Tmdb": "77", "Imdb": film}})
 	suite.Call(t, "item_refresh", map[string]any{"id": memento})
-	if !acc.Holds(holding("77", film)) {
+	if !acctest.Holds(holding("77", film)) {
 		t.Errorf("with the nfo put right a refresh leaves Memento holding %v", ids())
 	}
 	if p := problem(); p != "" {

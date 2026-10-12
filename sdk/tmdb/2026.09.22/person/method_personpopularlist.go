@@ -29,6 +29,7 @@ func (c Client) PersonPopularList(ctx context.Context, options ...tmdb.PersonPop
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "PersonPopularList",
 		OptionsObject: option,
 		Path:          "/3/person/popular",
 	}

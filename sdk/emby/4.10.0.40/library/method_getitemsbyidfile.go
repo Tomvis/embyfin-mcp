@@ -20,6 +20,7 @@ func (c Client) GetItemsByIdFile(ctx context.Context, id string) (result emby.Ge
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetItemsByIdFile",
 		Path:           fmt.Sprintf("/Items/%s/File", url.PathEscape(id)),
 		StreamResponse: true,
 	}

@@ -29,6 +29,7 @@ func (c Client) PostUsersByIdImagesByTypeDelete(ctx context.Context, id string, 
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostUsersByIdImagesByTypeDelete",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Images/%s/Delete", url.PathEscape(id), url.PathEscape(string(typeParam))),
 	}

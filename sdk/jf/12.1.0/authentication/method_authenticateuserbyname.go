@@ -19,6 +19,7 @@ func (c Client) AuthenticateUserByName(ctx context.Context, input jf.Authenticat
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "AuthenticateUserByName",
 		Path:       "/Users/AuthenticateByName",
 	}
 

@@ -27,6 +27,7 @@ func (c Client) DiscoverTuners(ctx context.Context, newDevicesOnly ...bool) (res
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "DiscoverTuners",
 		OptionsObject: option,
 		Path:          "/LiveTv/Tuners/Discover",
 	}

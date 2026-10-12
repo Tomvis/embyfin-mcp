@@ -18,6 +18,7 @@ func (c Client) PostPartiesLeave(ctx context.Context) (result emby.PostPartiesLe
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostPartiesLeave",
 		Path:       "/Parties/Leave",
 	}
 

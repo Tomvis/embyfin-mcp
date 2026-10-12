@@ -24,6 +24,7 @@ func (c Client) PostDlnaByUuIdConnectionmanagerControl(ctx context.Context, uuId
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostDlnaByUuIdConnectionmanagerControl",
 		Path:       fmt.Sprintf("/Dlna/%s/connectionmanager/control", url.PathEscape(uuId)),
 	}
 

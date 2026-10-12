@@ -28,6 +28,7 @@ func (c Client) GetLocalTrailers(ctx context.Context, itemId string, userId ...s
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLocalTrailers",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/LocalTrailers", url.PathEscape(itemId)),
 	}

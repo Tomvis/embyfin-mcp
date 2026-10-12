@@ -18,6 +18,7 @@ func (c Client) StartRestoreBackup(ctx context.Context, input jf.BackupRestoreRe
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "StartRestoreBackup",
 		Path:       "/Backup/Restore",
 	}
 

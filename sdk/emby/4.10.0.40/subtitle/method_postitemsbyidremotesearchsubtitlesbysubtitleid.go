@@ -24,6 +24,7 @@ func (c Client) PostItemsByIdRemoteSearchSubtitlesBySubtitleId(ctx context.Conte
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostItemsByIdRemoteSearchSubtitlesBySubtitleId",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(id), url.PathEscape(subtitleId)),
 	}

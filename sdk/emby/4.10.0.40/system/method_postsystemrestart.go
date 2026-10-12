@@ -18,6 +18,7 @@ func (c Client) PostSystemRestart(ctx context.Context) (result emby.PostSystemRe
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSystemRestart",
 		Path:       "/System/Restart",
 	}
 

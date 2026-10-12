@@ -29,6 +29,7 @@ func (c Client) PostPlaylists(ctx context.Context, options ...emby.PostPlaylists
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostPlaylists",
 		OptionsObject: option,
 		Path:          "/Playlists",
 	}

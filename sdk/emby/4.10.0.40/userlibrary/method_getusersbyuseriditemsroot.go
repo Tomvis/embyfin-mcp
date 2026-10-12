@@ -21,6 +21,7 @@ func (c Client) GetUsersByUserIdItemsRoot(ctx context.Context, userId string) (r
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetUsersByUserIdItemsRoot",
 		Path:       fmt.Sprintf("/Users/%s/Items/Root", url.PathEscape(userId)),
 	}
 

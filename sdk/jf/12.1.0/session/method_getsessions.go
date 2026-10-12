@@ -27,6 +27,7 @@ func (c Client) GetSessions(ctx context.Context, options ...jf.GetSessionsOption
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSessions",
 		OptionsObject: option,
 		Path:          "/Sessions",
 	}

@@ -17,6 +17,7 @@ func (c Client) GetPasswordResetProviders(ctx context.Context) (result jf.GetPas
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPasswordResetProviders",
 		Path:       "/Auth/PasswordResetProviders",
 	}
 

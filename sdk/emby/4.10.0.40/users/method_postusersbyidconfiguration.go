@@ -21,6 +21,7 @@ func (c Client) PostUsersByIdConfiguration(ctx context.Context, id string, input
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByIdConfiguration",
 		Path:       fmt.Sprintf("/Users/%s/Configuration", url.PathEscape(id)),
 	}
 

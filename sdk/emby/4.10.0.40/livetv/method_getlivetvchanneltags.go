@@ -30,6 +30,7 @@ func (c Client) GetLiveTvChannelTags(ctx context.Context, options ...emby.GetLiv
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLiveTvChannelTags",
 		OptionsObject: option,
 		Path:          "/LiveTv/ChannelTags",
 	}

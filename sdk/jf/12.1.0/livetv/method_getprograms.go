@@ -19,6 +19,7 @@ func (c Client) GetPrograms(ctx context.Context, input jf.GetProgramsDto) (resul
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetPrograms",
 		Path:       "/LiveTv/Programs",
 	}
 

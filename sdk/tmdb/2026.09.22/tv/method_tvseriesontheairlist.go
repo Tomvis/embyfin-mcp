@@ -29,6 +29,7 @@ func (c Client) TvSeriesOnTheAirList(ctx context.Context, options ...tmdb.TvSeri
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TvSeriesOnTheAirList",
 		OptionsObject: option,
 		Path:          "/3/tv/on_the_air",
 	}

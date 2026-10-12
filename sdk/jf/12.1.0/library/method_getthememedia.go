@@ -29,6 +29,7 @@ func (c Client) GetThemeMedia(ctx context.Context, itemId string, options ...jf.
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetThemeMedia",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/ThemeMedia", url.PathEscape(itemId)),
 	}

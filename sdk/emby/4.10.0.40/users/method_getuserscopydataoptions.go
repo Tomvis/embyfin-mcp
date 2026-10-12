@@ -19,6 +19,7 @@ func (c Client) GetUsersCopyDataOptions(ctx context.Context) (result emby.GetUse
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetUsersCopyDataOptions",
 		Path:       "/Users/CopyDataOptions",
 	}
 

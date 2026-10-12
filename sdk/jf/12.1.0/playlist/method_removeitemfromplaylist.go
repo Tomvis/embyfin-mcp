@@ -24,6 +24,7 @@ func (c Client) RemoveItemFromPlaylist(ctx context.Context, playlistId string, e
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "RemoveItemFromPlaylist",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(playlistId)),
 	}

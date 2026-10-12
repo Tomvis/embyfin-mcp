@@ -19,6 +19,7 @@ func (c Client) RevokeKey(ctx context.Context, key string) (result jf.RevokeKeyR
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "RevokeKey",
 		Path:       fmt.Sprintf("/Auth/Keys/%s", url.PathEscape(key)),
 	}
 

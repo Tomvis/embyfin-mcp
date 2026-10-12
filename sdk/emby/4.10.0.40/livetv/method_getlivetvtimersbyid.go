@@ -21,6 +21,7 @@ func (c Client) GetLiveTvTimersById(ctx context.Context, id string) (result emby
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvTimersById",
 		Path:       fmt.Sprintf("/LiveTv/Timers/%s", url.PathEscape(id)),
 	}
 

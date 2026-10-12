@@ -19,6 +19,7 @@ func (c Client) ForgotPassword(ctx context.Context, input jf.ForgotPasswordDto) 
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "ForgotPassword",
 		Path:       "/Users/ForgotPassword",
 	}
 

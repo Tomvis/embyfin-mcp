@@ -29,6 +29,7 @@ func (c Client) GetArtistsByNameImagesByType(ctx context.Context, name string, t
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetArtistsByNameImagesByType",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Artists/%s/Images/%s", url.PathEscape(name), url.PathEscape(string(typeParam))),
 		StreamResponse: true,

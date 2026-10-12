@@ -17,6 +17,7 @@ func (c Client) GetPhysicalPaths(ctx context.Context) (result jf.GetPhysicalPath
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPhysicalPaths",
 		Path:       "/Library/PhysicalPaths",
 	}
 

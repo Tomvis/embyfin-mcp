@@ -29,6 +29,7 @@ func (c Client) GetAudioByIdUniversal(ctx context.Context, id string, options ..
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetAudioByIdUniversal",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Audio/%s/universal", url.PathEscape(id)),
 		StreamResponse: true,

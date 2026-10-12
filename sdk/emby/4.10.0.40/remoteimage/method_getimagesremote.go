@@ -21,6 +21,7 @@ func (c Client) GetImagesRemote(ctx context.Context, imageUrl string) (result em
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetImagesRemote",
 		OptionsObject:  option,
 		Path:           "/Images/Remote",
 		StreamResponse: true,

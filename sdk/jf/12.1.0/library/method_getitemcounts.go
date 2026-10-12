@@ -28,6 +28,7 @@ func (c Client) GetItemCounts(ctx context.Context, options ...jf.GetItemCountsOp
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemCounts",
 		OptionsObject: option,
 		Path:          "/Items/Counts",
 	}

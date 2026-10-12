@@ -18,6 +18,7 @@ func (c Client) UpdateLibraryOptions(ctx context.Context, input jf.UpdateLibrary
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateLibraryOptions",
 		Path:       "/Library/VirtualFolders/LibraryOptions",
 	}
 

@@ -29,6 +29,7 @@ func (c Client) GetDlnaIconsByFilename(ctx context.Context, filename string, uuI
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetDlnaIconsByFilename",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Dlna/icons/%s", url.PathEscape(filename)),
 		StreamResponse: true,

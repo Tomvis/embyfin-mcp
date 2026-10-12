@@ -18,6 +18,7 @@ func (c Client) GetConnectPending(ctx context.Context) (result emby.GetConnectPe
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetConnectPending",
 		Path:       "/Connect/Pending",
 	}
 

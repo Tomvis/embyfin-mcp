@@ -21,6 +21,7 @@ func (c Client) GetPlaybackBitrateTest(ctx context.Context, size int64) (result 
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetPlaybackBitrateTest",
 		OptionsObject:  option,
 		Path:           "/Playback/BitrateTest",
 		StreamResponse: true,

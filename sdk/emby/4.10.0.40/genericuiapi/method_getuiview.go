@@ -19,6 +19,7 @@ func (c Client) GetUIView(ctx context.Context, options emby.GetUIViewOptions) (r
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUIView",
 		OptionsObject: options,
 		Path:          "/UI/View",
 	}

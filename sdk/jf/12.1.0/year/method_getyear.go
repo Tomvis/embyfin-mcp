@@ -28,6 +28,7 @@ func (c Client) GetYear(ctx context.Context, year int, userId ...string) (result
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetYear",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Years/%d", year),
 	}

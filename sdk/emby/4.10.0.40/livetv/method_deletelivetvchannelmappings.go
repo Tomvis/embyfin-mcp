@@ -21,6 +21,7 @@ func (c Client) DeleteLiveTvChannelMappings(ctx context.Context, providerId stri
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "DeleteLiveTvChannelMappings",
 		OptionsObject: option,
 		Path:          "/LiveTv/ChannelMappings",
 	}

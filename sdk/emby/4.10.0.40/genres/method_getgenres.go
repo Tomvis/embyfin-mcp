@@ -30,6 +30,7 @@ func (c Client) GetGenres(ctx context.Context, options ...emby.GetGenresOptions)
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetGenres",
 		OptionsObject: option,
 		Path:          "/Genres",
 	}

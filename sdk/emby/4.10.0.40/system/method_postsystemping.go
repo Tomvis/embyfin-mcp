@@ -18,6 +18,7 @@ func (c Client) PostSystemPing(ctx context.Context) (result emby.PostSystemPingR
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSystemPing",
 		Path:       "/System/Ping",
 	}
 

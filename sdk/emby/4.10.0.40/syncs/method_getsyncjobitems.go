@@ -22,6 +22,7 @@ func (c Client) GetSyncJobItems(ctx context.Context, targetId string) (result em
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSyncJobItems",
 		OptionsObject: option,
 		Path:          "/Sync/JobItems",
 	}

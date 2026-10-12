@@ -19,6 +19,7 @@ func (c Client) PostSessionsPlayingProgress(ctx context.Context, input emby.Play
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSessionsPlayingProgress",
 		Path:       "/Sessions/Playing/Progress",
 	}
 

@@ -30,6 +30,7 @@ func (c Client) GetShowsMissing(ctx context.Context, options ...emby.GetShowsMis
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetShowsMissing",
 		OptionsObject: option,
 		Path:          "/Shows/Missing",
 	}

@@ -18,6 +18,7 @@ func (c Client) GetMovieRemoteSearchResults(ctx context.Context, input jf.MovieI
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetMovieRemoteSearchResults",
 		Path:       "/Items/RemoteSearch/Movie",
 	}
 

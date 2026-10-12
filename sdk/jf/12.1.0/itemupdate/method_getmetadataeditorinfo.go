@@ -20,6 +20,7 @@ func (c Client) GetMetadataEditorInfo(ctx context.Context, itemId string) (resul
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetMetadataEditorInfo",
 		Path:       fmt.Sprintf("/Items/%s/MetadataEditor", url.PathEscape(itemId)),
 	}
 

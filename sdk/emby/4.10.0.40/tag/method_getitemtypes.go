@@ -30,6 +30,7 @@ func (c Client) GetItemTypes(ctx context.Context, options ...emby.GetItemTypesOp
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemTypes",
 		OptionsObject: option,
 		Path:          "/ItemTypes",
 	}

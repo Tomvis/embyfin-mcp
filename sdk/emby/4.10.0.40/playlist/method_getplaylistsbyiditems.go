@@ -31,6 +31,7 @@ func (c Client) GetPlaylistsByIdItems(ctx context.Context, id string, options ..
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPlaylistsByIdItems",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(id)),
 	}

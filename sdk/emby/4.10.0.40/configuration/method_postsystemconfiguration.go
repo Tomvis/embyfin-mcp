@@ -19,6 +19,7 @@ func (c Client) PostSystemConfiguration(ctx context.Context, input emby.ServerCo
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSystemConfiguration",
 		Path:       "/System/Configuration",
 	}
 

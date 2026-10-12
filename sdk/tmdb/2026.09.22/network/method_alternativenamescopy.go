@@ -19,6 +19,7 @@ func (c Client) AlternativeNamesCopy(ctx context.Context, networkId int) (result
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "AlternativeNamesCopy",
 		Path:       fmt.Sprintf("/3/network/%d/images", networkId),
 	}
 

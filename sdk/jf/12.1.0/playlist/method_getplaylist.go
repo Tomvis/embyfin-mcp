@@ -20,6 +20,7 @@ func (c Client) GetPlaylist(ctx context.Context, playlistId string) (result jf.G
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPlaylist",
 		Path:       fmt.Sprintf("/Playlists/%s", url.PathEscape(playlistId)),
 	}
 

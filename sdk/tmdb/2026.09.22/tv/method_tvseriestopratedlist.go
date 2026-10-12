@@ -29,6 +29,7 @@ func (c Client) TvSeriesTopRatedList(ctx context.Context, options ...tmdb.TvSeri
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TvSeriesTopRatedList",
 		OptionsObject: option,
 		Path:          "/3/tv/top_rated",
 	}

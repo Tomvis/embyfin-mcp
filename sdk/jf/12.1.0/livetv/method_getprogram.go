@@ -29,6 +29,7 @@ func (c Client) GetProgram(ctx context.Context, programId string, userId ...stri
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetProgram",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/LiveTv/Programs/%s", url.PathEscape(programId)),
 	}

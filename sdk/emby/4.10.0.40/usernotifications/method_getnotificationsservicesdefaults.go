@@ -29,6 +29,7 @@ func (c Client) GetNotificationsServicesDefaults(ctx context.Context, options ..
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetNotificationsServicesDefaults",
 		OptionsObject: option,
 		Path:          "/Notifications/Services/Defaults",
 	}

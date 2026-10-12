@@ -19,6 +19,7 @@ func (c Client) MovieExternalIds(ctx context.Context, movieId int) (result tmdb.
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "MovieExternalIds",
 		Path:       fmt.Sprintf("/3/movie/%d/external_ids", movieId),
 	}
 

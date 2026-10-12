@@ -19,6 +19,7 @@ func (c Client) PostNotificationsAdmin(ctx context.Context, input emby.ApiAddAdm
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostNotificationsAdmin",
 		OptionsObject: options,
 		Path:          "/Notifications/Admin",
 	}

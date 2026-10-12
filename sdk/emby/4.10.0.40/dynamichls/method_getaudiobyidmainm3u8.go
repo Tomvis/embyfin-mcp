@@ -20,6 +20,7 @@ func (c Client) GetAudioByIdMainM3u8(ctx context.Context, id string, options emb
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetAudioByIdMainM3u8",
 		OptionsObject:  options,
 		Path:           fmt.Sprintf("/Audio/%s/main.m3u8", url.PathEscape(id)),
 		StreamResponse: true,

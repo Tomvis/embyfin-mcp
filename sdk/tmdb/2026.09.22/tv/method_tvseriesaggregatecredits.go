@@ -28,6 +28,7 @@ func (c Client) TvSeriesAggregateCredits(ctx context.Context, seriesId int, lang
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TvSeriesAggregateCredits",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/tv/%d/aggregate_credits", seriesId),
 	}

@@ -18,6 +18,7 @@ func (c Client) GetPersonRemoteSearchResults(ctx context.Context, input jf.Perso
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetPersonRemoteSearchResults",
 		Path:       "/Items/RemoteSearch/Person",
 	}
 

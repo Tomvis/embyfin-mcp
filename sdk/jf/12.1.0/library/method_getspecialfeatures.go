@@ -28,6 +28,7 @@ func (c Client) GetSpecialFeatures(ctx context.Context, itemId string, userId ..
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSpecialFeatures",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/SpecialFeatures", url.PathEscape(itemId)),
 	}

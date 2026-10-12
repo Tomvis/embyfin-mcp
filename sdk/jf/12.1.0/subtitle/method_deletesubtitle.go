@@ -19,6 +19,7 @@ func (c Client) DeleteSubtitle(ctx context.Context, itemId string, index int) (r
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteSubtitle",
 		Path:       fmt.Sprintf("/Videos/%s/Subtitles/%d", url.PathEscape(itemId), index),
 	}
 

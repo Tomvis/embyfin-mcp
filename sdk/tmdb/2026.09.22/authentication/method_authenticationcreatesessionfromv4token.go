@@ -19,6 +19,7 @@ func (c Client) AuthenticationCreateSessionFromV4Token(ctx context.Context, inpu
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "AuthenticationCreateSessionFromV4Token",
 		Path:       "/3/authentication/session/convert/4",
 	}
 

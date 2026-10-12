@@ -19,6 +19,7 @@ func (c Client) DeleteItem(ctx context.Context, itemId string) (result jf.Delete
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteItem",
 		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(itemId)),
 	}
 

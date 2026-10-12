@@ -20,6 +20,7 @@ func (c Client) PostUICommand(ctx context.Context, input emby.RunUICommand) (res
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUICommand",
 		Path:       "/UI/Command",
 	}
 

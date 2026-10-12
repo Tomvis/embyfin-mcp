@@ -21,6 +21,7 @@ func (c Client) GetEnvironmentNetworkShares(ctx context.Context, path string) (r
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetEnvironmentNetworkShares",
 		OptionsObject: option,
 		Path:          "/Environment/NetworkShares",
 	}

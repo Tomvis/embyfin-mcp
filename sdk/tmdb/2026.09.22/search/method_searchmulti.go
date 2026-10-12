@@ -20,6 +20,7 @@ func (c Client) SearchMulti(ctx context.Context, options tmdb.SearchMultiOptions
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "SearchMulti",
 		OptionsObject: options,
 		Path:          "/3/search/multi",
 	}

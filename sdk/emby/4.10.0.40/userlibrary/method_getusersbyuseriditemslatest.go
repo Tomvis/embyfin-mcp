@@ -29,6 +29,7 @@ func (c Client) GetUsersByUserIdItemsLatest(ctx context.Context, userId string, 
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersByUserIdItemsLatest",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Items/Latest", url.PathEscape(userId)),
 	}

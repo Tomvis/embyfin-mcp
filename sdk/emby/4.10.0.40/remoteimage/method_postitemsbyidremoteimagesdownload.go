@@ -21,6 +21,7 @@ func (c Client) PostItemsByIdRemoteImagesDownload(ctx context.Context, id string
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostItemsByIdRemoteImagesDownload",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/Items/%s/RemoteImages/Download", url.PathEscape(id)),
 	}

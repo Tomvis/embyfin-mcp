@@ -22,6 +22,7 @@ func (c Client) AddToCollection(ctx context.Context, collectionId string, ids []
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "AddToCollection",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(collectionId)),
 	}

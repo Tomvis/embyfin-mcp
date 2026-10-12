@@ -19,6 +19,7 @@ func (c Client) MovieTranslations(ctx context.Context, movieId int) (result tmdb
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "MovieTranslations",
 		Path:       fmt.Sprintf("/3/movie/%d/translations", movieId),
 	}
 

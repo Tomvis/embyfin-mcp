@@ -17,6 +17,7 @@ func (c Client) RestartApplication(ctx context.Context) (result jf.RestartApplic
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "RestartApplication",
 		Path:       "/System/Restart",
 	}
 

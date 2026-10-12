@@ -19,6 +19,7 @@ func (c Client) GetSyncJobs(ctx context.Context) (result emby.GetSyncJobsRespons
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSyncJobs",
 		Path:       "/Sync/Jobs",
 	}
 

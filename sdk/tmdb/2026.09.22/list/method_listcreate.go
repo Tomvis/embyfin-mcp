@@ -22,6 +22,7 @@ func (c Client) ListCreate(ctx context.Context, input tmdb.ListCreateRequest, se
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "ListCreate",
 		OptionsObject: option,
 		Path:          "/3/list",
 	}

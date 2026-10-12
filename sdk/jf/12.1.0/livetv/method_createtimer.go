@@ -18,6 +18,7 @@ func (c Client) CreateTimer(ctx context.Context, input jf.TimerInfoDto) (result 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "CreateTimer",
 		Path:       "/LiveTv/Timers",
 	}
 

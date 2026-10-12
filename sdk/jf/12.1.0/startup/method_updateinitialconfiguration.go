@@ -20,6 +20,7 @@ func (c Client) UpdateInitialConfiguration(ctx context.Context, input jf.Startup
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateInitialConfiguration",
 		Path:       "/Startup/Configuration",
 	}
 

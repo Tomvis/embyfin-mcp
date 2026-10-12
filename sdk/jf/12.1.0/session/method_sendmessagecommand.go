@@ -20,6 +20,7 @@ func (c Client) SendMessageCommand(ctx context.Context, sessionId string, input 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SendMessageCommand",
 		Path:       fmt.Sprintf("/Sessions/%s/Message", url.PathEscape(sessionId)),
 	}
 

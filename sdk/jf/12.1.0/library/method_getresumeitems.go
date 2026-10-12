@@ -29,6 +29,7 @@ func (c Client) GetResumeItems(ctx context.Context, options ...jf.GetResumeItems
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetResumeItems",
 		OptionsObject: option,
 		Path:          "/UserItems/Resume",
 	}

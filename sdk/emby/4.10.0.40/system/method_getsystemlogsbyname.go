@@ -29,6 +29,7 @@ func (c Client) GetSystemLogsByName(ctx context.Context, name string, sanitize .
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetSystemLogsByName",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/System/Logs/%s", url.PathEscape(name)),
 		StreamResponse: true,

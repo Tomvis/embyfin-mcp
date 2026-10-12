@@ -18,6 +18,7 @@ func (c Client) SyncPlayReady(ctx context.Context, input jf.ReadyRequestDto) (re
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayReady",
 		Path:       "/SyncPlay/Ready",
 	}
 

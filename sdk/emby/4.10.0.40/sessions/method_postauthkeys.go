@@ -21,6 +21,7 @@ func (c Client) PostAuthKeys(ctx context.Context, app string) (result emby.PostA
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostAuthKeys",
 		OptionsObject: option,
 		Path:          "/Auth/Keys",
 	}

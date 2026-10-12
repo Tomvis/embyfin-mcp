@@ -29,6 +29,7 @@ func (c Client) GetSimilarArtists(ctx context.Context, itemId string, options ..
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSimilarArtists",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Artists/%s/Similar", url.PathEscape(itemId)),
 	}

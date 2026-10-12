@@ -20,6 +20,7 @@ func (c Client) UpdateSeriesTimer(ctx context.Context, timerId string, input jf.
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateSeriesTimer",
 		Path:       fmt.Sprintf("/LiveTv/SeriesTimers/%s", url.PathEscape(timerId)),
 	}
 

@@ -18,6 +18,7 @@ func (c Client) GetBookRemoteSearchResults(ctx context.Context, input jf.BookInf
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetBookRemoteSearchResults",
 		Path:       "/Items/RemoteSearch/Book",
 	}
 

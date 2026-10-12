@@ -20,6 +20,7 @@ func (c Client) SearchPerson(ctx context.Context, options tmdb.SearchPersonOptio
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "SearchPerson",
 		OptionsObject: options,
 		Path:          "/3/search/person",
 	}

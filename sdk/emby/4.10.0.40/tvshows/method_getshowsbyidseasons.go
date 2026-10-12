@@ -31,6 +31,7 @@ func (c Client) GetShowsByIdSeasons(ctx context.Context, id string, options ...e
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetShowsByIdSeasons",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Shows/%s/Seasons", url.PathEscape(id)),
 	}

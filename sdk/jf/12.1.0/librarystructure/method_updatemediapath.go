@@ -18,6 +18,7 @@ func (c Client) UpdateMediaPath(ctx context.Context, input jf.UpdateMediaPathReq
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateMediaPath",
 		Path:       "/Library/VirtualFolders/Paths/Update",
 	}
 

@@ -29,6 +29,7 @@ func (c Client) TrendingAll(ctx context.Context, timeWindow string, language ...
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TrendingAll",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/trending/all/%s", url.PathEscape(timeWindow)),
 	}

@@ -29,6 +29,7 @@ func (c Client) GetSubtitle(ctx context.Context, routeItemId string, routeMediaS
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetSubtitle",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/Stream.%s", url.PathEscape(routeItemId), url.PathEscape(routeMediaSourceId), routeIndex, url.PathEscape(routeFormat)),
 		StreamResponse: true,

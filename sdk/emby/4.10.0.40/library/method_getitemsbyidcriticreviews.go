@@ -31,6 +31,7 @@ func (c Client) GetItemsByIdCriticReviews(ctx context.Context, id string, option
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsByIdCriticReviews",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/CriticReviews", url.PathEscape(id)),
 	}

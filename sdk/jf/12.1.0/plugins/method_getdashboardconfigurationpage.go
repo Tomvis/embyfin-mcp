@@ -28,6 +28,7 @@ func (c Client) GetDashboardConfigurationPage(ctx context.Context, name ...strin
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetDashboardConfigurationPage",
 		OptionsObject:  option,
 		Path:           "/web/ConfigurationPage",
 		StreamResponse: true,

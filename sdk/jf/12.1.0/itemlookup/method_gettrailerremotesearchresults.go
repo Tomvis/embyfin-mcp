@@ -18,6 +18,7 @@ func (c Client) GetTrailerRemoteSearchResults(ctx context.Context, input jf.Trai
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetTrailerRemoteSearchResults",
 		Path:       "/Items/RemoteSearch/Trailer",
 	}
 

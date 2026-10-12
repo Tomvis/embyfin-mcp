@@ -22,6 +22,7 @@ func (c Client) GetDevicesInfo(ctx context.Context, id string) (result emby.GetD
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetDevicesInfo",
 		OptionsObject: option,
 		Path:          "/Devices/Info",
 	}

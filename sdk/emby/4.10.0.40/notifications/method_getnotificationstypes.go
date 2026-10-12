@@ -18,6 +18,7 @@ func (c Client) GetNotificationsTypes(ctx context.Context) (result emby.GetNotif
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetNotificationsTypes",
 		Path:       "/Notifications/Types",
 	}
 

@@ -21,6 +21,7 @@ func (c Client) PostItemsMetadataReset(ctx context.Context, itemIds string) (res
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostItemsMetadataReset",
 		OptionsObject: option,
 		Path:          "/Items/Metadata/Reset",
 	}

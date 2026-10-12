@@ -20,6 +20,7 @@ func (c Client) GetLiveTvLiveStreamFilesByIdStreamByContainer(ctx context.Contex
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetLiveTvLiveStreamFilesByIdStreamByContainer",
 		Path:           fmt.Sprintf("/LiveTv/LiveStreamFiles/%s/stream.%s", url.PathEscape(id), url.PathEscape(container)),
 		StreamResponse: true,
 	}

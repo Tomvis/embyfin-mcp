@@ -18,6 +18,7 @@ func (c Client) GetSearchHints(ctx context.Context, options jf.GetSearchHintsOpt
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSearchHints",
 		OptionsObject: options,
 		Path:          "/Search/Hints",
 	}

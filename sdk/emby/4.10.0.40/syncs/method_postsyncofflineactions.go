@@ -19,6 +19,7 @@ func (c Client) PostSyncOfflineActions(ctx context.Context, input []emby.UserAct
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSyncOfflineActions",
 		Path:       "/Sync/OfflineActions",
 	}
 

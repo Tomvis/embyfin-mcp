@@ -19,6 +19,7 @@ func (c Client) MovieWatchProviders(ctx context.Context, movieId int) (result tm
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "MovieWatchProviders",
 		Path:       fmt.Sprintf("/3/movie/%d/watch/providers", movieId),
 	}
 

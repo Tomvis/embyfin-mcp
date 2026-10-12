@@ -31,6 +31,7 @@ func (c Client) GetMoviesByIdSimilar(ctx context.Context, id string, options ...
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetMoviesByIdSimilar",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Movies/%s/Similar", url.PathEscape(id)),
 	}

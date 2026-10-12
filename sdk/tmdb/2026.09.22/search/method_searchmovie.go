@@ -20,6 +20,7 @@ func (c Client) SearchMovie(ctx context.Context, options tmdb.SearchMovieOptions
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "SearchMovie",
 		OptionsObject: options,
 		Path:          "/3/search/movie",
 	}

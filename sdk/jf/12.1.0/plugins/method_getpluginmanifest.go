@@ -19,6 +19,7 @@ func (c Client) GetPluginManifest(ctx context.Context, pluginId string) (result 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetPluginManifest",
 		Path:       fmt.Sprintf("/Plugins/%s/Manifest", url.PathEscape(pluginId)),
 	}
 

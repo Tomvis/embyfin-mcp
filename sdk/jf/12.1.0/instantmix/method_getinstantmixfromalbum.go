@@ -29,6 +29,7 @@ func (c Client) GetInstantMixFromAlbum(ctx context.Context, itemId string, optio
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetInstantMixFromAlbum",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Albums/%s/InstantMix", url.PathEscape(itemId)),
 	}

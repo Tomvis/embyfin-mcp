@@ -17,6 +17,7 @@ func (c Client) GetCountries(ctx context.Context) (result jf.GetCountriesRespons
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetCountries",
 		Path:       "/Localization/Countries",
 	}
 

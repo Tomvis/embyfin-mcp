@@ -9,7 +9,7 @@ import (
 	"slices"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 	"github.com/katbyte/go-kt/test/env"
@@ -33,7 +33,7 @@ func typeCount(t *testing.T, library, kind string) int {
 	t.Helper()
 
 	counts := mediaacc.ObjectOf(suite.Call(t, "library_get", map[string]any{"library": library})["type_counts"])
-	n := acc.DecimalOr0(counts[kind])
+	n := acctest.DecimalOr0(counts[kind])
 
 	return int(n)
 }
@@ -128,7 +128,7 @@ func setIDs(t *testing.T, id string, ids map[string]any) {
 func rename(t *testing.T, id, name string) {
 	t.Helper()
 
-	held := acc.Str(suite.Call(t, "item_get", map[string]any{"id": id})["name"])
+	held := acctest.Str(suite.Call(t, "item_get", map[string]any{"id": id})["name"])
 	t.Cleanup(func() {
 		if _, err := suite.Invoke("item_edit", map[string]any{"ids": []any{id}, "name": held}); err != nil {
 			t.Errorf("putting back %q: %v", held, err)
@@ -142,12 +142,12 @@ func episodeID(t *testing.T, seriesID string, season, episode int) string {
 	t.Helper()
 
 	out := suite.Call(t, "show_episodes_exist", map[string]any{"series_id": seriesID, "episodes": []map[string]any{{"season": season, "episode": episode}}})
-	row := acc.Rows(t, out["episodes"], "episodes")[0]
-	if !acc.BoolOf(row["exists"]) || acc.Str(row["id"]) == "" {
+	row := acctest.Rows(t, out["episodes"], "episodes")[0]
+	if !acctest.BoolOf(row["exists"]) || acctest.Str(row["id"]) == "" {
 		t.Fatalf("series %s holds no S%02dE%02d: %v", seriesID, season, episode, row)
 	}
 
-	return acc.Str(row["id"])
+	return acctest.Str(row["id"])
 }
 
 // auditRow is one audit's count in audit_all over a library, the row named
@@ -155,9 +155,9 @@ func episodeID(t *testing.T, seriesID string, season, episode int) string {
 func auditRow(t *testing.T, library, audit string) int {
 	t.Helper()
 
-	for _, row := range acc.Rows(t, suite.Call(t, "audit_all", map[string]any{"library": library})["audits"], "audits") {
+	for _, row := range acctest.Rows(t, suite.Call(t, "audit_all", map[string]any{"library": library})["audits"], "audits") {
 		if rowKey(row) == audit {
-			return acc.Num(t, row["findings"], "findings")
+			return acctest.Num(t, row["findings"], "findings")
 		}
 	}
 	t.Fatalf("audit_all over %s has no %s row", library, audit)

@@ -21,6 +21,7 @@ func (c Client) GetLogFile(ctx context.Context, name string) (result jf.GetLogFi
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetLogFile",
 		OptionsObject:  option,
 		Path:           "/System/Logs/Log",
 		StreamResponse: true,

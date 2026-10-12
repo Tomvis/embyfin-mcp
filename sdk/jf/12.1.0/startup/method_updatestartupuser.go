@@ -18,6 +18,7 @@ func (c Client) UpdateStartupUser(ctx context.Context, input jf.StartupUserDto) 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateStartupUser",
 		Path:       "/Startup/User",
 	}
 

@@ -19,6 +19,7 @@ func (c Client) AddUserToSession(ctx context.Context, sessionId string, userId s
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "AddUserToSession",
 		Path:       fmt.Sprintf("/Sessions/%s/User/%s", url.PathEscape(sessionId), url.PathEscape(userId)),
 	}
 

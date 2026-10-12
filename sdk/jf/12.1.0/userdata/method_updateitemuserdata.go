@@ -30,6 +30,7 @@ func (c Client) UpdateItemUserData(ctx context.Context, itemId string, input jf.
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateItemUserData",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/UserItems/%s/UserData", url.PathEscape(itemId)),
 	}

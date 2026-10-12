@@ -29,6 +29,7 @@ func (c Client) MovieSimilar(ctx context.Context, movieId int, options ...tmdb.M
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "MovieSimilar",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/movie/%d/similar", movieId),
 	}

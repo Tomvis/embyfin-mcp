@@ -28,6 +28,7 @@ func (c Client) UpdateUserConfiguration(ctx context.Context, input jf.UserConfig
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateUserConfiguration",
 		OptionsObject: option,
 		Path:          "/Users/Configuration",
 	}

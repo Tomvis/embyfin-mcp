@@ -30,6 +30,7 @@ func (c Client) GetPackagesByName(ctx context.Context, name string, assemblyGuid
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPackagesByName",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Packages/%s", url.PathEscape(name)),
 	}

@@ -17,6 +17,7 @@ func (c Client) ReportSessionEnded(ctx context.Context) (result jf.ReportSession
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "ReportSessionEnded",
 		Path:       "/Sessions/Logout",
 	}
 

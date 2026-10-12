@@ -19,6 +19,7 @@ func (c Client) CreatePlaylist(ctx context.Context, input jf.CreatePlaylistDto) 
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "CreatePlaylist",
 		Path:       "/Playlists",
 	}
 

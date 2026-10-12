@@ -28,6 +28,7 @@ func (c Client) PostVideosMergeVersions(ctx context.Context, ids ...string) (res
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostVideosMergeVersions",
 		OptionsObject: option,
 		Path:          "/Videos/MergeVersions",
 	}

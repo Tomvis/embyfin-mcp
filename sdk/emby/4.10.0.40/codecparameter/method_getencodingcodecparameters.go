@@ -19,6 +19,7 @@ func (c Client) GetEncodingCodecParameters(ctx context.Context, options emby.Get
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetEncodingCodecParameters",
 		OptionsObject: options,
 		Path:          "/Encoding/CodecParameters",
 	}

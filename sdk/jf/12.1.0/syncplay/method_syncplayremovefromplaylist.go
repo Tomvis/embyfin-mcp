@@ -18,6 +18,7 @@ func (c Client) SyncPlayRemoveFromPlaylist(ctx context.Context, input jf.RemoveF
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayRemoveFromPlaylist",
 		Path:       "/SyncPlay/RemoveFromPlaylist",
 	}
 

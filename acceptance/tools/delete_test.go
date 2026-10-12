@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 	"github.com/katbyte/go-kt/test/env"
@@ -96,7 +96,7 @@ func TestItemDelete(t *testing.T) {
 		id := findItem(t, "Messy Movies", "Movie", "Primer")
 		// the nfo was read: this is Primer, not a copy of the file it was
 		// made from
-		if ids := mediaacc.ObjectOf(suite.Call(t, "item_get", map[string]any{"id": id})["metadata_provider_ids"]); acc.Str(ids["tmdb"]) != "14337" {
+		if ids := mediaacc.ObjectOf(suite.Call(t, "item_get", map[string]any{"id": id})["metadata_provider_ids"]); acctest.Str(ids["tmdb"]) != "14337" {
 			t.Fatalf("the staged film holds ids %v, want Primer's tmdb 14337", ids)
 		}
 		return id
@@ -145,14 +145,14 @@ func TestItemDelete(t *testing.T) {
 		// film alone in it, which the refusal rightly offered to take)
 		const gone = "the server cannot find the folder holding the item: the delete removes its record, and nothing on disk"
 		var msg string
-		if !acc.Eventually(func() bool {
+		if !acctest.Eventually(func() bool {
 			msg = suite.CallErr(t, "item_delete", map[string]any{"id": id})
 			return strings.Contains(msg, gone)
 		}) {
 			t.Errorf("the refusal for a film whose folder is gone: %s", msg)
 		}
 		out := suite.Call(t, "item_delete", map[string]any{"id": id, "confirm": true})
-		if got := removedPaths(t, out); len(got) != 0 || !strings.Contains(acc.Str(out["note"]), "nothing on disk") {
+		if got := removedPaths(t, out); len(got) != 0 || !strings.Contains(acctest.Str(out["note"]), "nothing on disk") {
 			t.Errorf("item_delete of a film with no folder = %v", out)
 		}
 		if err := waitForItems("Messy Movies", have); err != nil {
@@ -227,9 +227,9 @@ func TestDeletingAFilmSharingItsFolder(t *testing.T) {
 			t.Fatal(err)
 		}
 		ids := map[string]string{}
-		for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "query": "Blade", "limit": 50})["items"], "items") {
-			if p := acc.Str(it["path"]); strings.HasPrefix(p, server+"/") {
-				ids[strings.TrimSuffix(filepath.Base(p), ".mp4")] = acc.Str(it["id"])
+		for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "query": "Blade", "limit": 50})["items"], "items") {
+			if p := acctest.Str(it["path"]); strings.HasPrefix(p, server+"/") {
+				ids[strings.TrimSuffix(filepath.Base(p), ".mp4")] = acctest.Str(it["id"])
 			}
 		}
 		for _, f := range films {
@@ -247,13 +247,13 @@ func TestDeletingAFilmSharingItsFolder(t *testing.T) {
 	// names, and the rest of the folder to what it was
 	deletes := func(t *testing.T, id string, want, others []string) {
 		t.Helper()
-		want = acc.Sorted(want)
+		want = acctest.Sorted(want)
 		msg := suite.CallErr(t, "item_delete", map[string]any{"id": id})
 		if folder, names := wouldRemove(t, msg); folder != "" || !slices.Equal(names, want) {
 			t.Errorf("the refusal would take %q %v, want %v", folder, names, want)
 		}
-		if got := notOwn(msg); !slices.Equal(got, acc.Sorted(others)) {
-			t.Errorf("the refusal says %v are not the film's own, want %v: %s", got, acc.Sorted(others), msg)
+		if got := notOwn(msg); !slices.Equal(got, acctest.Sorted(others)) {
+			t.Errorf("the refusal says %v are not the film's own, want %v: %s", got, acctest.Sorted(others), msg)
 		}
 		gone := make([]string, 0, len(want))
 		for _, p := range want {
@@ -273,7 +273,7 @@ func TestDeletingAFilmSharingItsFolder(t *testing.T) {
 		blade, sequel := "Blade (1998)", "Blade II (2002)"
 		ids := stage(t, []film{{blade, "Blade", "36647", "tt0120611", 1998}, {sequel, "Blade II", "36586", "tt0187738", 2002}})
 		deletes(t, ids[blade], append(sidecars(blade), server+"/"+blade+".mp4"), nil)
-		if got := acc.Str(suite.Call(t, "item_get", map[string]any{"id": ids[sequel]})["name"]); got != "Blade II" {
+		if got := acctest.Str(suite.Call(t, "item_get", map[string]any{"id": ids[sequel]})["name"]); got != "Blade II" {
 			t.Errorf("the film left in the folder reads as %q", got)
 		}
 
@@ -283,7 +283,7 @@ func TestDeletingAFilmSharingItsFolder(t *testing.T) {
 			t.Fatal(err)
 		}
 		own := []string{sequel + "-poster.jpg", sequel + ".eng.srt", sequel + ".mp4", sequel + ".nfo"}
-		if folder, got := wouldRemove(t, suite.CallErr(t, "item_delete", map[string]any{"id": ids[sequel]})); folder != server || !slices.Equal(got, acc.Sorted(own)) {
+		if folder, got := wouldRemove(t, suite.CallErr(t, "item_delete", map[string]any{"id": ids[sequel]})); folder != server || !slices.Equal(got, acctest.Sorted(own)) {
 			t.Errorf("the refusal for the film left alone would take %q %v, want the folder with %v", folder, got, own)
 		}
 		want := make([]string, 0, 1+len(own))
@@ -291,8 +291,8 @@ func TestDeletingAFilmSharingItsFolder(t *testing.T) {
 		for _, f := range own {
 			want = append(want, server+"/"+f)
 		}
-		if got := removedPaths(t, suite.Call(t, "item_delete", map[string]any{"id": ids[sequel], "confirm": true})); !slices.Equal(got, acc.Sorted(want)) {
-			t.Errorf("removed = %v, want %v", got, acc.Sorted(want))
+		if got := removedPaths(t, suite.Call(t, "item_delete", map[string]any{"id": ids[sequel], "confirm": true})); !slices.Equal(got, acctest.Sorted(want)) {
+			t.Errorf("removed = %v, want %v", got, acctest.Sorted(want))
 		}
 		if _, err := os.Stat(dir); !os.IsNotExist(err) {
 			left, _ := os.ReadDir(dir)
@@ -320,7 +320,7 @@ func TestDeletingAFilmSharingItsFolder(t *testing.T) {
 				t.Errorf("%s went with the delete: %v", kept, err)
 			}
 		}
-		if got := acc.Str(suite.Call(t, "item_get", map[string]any{"id": ids[sequel]})["name"]); got != "Blade II" {
+		if got := acctest.Str(suite.Call(t, "item_get", map[string]any{"id": ids[sequel]})["name"]); got != "Blade II" {
 			t.Errorf("the film left in the folder reads as %q", got)
 		}
 	})
@@ -390,8 +390,8 @@ func TestWhatADeleteWouldTake(t *testing.T) {
 		if !strings.Contains(msg, "nothing was deleted") {
 			t.Errorf("the refusal does not say nothing was deleted: %s", msg)
 		}
-		if folder, names := wouldRemove(t, msg); folder != wantFolder || !slices.Equal(names, acc.Sorted(want)) {
-			t.Errorf("item %s would take %q %v, want %q %v", id, folder, names, wantFolder, acc.Sorted(want))
+		if folder, names := wouldRemove(t, msg); folder != wantFolder || !slices.Equal(names, acctest.Sorted(want)) {
+			t.Errorf("item %s would take %q %v, want %q %v", id, folder, names, wantFolder, acctest.Sorted(want))
 		}
 	}
 
@@ -399,10 +399,10 @@ func TestWhatADeleteWouldTake(t *testing.T) {
 		would(t, findItem(t, "Messy Movies", "Movie", "Cube"), messy+messyKeptBluRay, []string{"BDMV", "BDMV/STREAM", "BDMV/STREAM/00000.m2ts", "BDMV/STREAM/00001.m2ts"})
 	})
 	t.Run("a film in two versions", func(t *testing.T) {
-		rows := acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "query": "Blade Runner"})["items"], "items")
+		rows := acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "query": "Blade Runner"})["items"], "items")
 		ids := make([]string, 0, len(rows))
 		for _, it := range rows {
-			ids = append(ids, acc.Str(it["id"]))
+			ids = append(ids, acctest.Str(it["id"]))
 		}
 		// Jellyfin's one entry, Emby's two
 		if want := map[bool]int{true: 1, false: 2}[versionsMerged()]; len(ids) != want {
@@ -429,9 +429,9 @@ func TestWhatADeleteWouldTake(t *testing.T) {
 
 	episode := func(t *testing.T, series string, number int) string {
 		t.Helper()
-		for _, e := range acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": findItem(t, "Messy Shows", "Series", series), "season": 1})["episodes"], "episodes") {
-			if acc.Num(t, e["episode"], "episode") == number {
-				return acc.Str(e["id"])
+		for _, e := range acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": findItem(t, "Messy Shows", "Series", series), "season": 1})["episodes"], "episodes") {
+			if acctest.Num(t, e["episode"], "episode") == number {
+				return acctest.Str(e["id"])
 			}
 		}
 		t.Fatalf("%s holds no S01E%02d", series, number)

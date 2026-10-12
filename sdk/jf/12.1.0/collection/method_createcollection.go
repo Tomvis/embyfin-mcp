@@ -28,6 +28,7 @@ func (c Client) CreateCollection(ctx context.Context, options ...jf.CreateCollec
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "CreateCollection",
 		OptionsObject: option,
 		Path:          "/Collections",
 	}

@@ -20,6 +20,7 @@ func (c Client) UpdateDisplayPreferences(ctx context.Context, displayPreferences
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateDisplayPreferences",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/DisplayPreferences/%s", url.PathEscape(displayPreferencesId)),
 	}

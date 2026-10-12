@@ -18,6 +18,7 @@ func (c Client) GetSystemStorage(ctx context.Context) (result jf.GetSystemStorag
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemStorage",
 		Path:       "/System/Info/Storage",
 	}
 

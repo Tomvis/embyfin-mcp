@@ -21,6 +21,7 @@ func (c Client) GetSyncItemsReady(ctx context.Context, targetId string) (result 
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSyncItemsReady",
 		OptionsObject: option,
 		Path:          "/Sync/Items/Ready",
 	}

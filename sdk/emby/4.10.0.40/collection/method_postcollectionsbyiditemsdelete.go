@@ -23,6 +23,7 @@ func (c Client) PostCollectionsByIdItemsDelete(ctx context.Context, id string, i
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostCollectionsByIdItemsDelete",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Collections/%s/Items/Delete", url.PathEscape(id)),
 	}

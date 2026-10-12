@@ -19,6 +19,7 @@ func (c Client) ListClear(ctx context.Context, listId int, options tmdb.ListClea
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "ListClear",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/3/list/%d/clear", listId),
 	}

@@ -27,6 +27,7 @@ func (c Client) GetMovieRecommendations(ctx context.Context, options ...jf.GetMo
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetMovieRecommendations",
 		OptionsObject: option,
 		Path:          "/Movies/Recommendations",
 	}

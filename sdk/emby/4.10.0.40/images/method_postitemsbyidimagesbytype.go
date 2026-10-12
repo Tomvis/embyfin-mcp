@@ -33,6 +33,7 @@ func (c Client) PostItemsByIdImagesByType(ctx context.Context, id string, typePa
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostItemsByIdImagesByType",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Images/%s", url.PathEscape(id), url.PathEscape(string(typeParam))),
 	}

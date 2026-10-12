@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/katbyte/go-kt/test/env"
 )
 
@@ -20,8 +20,8 @@ func wsRows(t *testing.T, args map[string]any) (rows []map[string]any, answer ma
 	t.Helper()
 
 	out := suite.Call(t, "audit_whitespace", args)
-	found := acc.Rows(t, out["findings"], "findings")
-	if n := acc.Num(t, out["total_findings"], "total_findings"); n != len(found) {
+	found := acctest.Rows(t, out["findings"], "findings")
+	if n := acctest.Num(t, out["total_findings"], "total_findings"); n != len(found) {
 		t.Fatalf("audit_whitespace %v lists %d of %d rows: raise the limit", args, len(found), n)
 	}
 
@@ -33,10 +33,10 @@ func credited(t *testing.T, id string) []string {
 	t.Helper()
 
 	// no one credited is no people at all in the answer
-	people := acc.RowsOf(suite.Call(t, "item_get", map[string]any{"id": id})["people"])
+	people := acctest.RowsOf(suite.Call(t, "item_get", map[string]any{"id": id})["people"])
 	names := make([]string, 0, len(people))
 	for _, p := range people {
-		names = append(names, acc.Str(p["name"]))
+		names = append(names, acctest.Str(p["name"]))
 	}
 
 	return names
@@ -45,7 +45,7 @@ func credited(t *testing.T, id string) []string {
 // wsFind is the row of one place, problem and text, nil when there is none.
 func wsFind(found []map[string]any, want wsRow) map[string]any {
 	for _, r := range found {
-		if acc.Str(r["where"]) == want.where && acc.Str(r["problem"]) == want.problem && strings.EqualFold(acc.Str(r["text"]), want.text) {
+		if acctest.Str(r["where"]) == want.where && acctest.Str(r["problem"]) == want.problem && strings.EqualFold(acctest.Str(r["text"]), want.text) {
 			return r
 		}
 	}
@@ -61,7 +61,7 @@ func wsFind(found []map[string]any, want wsRow) map[string]any {
 // are the server's reading of the name rather than a sort name anyone typed.
 func TestAuditWhitespaceLeavesTheFixturesAlone(t *testing.T) {
 	for _, library := range []string{"Movies", "Shows", "Music", "Messy Movies"} {
-		if found, out := wsRows(t, map[string]any{"library": library}); len(found) != 0 || acc.Num(t, out["items_scanned"], "items_scanned") == 0 {
+		if found, out := wsRows(t, map[string]any{"library": library}); len(found) != 0 || acctest.Num(t, out["items_scanned"], "items_scanned") == 0 {
 			t.Errorf("%s = %v, want its items read and nothing out of place", library, out)
 		}
 	}
@@ -72,11 +72,11 @@ func TestAuditWhitespaceLeavesTheFixturesAlone(t *testing.T) {
 		t.Fatalf("Messy Shows = %v, want the Knight pair's folder and its name", found)
 	}
 	// the series, its season and its episode sit in the folder
-	if acc.Num(t, folder["items"], "items") != 3 || acc.Str(folder["title"]) != "A Knight of the Seven  kingdoms" || acc.Str(folder["path"]) != "/media/messy-shows/A Knight of the Seven  kingdoms (2026)" ||
-		acc.Str(folder["suggest"]) != "A Knight of the Seven kingdoms (2026)" || !strings.HasPrefix(acc.Str(folder["fix"]), "rename it on disk") {
+	if acctest.Num(t, folder["items"], "items") != 3 || acctest.Str(folder["title"]) != "A Knight of the Seven  kingdoms" || acctest.Str(folder["path"]) != "/media/messy-shows/A Knight of the Seven  kingdoms (2026)" ||
+		acctest.Str(folder["suggest"]) != "A Knight of the Seven kingdoms (2026)" || !strings.HasPrefix(acctest.Str(folder["fix"]), "rename it on disk") {
 		t.Errorf("the Knight folder's row = %v", folder)
 	}
-	if acc.Str(name["suggest"]) != "A Knight of the Seven kingdoms" || !strings.HasPrefix(acc.Str(name["fix"]), "item_edit name=") {
+	if acctest.Str(name["suggest"]) != "A Knight of the Seven kingdoms" || !strings.HasPrefix(acctest.Str(name["fix"]), "item_edit name=") {
 		t.Errorf("the Knight name's row = %v", name)
 	}
 }
@@ -138,41 +138,41 @@ func TestAuditWhitespaceFindsWhatIsLaidOut(t *testing.T) {
 
 	// every folder once, beside the film it was named for
 	thirteenth := must(wsRow{"folder", "double_space", "The Thirteenth␣␣Floor (1999)"})
-	if acc.Num(t, thirteenth["items"], "items") != 1 || acc.Str(thirteenth["path"]) != "/media/messy-movies/The Thirteenth  Floor (1999)" || acc.Str(thirteenth["dropped"]) != "" {
+	if acctest.Num(t, thirteenth["items"], "items") != 1 || acctest.Str(thirteenth["path"]) != "/media/messy-movies/The Thirteenth  Floor (1999)" || acctest.Str(thirteenth["dropped"]) != "" {
 		t.Errorf("the Thirteenth Floor folder = %v", thirteenth)
 	}
 	must(wsRow{"folder", "odd_space", "Dune[U+00A0]Part Two (2024)"})
 	must(wsRow{"folder", "edge_space", "Limitless (2011)␣"})
 	// the gap where a renamer dropped the title's dash, said beside it
 	sw := must(wsRow{"folder", "double_space", "Star Wars Episode IV␣␣A New Hope (1977)"})
-	if acc.Str(sw["title"]) != "Star Wars: Episode IV - A New Hope" || acc.Str(sw["dropped"]) != "-" || acc.Str(sw["suggest"]) != "Star Wars Episode IV A New Hope (1977)" {
+	if acctest.Str(sw["title"]) != "Star Wars: Episode IV - A New Hope" || acctest.Str(sw["dropped"]) != "-" || acctest.Str(sw["suggest"]) != "Star Wars Episode IV A New Hope (1977)" {
 		t.Errorf("the Star Wars folder = %v, want its title beside it and the dash it lost", sw)
 	}
 	// and a file's name, one row a problem
 	must(wsRow{"file", "double_space", "The Thirteenth␣␣Floor (1999).mp4"})
 	aliens := must(wsRow{"file", "space_before_extension", "Aliens (1986)␣.mp4"})
-	if acc.Str(aliens["suggest"]) != "Aliens (1986).mp4" || acc.Str(aliens["title"]) != "Aliens" || acc.Str(aliens["path"]) != "/media/messy-movies/Aliens (1986)/Aliens (1986) .mp4" {
+	if acctest.Str(aliens["suggest"]) != "Aliens (1986).mp4" || acctest.Str(aliens["title"]) != "Aliens" || acctest.Str(aliens["path"]) != "/media/messy-movies/Aliens (1986)/Aliens (1986) .mp4" {
 		t.Errorf("the Aliens file = %v", aliens)
 	}
 	must(wsRow{"file", "odd_space", "Dune[U+00A0]Part Two (2024).mp4"})
-	if r := must(wsRow{"file", "double_space", "Star Wars Episode IV␣␣A New Hope (1977).mp4"}); acc.Str(r["dropped"]) != "-" {
+	if r := must(wsRow{"file", "double_space", "Star Wars Episode IV␣␣A New Hope (1977).mp4"}); acctest.Str(r["dropped"]) != "-" {
 		t.Errorf("the Star Wars file = %v", r)
 	}
 
 	// the nfo's director and studio, each once with the film carrying it
 	studio := must(wsRow{"studio", "double_space", "Legendary␣␣Pictures"})
-	if acc.Num(t, studio["items"], "items") != 1 || acc.Str(studio["suggest"]) != "Legendary Pictures" || !strings.HasPrefix(acc.Str(studio["fix"]), "metadata_rename field=studios") {
+	if acctest.Num(t, studio["items"], "items") != 1 || acctest.Str(studio["suggest"]) != "Legendary Pictures" || !strings.HasPrefix(acctest.Str(studio["fix"]), "metadata_rename field=studios") {
 		t.Errorf("the studio = %v", studio)
 	}
 	person := must(wsRow{"person", "double_space", "James␣␣Cameron"})
-	if acc.Num(t, person["items"], "items") != 1 || acc.Str(person["title"]) != "Aliens" || acc.Str(person["id"]) == "" {
+	if acctest.Num(t, person["items"], "items") != 1 || acctest.Str(person["title"]) != "Aliens" || acctest.Str(person["id"]) == "" {
 		t.Errorf("the director = %v", person)
 	}
-	if fix := acc.Str(person["fix"]); isJellyfin() != strings.HasPrefix(fix, "not item_edit") {
+	if fix := acctest.Str(person["fix"]); isJellyfin() != strings.HasPrefix(fix, "not item_edit") {
 		t.Errorf("a person's fix on %s = %q", backend, fix)
 	}
-	byWhere := acc.Object(t, out["by_where"], "by_where")
-	if files := acc.Num(t, byWhere["file"], "by_where.file"); files != 4 {
+	byWhere := acctest.Object(t, out["by_where"], "by_where")
+	if files := acctest.Num(t, byWhere["file"], "by_where.file"); files != 4 {
 		t.Errorf("file rows = %d, want the four staged film files: %v", files, found)
 	}
 
@@ -182,16 +182,16 @@ func TestAuditWhitespaceFindsWhatIsLaidOut(t *testing.T) {
 		t.Errorf("where=file = %v", files)
 	}
 	for _, r := range files {
-		if acc.Str(r["where"]) != "file" {
+		if acctest.Str(r["where"]) != "file" {
 			t.Errorf("where=file gave %v", r)
 		}
 	}
 	// audit_all counts every place but the files, and says how many those are
-	for _, row := range acc.Rows(t, suite.Call(t, "audit_all", map[string]any{"library": "Messy Movies"})["audits"], "audits") {
-		if acc.Str(row["audit"]) != "audit_whitespace" {
+	for _, row := range acctest.Rows(t, suite.Call(t, "audit_all", map[string]any{"library": "Messy Movies"})["audits"], "audits") {
+		if acctest.Str(row["audit"]) != "audit_whitespace" {
 			continue
 		}
-		if acc.Num(t, row["findings"], "findings") != len(found)-4 || !strings.Contains(acc.Str(row["note"]), "4 files with one in their name (4 rows") {
+		if acctest.Num(t, row["findings"], "findings") != len(found)-4 || !strings.Contains(acctest.Str(row["note"]), "4 files with one in their name (4 rows") {
 			t.Errorf("audit_all's row = %v, want %d and the 4 files in its note", row, len(found)-4)
 		}
 	}
@@ -207,7 +207,7 @@ func TestAuditWhitespaceFindsWhatIsLaidOut(t *testing.T) {
 			t.Errorf("no %v in %v", want, shows)
 		}
 	}
-	if season := wsFind(shows, wsRow{"folder", "edge_space", "Season 02␣"}); season == nil || acc.Num(t, season["items"], "items") != 2 || acc.Str(season["title"]) != "Season 2" {
+	if season := wsFind(shows, wsRow{"folder", "edge_space", "Season 02␣"}); season == nil || acctest.Num(t, season["items"], "items") != 2 || acctest.Str(season["title"]) != "Season 2" {
 		t.Errorf("the season folder = %v, want its season and episode in it, titled for the season", season)
 	}
 
@@ -219,11 +219,11 @@ func TestAuditWhitespaceFindsWhatIsLaidOut(t *testing.T) {
 	named := wsFind(found, wsRow{"name", "double_space", "Star Wars␣␣Episode IV - A New Hope"})
 	sorted := wsFind(found, wsRow{"sort_name", "double_space", "Star Wars 4␣␣A New Hope"})
 	genre := wsFind(found, wsRow{"genre", "double_space", "Science␣␣Fiction"})
-	if named == nil || sorted == nil || genre == nil || acc.Str(named["id"]) != sw2 || acc.Str(sorted["id"]) != sw2 {
+	if named == nil || sorted == nil || genre == nil || acctest.Str(named["id"]) != sw2 || acctest.Str(sorted["id"]) != sw2 {
 		t.Fatalf("after the edit: name %v, sort name %v, genre %v", named, sorted, genre)
 	}
-	suite.Call(t, "item_edit", map[string]any{"ids": []any{sw2}, "name": acc.Str(named["suggest"]), "sort_name": acc.Str(sorted["suggest"])})
-	suite.Call(t, "metadata_rename", map[string]any{"field": "genres", "from": "Science  Fiction", "to": acc.Str(genre["suggest"]), "library": "Messy Movies"})
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{sw2}, "name": acctest.Str(named["suggest"]), "sort_name": acctest.Str(sorted["suggest"])})
+	suite.Call(t, "metadata_rename", map[string]any{"field": "genres", "from": "Science  Fiction", "to": acctest.Str(genre["suggest"]), "library": "Messy Movies"})
 	found, _ = wsRows(t, movies)
 	for _, gone := range []wsRow{
 		{"name", "double_space", "Star Wars␣␣Episode IV - A New Hope"},
@@ -234,7 +234,7 @@ func TestAuditWhitespaceFindsWhatIsLaidOut(t *testing.T) {
 			t.Errorf("put right by its fix, still %v", r)
 		}
 	}
-	if got := suite.Call(t, "item_get", map[string]any{"id": sw2}); acc.Str(got["name"]) != "Star Wars Episode IV - A New Hope" || !slices.Contains(acc.Strs(t, got["genres"], "genres"), "Science Fiction") {
+	if got := suite.Call(t, "item_get", map[string]any{"id": sw2}); acctest.Str(got["name"]) != "Star Wars Episode IV - A New Hope" || !slices.Contains(acctest.Strs(t, got["genres"], "genres"), "Science Fiction") {
 		t.Errorf("after the fixes the film is %v with %v", got["name"], got["genres"])
 	}
 }
@@ -262,12 +262,12 @@ func TestAuditWhitespacePersonFix(t *testing.T) {
 	if row == nil || len(found) != 1 || !slices.Equal(credited(t, aliens), []string{"James  Cameron"}) {
 		t.Fatalf("people = %v, want the nfo's director, credited on the film", found)
 	}
-	person := acc.Str(row["id"])
+	person := acctest.Str(row["id"])
 
 	if !isJellyfin() {
 		suite.PutBack(t, "item_edit", map[string]any{"ids": []any{person}, "name": "James  Cameron"})
-		suite.Call(t, "item_edit", map[string]any{"ids": []any{person}, "name": acc.Str(row["suggest"])})
-		if !acc.Eventually(func() bool { return slices.Equal(credited(t, aliens), []string{"James Cameron"}) }) {
+		suite.Call(t, "item_edit", map[string]any{"ids": []any{person}, "name": acctest.Str(row["suggest"])})
+		if !acctest.Eventually(func() bool { return slices.Equal(credited(t, aliens), []string{"James Cameron"}) }) {
 			t.Errorf("after renaming the person the film credits %v, want James Cameron", credited(t, aliens))
 		}
 		if found, _ := wsRows(t, movies); len(found) != 0 {
@@ -278,22 +278,22 @@ func TestAuditWhitespacePersonFix(t *testing.T) {
 	}
 
 	// what the fix warns of: renamed, the person is off the film
-	suite.Call(t, "item_edit", map[string]any{"ids": []any{person}, "name": acc.Str(row["suggest"])})
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{person}, "name": acctest.Str(row["suggest"])})
 	lost := credited(t, aliens)
 	suite.Call(t, "item_edit", map[string]any{"ids": []any{person}, "name": "James  Cameron"})
 	if len(lost) != 0 {
 		t.Errorf("renamed on Jellyfin the person is still credited as %v: the fix's warning is stale", lost)
 	}
-	if !acc.Eventually(func() bool { return slices.Equal(credited(t, aliens), []string{"James  Cameron"}) }) {
+	if !acctest.Eventually(func() bool { return slices.Equal(credited(t, aliens), []string{"James  Cameron"}) }) {
 		t.Errorf("with the name put back the film credits %v", credited(t, aliens))
 	}
 	// and what it says to do: the name put right in the nfo, the film
 	// refreshed, the credit checked
 	env.WriteFile(t, hostPath("/media/"+folder+"/Aliens (1986).nfo"), nfo("James Cameron"))
-	if out := suite.Call(t, "item_refresh", map[string]any{"id": aliens}); !acc.BoolOf(out["landed"]) {
+	if out := suite.Call(t, "item_refresh", map[string]any{"id": aliens}); !acctest.BoolOf(out["landed"]) {
 		t.Fatalf("the refresh never landed: %v", out)
 	}
-	if !acc.Eventually(func() bool { return slices.Equal(credited(t, aliens), []string{"James Cameron"}) }) {
+	if !acctest.Eventually(func() bool { return slices.Equal(credited(t, aliens), []string{"James Cameron"}) }) {
 		t.Errorf("refreshed with the nfo put right the film credits %v, want James Cameron", credited(t, aliens))
 	}
 	if found, _ := wsRows(t, movies); len(found) != 0 {

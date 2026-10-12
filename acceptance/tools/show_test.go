@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/katbyte/go-kt/test/env"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
@@ -21,19 +21,19 @@ import (
 func TestShowSeasons(t *testing.T) {
 	id := findItem(t, "Shows", "Series", "Severance")
 	out := suite.Call(t, "show_seasons", map[string]any{"series_id": id})
-	if acc.Str(out["series"]) != "Severance" {
+	if acctest.Str(out["series"]) != "Severance" {
 		t.Errorf("series = %v", out["series"])
 	}
-	listed := acc.Rows(t, out["seasons"], "seasons")
+	listed := acctest.Rows(t, out["seasons"], "seasons")
 	numbers := make([]int, 0, len(listed))
 	for _, s := range listed {
-		number := acc.Num(t, s["season"], "season")
+		number := acctest.Num(t, s["season"], "season")
 		numbers = append(numbers, number)
-		if want := fmt.Sprintf("Season %d", number); acc.Str(s["name"]) != want {
+		if want := fmt.Sprintf("Season %d", number); acctest.Str(s["name"]) != want {
 			t.Errorf("season %d is named %v, want %s", number, s["name"], want)
 		}
-		season := suite.Call(t, "item_get", map[string]any{"id": acc.Str(s["id"])})
-		if acc.Str(season["type"]) != "Season" || acc.Str(season["series"]) != "Severance" || acc.Num(t, season["season"], "season") != number {
+		season := suite.Call(t, "item_get", map[string]any{"id": acctest.Str(s["id"])})
+		if acctest.Str(season["type"]) != "Season" || acctest.Str(season["series"]) != "Severance" || acctest.Num(t, season["season"], "season") != number {
 			t.Errorf("season %d's id %v reads as %v", number, s["id"], season)
 		}
 	}
@@ -54,39 +54,39 @@ func TestShowSeasons(t *testing.T) {
 func TestLibraryEpisodesOfAShow(t *testing.T) {
 	bb := findItem(t, "Shows", "Series", "Breaking Bad")
 	numbers := func(out map[string]any) []int {
-		rows := acc.Rows(t, out["episodes"], "episodes")
+		rows := acctest.Rows(t, out["episodes"], "episodes")
 		got := make([]int, 0, len(rows))
 		for _, e := range rows {
-			got = append(got, acc.Num(t, e["episode"], "episode"))
+			got = append(got, acctest.Num(t, e["episode"], "episode"))
 		}
 		return got
 	}
 
 	// by name: the show is named at the top, with how the name matched
 	out := suite.Call(t, "library_episodes", map[string]any{"series": "Breaking Bad"})
-	if acc.Str(out["series"]) != "Breaking Bad" || acc.Str(out["series_id"]) != bb {
+	if acctest.Str(out["series"]) != "Breaking Bad" || acctest.Str(out["series_id"]) != bb {
 		t.Errorf("series = %v %v, want Breaking Bad %s", out["series"], out["series_id"], bb)
 	}
-	if m := acc.Object(t, out["matched"], "matched"); acc.Str(m["series_id"]) != bb || acc.Decimal(t, m["score"], "score") != 1 {
+	if m := acctest.Object(t, out["matched"], "matched"); acctest.Str(m["series_id"]) != bb || acctest.Decimal(t, m["score"], "score") != 1 {
 		t.Errorf("matched = %v", m)
 	}
-	eps := acc.Rows(t, out["episodes"], "episodes")
+	eps := acctest.Rows(t, out["episodes"], "episodes")
 	for _, e := range eps {
-		if acc.Str(e["series"]) != "Breaking Bad" || acc.Num(t, e["season"], "season") != 1 {
+		if acctest.Str(e["series"]) != "Breaking Bad" || acctest.Num(t, e["season"], "season") != 1 {
 			t.Errorf("episode row = %v", e)
 		}
 		assertQualityFacts(t, e)
 	}
-	if got := numbers(out); !slices.Equal(got, []int{1, 2, 3}) || acc.Num(t, out["total"], "total") != 3 {
+	if got := numbers(out); !slices.Equal(got, []int{1, 2, 3}) || acctest.Num(t, out["total"], "total") != 3 {
 		t.Errorf("episodes = %v of %v, want [1 2 3]", got, out["total"])
 	}
 	// the nfo named them
-	if !slices.ContainsFunc(eps, func(e map[string]any) bool { return acc.Str(e["title"]) == "Pilot" }) {
+	if !slices.ContainsFunc(eps, func(e map[string]any) bool { return acctest.Str(e["title"]) == "Pilot" }) {
 		t.Errorf("no episode titled Pilot among %v", eps)
 	}
 	// by id, the same show, and no matching to report
 	byID := suite.Call(t, "library_episodes", map[string]any{"series": bb})
-	if acc.Str(byID["series"]) != "Breaking Bad" || byID["matched"] != nil || !slices.Equal(numbers(byID), []int{1, 2, 3}) {
+	if acctest.Str(byID["series"]) != "Breaking Bad" || byID["matched"] != nil || !slices.Equal(numbers(byID), []int{1, 2, 3}) {
 		t.Errorf("by id = %v %v %v", byID["series"], byID["matched"], numbers(byID))
 	}
 
@@ -99,12 +99,12 @@ func TestLibraryEpisodesOfAShow(t *testing.T) {
 	sev := findItem(t, "Shows", "Series", "Severance")
 	for season, want := range map[int][]int{1: {1, 2}, 2: {1, 2}, 0: nil, 9: nil} {
 		out = suite.Call(t, "library_episodes", map[string]any{"series": "Severance", "library": "Shows", "season": season})
-		for _, e := range acc.Rows(t, out["episodes"], "episodes") {
-			if acc.Num(t, e["season"], "season") != season {
+		for _, e := range acctest.Rows(t, out["episodes"], "episodes") {
+			if acctest.Num(t, e["season"], "season") != season {
 				t.Errorf("season %d listing has %v", season, e)
 			}
 		}
-		if got := numbers(out); !slices.Equal(got, want) || acc.Num(t, out["total"], "total") != len(want) || acc.Str(out["series_id"]) != sev {
+		if got := numbers(out); !slices.Equal(got, want) || acctest.Num(t, out["total"], "total") != len(want) || acctest.Str(out["series_id"]) != sev {
 			t.Errorf("season %d of the tidy Severance = %v of %v (%v), want %v", season, got, out["total"], out["series_id"], want)
 		}
 	}
@@ -143,18 +143,18 @@ func TestLibraryEpisodesOfAShow(t *testing.T) {
 func assertQualityFacts(t *testing.T, row map[string]any) {
 	t.Helper()
 
-	if acc.Str(row["path"]) == "" {
+	if acctest.Str(row["path"]) == "" {
 		return // a record with no file has nothing to have probed
 	}
 	for _, field := range []string{"width", "height", "size", "runtime_s"} {
-		if n := acc.Num(t, row[field], field); n <= 0 {
+		if n := acctest.Num(t, row[field], field); n <= 0 {
 			t.Errorf("%s = %v on %v", field, row[field], row["title"])
 		}
 	}
-	if c := acc.Str(row["video_codec"]); c != "h264" {
+	if c := acctest.Str(row["video_codec"]); c != "h264" {
 		t.Errorf("video_codec = %q on %v", c, row["title"])
 	}
-	if c := acc.Str(row["container"]); c != "mp4" && c != "mov,mp4,m4a,3gp,3g2,mj2" {
+	if c := acctest.Str(row["container"]); c != "mp4" && c != "mov,mp4,m4a,3gp,3g2,mj2" {
 		t.Errorf("container = %q on %v", c, row["title"])
 	}
 }
@@ -163,12 +163,12 @@ func assertQualityFacts(t *testing.T, row map[string]any) {
 // facts, and page boundaries that neither drop a row nor repeat one.
 func TestLibraryEpisodes(t *testing.T) {
 	out := suite.Call(t, "library_episodes", map[string]any{"library": "Shows"})
-	total := acc.Num(t, out["total"], "total")
+	total := acctest.Num(t, out["total"], "total")
 	if total != showEpisodes() {
 		t.Fatalf("total = %d, want the Shows library's %d episode files", total, showEpisodes())
 	}
-	for _, row := range acc.Rows(t, out["episodes"], "episodes") {
-		if acc.Str(row["series"]) == "" || acc.Str(row["path"]) == "" {
+	for _, row := range acctest.Rows(t, out["episodes"], "episodes") {
+		if acctest.Str(row["series"]) == "" || acctest.Str(row["path"]) == "" {
 			t.Errorf("row = %v", row)
 		}
 		assertQualityFacts(t, row)
@@ -179,11 +179,11 @@ func TestLibraryEpisodes(t *testing.T) {
 	seen := map[string]bool{}
 	for offset := 0; offset < total; offset += 2 {
 		page := suite.Call(t, "library_episodes", map[string]any{"library": "Shows", "limit": 2, "offset": offset})
-		if acc.Num(t, page["offset"], "offset") != offset || acc.Num(t, page["total"], "total") != total {
+		if acctest.Num(t, page["offset"], "offset") != offset || acctest.Num(t, page["total"], "total") != total {
 			t.Errorf("page at %d says offset %v of %v", offset, page["offset"], page["total"])
 		}
-		for _, row := range acc.Rows(t, page["episodes"], "episodes") {
-			key := fmt.Sprintf("%s S%02dE%02d", acc.Str(row["series"]), acc.Num(t, row["season"], "season"), acc.Num(t, row["episode"], "episode"))
+		for _, row := range acctest.Rows(t, page["episodes"], "episodes") {
+			key := fmt.Sprintf("%s S%02dE%02d", acctest.Str(row["series"]), acctest.Num(t, row["season"], "season"), acctest.Num(t, row["episode"], "episode"))
 			if seen[key] {
 				t.Errorf("%s came back on two pages", key)
 			}
@@ -194,7 +194,7 @@ func TestLibraryEpisodes(t *testing.T) {
 		t.Errorf("paging returned %d episodes, want the library's %d: %v", len(seen), showEpisodes(), seen)
 	}
 	// past the end is an empty page, not an error
-	if past := suite.Call(t, "library_episodes", map[string]any{"library": "Shows", "offset": total}); len(acc.Rows(t, past["episodes"], "episodes")) != 0 || acc.Num(t, past["offset"], "offset") != total {
+	if past := suite.Call(t, "library_episodes", map[string]any{"library": "Shows", "offset": total}); len(acctest.Rows(t, past["episodes"], "episodes")) != 0 || acctest.Num(t, past["offset"], "offset") != total {
 		t.Errorf("past the end = %v", past)
 	}
 
@@ -202,27 +202,27 @@ func TestLibraryEpisodes(t *testing.T) {
 	// A limit past the most one page holds is not refused; the page is capped
 	// at a thousand, which the whole server here does not reach
 	everything := suite.Call(t, "library_episodes", map[string]any{"quality": false, "limit": 5000})
-	if n := acc.Num(t, everything["total"], "total"); n != showEpisodes()+messyEpisodes() || len(acc.Rows(t, everything["episodes"], "episodes")) != n {
-		t.Errorf("every library's episodes = %d rows of %d, want %d", len(acc.Rows(t, everything["episodes"], "episodes")), n, showEpisodes()+messyEpisodes())
+	if n := acctest.Num(t, everything["total"], "total"); n != showEpisodes()+messyEpisodes() || len(acctest.Rows(t, everything["episodes"], "episodes")) != n {
+		t.Errorf("every library's episodes = %d rows of %d, want %d", len(acctest.Rows(t, everything["episodes"], "episodes")), n, showEpisodes()+messyEpisodes())
 	}
 
 	// one series on its own, and one season of it, counted
 	sev := findItem(t, "Shows", "Series", "Severance")
 	out = suite.Call(t, "library_episodes", map[string]any{"series_id": sev})
-	if n := len(acc.Rows(t, out["episodes"], "episodes")); n != 4 {
+	if n := len(acctest.Rows(t, out["episodes"], "episodes")); n != 4 {
 		t.Errorf("Severance has %d episode files, want 4", n)
 	}
 	out = suite.Call(t, "library_episodes", map[string]any{"series_id": sev, "season": 2, "quality": false})
-	listed := acc.Rows(t, out["episodes"], "episodes")
+	listed := acctest.Rows(t, out["episodes"], "episodes")
 	season2 := make([]int, 0, len(listed))
 	for _, row := range listed {
-		if acc.Num(t, row["season"], "season") != 2 {
+		if acctest.Num(t, row["season"], "season") != 2 {
 			t.Errorf("season 2 read has %v", row)
 		}
 		if row["width"] != nil {
 			t.Errorf("quality=false still carried the facts: %v", row)
 		}
-		season2 = append(season2, acc.Num(t, row["episode"], "episode"))
+		season2 = append(season2, acctest.Num(t, row["episode"], "episode"))
 	}
 	if !slices.Equal(season2, []int{1, 2}) {
 		t.Errorf("season 2 read = episodes %v, want [1 2]", season2)
@@ -239,10 +239,10 @@ func TestLibraryEpisodes(t *testing.T) {
 func episodeKeys(t *testing.T, out map[string]any) []string {
 	t.Helper()
 
-	episodeRows := acc.Rows(t, out["episodes"], "episodes")
+	episodeRows := acctest.Rows(t, out["episodes"], "episodes")
 	keys := make([]string, 0, len(episodeRows))
 	for _, row := range episodeRows {
-		keys = append(keys, fmt.Sprintf("%s S%02dE%02d", acc.Str(row["series"]), acc.Num(t, row["season"], "season"), acc.Num(t, row["episode"], "episode")))
+		keys = append(keys, fmt.Sprintf("%s S%02dE%02d", acctest.Str(row["series"]), acctest.Num(t, row["season"], "season"), acctest.Num(t, row["episode"], "episode")))
 	}
 
 	return keys
@@ -257,9 +257,9 @@ func episodeKeys(t *testing.T, out map[string]any) []string {
 func TestLibraryEpisodesRuntimes(t *testing.T) {
 	sev := findItem(t, "Messy Shows", "Series", "Severance")
 	var hack string
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "limit": 50})["items"], "items") {
-		if acc.Str(it["name"]) == ".hack//Liminality" {
-			hack = acc.Str(it["id"])
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "limit": 50})["items"], "items") {
+		if acctest.Str(it["name"]) == ".hack//Liminality" {
+			hack = acctest.Str(it["id"])
 		}
 	}
 	for _, c := range []struct {
@@ -271,8 +271,8 @@ func TestLibraryEpisodesRuntimes(t *testing.T) {
 	} {
 		out := suite.Call(t, "library_episodes", map[string]any{"series_id": c.series, "season": 1, "fields": []string{"runtime_s"}})
 		var got []int
-		for _, row := range acc.Rows(t, out["episodes"], "episodes") {
-			got = append(got, acc.Num(t, row["runtime_s"], "runtime_s"))
+		for _, row := range acctest.Rows(t, out["episodes"], "episodes") {
+			got = append(got, acctest.Num(t, row["runtime_s"], "runtime_s"))
 			// narrowed to it, nothing else comes back
 			if row["path"] != nil || row["width"] != nil || row["runtime_multiple"] != nil {
 				t.Errorf("fields not asked for came back: %v", row)
@@ -295,20 +295,20 @@ func TestShowEpisodesExist(t *testing.T) {
 		"series_id": sev,
 		"episodes":  []map[string]any{{"season": 1, "episode": 1}, {"season": 1, "episode": 9}},
 	})
-	if acc.Str(out["series"]) != "Severance" || acc.Str(out["series_id"]) != sev {
+	if acctest.Str(out["series"]) != "Severance" || acctest.Str(out["series_id"]) != sev {
 		t.Errorf("out = %v", out)
 	}
-	answers := acc.Rows(t, out["episodes"], "episodes")
+	answers := acctest.Rows(t, out["episodes"], "episodes")
 	if len(answers) != 2 {
 		t.Fatalf("asked about 2 episodes, answered %v", answers)
 	}
-	if !acc.IsBool(answers[0]["exists"], true) || !acc.IsBool(answers[0]["known"], true) || acc.Str(answers[0]["title"]) != "Good News About Hell" {
+	if !acctest.IsBool(answers[0]["exists"], true) || !acctest.IsBool(answers[0]["known"], true) || acctest.Str(answers[0]["title"]) != "Good News About Hell" {
 		t.Errorf("S01E01 is on disk: %v", answers[0])
 	}
-	if !acc.IsBool(answers[1]["exists"], false) || !acc.IsBool(answers[1]["known"], false) || answers[1]["id"] != nil {
+	if !acctest.IsBool(answers[1]["exists"], false) || !acctest.IsBool(answers[1]["known"], false) || answers[1]["id"] != nil {
 		t.Errorf("S01E09 is not in the fixture: %v", answers[1])
 	}
-	if acc.Num(t, out["absent"], "absent") != 1 {
+	if acctest.Num(t, out["absent"], "absent") != 1 {
 		t.Errorf("absent = %v, want 1", out["absent"])
 	}
 
@@ -322,10 +322,10 @@ func TestShowEpisodesExist(t *testing.T) {
 		}
 	}
 	byName := suite.Call(t, "show_episodes_exist", map[string]any{"series": "Severance", "library": "Shows", "episodes": []map[string]any{{"season": 2, "episode": 1}}})
-	if acc.Str(byName["series_id"]) != sev {
+	if acctest.Str(byName["series_id"]) != sev {
 		t.Errorf("narrowed by library = %v, want the Shows copy", byName)
 	}
-	if got := acc.Rows(t, byName["episodes"], "episodes"); len(got) != 1 || !acc.IsBool(got[0]["exists"], true) {
+	if got := acctest.Rows(t, byName["episodes"], "episodes"); len(got) != 1 || !acctest.IsBool(got[0]["exists"], true) {
 		t.Errorf("by name = %v", byName)
 	}
 
@@ -333,12 +333,12 @@ func TestShowEpisodesExist(t *testing.T) {
 	// Severance's third episode runs five seconds
 	messy := findItem(t, "Messy Shows", "Series", "Severance")
 	out = suite.Call(t, "show_episodes_exist", map[string]any{"series_id": messy, "fields": []string{"runtime_s"}, "episodes": []map[string]any{{"season": 1, "episode": 3}, {"season": 1, "episode": 4}}})
-	got := acc.Rows(t, out["episodes"], "episodes")
-	if len(got) != 2 || acc.Num(t, got[0]["runtime_s"], "runtime_s") != 5 {
+	got := acctest.Rows(t, out["episodes"], "episodes")
+	if len(got) != 2 || acctest.Num(t, got[0]["runtime_s"], "runtime_s") != 5 {
 		t.Errorf("the messy S01E03 = %v, want 5s", got)
 	}
 	// a miss has no file to have a runtime
-	if len(got) == 2 && (!acc.IsBool(got[1]["exists"], false) || got[1]["runtime_s"] != nil) {
+	if len(got) == 2 && (!acctest.IsBool(got[1]["exists"], false) || got[1]["runtime_s"] != nil) {
 		t.Errorf("the missing S01E04 = %v", got[1])
 	}
 
@@ -364,21 +364,21 @@ func TestShowResolve(t *testing.T) {
 		"severance",
 	} {
 		out := suite.Call(t, "show_resolve", map[string]any{"title": name, "library": "Shows"})
-		cands := acc.Rows(t, out["candidates"], "candidates")
+		cands := acctest.Rows(t, out["candidates"], "candidates")
 		if len(cands) == 0 {
 			t.Errorf("%s resolved to nothing (parsed %q)", name, out["parsed_title"])
 			continue
 		}
-		if acc.Str(cands[0]["series_id"]) != sev {
+		if acctest.Str(cands[0]["series_id"]) != sev {
 			t.Errorf("%s resolved to %v, want Severance", name, cands[0])
 		}
-		if score := acc.DecimalOr0(cands[0]["score"]); score < 0.9 {
+		if score := acctest.DecimalOr0(cands[0]["score"]); score < 0.9 {
 			t.Errorf("%s matched at %v, too low to act on", name, score)
 		}
 	}
 
 	out := suite.Call(t, "show_resolve", map[string]any{"title": "Severance.S02E07.1080p.ATVP.WEB-DL.H264-GROUP", "library": "Shows"})
-	if acc.Str(out["parsed_title"]) != "Severance" || acc.Num(t, out["parsed_season"], "parsed_season") != 2 || acc.Num(t, out["parsed_episode"], "parsed_episode") != 7 {
+	if acctest.Str(out["parsed_title"]) != "Severance" || acctest.Num(t, out["parsed_season"], "parsed_season") != 2 || acctest.Num(t, out["parsed_episode"], "parsed_episode") != 7 {
 		t.Errorf("parsed = %v", out)
 	}
 	for want, args := range map[string]map[string]any{
@@ -400,12 +400,12 @@ func TestShowResolve(t *testing.T) {
 		on    string
 	}{2015: {1, "and year"}, 1999: {0.75, "but a different year"}} {
 		out := suite.Call(t, "show_resolve", map[string]any{"title": "The Expanse", "library": "Shows", "year": year})
-		cands := acc.Rows(t, out["candidates"], "candidates")
-		if acc.Num(t, out["parsed_year"], "parsed_year") != year || len(cands) == 0 || acc.Str(cands[0]["series_id"]) != expanse {
+		cands := acctest.Rows(t, out["candidates"], "candidates")
+		if acctest.Num(t, out["parsed_year"], "parsed_year") != year || len(cands) == 0 || acctest.Str(cands[0]["series_id"]) != expanse {
 			t.Errorf("The Expanse in %d resolved to %v (parsed year %v)", year, cands, out["parsed_year"])
 			continue
 		}
-		if acc.Decimal(t, cands[0]["score"], "score") != want.score || !strings.Contains(acc.Str(cands[0]["matched_on"]), want.on) {
+		if acctest.Decimal(t, cands[0]["score"], "score") != want.score || !strings.Contains(acctest.Str(cands[0]["matched_on"]), want.on) {
 			t.Errorf("The Expanse in %d scored %v on %q, want %v on %q", year, cands[0]["score"], cands[0]["matched_on"], want.score, want.on)
 		}
 	}
@@ -415,20 +415,20 @@ func TestShowResolve(t *testing.T) {
 		score float64
 	}{"The Expanse (2015)": {2015, 1}, "The.Expanse.1999.S01E01.720p": {1999, 0.75}} {
 		out := suite.Call(t, "show_resolve", map[string]any{"title": name, "library": "Shows"})
-		cands := acc.Rows(t, out["candidates"], "candidates")
-		if acc.Str(out["parsed_title"]) != "The Expanse" || acc.Num(t, out["parsed_year"], "parsed_year") != want.year || len(cands) != 1 || acc.Str(cands[0]["series_id"]) != expanse || acc.Decimal(t, cands[0]["score"], "score") != want.score {
+		cands := acctest.Rows(t, out["candidates"], "candidates")
+		if acctest.Str(out["parsed_title"]) != "The Expanse" || acctest.Num(t, out["parsed_year"], "parsed_year") != want.year || len(cands) != 1 || acctest.Str(cands[0]["series_id"]) != expanse || acctest.Decimal(t, cands[0]["score"], "score") != want.score {
 			t.Errorf("%s = parsed %q in %v, candidates %v; want The Expanse in %d scoring %v", name, out["parsed_title"], out["parsed_year"], cands, want.year, want.score)
 		}
 	}
 
 	// across libraries the name is both copies of Severance; a limit keeps
 	// the first
-	both := acc.Rows(t, suite.Call(t, "show_resolve", map[string]any{"title": "Severance"})["candidates"], "candidates")
+	both := acctest.Rows(t, suite.Call(t, "show_resolve", map[string]any{"title": "Severance"})["candidates"], "candidates")
 	if len(both) != 2 {
 		t.Fatalf("Severance across libraries = %v, want the tidy and the messy copy", both)
 	}
-	one := acc.Rows(t, suite.Call(t, "show_resolve", map[string]any{"title": "Severance", "limit": 1})["candidates"], "candidates")
-	if len(one) != 1 || acc.Str(one[0]["series_id"]) != acc.Str(both[0]["series_id"]) {
+	one := acctest.Rows(t, suite.Call(t, "show_resolve", map[string]any{"title": "Severance", "limit": 1})["candidates"], "candidates")
+	if len(one) != 1 || acctest.Str(one[0]["series_id"]) != acctest.Str(both[0]["series_id"]) {
 		t.Errorf("limit 1 = %v, want the first of %v", one, both)
 	}
 }
@@ -445,7 +445,7 @@ func TestShowMissing(t *testing.T) {
 	needsTMDBRecording(t, "GET api.themoviedb.org/3/tv/95396/season/2")
 	id := findItem(t, "Shows", "Series", "Severance")
 	out := suite.Call(t, "show_missing", map[string]any{"series_id": id})
-	if acc.Str(out["series"]) != "Severance" || !acc.IsBool(out["supported"], true) || acc.Str(out["source"]) != "tmdb" || acc.Str(out["reason"]) != "" {
+	if acctest.Str(out["series"]) != "Severance" || !acctest.IsBool(out["supported"], true) || acctest.Str(out["source"]) != "tmdb" || acctest.Str(out["reason"]) != "" {
 		t.Fatalf("show_missing Severance = series %v supported %v source %v reason %q", out["series"], out["supported"], out["source"], out["reason"])
 	}
 	var want []string
@@ -457,7 +457,7 @@ func TestShowMissing(t *testing.T) {
 	if got := missingKeys(t, out); !slices.Equal(got, want) {
 		t.Errorf("missing = %v, want %v", got, want)
 	}
-	if first := acc.Rows(t, out["missing"], "missing"); len(first) == 0 || acc.Str(first[0]["name"]) != "In Perpetuity" || acc.Str(first[0]["air_date"]) != "2022-02-24" {
+	if first := acctest.Rows(t, out["missing"], "missing"); len(first) == 0 || acctest.Str(first[0]["name"]) != "In Perpetuity" || acctest.Str(first[0]["air_date"]) != "2022-02-24" {
 		t.Errorf("the first missing episode = %v, want TMDB's S01E03 In Perpetuity, aired 2022-02-24", first)
 	}
 	// nothing is skipped between the files it holds
@@ -471,11 +471,11 @@ func TestShowMissing(t *testing.T) {
 	// that survives
 	tng := findItem(t, "Messy Shows", "Series", "Star Trek The Next Generation")
 	out = suite.Call(t, "show_missing", map[string]any{"series_id": tng})
-	if !acc.IsBool(out["supported"], false) || out["missing"] != nil || acc.Str(out["source"]) != "none" || !strings.Contains(acc.Str(out["reason"]), "identify it first") {
+	if !acctest.IsBool(out["supported"], false) || out["missing"] != nil || acctest.Str(out["source"]) != "none" || !strings.Contains(acctest.Str(out["reason"]), "identify it first") {
 		t.Errorf("an unidentified series = supported %v missing %v source %v reason %q", out["supported"], out["missing"], out["source"], out["reason"])
 	}
-	gaps := acc.Rows(t, out["gaps_on_disk"], "gaps_on_disk")
-	if len(gaps) != 1 || acc.Num(t, gaps[0]["season"], "season") != 1 || acc.Num(t, gaps[0]["episode"], "episode") != 2 {
+	gaps := acctest.Rows(t, out["gaps_on_disk"], "gaps_on_disk")
+	if len(gaps) != 1 || acctest.Num(t, gaps[0]["season"], "season") != 1 || acctest.Num(t, gaps[0]["episode"], "episode") != 2 {
 		t.Errorf("gaps_on_disk = %v, want S01E02 alone", gaps)
 	}
 
@@ -496,10 +496,10 @@ func TestShowMissing(t *testing.T) {
 func missingKeys(t *testing.T, out map[string]any) []string {
 	t.Helper()
 
-	rows := acc.Rows(t, out["missing"], "missing")
+	rows := acctest.Rows(t, out["missing"], "missing")
 	got := make([]string, 0, len(rows))
 	for _, m := range rows {
-		got = append(got, fmt.Sprintf("S%02dE%02d", acc.Num(t, m["season"], "season"), acc.Num(t, m["episode"], "episode")))
+		got = append(got, fmt.Sprintf("S%02dE%02d", acctest.Num(t, m["season"], "season"), acctest.Num(t, m["episode"], "episode")))
 	}
 
 	return got
@@ -560,7 +560,7 @@ func TestStagedShows(t *testing.T) {
 	})
 	suite.Call(t, "library_create", map[string]any{"name": stagedShows, "type": "tvshows", "paths": []any{"/media/staged-shows"}, "scan": true})
 	// three series and the ten episode files between them
-	if !acc.EventuallyWithin(scanPatience, func() bool {
+	if !acctest.EventuallyWithin(scanPatience, func() bool {
 		counts := suite.TypeCounts(stagedShows)
 		return counts["Series"] == 3 && counts["Episode"] == 10
 	}) {
@@ -570,8 +570,8 @@ func TestStagedShows(t *testing.T) {
 		t.Fatal(err)
 	}
 	series := map[string]string{}
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": stagedShows})["items"], "items") {
-		series[acc.Str(it["path"])] = acc.Str(it["id"])
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": stagedShows})["items"], "items") {
+		series[acctest.Str(it["path"])] = acctest.Str(it["id"])
 	}
 	ds9ID := series["/media/staged-shows/"+ds9]
 	tvdbOnly, imdbOnly := series["/media/staged-shows/The Expanse (2015)"], series["/media/staged-shows/The Expanse (2015) IMDb"]
@@ -581,10 +581,10 @@ func TestStagedShows(t *testing.T) {
 
 	t.Run("specials", func(t *testing.T) {
 		// season 0 is a season like the others, and says its number
-		seasonRows := acc.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": ds9ID})["seasons"], "seasons")
+		seasonRows := acctest.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": ds9ID})["seasons"], "seasons")
 		numbers := make([]int, 0, len(seasonRows))
 		for _, s := range seasonRows {
-			numbers = append(numbers, acc.Num(t, s["season"], "season"))
+			numbers = append(numbers, acctest.Num(t, s["season"], "season"))
 		}
 		slices.Sort(numbers)
 		if !slices.Equal(numbers, []int{0, 1, 2, 3, 4}) {
@@ -594,7 +594,7 @@ func TestStagedShows(t *testing.T) {
 			t.Errorf("the specials = %v", got)
 		}
 		exists := suite.Call(t, "show_episodes_exist", map[string]any{"series_id": ds9ID, "episodes": []map[string]any{{"season": 0, "episode": 1}, {"season": 0, "episode": 2}}})
-		if got := acc.Rows(t, exists["episodes"], "episodes"); len(got) != 2 || !acc.IsBool(got[0]["exists"], true) || !acc.IsBool(got[1]["exists"], false) {
+		if got := acctest.Rows(t, exists["episodes"], "episodes"); len(got) != 2 || !acctest.IsBool(got[0]["exists"], true) || !acctest.IsBool(got[1]["exists"], false) {
 			t.Errorf("specials 1 and 2 = %v, want the first held", got)
 		}
 	})
@@ -602,17 +602,17 @@ func TestStagedShows(t *testing.T) {
 	t.Run("a file holding two episodes", func(t *testing.T) {
 		out := suite.Call(t, "library_episodes", map[string]any{"series_id": ds9ID, "season": 1, "quality": false})
 		var run map[string]any
-		for _, row := range acc.Rows(t, out["episodes"], "episodes") {
-			if acc.Num(t, row["episode"], "episode") == 2 {
+		for _, row := range acctest.Rows(t, out["episodes"], "episodes") {
+			if acctest.Num(t, row["episode"], "episode") == 2 {
 				run = row
 			}
 		}
-		if run == nil || acc.Num(t, run["episode_end"], "episode_end") != 3 {
+		if run == nil || acctest.Num(t, run["episode_end"], "episode_end") != 3 {
 			t.Errorf("S01E02E03 = %v, want episode 2 ending at 3", run)
 		}
 		exists := suite.Call(t, "show_episodes_exist", map[string]any{"series_id": ds9ID, "episodes": []map[string]any{{"season": 1, "episode": 1}, {"season": 1, "episode": 3}}})
-		got := acc.Rows(t, exists["episodes"], "episodes")
-		if len(got) != 2 || got[0]["covered_by"] != nil || !acc.IsBool(got[1]["exists"], true) || acc.Str(got[1]["covered_by"]) != "S01E02E03" {
+		got := acctest.Rows(t, exists["episodes"], "episodes")
+		if len(got) != 2 || got[0]["covered_by"] != nil || !acctest.IsBool(got[1]["exists"], true) || acctest.Str(got[1]["covered_by"]) != "S01E02E03" {
 			t.Errorf("S01E01 and S01E03 = %v, want E03 held by the S01E02E03 file", got)
 		}
 	})
@@ -622,13 +622,13 @@ func TestStagedShows(t *testing.T) {
 		// the series is read whole; the answer is the same either way
 		ask := []map[string]any{{"season": 4, "episode": 1}, {"season": 0, "episode": 1}, {"season": 2, "episode": 1}, {"season": 5, "episode": 1}, {"season": 1, "episode": 3}, {"season": 3, "episode": 2}}
 		out := suite.Call(t, "show_episodes_exist", map[string]any{"series_id": ds9ID, "episodes": ask})
-		rows := acc.Rows(t, out["episodes"], "episodes")
+		rows := acctest.Rows(t, out["episodes"], "episodes")
 		got := make([]string, 0, len(rows))
 		for _, row := range rows {
-			got = append(got, fmt.Sprintf("S%02dE%02d %v", acc.Num(t, row["season"], "season"), acc.Num(t, row["episode"], "episode"), row["exists"]))
+			got = append(got, fmt.Sprintf("S%02dE%02d %v", acctest.Num(t, row["season"], "season"), acctest.Num(t, row["episode"], "episode"), row["exists"]))
 		}
 		want := []string{"S04E01 true", "S00E01 true", "S02E01 true", "S05E01 false", "S01E03 true", "S03E02 false"}
-		if !slices.Equal(got, want) || acc.Num(t, out["absent"], "absent") != 2 {
+		if !slices.Equal(got, want) || acctest.Num(t, out["absent"], "absent") != 2 {
 			t.Errorf("six episodes across five seasons = %v (absent %v), want %v", got, out["absent"], want)
 		}
 	})
@@ -646,7 +646,7 @@ func TestStagedShows(t *testing.T) {
 		}
 		for name, id := range map[string]string{"TVDB": tvdbOnly, "IMDb": imdbOnly} {
 			out := suite.Call(t, "show_missing", map[string]any{"series_id": id})
-			if !acc.IsBool(out["supported"], true) || acc.Str(out["source"]) != "tmdb" || acc.Str(out["reason"]) != "" {
+			if !acctest.IsBool(out["supported"], true) || acctest.Str(out["source"]) != "tmdb" || acctest.Str(out["reason"]) != "" {
 				t.Errorf("the copy known by its %s id = supported %v source %v reason %q", name, out["supported"], out["source"], out["reason"])
 				continue
 			}
@@ -665,8 +665,8 @@ func TestStagedShows(t *testing.T) {
 func TestSpecialsInAShow(t *testing.T) {
 	expanse := findItem(t, "Shows", "Series", "The Expanse")
 	names := map[int]string{}
-	for _, s := range acc.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": expanse})["seasons"], "seasons") {
-		names[acc.Num(t, s["season"], "season")] = acc.Str(s["name"])
+	for _, s := range acctest.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": expanse})["seasons"], "seasons") {
+		names[acctest.Num(t, s["season"], "season")] = acctest.Str(s["name"])
 	}
 	// Emby names a season as TMDB does, Jellyfin by its number
 	first := "Season 1"
@@ -677,27 +677,27 @@ func TestSpecialsInAShow(t *testing.T) {
 		t.Errorf("The Expanse's seasons = %v, want Specials and %s", names, first)
 	}
 	specials := suite.Call(t, "library_episodes", map[string]any{"series_id": expanse, "season": 0})
-	eps := acc.Rows(t, specials["episodes"], "episodes")
-	if len(eps) != 1 || acc.Num(t, eps[0]["season"], "season") != 0 || acc.Num(t, eps[0]["episode"], "episode") != 1 || acc.Str(eps[0]["title"]) != "Inside The Expanse: Episode 1" {
+	eps := acctest.Rows(t, specials["episodes"], "episodes")
+	if len(eps) != 1 || acctest.Num(t, eps[0]["season"], "season") != 0 || acctest.Num(t, eps[0]["episode"], "episode") != 1 || acctest.Str(eps[0]["title"]) != "Inside The Expanse: Episode 1" {
 		t.Errorf("the specials = %v, want TMDB's first", eps)
 	}
-	exists := acc.Rows(t, suite.Call(t, "show_episodes_exist", map[string]any{"series_id": expanse, "episodes": []map[string]any{{"season": 0, "episode": 1}, {"season": 0, "episode": 2}}})["episodes"], "episodes")
-	if len(exists) != 2 || !acc.IsBool(exists[0]["exists"], true) || !acc.IsBool(exists[1]["exists"], false) {
+	exists := acctest.Rows(t, suite.Call(t, "show_episodes_exist", map[string]any{"series_id": expanse, "episodes": []map[string]any{{"season": 0, "episode": 1}, {"season": 0, "episode": 2}}})["episodes"], "episodes")
+	if len(exists) != 2 || !acctest.IsBool(exists[0]["exists"], true) || !acctest.IsBool(exists[1]["exists"], false) {
 		t.Errorf("specials 1 and 2 = %v, want the first held", exists)
 	}
 
 	// nothing on disk is a gap, and nothing TMDB lists among the specials is
 	// missing
 	plain := suite.Call(t, "audit_missing_episodes", map[string]any{"library": "Shows"})
-	if acc.Num(t, plain["total_findings"], "total_findings") != 0 || acc.Num(t, plain["items_scanned"], "items_scanned") != showEpisodes() {
+	if acctest.Num(t, plain["total_findings"], "total_findings") != 0 || acctest.Num(t, plain["items_scanned"], "items_scanned") != showEpisodes() {
 		t.Errorf("from the files = %v, want none of the %d episodes a gap", plain, showEpisodes())
 	}
 	needsTMDBRecording(t, "GET api.themoviedb.org/3/tv/63639")
 	if got := missingKeys(t, suite.Call(t, "show_missing", map[string]any{"series_id": expanse})); len(got) == 0 || got[0] != "S01E03" || slices.ContainsFunc(got, func(k string) bool { return strings.HasPrefix(k, "S00") }) {
 		t.Errorf("show_missing The Expanse = %v, want the run from S01E03 and no special", got)
 	}
-	for _, f := range acc.Rows(t, suite.Call(t, "audit_missing_episodes", map[string]any{"library": "Shows", "provider": true})["findings"], "findings") {
-		if strings.Contains(acc.Str(f["detail"]), "S00") {
+	for _, f := range acctest.Rows(t, suite.Call(t, "audit_missing_episodes", map[string]any{"library": "Shows", "provider": true})["findings"], "findings") {
+		if strings.Contains(acctest.Str(f["detail"]), "S00") {
 			t.Errorf("audit_missing_episodes lists a special: %v", f)
 		}
 	}

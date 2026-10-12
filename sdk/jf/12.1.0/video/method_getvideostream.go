@@ -29,6 +29,7 @@ func (c Client) GetVideoStream(ctx context.Context, itemId string, options ...jf
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideoStream",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Videos/%s/stream", url.PathEscape(itemId)),
 		StreamResponse: true,

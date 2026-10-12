@@ -29,6 +29,7 @@ func (c Client) GetItemsByIdImagesByType(ctx context.Context, id string, typePar
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetItemsByIdImagesByType",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Items/%s/Images/%s", url.PathEscape(id), url.PathEscape(string(typeParam))),
 		StreamResponse: true,

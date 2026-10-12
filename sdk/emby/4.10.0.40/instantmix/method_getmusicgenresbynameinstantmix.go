@@ -31,6 +31,7 @@ func (c Client) GetMusicGenresByNameInstantMix(ctx context.Context, name string,
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetMusicGenresByNameInstantMix",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/MusicGenres/%s/InstantMix", url.PathEscape(name)),
 	}

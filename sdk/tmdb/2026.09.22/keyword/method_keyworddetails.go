@@ -19,6 +19,7 @@ func (c Client) KeywordDetails(ctx context.Context, keywordId int) (result tmdb.
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "KeywordDetails",
 		Path:       fmt.Sprintf("/3/keyword/%d", keywordId),
 	}
 

@@ -29,6 +29,7 @@ func (c Client) GetTrickplayHlsPlaylist(ctx context.Context, itemId string, widt
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetTrickplayHlsPlaylist",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Videos/%s/Trickplay/%d/tiles.m3u8", url.PathEscape(itemId), width),
 		StreamResponse: true,

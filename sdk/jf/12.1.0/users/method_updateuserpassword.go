@@ -28,6 +28,7 @@ func (c Client) UpdateUserPassword(ctx context.Context, input jf.UpdateUserPassw
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateUserPassword",
 		OptionsObject: option,
 		Path:          "/Users/Password",
 	}

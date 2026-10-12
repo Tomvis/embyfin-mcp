@@ -27,6 +27,7 @@ func (c Client) GetLatestMedia(ctx context.Context, options ...jf.GetLatestMedia
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLatestMedia",
 		OptionsObject: option,
 		Path:          "/Items/Latest",
 	}

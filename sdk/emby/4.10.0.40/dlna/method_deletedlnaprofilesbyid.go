@@ -20,6 +20,7 @@ func (c Client) DeleteDlnaProfilesById(ctx context.Context, id string) (result e
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteDlnaProfilesById",
 		Path:       fmt.Sprintf("/Dlna/Profiles/%s", url.PathEscape(id)),
 	}
 

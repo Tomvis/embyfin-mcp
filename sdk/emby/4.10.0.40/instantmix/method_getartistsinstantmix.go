@@ -30,6 +30,7 @@ func (c Client) GetArtistsInstantMix(ctx context.Context, options ...emby.GetArt
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetArtistsInstantMix",
 		OptionsObject: option,
 		Path:          "/Artists/InstantMix",
 	}

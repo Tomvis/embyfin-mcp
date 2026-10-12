@@ -21,6 +21,7 @@ func (c Client) PostUsersByUserIdCopyData(ctx context.Context, userId string, in
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByUserIdCopyData",
 		Path:       fmt.Sprintf("/Users/%s/CopyData", url.PathEscape(userId)),
 	}
 

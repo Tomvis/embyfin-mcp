@@ -20,6 +20,7 @@ func (c Client) PostUsersByIdImagesByTypeByIndexDelete(ctx context.Context, id s
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByIdImagesByTypeByIndexDelete",
 		Path:       fmt.Sprintf("/Users/%s/Images/%s/%d/Delete", url.PathEscape(id), url.PathEscape(string(typeParam)), index),
 	}
 

@@ -29,6 +29,7 @@ func (c Client) DiscoverTv(ctx context.Context, options ...tmdb.DiscoverTvOption
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "DiscoverTv",
 		OptionsObject: option,
 		Path:          "/3/discover/tv",
 	}

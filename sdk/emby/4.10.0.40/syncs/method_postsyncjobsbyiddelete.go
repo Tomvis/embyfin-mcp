@@ -20,6 +20,7 @@ func (c Client) PostSyncJobsByIdDelete(ctx context.Context, id string) (result e
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSyncJobsByIdDelete",
 		Path:       fmt.Sprintf("/Sync/Jobs/%s/Delete", url.PathEscape(id)),
 	}
 

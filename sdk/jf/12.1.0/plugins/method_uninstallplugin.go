@@ -19,6 +19,7 @@ func (c Client) UninstallPlugin(ctx context.Context, pluginId string) (result jf
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "UninstallPlugin",
 		Path:       fmt.Sprintf("/Plugins/%s", url.PathEscape(pluginId)),
 	}
 

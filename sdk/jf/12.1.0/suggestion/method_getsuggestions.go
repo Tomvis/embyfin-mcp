@@ -29,6 +29,7 @@ func (c Client) GetSuggestions(ctx context.Context, options ...jf.GetSuggestions
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSuggestions",
 		OptionsObject: option,
 		Path:          "/Items/Suggestions",
 	}

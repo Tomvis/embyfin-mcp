@@ -22,6 +22,7 @@ func (c Client) PostSystemConfigurationPartial(ctx context.Context, input io.Rea
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSystemConfigurationPartial",
 		Path:       "/System/Configuration/Partial",
 	}
 

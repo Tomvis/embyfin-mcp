@@ -27,6 +27,7 @@ func (c Client) PostAddedMovies(ctx context.Context, options ...jf.PostAddedMovi
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostAddedMovies",
 		OptionsObject: option,
 		Path:          "/Library/Movies/Added",
 	}

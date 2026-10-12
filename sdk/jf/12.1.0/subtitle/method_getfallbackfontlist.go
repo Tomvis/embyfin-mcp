@@ -17,6 +17,7 @@ func (c Client) GetFallbackFontList(ctx context.Context) (result jf.GetFallbackF
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetFallbackFontList",
 		Path:       "/FallbackFont/Fonts",
 	}
 

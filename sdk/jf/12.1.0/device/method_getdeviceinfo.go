@@ -21,6 +21,7 @@ func (c Client) GetDeviceInfo(ctx context.Context, id string) (result jf.GetDevi
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetDeviceInfo",
 		OptionsObject: option,
 		Path:          "/Devices/Info",
 	}

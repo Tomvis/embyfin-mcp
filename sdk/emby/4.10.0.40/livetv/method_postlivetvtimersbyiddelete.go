@@ -20,6 +20,7 @@ func (c Client) PostLiveTvTimersByIdDelete(ctx context.Context, id string) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLiveTvTimersByIdDelete",
 		Path:       fmt.Sprintf("/LiveTv/Timers/%s/Delete", url.PathEscape(id)),
 	}
 

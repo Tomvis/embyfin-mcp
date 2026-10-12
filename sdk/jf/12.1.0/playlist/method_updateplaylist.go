@@ -20,6 +20,7 @@ func (c Client) UpdatePlaylist(ctx context.Context, playlistId string, input jf.
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdatePlaylist",
 		Path:       fmt.Sprintf("/Playlists/%s", url.PathEscape(playlistId)),
 	}
 

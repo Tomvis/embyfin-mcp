@@ -20,6 +20,7 @@ func (c Client) UploadSubtitle(ctx context.Context, itemId string, input jf.Uplo
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UploadSubtitle",
 		Path:       fmt.Sprintf("/Videos/%s/Subtitles", url.PathEscape(itemId)),
 	}
 

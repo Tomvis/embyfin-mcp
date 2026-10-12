@@ -29,6 +29,7 @@ func (c Client) GetLiveTvTimers(ctx context.Context, options ...emby.GetLiveTvTi
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLiveTvTimers",
 		OptionsObject: option,
 		Path:          "/LiveTv/Timers",
 	}

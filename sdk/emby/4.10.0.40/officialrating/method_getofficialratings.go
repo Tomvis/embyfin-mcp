@@ -30,6 +30,7 @@ func (c Client) GetOfficialRatings(ctx context.Context, options ...emby.GetOffic
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetOfficialRatings",
 		OptionsObject: option,
 		Path:          "/OfficialRatings",
 	}

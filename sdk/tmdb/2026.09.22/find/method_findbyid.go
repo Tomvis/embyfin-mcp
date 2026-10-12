@@ -20,6 +20,7 @@ func (c Client) FindById(ctx context.Context, externalId string, options tmdb.Fi
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "FindById",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/3/find/%s", url.PathEscape(externalId)),
 	}

@@ -30,6 +30,7 @@ func (c Client) GetAudioLayouts(ctx context.Context, options ...emby.GetAudioLay
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetAudioLayouts",
 		OptionsObject: option,
 		Path:          "/AudioLayouts",
 	}

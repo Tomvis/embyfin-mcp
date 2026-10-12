@@ -27,6 +27,7 @@ func (c Client) DeleteListingProvider(ctx context.Context, id ...string) (result
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "DeleteListingProvider",
 		OptionsObject: option,
 		Path:          "/LiveTv/ListingProviders",
 	}

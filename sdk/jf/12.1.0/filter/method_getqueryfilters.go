@@ -28,6 +28,7 @@ func (c Client) GetQueryFilters(ctx context.Context, options ...jf.GetQueryFilte
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetQueryFilters",
 		OptionsObject: option,
 		Path:          "/Items/Filters2",
 	}

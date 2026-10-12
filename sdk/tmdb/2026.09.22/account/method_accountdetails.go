@@ -28,6 +28,7 @@ func (c Client) AccountDetails(ctx context.Context, accountId int, sessionId ...
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "AccountDetails",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/account/%d", accountId),
 	}

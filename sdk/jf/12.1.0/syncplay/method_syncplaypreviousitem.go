@@ -18,6 +18,7 @@ func (c Client) SyncPlayPreviousItem(ctx context.Context, input jf.PreviousItemR
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayPreviousItem",
 		Path:       "/SyncPlay/PreviousItem",
 	}
 

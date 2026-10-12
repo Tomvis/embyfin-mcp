@@ -17,6 +17,7 @@ func (c Client) GetSchedulesDirectCountries(ctx context.Context) (result jf.GetS
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSchedulesDirectCountries",
 		Path:       "/LiveTv/ListingProviders/SchedulesDirect/Countries",
 	}
 

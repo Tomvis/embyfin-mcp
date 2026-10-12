@@ -28,6 +28,7 @@ func (c Client) PersonMovieCredits(ctx context.Context, personId int, language .
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "PersonMovieCredits",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/person/%d/movie_credits", personId),
 	}

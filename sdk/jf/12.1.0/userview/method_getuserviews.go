@@ -28,6 +28,7 @@ func (c Client) GetUserViews(ctx context.Context, options ...jf.GetUserViewsOpti
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUserViews",
 		OptionsObject: option,
 		Path:          "/UserViews",
 	}

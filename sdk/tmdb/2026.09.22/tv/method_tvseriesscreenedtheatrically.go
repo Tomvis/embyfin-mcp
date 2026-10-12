@@ -19,6 +19,7 @@ func (c Client) TvSeriesScreenedTheatrically(ctx context.Context, seriesId int) 
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "TvSeriesScreenedTheatrically",
 		Path:       fmt.Sprintf("/3/tv/%d/screened_theatrically", seriesId),
 	}
 

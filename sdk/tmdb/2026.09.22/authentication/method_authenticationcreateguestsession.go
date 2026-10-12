@@ -18,6 +18,7 @@ func (c Client) AuthenticationCreateGuestSession(ctx context.Context) (result tm
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "AuthenticationCreateGuestSession",
 		Path:       "/3/authentication/guest_session/new",
 	}
 

@@ -20,6 +20,7 @@ func (c Client) SearchCollection(ctx context.Context, options tmdb.SearchCollect
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "SearchCollection",
 		OptionsObject: options,
 		Path:          "/3/search/collection",
 	}

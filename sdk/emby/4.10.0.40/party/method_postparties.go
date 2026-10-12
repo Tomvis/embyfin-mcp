@@ -19,6 +19,7 @@ func (c Client) PostParties(ctx context.Context) (result emby.PostPartiesRespons
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostParties",
 		Path:       "/Parties",
 	}
 

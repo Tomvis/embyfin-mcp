@@ -30,6 +30,7 @@ func (c Client) GetChannelItems(ctx context.Context, channelId string, options .
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetChannelItems",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Channels/%s/Items", url.PathEscape(channelId)),
 	}

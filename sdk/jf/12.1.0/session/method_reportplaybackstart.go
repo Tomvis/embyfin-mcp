@@ -18,6 +18,7 @@ func (c Client) ReportPlaybackStart(ctx context.Context, input jf.PlaybackStartI
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "ReportPlaybackStart",
 		Path:       "/Sessions/Playing",
 	}
 

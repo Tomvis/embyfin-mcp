@@ -18,6 +18,7 @@ func (c Client) PostSessionsLogout(ctx context.Context) (result emby.PostSession
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSessionsLogout",
 		Path:       "/Sessions/Logout",
 	}
 

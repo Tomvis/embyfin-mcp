@@ -20,6 +20,7 @@ func (c Client) ReviewDetails(ctx context.Context, reviewId string) (result tmdb
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "ReviewDetails",
 		Path:       fmt.Sprintf("/3/review/%s", url.PathEscape(reviewId)),
 	}
 

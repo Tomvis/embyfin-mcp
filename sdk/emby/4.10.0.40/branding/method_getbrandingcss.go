@@ -18,6 +18,7 @@ func (c Client) GetBrandingCss(ctx context.Context) (result emby.GetBrandingCssR
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetBrandingCss",
 		Path:           "/Branding/Css",
 		StreamResponse: true,
 	}

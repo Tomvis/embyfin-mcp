@@ -18,6 +18,7 @@ func (c Client) SyncPlaySeek(ctx context.Context, input jf.SeekRequestDto) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlaySeek",
 		Path:       "/SyncPlay/Seek",
 	}
 

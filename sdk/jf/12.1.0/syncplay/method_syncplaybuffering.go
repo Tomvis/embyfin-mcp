@@ -18,6 +18,7 @@ func (c Client) SyncPlayBuffering(ctx context.Context, input jf.BufferRequestDto
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayBuffering",
 		Path:       "/SyncPlay/Buffering",
 	}
 

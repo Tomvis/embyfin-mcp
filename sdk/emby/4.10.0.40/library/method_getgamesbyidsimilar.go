@@ -31,6 +31,7 @@ func (c Client) GetGamesByIdSimilar(ctx context.Context, id string, options ...e
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetGamesByIdSimilar",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Games/%s/Similar", url.PathEscape(id)),
 	}

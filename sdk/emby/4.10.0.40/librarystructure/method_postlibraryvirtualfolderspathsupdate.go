@@ -19,6 +19,7 @@ func (c Client) PostLibraryVirtualFoldersPathsUpdate(ctx context.Context, input 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLibraryVirtualFoldersPathsUpdate",
 		Path:       "/Library/VirtualFolders/Paths/Update",
 	}
 

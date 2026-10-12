@@ -24,6 +24,7 @@ func (c Client) PostUsersByIdConnectLink(ctx context.Context, id string, connect
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostUsersByIdConnectLink",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Connect/Link", url.PathEscape(id)),
 	}

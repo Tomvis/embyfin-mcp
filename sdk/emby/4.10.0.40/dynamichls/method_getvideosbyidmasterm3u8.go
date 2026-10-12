@@ -20,6 +20,7 @@ func (c Client) GetVideosByIdMasterM3u8(ctx context.Context, id string, options 
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideosByIdMasterM3u8",
 		OptionsObject:  options,
 		Path:           fmt.Sprintf("/Videos/%s/master.m3u8", url.PathEscape(id)),
 		StreamResponse: true,

@@ -21,6 +21,7 @@ func (c Client) PostUsersByUserIdFavoriteItemsById(ctx context.Context, userId s
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByUserIdFavoriteItemsById",
 		Path:       fmt.Sprintf("/Users/%s/FavoriteItems/%s", url.PathEscape(userId), url.PathEscape(id)),
 	}
 

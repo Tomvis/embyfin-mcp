@@ -19,6 +19,7 @@ func (c Client) PostDlnaProfiles(ctx context.Context, input emby.DlnaProfilesDln
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostDlnaProfiles",
 		Path:       "/Dlna/Profiles",
 	}
 

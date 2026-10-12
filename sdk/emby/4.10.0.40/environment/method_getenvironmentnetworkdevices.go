@@ -18,6 +18,7 @@ func (c Client) GetEnvironmentNetworkDevices(ctx context.Context) (result emby.G
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEnvironmentNetworkDevices",
 		Path:       "/Environment/NetworkDevices",
 	}
 

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // Every tool taking a series id refuses the id of a film or an episode, and
@@ -17,7 +17,7 @@ import (
 func TestSeriesIDsNameASeries(t *testing.T) {
 	film := findItem(t, "Movies", "Movie", "Arrival")
 	series := findItem(t, "Shows", "Series", "Breaking Bad")
-	pilot := acc.Str(acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")[0]["id"])
+	pilot := acctest.Str(acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")[0]["id"])
 
 	isFilm := film + " is a film, Arrival (2016), not a series"
 	isEpisode := pilot + " is an episode, Breaking Bad S01E01 Pilot, not a series: its series is Breaking Bad, id " + series
@@ -45,12 +45,12 @@ func TestSeriesIDsNameASeries(t *testing.T) {
 		map[string]any{"series_id": film, "episodes": one},
 		map[string]any{"series_id": series, "episodes": one},
 	}})
-	results := acc.Rows(t, out["results"], "results")
-	if len(results) != 2 || !strings.Contains(acc.Str(results[0]["error"]), isFilm) || results[1]["error"] != nil {
+	results := acctest.Rows(t, out["results"], "results")
+	if len(results) != 2 || !strings.Contains(acctest.Str(results[0]["error"]), isFilm) || results[1]["error"] != nil {
 		t.Errorf("a batch with a film's id = %v", results)
 	}
 	// and the series' own id is answered as ever
-	if got := suite.Call(t, "show_seasons", map[string]any{"series_id": series}); acc.Str(got["series"]) != "Breaking Bad" {
+	if got := suite.Call(t, "show_seasons", map[string]any{"series_id": series}); acctest.Str(got["series"]) != "Breaking Bad" {
 		t.Errorf("show_seasons of the series = %v", got)
 	}
 }

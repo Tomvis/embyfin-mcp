@@ -28,6 +28,7 @@ func (c Client) GetRootFolder(ctx context.Context, userId ...string) (result jf.
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetRootFolder",
 		OptionsObject: option,
 		Path:          "/Items/Root",
 	}

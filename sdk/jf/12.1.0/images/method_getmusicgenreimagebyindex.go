@@ -29,6 +29,7 @@ func (c Client) GetMusicGenreImageByIndex(ctx context.Context, name string, imag
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetMusicGenreImageByIndex",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/MusicGenres/%s/Images/%s/%d", url.PathEscape(name), url.PathEscape(string(imageType)), imageIndex),
 		StreamResponse: true,

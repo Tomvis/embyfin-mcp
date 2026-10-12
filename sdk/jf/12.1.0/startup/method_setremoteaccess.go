@@ -20,6 +20,7 @@ func (c Client) SetRemoteAccess(ctx context.Context, input jf.StartupRemoteAcces
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SetRemoteAccess",
 		Path:       "/Startup/RemoteAccess",
 	}
 

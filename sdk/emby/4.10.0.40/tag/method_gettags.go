@@ -30,6 +30,7 @@ func (c Client) GetTags(ctx context.Context, options ...emby.GetTagsOptions) (re
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetTags",
 		OptionsObject: option,
 		Path:          "/Tags",
 	}

@@ -17,6 +17,7 @@ func (c Client) CompleteWizard(ctx context.Context) (result jf.CompleteWizardRes
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "CompleteWizard",
 		Path:       "/Startup/Complete",
 	}
 

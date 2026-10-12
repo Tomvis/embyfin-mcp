@@ -18,6 +18,7 @@ func (c Client) GetBrandingOptions(ctx context.Context) (result jf.GetBrandingOp
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetBrandingOptions",
 		Path:       "/Branding/Configuration",
 	}
 

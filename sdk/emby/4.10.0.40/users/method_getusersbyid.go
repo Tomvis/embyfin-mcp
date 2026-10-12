@@ -21,6 +21,7 @@ func (c Client) GetUsersById(ctx context.Context, id string) (result emby.GetUse
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetUsersById",
 		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(id)),
 	}
 

@@ -27,6 +27,7 @@ func (c Client) GetLineups(ctx context.Context, options ...jf.GetLineupsOptions)
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLineups",
 		OptionsObject: option,
 		Path:          "/LiveTv/ListingProviders/Lineups",
 	}

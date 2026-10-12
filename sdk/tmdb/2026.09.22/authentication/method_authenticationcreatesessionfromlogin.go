@@ -19,6 +19,7 @@ func (c Client) AuthenticationCreateSessionFromLogin(ctx context.Context, input 
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "AuthenticationCreateSessionFromLogin",
 		Path:       "/3/authentication/token/validate_with_login",
 	}
 

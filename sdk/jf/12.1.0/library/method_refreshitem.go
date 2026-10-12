@@ -28,6 +28,7 @@ func (c Client) RefreshItem(ctx context.Context, itemId string, options ...jf.Re
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "RefreshItem",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Refresh", url.PathEscape(itemId)),
 	}

@@ -19,6 +19,7 @@ func (c Client) PostItemsRemoteSearchGame(ctx context.Context, input emby.Remote
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostItemsRemoteSearchGame",
 		Path:       "/Items/RemoteSearch/Game",
 	}
 

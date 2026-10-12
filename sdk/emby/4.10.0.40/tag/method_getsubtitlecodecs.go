@@ -30,6 +30,7 @@ func (c Client) GetSubtitleCodecs(ctx context.Context, options ...emby.GetSubtit
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSubtitleCodecs",
 		OptionsObject: option,
 		Path:          "/SubtitleCodecs",
 	}

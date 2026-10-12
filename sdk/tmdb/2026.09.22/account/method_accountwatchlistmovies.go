@@ -29,6 +29,7 @@ func (c Client) AccountWatchlistMovies(ctx context.Context, accountId int, optio
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "AccountWatchlistMovies",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/account/%d/watchlist/movies", accountId),
 	}

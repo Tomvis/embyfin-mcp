@@ -28,6 +28,7 @@ func (c Client) DeleteLibraryVirtualFolders(ctx context.Context, options ...emby
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "DeleteLibraryVirtualFolders",
 		OptionsObject: option,
 		Path:          "/Library/VirtualFolders",
 	}

@@ -28,6 +28,7 @@ func (c Client) AddMediaPath(ctx context.Context, input jf.MediaPathDto, refresh
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "AddMediaPath",
 		OptionsObject: option,
 		Path:          "/Library/VirtualFolders/Paths",
 	}

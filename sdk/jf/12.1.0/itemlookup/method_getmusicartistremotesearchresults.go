@@ -18,6 +18,7 @@ func (c Client) GetMusicArtistRemoteSearchResults(ctx context.Context, input jf.
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetMusicArtistRemoteSearchResults",
 		Path:       "/Items/RemoteSearch/MusicArtist",
 	}
 

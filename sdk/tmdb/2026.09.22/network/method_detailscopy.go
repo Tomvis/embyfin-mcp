@@ -19,6 +19,7 @@ func (c Client) DetailsCopy(ctx context.Context, networkId int) (result tmdb.Det
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "DetailsCopy",
 		Path:       fmt.Sprintf("/3/network/%d/alternative_names", networkId),
 	}
 

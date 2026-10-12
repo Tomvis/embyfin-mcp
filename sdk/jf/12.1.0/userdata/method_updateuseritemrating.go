@@ -29,6 +29,7 @@ func (c Client) UpdateUserItemRating(ctx context.Context, itemId string, options
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateUserItemRating",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/UserItems/%s/Rating", url.PathEscape(itemId)),
 	}

@@ -20,6 +20,7 @@ func (c Client) UpdateItem(ctx context.Context, itemId string, input jf.BaseItem
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateItem",
 		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(itemId)),
 	}
 

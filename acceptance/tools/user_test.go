@@ -12,26 +12,26 @@ import (
 	"testing"
 	"time"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 func TestUserList(t *testing.T) {
 	out := suite.Call(t, "user_list", nil)
 	users := map[string]map[string]any{}
-	for _, u := range acc.Rows(t, out["users"], "users") {
-		users[acc.Str(u["name"])] = u
+	for _, u := range acctest.Rows(t, out["users"], "users") {
+		users[acctest.Str(u["name"])] = u
 	}
 	root, alice := users["root"], users["alice"]
 	if root == nil || alice == nil || len(users) != 2 {
 		t.Fatalf("users = %v, want root and alice", out["users"])
 	}
-	if !acc.BoolOf(root["admin"]) {
+	if !acctest.BoolOf(root["admin"]) {
 		t.Error("root is not an admin")
 	}
-	if acc.BoolOf(alice["admin"]) {
+	if acctest.BoolOf(alice["admin"]) {
 		t.Error("alice is an admin")
 	}
-	if acc.Str(root["id"]) != os.Getenv("EMBYFIN_TEST_ADMIN_ID") || acc.Str(alice["id"]) != os.Getenv("EMBYFIN_TEST_USER_ID") {
+	if acctest.Str(root["id"]) != os.Getenv("EMBYFIN_TEST_ADMIN_ID") || acctest.Str(alice["id"]) != os.Getenv("EMBYFIN_TEST_USER_ID") {
 		t.Errorf("root and alice are %v and %v, want the ids the server gave them", root["id"], alice["id"])
 	}
 }
@@ -42,8 +42,8 @@ func TestWatchState(t *testing.T) {
 	series := findItem(t, "Shows", "Series", "Breaking Bad")
 	eps := suite.Call(t, "library_episodes", map[string]any{"series_id": series})
 	byNumber := map[int]string{}
-	for _, e := range acc.Rows(t, eps["episodes"], "episodes") {
-		byNumber[acc.Num(t, e["episode"], "episode")] = acc.Str(e["id"])
+	for _, e := range acctest.Rows(t, eps["episodes"], "episodes") {
+		byNumber[acctest.Num(t, e["episode"], "episode")] = acctest.Str(e["id"])
 	}
 	e1, e2, e3 := byNumber[1], byNumber[2], byNumber[3]
 	if e1 == "" || e2 == "" || e3 == "" {
@@ -51,33 +51,33 @@ func TestWatchState(t *testing.T) {
 	}
 
 	out := suite.Call(t, "item_set_state", map[string]any{"id": e1, "user": "alice", "watched": true})
-	if acc.Str(out["user"]) != "alice" || acc.Str(out["item"]) != "Pilot" {
+	if acctest.Str(out["user"]) != "alice" || acctest.Str(out["item"]) != "Pilot" {
 		t.Errorf("item_set_state = %v", out)
 	}
 	// only what was set is answered
-	if w := acc.BoolOf(out["watched"]); !w || out["favourite"] != nil || out["position_s"] != nil {
+	if w := acctest.BoolOf(out["watched"]); !w || out["favourite"] != nil || out["position_s"] != nil {
 		t.Errorf("item_set_state = %v", out)
 	}
 	suite.PutBack(t, "item_set_state", map[string]any{"id": e1, "user": "alice", "watched": false})
 
 	// per-user state on the item
 	last := suite.Call(t, "item_last_watched", map[string]any{"id": e1})
-	if acc.Str(last["item"]) != "Pilot" {
+	if acctest.Str(last["item"]) != "Pilot" {
 		t.Errorf("item_last_watched item = %v", last["item"])
 	}
 	state := map[string]map[string]any{}
-	for _, u := range acc.Rows(t, last["users"], "users") {
-		state[acc.Str(u["user"])] = u
+	for _, u := range acctest.Rows(t, last["users"], "users") {
+		state[acctest.Str(u["user"])] = u
 	}
-	if !acc.BoolOf(state["alice"]["played"]) {
+	if !acctest.BoolOf(state["alice"]["played"]) {
 		t.Errorf("alice's state = %v", state["alice"])
 	}
-	if acc.BoolOf(state["root"]["played"]) {
+	if acctest.BoolOf(state["root"]["played"]) {
 		t.Errorf("root's state = %v", state["root"])
 	}
 	// both servers count a mark as a play, and date it (Emby 4.10 does; an
 	// older Emby did not), and root's untouched state has neither
-	if n := acc.NumOr0(state["alice"]["play_count"]); n != 1 || acc.Str(state["alice"]["last_played"]) == "" {
+	if n := acctest.NumOr0(state["alice"]["play_count"]); n != 1 || acctest.Str(state["alice"]["last_played"]) == "" {
 		t.Errorf("alice's state after a mark = %v, want played once, with a date", state["alice"])
 	}
 	if state["root"]["play_count"] != nil || state["root"]["last_played"] != nil {
@@ -86,48 +86,48 @@ func TestWatchState(t *testing.T) {
 
 	// next up for alice is episode two
 	next := suite.Call(t, "user_next_up", map[string]any{"user": "alice"})
-	if acc.Str(next["user"]) != "alice" {
+	if acctest.Str(next["user"]) != "alice" {
 		t.Errorf("user_next_up user = %v", next["user"])
 	}
-	nextUp := acc.Rows(t, next["next_up"], "next_up")
+	nextUp := acctest.Rows(t, next["next_up"], "next_up")
 	nextIDs := make([]string, 0, len(nextUp))
 	for _, it := range nextUp {
-		nextIDs = append(nextIDs, acc.Str(it["id"]))
+		nextIDs = append(nextIDs, acctest.Str(it["id"]))
 	}
 	if !slices.Contains(nextIDs, e2) || slices.Contains(nextIDs, e1) || slices.Contains(nextIDs, e3) {
 		t.Errorf("alice's next up = %v, want episode two %s and not one or three", nextIDs, e2)
 	}
 	// and the pilot is not part way through: it was marked, not started
-	for _, it := range acc.Rows(t, next["in_progress"], "in_progress") {
-		if id := acc.Str(it["id"]); id == e1 || id == e2 {
+	for _, it := range acctest.Rows(t, next["in_progress"], "in_progress") {
+		if id := acctest.Str(it["id"]); id == e1 || id == e2 {
 			t.Errorf("a Breaking Bad episode is in progress after a mark: %v", it)
 		}
 	}
 	// and root, who has marked nothing, has none of it next
 	next = suite.Call(t, "user_next_up", nil)
-	if acc.Str(next["user"]) != "root" {
+	if acctest.Str(next["user"]) != "root" {
 		t.Errorf("the default user = %v", next["user"])
 	}
-	for _, it := range acc.Rows(t, next["next_up"], "next_up") {
-		if acc.Str(it["series"]) == "Breaking Bad" {
+	for _, it := range acctest.Rows(t, next["next_up"], "next_up") {
+		if acctest.Str(it["series"]) == "Breaking Bad" {
 			t.Errorf("root has Breaking Bad next: %v", it)
 		}
 	}
 
 	// unmark
 	out = suite.Call(t, "item_set_state", map[string]any{"id": e1, "user": "alice", "watched": false})
-	if acc.BoolOf(out["watched"]) {
+	if acctest.BoolOf(out["watched"]) {
 		t.Errorf("unmark = %v", out)
 	}
 	last = suite.Call(t, "item_last_watched", map[string]any{"id": e1})
-	for _, u := range acc.Rows(t, last["users"], "users") {
-		if played := acc.BoolOf(u["played"]); acc.Str(u["user"]) == "alice" && played {
+	for _, u := range acctest.Rows(t, last["users"], "users") {
+		if played := acctest.BoolOf(u["played"]); acctest.Str(u["user"]) == "alice" && played {
 			t.Error("alice's episode is still played after unmarking")
 		}
 	}
 
 	// a user named by id is the same user
-	if out := suite.Call(t, "item_set_state", map[string]any{"id": e3, "user": os.Getenv("EMBYFIN_TEST_USER_ID"), "favourite": false}); acc.Str(out["user"]) != "alice" {
+	if out := suite.Call(t, "item_set_state", map[string]any{"id": e3, "user": os.Getenv("EMBYFIN_TEST_USER_ID"), "favourite": false}); acctest.Str(out["user"]) != "alice" {
 		t.Errorf("alice by id = %v", out)
 	}
 
@@ -148,7 +148,7 @@ func TestWatchState(t *testing.T) {
 func TestFavourites(t *testing.T) {
 	id := findItem(t, "Movies", "Movie", "Arrival")
 	out := suite.Call(t, "item_set_state", map[string]any{"id": id, "user": "alice", "favourite": true})
-	if f := acc.BoolOf(out["favourite"]); !f || acc.Str(out["user"]) != "alice" || acc.Str(out["item"]) != "Arrival" || out["watched"] != nil {
+	if f := acctest.BoolOf(out["favourite"]); !f || acctest.Str(out["user"]) != "alice" || acctest.Str(out["item"]) != "Arrival" || out["watched"] != nil {
 		t.Errorf("item_set_state = %v", out)
 	}
 	t.Cleanup(func() {
@@ -159,13 +159,13 @@ func TestFavourites(t *testing.T) {
 	// state by provider id, so favouriting the clean Arrival favourites the
 	// messy copy with it; Jellyfin keys it by item
 	favs := suite.Call(t, "library_items", map[string]any{"user": "alice", "watched": "favourite"})
-	rows := acc.Rows(t, favs["items"], "items")
+	rows := acctest.Rows(t, favs["items"], "items")
 	paths := make([]string, 0, len(rows))
 	for _, it := range rows {
-		if acc.Str(it["name"]) != "Arrival" {
+		if acctest.Str(it["name"]) != "Arrival" {
 			t.Errorf("alice's favourites hold %v", it["name"])
 		}
-		paths = append(paths, acc.Str(it["path"]))
+		paths = append(paths, acctest.Str(it["path"]))
 	}
 	slices.Sort(paths)
 	want := []string{"/media/messy-movies/Arrival (2016)/Arrival (2016).mp4", "/media/movies/Arrival (2016)/Arrival (2016).mp4"}
@@ -175,21 +175,21 @@ func TestFavourites(t *testing.T) {
 	if !slices.Equal(paths, want) {
 		t.Errorf("alice's favourites = %v, want %v", paths, want)
 	}
-	if acc.Num(t, favs["total"], "total") != len(paths) {
+	if acctest.Num(t, favs["total"], "total") != len(paths) {
 		t.Errorf("total %v for %d favourites", favs["total"], len(paths))
 	}
 	// root has none
 	favs = suite.Call(t, "library_items", map[string]any{"watched": "favourite"})
-	if n := len(acc.Rows(t, favs["items"], "items")); n != 0 {
+	if n := len(acctest.Rows(t, favs["items"], "items")); n != 0 {
 		t.Errorf("root has %d favourites", n)
 	}
 
 	out = suite.Call(t, "item_set_state", map[string]any{"id": id, "user": "alice", "favourite": false})
-	if acc.BoolOf(out["favourite"]) {
+	if acctest.BoolOf(out["favourite"]) {
 		t.Errorf("unfavourite = %v", out)
 	}
 	favs = suite.Call(t, "library_items", map[string]any{"user": "alice", "watched": "favourite"})
-	if n := len(acc.Rows(t, favs["items"], "items")); n != 0 {
+	if n := len(acctest.Rows(t, favs["items"], "items")); n != 0 {
 		t.Errorf("alice still has %d favourites", n)
 	}
 }
@@ -214,31 +214,31 @@ func TestHistory(t *testing.T) {
 	since := func(id, event string, at time.Time) bool {
 		out = suite.Call(t, "user_history", map[string]any{"user": "alice", "days": 7})
 		clear(history)
-		for _, it := range acc.Rows(t, out["items"], "items") {
-			history[acc.Str(it["id"])] = it
+		for _, it := range acctest.Rows(t, out["items"], "items") {
+			history[acctest.Str(it["id"])] = it
 		}
 		row := history[id]
-		return row != nil && acc.Str(row["event"]) == event && !stamp(t, row["last_played"]).Before(at)
+		return row != nil && acctest.Str(row["event"]) == event && !stamp(t, row["last_played"]).Before(at)
 	}
 	// the server's clock and this one's may disagree by a moment
 	began := time.Now().Add(-time.Minute)
 	playThrough(t, token, aliens)
-	if !acc.Eventually(func() bool { return since(aliens, "stop", began) }) {
+	if !acctest.Eventually(func() bool { return since(aliens, "stop", began) }) {
 		t.Fatalf("alice's history = %v, want Aliens played through a moment ago", out["items"])
 	}
 	// a second on, so the two plays' entries cannot be put in either order
 	time.Sleep(1100 * time.Millisecond)
 	playing := startPlaying(t, token, blade)
-	if !acc.Eventually(func() bool { return since(blade, "start", began) }) {
+	if !acctest.Eventually(func() bool { return since(blade, "start", began) }) {
 		t.Fatalf("alice's history = %v, want Blade Runner begun a moment ago", out["items"])
 	}
-	if acc.Str(out["user"]) != "alice" {
+	if acctest.Str(out["user"]) != "alice" {
 		t.Errorf("user_history user = %v", out["user"])
 	}
 	// the last thing each did: Aliens played through, Blade Runner begun
 	for id, want := range map[string]string{aliens: "stop", blade: "start"} {
 		row := history[id]
-		if acc.Str(row["event"]) != want || acc.Str(row["type"]) != "Movie" {
+		if acctest.Str(row["event"]) != want || acctest.Str(row["type"]) != "Movie" {
 			t.Errorf("%v in alice's history = event %v, want %s", row["name"], row["event"], want)
 		}
 		if at := stamp(t, row["last_played"]); at.Before(began) || at.After(time.Now().Add(time.Minute)) {
@@ -246,30 +246,30 @@ func TestHistory(t *testing.T) {
 		}
 	}
 	// each item once, and a total that is every row
-	total := acc.Num(t, out["total"], "total")
-	if total != len(acc.Rows(t, out["items"], "items")) || acc.Num(t, out["offset"], "offset") != 0 || total != len(history) {
-		t.Errorf("total %v offset %v for %d items (%d distinct)", out["total"], out["offset"], len(acc.Rows(t, out["items"], "items")), len(history))
+	total := acctest.Num(t, out["total"], "total")
+	if total != len(acctest.Rows(t, out["items"], "items")) || acctest.Num(t, out["offset"], "offset") != 0 || total != len(history) {
+		t.Errorf("total %v offset %v for %d items (%d distinct)", out["total"], out["offset"], len(acctest.Rows(t, out["items"], "items")), len(history))
 	}
 	// the whole week was read, which the answer says
 	if complete, ok := out["complete"].(bool); !ok || !complete || out["note"] != nil {
 		t.Errorf("complete = %v, note %v: a week of a test server's log is read whole", out["complete"], out["note"])
 	}
 	// most recent first: Blade Runner was begun after Aliens finished
-	if first := acc.Rows(t, out["items"], "items")[0]; acc.Str(first["id"]) != blade {
+	if first := acctest.Rows(t, out["items"], "items")[0]; acctest.Str(first["id"]) != blade {
 		t.Errorf("the most recent in alice's history = %v, want Blade Runner", first["name"])
 	}
 	// a page of one is one, and the total is still the whole
-	if page := suite.Call(t, "user_history", map[string]any{"user": "alice", "days": 7, "limit": 1}); len(acc.Rows(t, page["items"], "items")) != 1 || acc.Num(t, page["total"], "total") != total {
+	if page := suite.Call(t, "user_history", map[string]any{"user": "alice", "days": 7, "limit": 1}); len(acctest.Rows(t, page["items"], "items")) != 1 || acctest.Num(t, page["total"], "total") != total {
 		t.Errorf("limit 1 = %v", page)
 	}
 	// a page past the end is empty, and says where it starts
 	past := suite.Call(t, "user_history", map[string]any{"user": "alice", "days": 7, "offset": 1000})
-	if n := len(acc.Rows(t, past["items"], "items")); n != 0 || acc.Num(t, past["offset"], "offset") != 1000 || acc.Num(t, past["total"], "total") != total {
+	if n := len(acctest.Rows(t, past["items"], "items")); n != 0 || acctest.Num(t, past["offset"], "offset") != 1000 || acctest.Num(t, past["total"], "total") != total {
 		t.Errorf("past the end = %d items at offset %v of %v", n, past["offset"], past["total"])
 	}
 	// root has played nothing
 	out = suite.Call(t, "user_history", nil)
-	if acc.Str(out["user"]) != "root" || acc.Num(t, out["total"], "total") != 0 || len(acc.Rows(t, out["items"], "items")) != 0 {
+	if acctest.Str(out["user"]) != "root" || acctest.Num(t, out["total"], "total") != 0 || len(acctest.Rows(t, out["items"], "items")) != 0 {
 		t.Errorf("the default user's history = %v", out)
 	}
 	if msg := suite.CallErr(t, "user_history", map[string]any{"user": "nobody"}); !strings.Contains(msg, "nobody") {
@@ -280,11 +280,11 @@ func TestHistory(t *testing.T) {
 	// an item's history: Aliens has alice's playback, and Princess Mononoke,
 	// marked watched and never played, has none
 	hist := suite.Call(t, "server_activity", map[string]any{"item": aliens, "days": 7})
-	if entries := summaries(t, hist); acc.Str(hist["item"]) != "Aliens" || !slices.ContainsFunc(entries, func(e string) bool { return strings.Contains(e, "alice") && strings.Contains(e, "Aliens") }) || !acc.IsBool(hist["complete"], true) {
+	if entries := summaries(t, hist); acctest.Str(hist["item"]) != "Aliens" || !slices.ContainsFunc(entries, func(e string) bool { return strings.Contains(e, "alice") && strings.Contains(e, "Aliens") }) || !acctest.IsBool(hist["complete"], true) {
 		t.Errorf("server_activity about Aliens = %v", hist)
 	}
 	// each entry about it names it by id, and the count is of them
-	if entries := acc.Rows(t, hist["entries"], "entries"); len(entries) == 0 || acc.Num(t, hist["total"], "total") != len(entries) || slices.ContainsFunc(entries, func(e map[string]any) bool { return acc.Str(e["item_id"]) != aliens }) {
+	if entries := acctest.Rows(t, hist["entries"], "entries"); len(entries) == 0 || acctest.Num(t, hist["total"], "total") != len(entries) || slices.ContainsFunc(entries, func(e map[string]any) bool { return acctest.Str(e["item_id"]) != aliens }) {
 		t.Errorf("server_activity about Aliens = %v, want every entry carrying its id and total counting them", hist)
 	}
 	mononoke := findItem(t, "Movies", "Movie", "Princess Mononoke")
@@ -293,7 +293,7 @@ func TestHistory(t *testing.T) {
 		suite.Undo(t, "item_set_state", map[string]any{"id": mononoke, "user": "alice", "watched": false})
 	})
 	hist = suite.Call(t, "server_activity", map[string]any{"item": mononoke, "days": 7})
-	if acc.Str(hist["item"]) != "Princess Mononoke" || len(acc.Rows(t, hist["entries"], "entries")) != 0 || acc.Num(t, hist["total"], "total") != 0 || !acc.IsBool(hist["complete"], true) {
+	if acctest.Str(hist["item"]) != "Princess Mononoke" || len(acctest.Rows(t, hist["entries"], "entries")) != 0 || acctest.Num(t, hist["total"], "total") != 0 || !acctest.IsBool(hist["complete"], true) {
 		t.Errorf("server_activity about Princess Mononoke = %v", hist)
 	}
 	if msg := suite.CallErr(t, "server_activity", map[string]any{"item": unknownID()}); !strings.Contains(msg, "no item with id "+unknownID()) {
@@ -308,10 +308,10 @@ func TestHistory(t *testing.T) {
 func summaries(t *testing.T, out map[string]any) []string {
 	t.Helper()
 
-	rows := acc.Rows(t, out["entries"], "entries")
+	rows := acctest.Rows(t, out["entries"], "entries")
 	lines := make([]string, 0, len(rows))
 	for _, e := range rows {
-		lines = append(lines, acc.Str(e["summary"]))
+		lines = append(lines, acctest.Str(e["summary"]))
 	}
 
 	return lines
@@ -333,7 +333,7 @@ func TestWatchHistoryOfATitleInsideAnother(t *testing.T) {
 			return strings.Contains(e, "Dune: Part Two")
 		})
 	}
-	if !acc.Eventually(func() bool { return mentions(partTwo) }) {
+	if !acctest.Eventually(func() bool { return mentions(partTwo) }) {
 		t.Fatalf("Dune: Part Two's history never showed its play: %v", suite.Call(t, "server_activity", map[string]any{"item": partTwo, "days": 1}))
 	}
 	if mentions(dune) {
@@ -355,14 +355,14 @@ func TestHistoryOfAUserNamedLikeAnother(t *testing.T) {
 	p.stop(5_000_000)
 
 	var theirs []string
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		theirs = names(t, suite.Call(t, "user_history", map[string]any{"user": name, "days": 1})["items"], "items")
 		return slices.Contains(theirs, "Arrival")
 	}) {
 		t.Fatalf("%s's history = %v, want the Arrival just played", name, theirs)
 	}
-	for _, it := range acc.Rows(t, suite.Call(t, "user_history", map[string]any{"user": "alice", "days": 1})["items"], "items") {
-		if acc.Str(it["id"]) == arrival {
+	for _, it := range acctest.Rows(t, suite.Call(t, "user_history", map[string]any{"user": "alice", "days": 1})["items"], "items") {
+		if acctest.Str(it["id"]) == arrival {
 			t.Errorf("alice's history holds the Arrival %s played: %v", name, it)
 		}
 	}
@@ -400,22 +400,22 @@ func createUser(t *testing.T, name string) string {
 func TestUserGet(t *testing.T) {
 	noLeftoverLibraries(t)
 	root := suite.Call(t, "user_get", nil)
-	if acc.Str(root["name"]) != "root" || acc.Str(root["id"]) != os.Getenv("EMBYFIN_TEST_ADMIN_ID") || !acc.BoolOf(root["admin"]) || !acc.BoolOf(root["all_libraries"]) || acc.BoolOf(root["disabled"]) {
+	if acctest.Str(root["name"]) != "root" || acctest.Str(root["id"]) != os.Getenv("EMBYFIN_TEST_ADMIN_ID") || !acctest.BoolOf(root["admin"]) || !acctest.BoolOf(root["all_libraries"]) || acctest.BoolOf(root["disabled"]) {
 		t.Errorf("user_get (the default) = %v", root)
 	}
 	// Emby says whether an account has a password. Jellyfin says every one has, one that logs in with none included, so there it is left out
-	if _, said := root["has_password"]; said == isJellyfin() || (said && !acc.BoolOf(root["has_password"])) {
+	if _, said := root["has_password"]; said == isJellyfin() || (said && !acctest.BoolOf(root["has_password"])) {
 		t.Errorf("user_get has_password = %v (given: %v), want true on Emby and left out on Jellyfin", root["has_password"], said)
 	}
 	// an administrator may delete and connect from anywhere; Jellyfin keeps
 	// its accounts off the login screen from the start, Emby shows them
-	if !acc.BoolOf(root["can_delete"]) || !acc.BoolOf(root["remote_access"]) || acc.BoolOf(root["hidden"]) != isJellyfin() {
+	if !acctest.BoolOf(root["can_delete"]) || !acctest.BoolOf(root["remote_access"]) || acctest.BoolOf(root["hidden"]) != isJellyfin() {
 		t.Errorf("root's permissions = can_delete %v remote_access %v hidden %v", root["can_delete"], root["remote_access"], root["hidden"])
 	}
 	// every library, and the folders the servers keep collections and
 	// playlists in once there are any
-	libs := slices.DeleteFunc(acc.Strs(t, root["libraries"], "libraries"), func(name string) bool { return serverFolders[name] != "" })
-	if !slices.Equal(acc.Sorted(libs), []string{"Messy Movies", "Messy Shows", "Movies", "Music", "Shows"}) {
+	libs := slices.DeleteFunc(acctest.Strs(t, root["libraries"], "libraries"), func(name string) bool { return serverFolders[name] != "" })
+	if !slices.Equal(acctest.Sorted(libs), []string{"Messy Movies", "Messy Shows", "Movies", "Music", "Shows"}) {
 		t.Errorf("root's libraries = %v", root["libraries"])
 	}
 	// root signed in to set the server up
@@ -424,7 +424,7 @@ func TestUserGet(t *testing.T) {
 	}
 
 	alice := suite.Call(t, "user_get", map[string]any{"user": "ALICE"})
-	if acc.Str(alice["name"]) != "alice" || acc.BoolOf(alice["admin"]) || acc.Str(alice["id"]) != os.Getenv("EMBYFIN_TEST_USER_ID") || acc.BoolOf(alice["can_delete"]) {
+	if acctest.Str(alice["name"]) != "alice" || acctest.BoolOf(alice["admin"]) || acctest.Str(alice["id"]) != os.Getenv("EMBYFIN_TEST_USER_ID") || acctest.BoolOf(alice["can_delete"]) {
 		t.Errorf("user_get alice = %v", alice)
 	}
 	// what she has watched is user_stats, not the account
@@ -477,7 +477,7 @@ func TestUserGetReadsWhatIsSet(t *testing.T) {
 	})
 
 	before := suite.Call(t, "user_get", map[string]any{"user": "alice"})
-	hidden := !acc.BoolOf(before["hidden"])
+	hidden := !acctest.BoolOf(before["hidden"])
 	user.Policy["IsHidden"] = hidden
 	user.Policy["IsDisabled"] = true
 	user.Policy["EnableContentDeletion"] = true
@@ -494,16 +494,16 @@ func TestUserGetReadsWhatIsSet(t *testing.T) {
 	}
 
 	got := suite.Call(t, "user_get", map[string]any{"user": "alice"})
-	if acc.BoolOf(got["hidden"]) != hidden || !acc.BoolOf(got["disabled"]) || !acc.BoolOf(got["can_delete"]) || acc.BoolOf(got["remote_access"]) {
+	if acctest.BoolOf(got["hidden"]) != hidden || !acctest.BoolOf(got["disabled"]) || !acctest.BoolOf(got["can_delete"]) || acctest.BoolOf(got["remote_access"]) {
 		t.Errorf("alice's permissions = hidden %v disabled %v can_delete %v remote_access %v, want %v, true, true and false",
 			got["hidden"], got["disabled"], got["can_delete"], got["remote_access"], hidden)
 	}
-	if acc.Str(got["audio_language"]) != "jpn" || acc.Str(got["subtitle_language"]) != "eng" || acc.Str(got["subtitle_mode"]) != "Always" || acc.BoolOf(got["play_default_audio_track"]) {
+	if acctest.Str(got["audio_language"]) != "jpn" || acctest.Str(got["subtitle_language"]) != "eng" || acctest.Str(got["subtitle_mode"]) != "Always" || acctest.BoolOf(got["play_default_audio_track"]) {
 		t.Errorf("alice's playback = audio %v subtitles %v mode %v default track %v, want jpn, eng, Always and false",
 			got["audio_language"], got["subtitle_language"], got["subtitle_mode"], got["play_default_audio_track"])
 	}
 	// and before, none of it: the defaults read as the defaults
-	if before["audio_language"] != nil || before["subtitle_language"] != nil || acc.BoolOf(before["disabled"]) || !acc.BoolOf(before["play_default_audio_track"]) {
+	if before["audio_language"] != nil || before["subtitle_language"] != nil || acctest.BoolOf(before["disabled"]) || !acctest.BoolOf(before["play_default_audio_track"]) {
 		t.Errorf("alice before = %v", before)
 	}
 }
@@ -515,38 +515,38 @@ func TestProgress(t *testing.T) {
 	arrival := findItem(t, "Movies", "Movie", "Arrival")
 	before := suite.Call(t, "user_stats", map[string]any{"user": "alice"})
 	out := suite.Call(t, "item_set_state", map[string]any{"id": arrival, "user": "alice", "position_s": 2550})
-	if acc.Str(out["item"]) != "Arrival" || acc.Str(out["user"]) != "alice" || acc.Num(t, out["position_s"], "position_s") != 2550 || out["watched"] != nil {
+	if acctest.Str(out["item"]) != "Arrival" || acctest.Str(out["user"]) != "alice" || acctest.Num(t, out["position_s"], "position_s") != 2550 || out["watched"] != nil {
 		t.Errorf("item_set_state = %v", out)
 	}
 	t.Cleanup(func() {
 		suite.Undo(t, "item_set_state", map[string]any{"id": arrival, "user": "alice", "watched": false})
 	})
-	if after := suite.Call(t, "user_stats", map[string]any{"user": "alice"}); acc.Num(t, after["in_progress"], "in_progress") != acc.Num(t, before["in_progress"], "in_progress")+1 {
+	if after := suite.Call(t, "user_stats", map[string]any{"user": "alice"}); acctest.Num(t, after["in_progress"], "in_progress") != acctest.Num(t, before["in_progress"], "in_progress")+1 {
 		t.Errorf("user_stats in_progress went from %v to %v, want one more", before["in_progress"], after["in_progress"])
 	}
 
 	inProgress := func() map[string]any {
-		for _, it := range acc.Rows(t, suite.Call(t, "user_next_up", map[string]any{"user": "alice"})["in_progress"], "in_progress") {
-			if acc.Str(it["id"]) == arrival {
+		for _, it := range acctest.Rows(t, suite.Call(t, "user_next_up", map[string]any{"user": "alice"})["in_progress"], "in_progress") {
+			if acctest.Str(it["id"]) == arrival {
 				return it
 			}
 		}
 		return nil
 	}
 	var row map[string]any
-	if !acc.Eventually(func() bool { row = inProgress(); return row != nil }) {
+	if !acctest.Eventually(func() bool { row = inProgress(); return row != nil }) {
 		t.Fatal("Arrival is not in progress for alice")
 	}
 	// 2550 seconds of the film's 116 minutes is 36.6% of it, which the
 	// server's percentage gives whole
-	if acc.Num(t, row["position_s"], "position_s") != 2550 || acc.Num(t, row["percent"], "percent") != 36 || acc.Str(row["name"]) != "Arrival" || acc.Str(row["type"]) != "Movie" {
+	if acctest.Num(t, row["position_s"], "position_s") != 2550 || acctest.Num(t, row["percent"], "percent") != 36 || acctest.Str(row["name"]) != "Arrival" || acctest.Str(row["type"]) != "Movie" {
 		t.Errorf("in progress row = %v", row)
 	}
 	// the resume point reads back in the same unit through item_last_watched
 	resumed := false
-	for _, u := range acc.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": arrival})["users"], "users") {
-		if acc.Str(u["user"]) == "alice" {
-			resumed = acc.Num(t, u["resume_s"], "resume_s") == 2550
+	for _, u := range acctest.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": arrival})["users"], "users") {
+		if acctest.Str(u["user"]) == "alice" {
+			resumed = acctest.Num(t, u["resume_s"], "resume_s") == 2550
 		}
 	}
 	if !resumed {
@@ -556,31 +556,31 @@ func TestProgress(t *testing.T) {
 	// a new resume point with watched false keeps the point: unplayed is what
 	// a resume point already is, and marking it so again would clear it
 	out = suite.Call(t, "item_set_state", map[string]any{"id": arrival, "user": "alice", "position_s": 40, "watched": false})
-	if acc.Num(t, out["position_s"], "position_s") != 40 || acc.BoolOf(out["watched"]) || out["watched"] == nil {
+	if acctest.Num(t, out["position_s"], "position_s") != 40 || acctest.BoolOf(out["watched"]) || out["watched"] == nil {
 		t.Errorf("a position with watched false = %v", out)
 	}
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		row = inProgress()
-		return row != nil && acc.Num(t, row["position_s"], "position_s") == 40
+		return row != nil && acctest.Num(t, row["position_s"], "position_s") == 40
 	}) {
 		t.Errorf("after moving the resume point to 40 seconds with watched false, alice's Arrival = %v", row)
 	}
 
 	// root has nothing in progress
-	if n := len(acc.Rows(t, suite.Call(t, "user_next_up", nil)["in_progress"], "in_progress")); n != 0 {
+	if n := len(acctest.Rows(t, suite.Call(t, "user_next_up", nil)["in_progress"], "in_progress")); n != 0 {
 		t.Errorf("root has %d in progress", n)
 	}
 
 	// marking it unwatched clears the resume point
 	suite.Call(t, "item_set_state", map[string]any{"id": arrival, "user": "alice", "watched": false})
-	if !acc.Holds(func() bool { return inProgress() == nil }) {
+	if !acctest.Holds(func() bool { return inProgress() == nil }) {
 		t.Errorf("Arrival is still in progress after marking it unwatched: %v", inProgress())
 	}
 
 	if msg := suite.CallErr(t, "item_set_state", map[string]any{"id": arrival, "position_s": 0}); !strings.Contains(msg, "above zero") {
 		t.Errorf("a zero position: %s", msg)
 	}
-	if n := acc.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["in_progress"], "in_progress"); n != acc.Num(t, before["in_progress"], "in_progress") {
+	if n := acctest.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["in_progress"], "in_progress"); n != acctest.Num(t, before["in_progress"], "in_progress") {
 		t.Errorf("alice has %d in progress after clearing, was %v", n, before["in_progress"])
 	}
 }
@@ -596,9 +596,9 @@ func TestInProgressSaysWhenPlayed(t *testing.T) {
 	_, token := signInPlayer(t)
 	began := time.Now().Add(-time.Minute)
 	playThrough(t, token, film)
-	if !acc.Eventually(func() bool {
-		for _, u := range acc.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": film})["users"], "users") {
-			if acc.Str(u["user"]) == "alice" && acc.BoolOf(u["played"]) {
+	if !acctest.Eventually(func() bool {
+		for _, u := range acctest.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": film})["users"], "users") {
+			if acctest.Str(u["user"]) == "alice" && acctest.BoolOf(u["played"]) {
 				return true
 			}
 		}
@@ -609,10 +609,10 @@ func TestInProgressSaysWhenPlayed(t *testing.T) {
 	suite.Call(t, "item_set_state", map[string]any{"id": film, "user": "alice", "position_s": 1})
 
 	var row map[string]any
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		row = nil
-		for _, it := range acc.Rows(t, suite.Call(t, "user_next_up", map[string]any{"user": "alice"})["in_progress"], "in_progress") {
-			if acc.Str(it["id"]) == film {
+		for _, it := range acctest.Rows(t, suite.Call(t, "user_next_up", map[string]any{"user": "alice"})["in_progress"], "in_progress") {
+			if acctest.Str(it["id"]) == film {
 				row = it
 			}
 		}
@@ -620,7 +620,7 @@ func TestInProgressSaysWhenPlayed(t *testing.T) {
 	}) {
 		t.Fatal("The Thirteenth Floor is not in progress for alice")
 	}
-	if acc.Num(t, row["position_s"], "position_s") != 1 || acc.Str(row["name"]) != "The Thirteenth Floor" {
+	if acctest.Num(t, row["position_s"], "position_s") != 1 || acctest.Str(row["name"]) != "The Thirteenth Floor" {
 		t.Errorf("in progress row = %v", row)
 	}
 	// on both servers: Emby's resume list carries the date only when asked
@@ -641,10 +641,10 @@ func TestAPlayStoppedPartWay(t *testing.T) {
 	playTo(t, token, film, 10*60*10_000_000) // ten minutes in
 
 	var row map[string]any
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		row = nil
-		for _, it := range acc.Rows(t, suite.Call(t, "user_next_up", map[string]any{"user": "alice"})["in_progress"], "in_progress") {
-			if acc.Str(it["id"]) == film {
+		for _, it := range acctest.Rows(t, suite.Call(t, "user_next_up", map[string]any{"user": "alice"})["in_progress"], "in_progress") {
+			if acctest.Str(it["id"]) == film {
 				row = it
 			}
 		}
@@ -652,11 +652,11 @@ func TestAPlayStoppedPartWay(t *testing.T) {
 	}) {
 		t.Fatal("Limitless, stopped ten minutes in, is not in progress for alice")
 	}
-	if acc.Num(t, row["position_s"], "position_s") != 600 || acc.Num(t, row["percent"], "percent") != 9 {
+	if acctest.Num(t, row["position_s"], "position_s") != 600 || acctest.Num(t, row["percent"], "percent") != 9 {
 		t.Errorf("in progress row = %v, want ten minutes in, 9%% of 106", row)
 	}
-	for _, u := range acc.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": film})["users"], "users") {
-		if acc.Str(u["user"]) == "alice" && acc.BoolOf(u["played"]) {
+	for _, u := range acctest.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": film})["users"], "users") {
+		if acctest.Str(u["user"]) == "alice" && acctest.BoolOf(u["played"]) {
 			t.Errorf("alice's row = %v, want it not played", u)
 		}
 	}
@@ -665,17 +665,17 @@ func TestAPlayStoppedPartWay(t *testing.T) {
 func TestUserStats(t *testing.T) {
 	mononoke := findItem(t, "Movies", "Movie", "Princess Mononoke")
 	series := findItem(t, "Shows", "Series", "Breaking Bad")
-	eps := acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes")
+	eps := acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes")
 	if len(eps) != 3 {
 		t.Fatalf("Breaking Bad has %d episodes, want 3", len(eps))
 	}
-	watch := []string{mononoke, acc.Str(eps[0]["id"]), acc.Str(eps[1]["id"])}
+	watch := []string{mononoke, acctest.Str(eps[0]["id"]), acctest.Str(eps[1]["id"])}
 	for _, id := range watch {
 		suite.Call(t, "item_set_state", map[string]any{"id": id, "user": "alice", "watched": true})
 	}
 	// and one favourited, and one part way through, in the same sweep
 	suite.Call(t, "item_set_state", map[string]any{"id": mononoke, "user": "alice", "favourite": true})
-	third := acc.Str(eps[2]["id"])
+	third := acctest.Str(eps[2]["id"])
 	suite.Call(t, "item_set_state", map[string]any{"id": third, "user": "alice", "position_s": 1})
 	t.Cleanup(func() {
 		for _, id := range append(watch, third) {
@@ -685,28 +685,28 @@ func TestUserStats(t *testing.T) {
 	})
 
 	out := suite.Call(t, "user_stats", map[string]any{"user": "alice", "library": "Movies"})
-	if acc.Str(out["user"]) != "alice" || acc.Num(t, out["movies_watched"], "movies_watched") != 1 || acc.Num(t, out["episodes_watched"], "episodes_watched") != 0 {
+	if acctest.Str(out["user"]) != "alice" || acctest.Num(t, out["movies_watched"], "movies_watched") != 1 || acctest.Num(t, out["episodes_watched"], "episodes_watched") != 0 {
 		t.Errorf("alice in Movies = %v", out)
 	}
-	if acc.Num(t, out["favourites"], "favourites") != 1 || acc.Num(t, out["in_progress"], "in_progress") != 0 {
+	if acctest.Num(t, out["favourites"], "favourites") != 1 || acctest.Num(t, out["in_progress"], "in_progress") != 0 {
 		t.Errorf("alice in Movies = %v, want 1 favourite and nothing in progress", out)
 	}
-	if out = suite.Call(t, "user_stats", map[string]any{"user": "alice", "library": "Shows"}); acc.Num(t, out["in_progress"], "in_progress") != 1 || acc.Num(t, out["favourites"], "favourites") != 0 {
+	if out = suite.Call(t, "user_stats", map[string]any{"user": "alice", "library": "Shows"}); acctest.Num(t, out["in_progress"], "in_progress") != 1 || acctest.Num(t, out["favourites"], "favourites") != 0 {
 		t.Errorf("alice in Shows = %v, want 1 in progress and no favourite", out)
 	}
 
 	out = suite.Call(t, "user_stats", map[string]any{"user": "alice"})
-	if acc.Num(t, out["movies_watched"], "movies_watched") < 1 || acc.Num(t, out["episodes_watched"], "episodes_watched") < 2 || acc.Num(t, out["series_started"], "series_started") < 1 {
+	if acctest.Num(t, out["movies_watched"], "movies_watched") < 1 || acctest.Num(t, out["episodes_watched"], "episodes_watched") < 2 || acctest.Num(t, out["series_started"], "series_started") < 1 {
 		t.Errorf("alice everywhere = %v", out)
 	}
 	var bb map[string]any
-	for _, s := range acc.Rows(t, out["top_series"], "top_series") {
-		if acc.Str(s["name"]) == "Breaking Bad" {
+	for _, s := range acctest.Rows(t, out["top_series"], "top_series") {
+		if acctest.Str(s["name"]) == "Breaking Bad" {
 			bb = s
 		}
 	}
 	// Breaking Bad has a third episode on disk
-	if bb == nil || acc.Num(t, bb["episodes_watched"], "episodes_watched") != 2 || acc.BoolOf(bb["finished"]) {
+	if bb == nil || acctest.Num(t, bb["episodes_watched"], "episodes_watched") != 2 || acctest.BoolOf(bb["finished"]) {
 		t.Errorf("Breaking Bad in top_series = %v", out["top_series"])
 	}
 	genres := valueCounts(t, out["top_genres"], "top_genres")
@@ -716,10 +716,10 @@ func TestUserStats(t *testing.T) {
 
 	// root has watched nothing
 	root := suite.Call(t, "user_stats", nil)
-	if acc.Num(t, root["movies_watched"], "movies_watched") != 0 || acc.Num(t, root["series_started"], "series_started") != 0 || len(acc.Rows(t, root["top_series"], "top_series")) != 0 {
+	if acctest.Num(t, root["movies_watched"], "movies_watched") != 0 || acctest.Num(t, root["series_started"], "series_started") != 0 || len(acctest.Rows(t, root["top_series"], "top_series")) != 0 {
 		t.Errorf("root's stats = %v", root)
 	}
-	if acc.Num(t, root["favourites"], "favourites") != 0 || acc.Num(t, root["in_progress"], "in_progress") != 0 {
+	if acctest.Num(t, root["favourites"], "favourites") != 0 || acctest.Num(t, root["in_progress"], "in_progress") != 0 {
 		t.Errorf("root's stats = %v", root)
 	}
 	if msg := suite.CallErr(t, "user_stats", map[string]any{"user": "alice", "library": "Nope"}); !strings.Contains(msg, `no library named "Nope"`) {
@@ -733,9 +733,9 @@ func TestUserStats(t *testing.T) {
 // minutes, a tenth of an hour, and three episodes played once each.
 func TestUserStatsHoursAndPlays(t *testing.T) {
 	byNumber := map[int]string{}
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "types": "Episode", "query": "In the Case of", "limit": 10})["items"], "items") {
-		if acc.Str(it["series"]) == ".hack//Liminality" {
-			byNumber[acc.Num(t, it["episode"], "episode")] = acc.Str(it["id"])
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "types": "Episode", "query": "In the Case of", "limit": 10})["items"], "items") {
+		if acctest.Str(it["series"]) == ".hack//Liminality" {
+			byNumber[acctest.Num(t, it["episode"], "episode")] = acctest.Str(it["id"])
 		}
 	}
 	if len(byNumber) != 3 {
@@ -749,7 +749,7 @@ func TestUserStatsHoursAndPlays(t *testing.T) {
 	stats := func() map[string]any {
 		return suite.Call(t, "user_stats", map[string]any{"user": "alice", "library": "Messy Shows"})
 	}
-	if before := stats(); acc.Decimal(t, before["hours_watched"], "hours_watched") != 0 || len(acc.Rows(t, before["most_played"], "most_played")) != 0 {
+	if before := stats(); acctest.Decimal(t, before["hours_watched"], "hours_watched") != 0 || len(acctest.Rows(t, before["most_played"], "most_played")) != 0 {
 		t.Fatalf("alice in Messy Shows before = %v, want nothing watched", before)
 	}
 
@@ -760,14 +760,17 @@ func TestUserStatsHoursAndPlays(t *testing.T) {
 	playThrough(t, token, byNumber[3])
 
 	var after map[string]any
-	if !acc.Eventually(func() bool { after = stats(); return acc.Num(t, after["episodes_watched"], "episodes_watched") == 3 }) {
+	if !acctest.Eventually(func() bool {
+		after = stats()
+		return acctest.Num(t, after["episodes_watched"], "episodes_watched") == 3
+	}) {
 		t.Fatalf("alice in Messy Shows = %v, want three episodes watched", after)
 	}
 	// six minutes and a second
-	if h := acc.Decimal(t, after["hours_watched"], "hours_watched"); h != 0.1 {
+	if h := acctest.Decimal(t, after["hours_watched"], "hours_watched"); h != 0.1 {
 		t.Errorf("hours watched = %v, want 0.1", h)
 	}
-	if s := acc.Rows(t, after["top_series"], "top_series"); len(s) != 1 || acc.Str(s[0]["name"]) != ".hack//Liminality" || !acc.BoolOf(s[0]["finished"]) || acc.Num(t, after["series_finished"], "series_finished") != 1 {
+	if s := acctest.Rows(t, after["top_series"], "top_series"); len(s) != 1 || acctest.Str(s[0]["name"]) != ".hack//Liminality" || !acctest.BoolOf(s[0]["finished"]) || acctest.Num(t, after["series_finished"], "series_finished") != 1 {
 		t.Errorf("top series = %v, finished %v: want .hack//Liminality, finished", s, after["series_finished"])
 	}
 	// on both servers: Emby's lists carry the play count only when asked for
@@ -784,10 +787,10 @@ func TestMostPlayedFilm(t *testing.T) {
 	_, token := signInPlayer(t)
 	playThrough(t, token, film)
 	var row map[string]any
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		row = nil
-		for _, p := range acc.Rows(t, suite.Call(t, "user_stats", map[string]any{"user": "alice", "library": "Movies"})["most_played"], "most_played") {
-			if acc.Str(p["name"]) == "The Thirteenth Floor" {
+		for _, p := range acctest.Rows(t, suite.Call(t, "user_stats", map[string]any{"user": "alice", "library": "Movies"})["most_played"], "most_played") {
+			if acctest.Str(p["name"]) == "The Thirteenth Floor" {
 				row = p
 			}
 		}
@@ -795,7 +798,7 @@ func TestMostPlayedFilm(t *testing.T) {
 	}) {
 		t.Fatal("The Thirteenth Floor, played through, is not among alice's most played")
 	}
-	if acc.Num(t, row["plays"], "plays") < 1 || acc.Str(row["type"]) != "Movie" {
+	if acctest.Num(t, row["plays"], "plays") < 1 || acctest.Str(row["type"]) != "Movie" {
 		t.Errorf("most played row = %v", row)
 	}
 }
@@ -806,9 +809,9 @@ func assertMostPlayed(t *testing.T, stats map[string]any) {
 	t.Helper()
 
 	plays := map[string]int{}
-	for _, p := range acc.Rows(t, stats["most_played"], "most_played") {
-		plays[acc.Str(p["name"])] = acc.Num(t, p["plays"], "plays")
-		if acc.Str(p["type"]) != "Episode" {
+	for _, p := range acctest.Rows(t, stats["most_played"], "most_played") {
+		plays[acctest.Str(p["name"])] = acctest.Num(t, p["plays"], "plays")
+		if acctest.Str(p["type"]) != "Episode" {
 			t.Errorf("most played = %v", p)
 		}
 	}

@@ -28,6 +28,7 @@ func (c Client) WatchProvidersAvailableRegions(ctx context.Context, language ...
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "WatchProvidersAvailableRegions",
 		OptionsObject: option,
 		Path:          "/3/watch/providers/regions",
 	}

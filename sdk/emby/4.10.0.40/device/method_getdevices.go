@@ -29,6 +29,7 @@ func (c Client) GetDevices(ctx context.Context, sortOrder ...string) (result emb
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetDevices",
 		OptionsObject: option,
 		Path:          "/Devices",
 	}

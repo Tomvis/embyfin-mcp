@@ -20,6 +20,7 @@ func (c Client) GetProvidersSubtitlesSubtitlesById(ctx context.Context, id strin
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetProvidersSubtitlesSubtitlesById",
 		Path:           fmt.Sprintf("/Providers/Subtitles/Subtitles/%s", url.PathEscape(id)),
 		StreamResponse: true,
 	}

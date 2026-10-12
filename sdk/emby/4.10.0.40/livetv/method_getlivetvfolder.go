@@ -19,6 +19,7 @@ func (c Client) GetLiveTvFolder(ctx context.Context) (result emby.GetLiveTvFolde
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvFolder",
 		Path:       "/LiveTv/Folder",
 	}
 

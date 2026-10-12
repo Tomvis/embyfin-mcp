@@ -22,6 +22,7 @@ func (c Client) PostEncodingSubtitleOptions(ctx context.Context, input io.Reader
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostEncodingSubtitleOptions",
 		Path:       "/Encoding/SubtitleOptions",
 	}
 

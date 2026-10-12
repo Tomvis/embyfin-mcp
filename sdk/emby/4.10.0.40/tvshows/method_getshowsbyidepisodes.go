@@ -31,6 +31,7 @@ func (c Client) GetShowsByIdEpisodes(ctx context.Context, id string, options ...
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetShowsByIdEpisodes",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Shows/%s/Episodes", url.PathEscape(id)),
 	}

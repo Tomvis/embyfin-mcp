@@ -28,6 +28,7 @@ func (c Client) CollectionImages(ctx context.Context, collectionId int, options 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "CollectionImages",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/collection/%d/images", collectionId),
 	}

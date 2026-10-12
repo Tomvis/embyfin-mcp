@@ -17,6 +17,7 @@ func (c Client) GetServerLogs(ctx context.Context) (result jf.GetServerLogsRespo
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetServerLogs",
 		Path:       "/System/Logs",
 	}
 

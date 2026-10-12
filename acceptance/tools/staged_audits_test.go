@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/katbyte/go-kt/test/env"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
@@ -36,16 +36,16 @@ func fixtureVideo(t *testing.T, parts ...string) []byte {
 // counted, nothing reported.
 func TestAuditQualityTrustsTheFixtures(t *testing.T) {
 	out := suite.Call(t, "audit_quality", map[string]any{"library": "Shows"})
-	if n := acc.Num(t, out["items_scanned"], "items_scanned"); n != showEpisodes() {
+	if n := acctest.Num(t, out["items_scanned"], "items_scanned"); n != showEpisodes() {
 		t.Errorf("items_scanned = %d, want Shows' %d episodes", n, showEpisodes())
 	}
-	if n := acc.Num(t, out["total_findings"], "total_findings"); n != 0 {
+	if n := acctest.Num(t, out["total_findings"], "total_findings"); n != 0 {
 		t.Errorf("%d files reported: %v", n, out["findings"])
 	}
-	if n := acc.Num(t, out["total_unprobed"], "total_unprobed"); n != 0 {
+	if n := acctest.Num(t, out["total_unprobed"], "total_unprobed"); n != 0 {
 		t.Errorf("%d files reported unprobed: %v", n, out["unprobed"])
 	}
-	if n := acc.Num(t, out["total_replaced"], "total_replaced"); n != 0 {
+	if n := acctest.Num(t, out["total_replaced"], "total_replaced"); n != 0 {
 		t.Errorf("%d files reported replaced: %v", n, out["replaced"])
 	}
 }
@@ -66,15 +66,15 @@ func TestAuditQualityCannotReadATruncatedFile(t *testing.T) {
 	audit := func() (unprobed map[string]any, total int, found bool) {
 		out := suite.Call(t, "audit_quality", map[string]any{"library": "Messy Shows"})
 		_, id := held(t, sev, 1, 6)
-		for _, r := range acc.Rows(t, out["unprobed"], "unprobed") {
-			if id != "" && acc.Str(r["id"]) == id {
+		for _, r := range acctest.Rows(t, out["unprobed"], "unprobed") {
+			if id != "" && acctest.Str(r["id"]) == id {
 				unprobed = r
 			}
 		}
-		for _, f := range acc.Rows(t, out["findings"], "findings") {
-			found = found || id != "" && acc.Str(f["id"]) == id
+		for _, f := range acctest.Rows(t, out["findings"], "findings") {
+			found = found || id != "" && acctest.Str(f["id"]) == id
 		}
-		return unprobed, acc.Num(t, out["total_unprobed"], "total_unprobed"), found
+		return unprobed, acctest.Num(t, out["total_unprobed"], "total_unprobed"), found
 	}
 	_, before, _ := audit()
 
@@ -86,7 +86,7 @@ func TestAuditQualityCannotReadATruncatedFile(t *testing.T) {
 	if row == nil || total != before+1 {
 		t.Fatalf("audit_quality lists %v unprobed (%d, %d before), want the cut file among them", row, total, before)
 	}
-	if !strings.HasSuffix(acc.Str(row["path"]), "/Severance S01E06.mp4") || !strings.Contains(acc.Str(row["detail"]), "never probed") {
+	if !strings.HasSuffix(acctest.Str(row["path"]), "/Severance S01E06.mp4") || !strings.Contains(acctest.Str(row["detail"]), "never probed") {
 		t.Errorf("the cut file's row = %v", row)
 	}
 	if found {
@@ -117,28 +117,28 @@ func TestAFolderRenamedWithAYear(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for _, g := range acc.Rows(t, suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})["folder_groups"], "folder_groups") {
-		for _, s := range acc.Rows(t, g["series"], "series") {
-			if strings.HasPrefix(acc.Str(s["folder"]), "Severance") {
+	for _, g := range acctest.Rows(t, suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})["folder_groups"], "folder_groups") {
+		for _, s := range acctest.Rows(t, g["series"], "series") {
+			if strings.HasPrefix(acctest.Str(s["folder"]), "Severance") {
 				t.Errorf("audit_duplicates' folder rule groups the renamed folder: %v", g)
 			}
 		}
 	}
 
 	var paths, ids []string
-	groups := acc.RowsOfAny(suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})["groups"])
+	groups := acctest.RowsOfAny(suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})["groups"])
 	for _, g := range groups {
 		// The Wire, split the same way, is the other series group
-		group := acc.RowsOf(g)
-		if len(group) == 0 || acc.Str(group[0]["type"]) != "Series" || acc.Str(group[0]["name"]) != "Severance" {
+		group := acctest.RowsOf(g)
+		if len(group) == 0 || acctest.Str(group[0]["type"]) != "Series" || acctest.Str(group[0]["name"]) != "Severance" {
 			continue
 		}
 		for _, s := range group {
-			paths = append(paths, acc.Str(s["path"]))
-			ids = append(ids, acc.Str(s["id"]))
+			paths = append(paths, acctest.Str(s["path"]))
+			ids = append(ids, acctest.Str(s["id"]))
 		}
 	}
-	if want := []string{"/media/messy-shows/Severance", "/media/messy-shows/Severance (2022)"}; !slices.Equal(acc.Sorted(paths), want) {
+	if want := []string{"/media/messy-shows/Severance", "/media/messy-shows/Severance (2022)"}; !slices.Equal(acctest.Sorted(paths), want) {
 		t.Fatalf("audit_duplicates groups the series at %v, want %v", paths, want)
 	}
 
@@ -152,11 +152,11 @@ func TestAFolderRenamedWithAYear(t *testing.T) {
 		want = 8
 	}
 	for i, id := range ids {
-		if n := len(acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": id})["episodes"], "episodes")); n != want {
+		if n := len(acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": id})["episodes"], "episodes")); n != want {
 			t.Errorf("library_episodes lists %d episodes for the series at %s, want both folders' %d", n, paths[i], want)
 		}
 		out := suite.Call(t, "show_episodes_exist", map[string]any{"series_id": id, "episodes": []map[string]any{{"season": 1, "episode": 1}}})
-		if other := ids[1-i]; !slices.Contains(acc.Strs(t, out["duplicate_entries"], "duplicate_entries"), other) {
+		if other := ids[1-i]; !slices.Contains(acctest.Strs(t, out["duplicate_entries"], "duplicate_entries"), other) {
 			t.Errorf("show_episodes_exist for the series at %s names %v as its other entries, want %s among them", paths[i], out["duplicate_entries"], other)
 		}
 	}

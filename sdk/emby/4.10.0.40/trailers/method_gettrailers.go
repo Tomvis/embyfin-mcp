@@ -30,6 +30,7 @@ func (c Client) GetTrailers(ctx context.Context, options ...emby.GetTrailersOpti
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetTrailers",
 		OptionsObject: option,
 		Path:          "/Trailers",
 	}

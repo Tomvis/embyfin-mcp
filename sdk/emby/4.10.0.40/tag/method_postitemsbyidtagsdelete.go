@@ -21,6 +21,7 @@ func (c Client) PostItemsByIdTagsDelete(ctx context.Context, id string, input em
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostItemsByIdTagsDelete",
 		Path:       fmt.Sprintf("/Items/%s/Tags/Delete", url.PathEscape(id)),
 	}
 

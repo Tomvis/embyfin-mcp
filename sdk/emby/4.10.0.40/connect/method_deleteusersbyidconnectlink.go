@@ -20,6 +20,7 @@ func (c Client) DeleteUsersByIdConnectLink(ctx context.Context, id string) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteUsersByIdConnectLink",
 		Path:       fmt.Sprintf("/Users/%s/Connect/Link", url.PathEscape(id)),
 	}
 

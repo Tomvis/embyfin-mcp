@@ -31,6 +31,7 @@ func (c Client) GetUsersByUserIdSectionsBySectionIdItems(ctx context.Context, us
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersByUserIdSectionsBySectionIdItems",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Sections/%s/Items", url.PathEscape(userId), url.PathEscape(sectionId)),
 	}

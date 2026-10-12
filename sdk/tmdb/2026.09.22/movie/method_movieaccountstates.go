@@ -28,6 +28,7 @@ func (c Client) MovieAccountStates(ctx context.Context, movieId int, options ...
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "MovieAccountStates",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/movie/%d/account_states", movieId),
 	}

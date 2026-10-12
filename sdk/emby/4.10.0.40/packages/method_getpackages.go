@@ -28,6 +28,7 @@ func (c Client) GetPackages(ctx context.Context, options ...emby.GetPackagesOpti
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPackages",
 		OptionsObject: option,
 		Path:          "/Packages",
 	}

@@ -19,6 +19,7 @@ func (c Client) CompanyImages(ctx context.Context, companyId int) (result tmdb.C
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "CompanyImages",
 		Path:       fmt.Sprintf("/3/company/%d/images", companyId),
 	}
 

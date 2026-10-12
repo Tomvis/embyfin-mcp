@@ -20,6 +20,7 @@ func (c Client) DeletePackagesInstallingById(ctx context.Context, id string) (re
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeletePackagesInstallingById",
 		Path:       fmt.Sprintf("/Packages/Installing/%s", url.PathEscape(id)),
 	}
 

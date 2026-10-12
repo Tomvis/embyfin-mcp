@@ -20,6 +20,7 @@ func (c Client) PostLiveTvTunersByIdReset(ctx context.Context, id string) (resul
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLiveTvTunersByIdReset",
 		Path:       fmt.Sprintf("/LiveTv/Tuners/%s/Reset", url.PathEscape(id)),
 	}
 

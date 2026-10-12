@@ -29,6 +29,7 @@ func (c Client) PostPackagesInstalledByName(ctx context.Context, name string, op
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostPackagesInstalledByName",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Packages/Installed/%s", url.PathEscape(name)),
 	}

@@ -30,6 +30,7 @@ func (c Client) GetExtendedVideoTypes(ctx context.Context, options ...emby.GetEx
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetExtendedVideoTypes",
 		OptionsObject: option,
 		Path:          "/ExtendedVideoTypes",
 	}

@@ -28,6 +28,7 @@ func (c Client) AddItemToPlaylist(ctx context.Context, playlistId string, option
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "AddItemToPlaylist",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(playlistId)),
 	}

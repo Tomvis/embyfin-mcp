@@ -18,6 +18,7 @@ func (c Client) CertificationsTvList(ctx context.Context) (result tmdb.Certifica
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "CertificationsTvList",
 		Path:       "/3/certification/tv/list",
 	}
 

@@ -20,6 +20,7 @@ func (c Client) DeleteScheduledTasksRunningById(ctx context.Context, id string) 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteScheduledTasksRunningById",
 		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(id)),
 	}
 

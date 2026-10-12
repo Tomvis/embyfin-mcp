@@ -198,6 +198,43 @@ func TestEveryWriteToolIsHinted(t *testing.T) {
 	}
 }
 
+// A tool that takes no arguments refuses one like any other tool, and says it takes none: sent to library_list, a filter it does not have would
+// otherwise be answered with every library as if it had been applied.
+func TestAToolThatTakesNoArgumentsRefusesOne(t *testing.T) {
+	t.Parallel()
+
+	cs := session(t, newFakeServer(t), Options{})
+	listed, err := cs.ListTools(t.Context(), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	takesNone := []string{}
+	for _, tool := range listed.Tools {
+		raw, err := json.Marshal(tool.InputSchema)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var in struct {
+			Properties map[string]any `json:"properties"`
+		}
+		if err := json.Unmarshal(raw, &in); err != nil {
+			t.Fatal(err)
+		}
+		if len(in.Properties) != 0 {
+			continue
+		}
+		takesNone = append(takesNone, tool.Name)
+
+		if msg := mustRefuse(t, cs, tool.Name, map[string]any{"zzyzx_filter": "films"}); !strings.Contains(msg, "zzyzx_filter") || !strings.Contains(msg, "takes no arguments") {
+			t.Errorf("%s given an argument it does not take = %q, want it refused by name and told the tool takes none", tool.Name, msg)
+		}
+	}
+	if !slices.Contains(takesNone, "library_list") || !slices.Contains(takesNone, "server_info") {
+		t.Errorf("the tools that take no arguments = %v, want library_list and server_info among them", takesNone)
+	}
+}
+
 func TestRegisterAllFilters(t *testing.T) {
 	t.Parallel()
 

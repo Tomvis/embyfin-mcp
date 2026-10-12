@@ -92,11 +92,6 @@ linters:
       - path: 'sdk/(zservices|(emby|jf|tmdb)/workarounds)/.*\.go'
         linters:
           - goconst
-      # each SDK's package comment is in its generated doc.go, which lint does not read; the hand-written service.go beside it needs none of its own
-      - path: 'sdk/(emby|jf|tmdb)/[0-9.]+/(emby|jf|tmdb)/service\.go'
-        text: 'package-comments'
-        linters:
-          - revive
       # the acceptance tests share one server and its fixtures, and run in the order they are written: none may run beside another
       - path: 'acceptance/.*\.go'
         linters:

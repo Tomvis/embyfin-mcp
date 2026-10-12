@@ -29,6 +29,7 @@ func (c Client) GetItems(ctx context.Context, options ...jf.GetItemsOptions) (re
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItems",
 		OptionsObject: option,
 		Path:          "/Items",
 	}

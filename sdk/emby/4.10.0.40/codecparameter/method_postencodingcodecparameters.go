@@ -22,6 +22,7 @@ func (c Client) PostEncodingCodecParameters(ctx context.Context, input io.Reader
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostEncodingCodecParameters",
 		OptionsObject: options,
 		Path:          "/Encoding/CodecParameters",
 	}

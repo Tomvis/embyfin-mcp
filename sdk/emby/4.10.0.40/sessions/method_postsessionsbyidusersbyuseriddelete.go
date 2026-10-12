@@ -20,6 +20,7 @@ func (c Client) PostSessionsByIdUsersByUserIdDelete(ctx context.Context, id stri
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSessionsByIdUsersByUserIdDelete",
 		Path:       fmt.Sprintf("/Sessions/%s/Users/%s/Delete", url.PathEscape(id), url.PathEscape(userId)),
 	}
 

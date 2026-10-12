@@ -18,6 +18,7 @@ func (c Client) GetLiveTvInfo(ctx context.Context) (result jf.GetLiveTvInfoRespo
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvInfo",
 		Path:       "/LiveTv/Info",
 	}
 

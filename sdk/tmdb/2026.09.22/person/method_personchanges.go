@@ -28,6 +28,7 @@ func (c Client) PersonChanges(ctx context.Context, personId int, options ...tmdb
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "PersonChanges",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/person/%d/changes", personId),
 	}

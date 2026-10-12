@@ -30,6 +30,7 @@ func (c Client) GetLiveTvProgramsRecommended(ctx context.Context, options ...emb
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLiveTvProgramsRecommended",
 		OptionsObject: option,
 		Path:          "/LiveTv/Programs/Recommended",
 	}

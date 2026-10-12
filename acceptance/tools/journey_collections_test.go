@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // A collection deleted straight after it was made. Jellyfin refreshes a
@@ -21,7 +21,7 @@ import (
 // back, and gets a few seconds' watch.
 func TestDeletingACollectionJustMade(t *testing.T) {
 	alien := findItem(t, "Movies", "Movie", "Alien")
-	id := acc.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Just Made", "item_ids": []any{alien}})["id"])
+	id := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Just Made", "item_ids": []any{alien}})["id"])
 	t.Cleanup(func() {
 		if _, err := suite.Invoke("collection_get", map[string]any{"collection": id}); err == nil {
 			suite.Undo(t, "collection_delete", map[string]any{"collection": id})
@@ -31,8 +31,8 @@ func TestDeletingACollectionJustMade(t *testing.T) {
 	})
 
 	out := suite.Call(t, "collection_delete", map[string]any{"collection": id})
-	watched, note := acc.Num(t, out["watched_s"], "watched_s"), acc.Str(out["note"])
-	if acc.Str(out["deleted"]) != "Zzyzx Just Made" {
+	watched, note := acctest.Num(t, out["watched_s"], "watched_s"), acctest.Str(out["note"])
+	if acctest.Str(out["deleted"]) != "Zzyzx Just Made" {
 		t.Errorf("collection_delete = %v", out)
 	}
 	if isJellyfin() {
@@ -46,14 +46,14 @@ func TestDeletingACollectionJustMade(t *testing.T) {
 
 	// and it stays gone
 	gone := func() bool {
-		for _, c := range acc.RowsOf(suite.Call(t, "collection_list", nil)["collections"]) {
-			if acc.Str(c["id"]) == id {
+		for _, c := range acctest.RowsOf(suite.Call(t, "collection_list", nil)["collections"]) {
+			if acctest.Str(c["id"]) == id {
 				return false
 			}
 		}
 		return true
 	}
-	if !acc.Holds(gone) {
+	if !acctest.Holds(gone) {
 		t.Error("the collection is listed again after collection_delete answered")
 	}
 }

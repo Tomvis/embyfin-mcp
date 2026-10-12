@@ -28,6 +28,7 @@ func (c Client) GetMediaFolders(ctx context.Context, isHidden ...bool) (result j
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetMediaFolders",
 		OptionsObject: option,
 		Path:          "/Library/MediaFolders",
 	}

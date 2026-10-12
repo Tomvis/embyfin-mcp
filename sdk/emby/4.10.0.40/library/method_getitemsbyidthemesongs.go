@@ -31,6 +31,7 @@ func (c Client) GetItemsByIdThemeSongs(ctx context.Context, id string, options .
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsByIdThemeSongs",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/ThemeSongs", url.PathEscape(id)),
 	}

@@ -20,6 +20,7 @@ func (c Client) GetVideosByIdLiveM3u8(ctx context.Context, id string, options em
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideosByIdLiveM3u8",
 		OptionsObject:  options,
 		Path:           fmt.Sprintf("/Videos/%s/live.m3u8", url.PathEscape(id)),
 		StreamResponse: true,

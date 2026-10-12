@@ -19,6 +19,7 @@ func (c Client) GetEncodingSubtitleOptions(ctx context.Context) (result emby.Get
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEncodingSubtitleOptions",
 		Path:       "/Encoding/SubtitleOptions",
 	}
 

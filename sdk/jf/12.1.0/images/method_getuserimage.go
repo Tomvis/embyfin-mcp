@@ -28,6 +28,7 @@ func (c Client) GetUserImage(ctx context.Context, options ...jf.GetUserImageOpti
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetUserImage",
 		OptionsObject:  option,
 		Path:           "/UserImage",
 		StreamResponse: true,

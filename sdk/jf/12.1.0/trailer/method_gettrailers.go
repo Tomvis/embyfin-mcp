@@ -31,6 +31,7 @@ func (c Client) GetTrailers(ctx context.Context, options ...jf.GetTrailersOption
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetTrailers",
 		OptionsObject: option,
 		Path:          "/Trailers",
 	}

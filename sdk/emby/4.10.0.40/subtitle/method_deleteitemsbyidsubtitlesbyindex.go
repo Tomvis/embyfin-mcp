@@ -23,6 +23,7 @@ func (c Client) DeleteItemsByIdSubtitlesByIndex(ctx context.Context, id string, 
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "DeleteItemsByIdSubtitlesByIndex",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Subtitles/%d", url.PathEscape(id), index),
 	}

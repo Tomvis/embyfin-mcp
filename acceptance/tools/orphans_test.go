@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/katbyte/go-kt/test/env"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
@@ -48,7 +48,7 @@ func removeLibraryKeepingItems(t *testing.T, name string) {
 func lostSight(t *testing.T, folder string) {
 	t.Helper()
 
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		_, err := suite.Invoke("item_orphans_delete", map[string]any{"folder": folder})
 		return err == nil
 	}) {
@@ -60,7 +60,7 @@ func lostSight(t *testing.T, folder string) {
 func orphanCount(t *testing.T) int {
 	t.Helper()
 
-	return acc.Num(t, suite.Call(t, "audit_orphans", nil)["total_findings"], "total_findings")
+	return acctest.Num(t, suite.Call(t, "audit_orphans", nil)["total_findings"], "total_findings")
 }
 
 // A library of two folders, one taken off the disk with the library gone and
@@ -77,7 +77,7 @@ func TestOrphans(t *testing.T) {
 
 	// the fixtures leave nothing outside a library, so anything reported here
 	// is something the sweep should not have counted
-	if audit := suite.Call(t, "audit_orphans", nil); acc.Num(t, audit["total_findings"], "total_findings") != 0 || acc.Num(t, audit["items_scanned"], "items_scanned") == 0 {
+	if audit := suite.Call(t, "audit_orphans", nil); acctest.Num(t, audit["total_findings"], "total_findings") != 0 || acctest.Num(t, audit["items_scanned"], "items_scanned") == 0 {
 		t.Errorf("before anything was removed: %v", audit)
 	}
 
@@ -131,12 +131,12 @@ func TestOrphans(t *testing.T) {
 				t.Errorf("clearing %s: %v", folder, err)
 			}
 		}
-		if out, err := suite.Invoke("audit_orphans", nil); err != nil || acc.NumOr0(out["total_findings"]) != 0 {
+		if out, err := suite.Invoke("audit_orphans", nil); err != nil || acctest.NumOr0(out["total_findings"]) != 0 {
 			t.Errorf("the test left orphans behind: %v %v", out, err)
 		}
 	})
 	suite.Call(t, "library_create", map[string]any{"name": name, "type": "movies", "paths": []any{"/media/movie", "/media/orphans-kept"}, "scan": true})
-	if !acc.EventuallyWithin(time.Minute, func() bool { return suite.TypeCounts(name)["Movie"] == 3 }) {
+	if !acctest.EventuallyWithin(time.Minute, func() bool { return suite.TypeCounts(name)["Movie"] == 3 }) {
 		t.Fatalf("%s never held its three films", name)
 	}
 	if err := suite.WaitForScan(); err != nil {
@@ -156,11 +156,11 @@ func TestOrphans(t *testing.T) {
 		if got := suite.TypeCounts(name)["Movie"]; got != 1 {
 			t.Errorf("%s holds %d films once a folder is out, want the other folder's one", name, got)
 		}
-		if audit := suite.Call(t, "audit_orphans", nil); acc.Num(t, audit["total_findings"], "total_findings") != 0 {
+		if audit := suite.Call(t, "audit_orphans", nil); acctest.Num(t, audit["total_findings"], "total_findings") != 0 {
 			t.Errorf("Emby left the removed folder's films behind: %v", audit)
 		}
 		out := suite.Call(t, "item_orphans_delete", map[string]any{"folder": "/media/movie", "confirm": true})
-		if acc.Num(t, out["found"], "found") != 0 || acc.Num(t, out["deleted"], "deleted") != 0 || acc.Num(t, out["items_scanned"], "items_scanned") == 0 {
+		if acctest.Num(t, out["found"], "found") != 0 || acctest.Num(t, out["deleted"], "deleted") != 0 || acctest.Num(t, out["items_scanned"], "items_scanned") == 0 {
 			t.Errorf("a folder holding nothing = %v", out)
 		}
 		if got := typeCount(t, "Movies", "Movie"); got != movies {
@@ -174,21 +174,21 @@ func TestOrphans(t *testing.T) {
 	// playlist and alice's favourites, each with a film that stays
 	matrix := findItem(t, name, "Movie", "The Matrix")
 	arrival := findItem(t, "Movies", "Movie", "Arrival")
-	col := acc.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Orphans", "item_ids": []any{matrix, arrival}})["id"])
+	col := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Orphans", "item_ids": []any{matrix, arrival}})["id"])
 	deleteLater(t, "collection_delete", "collection", col)
-	pl := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Orphans", "item_ids": []any{matrix, arrival}, "media_type": "Video"})["id"])
+	pl := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Orphans", "item_ids": []any{matrix, arrival}, "media_type": "Video"})["id"])
 	deleteLater(t, "playlist_delete", "playlist", pl)
 	suite.Call(t, "item_set_state", map[string]any{"id": matrix, "user": "alice", "favourite": true})
 	t.Cleanup(func() {
 		// the orphans' delete below takes it, and its state with it
 		suite.UndoIfThere(t, matrix, "item_set_state", map[string]any{"id": matrix, "user": "alice", "favourite": false})
 	})
-	favourites := acc.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["favourites"], "favourites")
+	favourites := acctest.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["favourites"], "favourites")
 	holding := func() (collection, playlist []string, favourite bool) {
-		collection = acc.Sorted(names(t, suite.Call(t, "collection_get", map[string]any{"collection": col})["items"], "items"))
-		playlist = acc.Sorted(names(t, suite.Call(t, "playlist_get", map[string]any{"playlist": pl})["entries"], "entries"))
-		for _, it := range acc.RowsOf(suite.Call(t, "library_items", map[string]any{"user": "alice", "watched": "favourite"})["items"]) {
-			favourite = favourite || acc.Str(it["id"]) == matrix
+		collection = acctest.Sorted(names(t, suite.Call(t, "collection_get", map[string]any{"collection": col})["items"], "items"))
+		playlist = acctest.Sorted(names(t, suite.Call(t, "playlist_get", map[string]any{"playlist": pl})["entries"], "entries"))
+		for _, it := range acctest.RowsOf(suite.Call(t, "library_items", map[string]any{"user": "alice", "watched": "favourite"})["items"]) {
+			favourite = favourite || acctest.Str(it["id"]) == matrix
 		}
 		return collection, playlist, favourite
 	}
@@ -213,37 +213,37 @@ func TestOrphans(t *testing.T) {
 
 	audit := suite.Call(t, "audit_orphans", nil)
 	byFolder := map[string]map[string]any{}
-	for _, row := range acc.Rows(t, audit["folders"], "folders") {
-		byFolder[acc.Str(row["folder"])] = row
+	for _, row := range acctest.Rows(t, audit["folders"], "folders") {
+		byFolder[acctest.Str(row["folder"])] = row
 	}
 	// each folder the library read is itself an item, and is left behind too
 	gone, still := byFolder["/media/movie"], byFolder["/media/orphans-kept"]
 	if gone == nil || still == nil || len(byFolder) != 2 {
 		t.Fatalf("the removed library's items were not reported where they lie: %v", audit["folders"])
 	}
-	if types := acc.Object(t, gone["by_type"], "by_type"); acc.Str(gone["on_server"]) != "missing" || acc.Num(t, types["Movie"], "Movie") != 2 || acc.Num(t, types["Folder"], "Folder") != 1 {
+	if types := acctest.Object(t, gone["by_type"], "by_type"); acctest.Str(gone["on_server"]) != "missing" || acctest.Num(t, types["Movie"], "Movie") != 2 || acctest.Num(t, types["Folder"], "Folder") != 1 {
 		t.Errorf("the folder taken away = %v", gone)
 	}
 	// the other folder is still on disk: its film is real, outside every library
-	if types := acc.Object(t, still["by_type"], "by_type"); acc.Str(still["on_server"]) != "present" || acc.Num(t, types["Movie"], "Movie") != 1 || acc.Num(t, types["Folder"], "Folder") != 1 {
+	if types := acctest.Object(t, still["by_type"], "by_type"); acctest.Str(still["on_server"]) != "present" || acctest.Num(t, types["Movie"], "Movie") != 1 || acctest.Num(t, types["Folder"], "Folder") != 1 {
 		t.Errorf("the folder still on disk = %v", still)
 	}
 	var keptFilm string
-	for _, e := range acc.Rows(t, still["examples"], "examples") {
-		if acc.Str(e["type"]) == "Movie" {
-			keptFilm = acc.Str(e["id"])
+	for _, e := range acctest.Rows(t, still["examples"], "examples") {
+		if acctest.Str(e["type"]) == "Movie" {
+			keptFilm = acctest.Str(e["id"])
 		}
 	}
-	found := acc.Num(t, gone["items"], "items")
-	total := acc.Num(t, audit["total_findings"], "total_findings")
+	found := acctest.Num(t, gone["items"], "items")
+	total := acctest.Num(t, audit["total_findings"], "total_findings")
 	// a limit caps the folders, most items first, and not the count
 	capped := suite.Call(t, "audit_orphans", map[string]any{"limit": 1})
-	if first := acc.Rows(t, capped["folders"], "folders"); len(first) != 1 || acc.Str(first[0]["folder"]) != "/media/movie" || acc.Num(t, capped["total_findings"], "total_findings") != total {
+	if first := acctest.Rows(t, capped["folders"], "folders"); len(first) != 1 || acctest.Str(first[0]["folder"]) != "/media/movie" || acctest.Num(t, capped["total_findings"], "total_findings") != total {
 		t.Errorf("limit 1 = %v, want the removed folder's %d items first and the count of %d", capped, found, total)
 	}
 	// audit_all's row is the audit's own count, here where it is not 0
-	for _, row := range acc.Rows(t, suite.Call(t, "audit_all", nil)["audits"], "audits") {
-		if acc.Str(row["audit"]) == "audit_orphans" && (acc.Num(t, row["findings"], "findings") != total || acc.Num(t, row["items_scanned"], "items_scanned") != acc.Num(t, audit["items_scanned"], "items_scanned")) {
+	for _, row := range acctest.Rows(t, suite.Call(t, "audit_all", nil)["audits"], "audits") {
+		if acctest.Str(row["audit"]) == "audit_orphans" && (acctest.Num(t, row["findings"], "findings") != total || acctest.Num(t, row["items_scanned"], "items_scanned") != acctest.Num(t, audit["items_scanned"], "items_scanned")) {
 			t.Errorf("audit_all's orphans row = %v, the audit %d of %v", row, total, audit["items_scanned"])
 		}
 	}
@@ -255,12 +255,12 @@ func TestOrphans(t *testing.T) {
 		return suite.Call(t, "item_orphans_delete", map[string]any{"folder": "/media/movie"})
 	}
 	first := preview()
-	if acc.Num(t, first["found"], "found") != found || acc.Num(t, first["deleted"], "deleted") != 0 || acc.Num(t, first["remaining"], "remaining") != found {
+	if acctest.Num(t, first["found"], "found") != found || acctest.Num(t, first["deleted"], "deleted") != 0 || acctest.Num(t, first["remaining"], "remaining") != found {
 		t.Errorf("preview = %v", first)
 	}
 	var paths []string
-	for _, row := range acc.Rows(t, first["examples"], "examples") {
-		paths = append(paths, acc.Str(row["path"]))
+	for _, row := range acctest.Rows(t, first["examples"], "examples") {
+		paths = append(paths, acctest.Str(row["path"]))
 	}
 	if !slices.Contains(paths, "/media/movie/The Matrix (1999)/The Matrix (1999).mp4") || slices.ContainsFunc(paths, func(p string) bool { return strings.HasPrefix(p, "/media/movies/") }) {
 		t.Errorf("examples = %v, want the removed folder's films and nothing of the live library's", paths)
@@ -271,7 +271,7 @@ func TestOrphans(t *testing.T) {
 	left := found
 	for _, waiting := range []map[string]int{{"Movie": 1, "Folder": 1}, {"Folder": 1}, {}} {
 		out := suite.Call(t, "item_orphans_delete", map[string]any{"folder": "/media/movie", "confirm": true, "limit": 1})
-		if acc.Num(t, out["found"], "found") != left || acc.Num(t, out["deleted"], "deleted") != 1 || acc.Num(t, out["remaining"], "remaining") != left-1 || out["failed"] != nil || out["stopped"] != nil {
+		if acctest.Num(t, out["found"], "found") != left || acctest.Num(t, out["deleted"], "deleted") != 1 || acctest.Num(t, out["remaining"], "remaining") != left-1 || out["failed"] != nil || out["stopped"] != nil {
 			t.Fatalf("a batch of one with %d left = %v", left, out)
 		}
 		left--
@@ -279,14 +279,14 @@ func TestOrphans(t *testing.T) {
 			t.Errorf("audit_orphans counts %d with %d of the folder's left, want %d", n, left, total-(found-left))
 		}
 		byType := map[string]int{}
-		for kind, n := range acc.Object(t, preview()["by_type"], "by_type") {
-			byType[kind] = acc.Num(t, n, kind)
+		for kind, n := range acctest.Object(t, preview()["by_type"], "by_type") {
+			byType[kind] = acctest.Num(t, n, kind)
 		}
 		if fmt.Sprint(byType) != fmt.Sprint(waiting) {
 			t.Errorf("with %d left the folder still holds %v, want %v", left, byType, waiting)
 		}
 	}
-	if out := suite.Call(t, "item_orphans_delete", map[string]any{"folder": "/media/movie", "confirm": true}); acc.Num(t, out["found"], "found") != 0 || acc.Num(t, out["deleted"], "deleted") != 0 {
+	if out := suite.Call(t, "item_orphans_delete", map[string]any{"folder": "/media/movie", "confirm": true}); acctest.Num(t, out["found"], "found") != 0 || acctest.Num(t, out["deleted"], "deleted") != 0 {
 		t.Errorf("after the last batch = %v", out)
 	}
 
@@ -302,12 +302,12 @@ func TestOrphans(t *testing.T) {
 	if c, p, f := holding(); !slices.Equal(c, []string{"Arrival"}) || !slices.Equal(p, []string{"Arrival"}) || f {
 		t.Errorf("after the delete: collection %v playlist %v favourite %v, want Arrival alone and no favourite", c, p, f)
 	}
-	if n := acc.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["favourites"], "favourites"); n != favourites-1 {
+	if n := acctest.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["favourites"], "favourites"); n != favourites-1 {
 		t.Errorf("alice has %d favourites, %d before", n, favourites)
 	}
 	// and the server's counts drop by the two films, as does the poster
 	// audit's, neither film having one
-	if n := acc.Num(t, suite.Call(t, "server_stats", nil)["movies"], "movies"); n != acc.Num(t, stats["movies"], "movies")-2 {
+	if n := acctest.Num(t, suite.Call(t, "server_stats", nil)["movies"], "movies"); n != acctest.Num(t, stats["movies"], "movies")-2 {
 		t.Errorf("server_stats counts %d films, %v before the delete", n, stats["movies"])
 	}
 	if n := auditCounts(t, nil)[rowPoster]; n != posters-2 {
@@ -323,7 +323,7 @@ func TestOrphans(t *testing.T) {
 	if err := suite.WaitForExpectedScan(isJellyfin()); err != nil {
 		t.Fatal(err)
 	}
-	if !acc.EventuallyWithin(time.Minute, func() bool { return suite.TypeCounts(again)["Movie"] == 1 }) {
+	if !acctest.EventuallyWithin(time.Minute, func() bool { return suite.TypeCounts(again)["Movie"] == 1 }) {
 		t.Fatalf("%s never held the kept film", again)
 	}
 	// as the same item: Jellyfin makes an item's id from its path, so the
@@ -366,13 +366,13 @@ func TestOrphansManyAtOnce(t *testing.T) {
 		if _, err := suite.Invoke("item_orphans_delete", map[string]any{"folder": folder, "confirm": true}); err != nil {
 			t.Errorf("clearing %s: %v", folder, err)
 		}
-		if out, err := suite.Invoke("audit_orphans", nil); err != nil || acc.NumOr0(out["total_findings"]) != 0 {
+		if out, err := suite.Invoke("audit_orphans", nil); err != nil || acctest.NumOr0(out["total_findings"]) != 0 {
 			t.Errorf("the test left orphans behind: %v %v", out, err)
 		}
 	})
 	before := suite.Call(t, "server_stats", nil)
 	suite.Call(t, "library_create", map[string]any{"name": name, "type": "tvshows", "paths": []any{folder}, "scan": true})
-	if !acc.EventuallyWithin(2*time.Minute, func() bool { return suite.TypeCounts(name)["Episode"] == count }) {
+	if !acctest.EventuallyWithin(2*time.Minute, func() bool { return suite.TypeCounts(name)["Episode"] == count }) {
 		t.Fatalf("%s never held its %d episodes", name, count)
 	}
 	if err := suite.WaitForScan(); err != nil {
@@ -384,33 +384,33 @@ func TestOrphansManyAtOnce(t *testing.T) {
 	}
 	// the server still counts what no library lists
 	left := suite.Call(t, "server_stats", nil)
-	if acc.Num(t, left["series"], "series") != acc.Num(t, before["series"], "series")+1 || acc.Num(t, left["episodes"], "episodes") != acc.Num(t, before["episodes"], "episodes")+count {
+	if acctest.Num(t, left["series"], "series") != acctest.Num(t, before["series"], "series")+1 || acctest.Num(t, left["episodes"], "episodes") != acctest.Num(t, before["episodes"], "episodes")+count {
 		t.Errorf("with the show left behind server_stats counts %v series and %v episodes, %v and %v before it was staged", left["series"], left["episodes"], before["series"], before["episodes"])
 	}
 
 	byType := func(v any) map[string]int {
 		out := map[string]int{}
-		for kind, n := range acc.Object(t, v, "by_type") {
-			out[kind] = acc.Num(t, n, kind)
+		for kind, n := range acctest.Object(t, v, "by_type") {
+			out[kind] = acctest.Num(t, n, kind)
 		}
 		return out
 	}
 	audit := suite.Call(t, "audit_orphans", nil)
-	groups := acc.Rows(t, audit["folders"], "folders")
-	if len(groups) != 1 || acc.Str(groups[0]["folder"]) != folder || acc.Str(groups[0]["on_server"]) != "missing" {
+	groups := acctest.Rows(t, audit["folders"], "folders")
+	if len(groups) != 1 || acctest.Str(groups[0]["folder"]) != folder || acctest.Str(groups[0]["on_server"]) != "missing" {
 		t.Fatalf("audit_orphans = %v, want the show's folder alone", groups)
 	}
 	if got, want := byType(groups[0]["by_type"]), map[string]int{"Episode": count, "Season": 1, "Series": 1, "Folder": 1}; fmt.Sprint(got) != fmt.Sprint(want) {
 		t.Errorf("the show's folder holds %v, want %v", got, want)
 	}
 	all := count + 3
-	if acc.Num(t, audit["total_findings"], "total_findings") != all || acc.Num(t, groups[0]["items"], "items") != all {
+	if acctest.Num(t, audit["total_findings"], "total_findings") != all || acctest.Num(t, groups[0]["items"], "items") != all {
 		t.Errorf("audit_orphans counts %v, want %d", audit["total_findings"], all)
 	}
 
 	// fifty-five in one call: more than one request's fifty, all episodes
 	out := suite.Call(t, "item_orphans_delete", map[string]any{"folder": folder, "confirm": true, "limit": 55})
-	if acc.Num(t, out["found"], "found") != all || acc.Num(t, out["deleted"], "deleted") != 55 || acc.Num(t, out["remaining"], "remaining") != all-55 || out["failed"] != nil || out["stopped"] != nil {
+	if acctest.Num(t, out["found"], "found") != all || acctest.Num(t, out["deleted"], "deleted") != 55 || acctest.Num(t, out["remaining"], "remaining") != all-55 || out["failed"] != nil || out["stopped"] != nil {
 		t.Fatalf("a limit of 55 = %v", out)
 	}
 	if got, want := byType(suite.Call(t, "item_orphans_delete", map[string]any{"folder": folder})["by_type"]), map[string]int{"Episode": count - 55, "Season": 1, "Series": 1, "Folder": 1}; fmt.Sprint(got) != fmt.Sprint(want) {
@@ -422,7 +422,7 @@ func TestOrphansManyAtOnce(t *testing.T) {
 
 	// and the next call clears the rest, the folder last
 	out = suite.Call(t, "item_orphans_delete", map[string]any{"folder": folder, "confirm": true})
-	if acc.Num(t, out["found"], "found") != all-55 || acc.Num(t, out["deleted"], "deleted") != all-55 || acc.Num(t, out["remaining"], "remaining") != 0 || out["failed"] != nil {
+	if acctest.Num(t, out["found"], "found") != all-55 || acctest.Num(t, out["deleted"], "deleted") != all-55 || acctest.Num(t, out["remaining"], "remaining") != 0 || out["failed"] != nil {
 		t.Errorf("the rest = %v", out)
 	}
 	if n := orphanCount(t); n != 0 {
@@ -430,7 +430,7 @@ func TestOrphansManyAtOnce(t *testing.T) {
 	}
 	after := suite.Call(t, "server_stats", nil)
 	for _, kind := range []string{"series", "episodes"} {
-		if acc.Num(t, after[kind], kind) != acc.Num(t, before[kind], kind) {
+		if acctest.Num(t, after[kind], kind) != acctest.Num(t, before[kind], kind) {
 			t.Errorf("server_stats counts %v %s, %v before the show was staged", after[kind], kind, before[kind])
 		}
 	}
@@ -464,7 +464,7 @@ func TestDeleteItemsInOneRequest(t *testing.T) {
 		_ = os.RemoveAll(root)
 	})
 	suite.Call(t, "library_create", map[string]any{"name": name, "type": "movies", "paths": []any{"/media/bulk-delete"}, "scan": true})
-	if !acc.EventuallyWithin(time.Minute, func() bool { return suite.TypeCounts(name)["Movie"] == 2 }) {
+	if !acctest.EventuallyWithin(time.Minute, func() bool { return suite.TypeCounts(name)["Movie"] == 2 }) {
 		t.Fatalf("%s never held its two films", name)
 	}
 	if err := suite.WaitForScan(); err != nil {
@@ -489,9 +489,9 @@ func TestDeleteItemsInOneRequest(t *testing.T) {
 		// Emby's ids are numbers, and one it never gave is passed over; the
 		// second film is named by its folder's item, which takes the film
 		var folder string
-		for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": name, "types": "Folder", "limit": 50})["items"], "items") {
-			if acc.Str(it["path"]) == "/media/bulk-delete/"+films[1] {
-				folder = acc.Str(it["id"])
+		for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": name, "types": "Folder", "limit": 50})["items"], "items") {
+			if acctest.Str(it["path"]) == "/media/bulk-delete/"+films[1] {
+				folder = acctest.Str(it["id"])
 			}
 		}
 		if folder == "" {
@@ -500,7 +500,7 @@ func TestDeleteItemsInOneRequest(t *testing.T) {
 		if err := client.DeleteItems(ctx, []string{matrix, "99999999", folder}); err != nil {
 			t.Fatalf("DeleteItems with an unknown id among them: %v", err)
 		}
-		if !acc.Eventually(func() bool { return gone(matrix) && gone(reloaded) && gone(folder) }) {
+		if !acctest.Eventually(func() bool { return gone(matrix) && gone(reloaded) && gone(folder) }) {
 			t.Errorf("after DeleteItems The Matrix is gone %v, Reloaded %v, its folder %v", gone(matrix), gone(reloaded), gone(folder))
 		}
 		for _, f := range films {

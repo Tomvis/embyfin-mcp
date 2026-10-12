@@ -22,6 +22,7 @@ func (c Client) PostEncodingFfmpegOptions(ctx context.Context, input io.Reader, 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostEncodingFfmpegOptions",
 		Path:       "/Encoding/FfmpegOptions",
 	}
 

@@ -19,6 +19,7 @@ func (c Client) SendSystemCommand(ctx context.Context, sessionId string, command
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SendSystemCommand",
 		Path:       fmt.Sprintf("/Sessions/%s/System/%s", url.PathEscape(sessionId), url.PathEscape(string(command))),
 	}
 

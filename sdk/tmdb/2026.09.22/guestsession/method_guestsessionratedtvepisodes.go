@@ -30,6 +30,7 @@ func (c Client) GuestSessionRatedTvEpisodes(ctx context.Context, guestSessionId 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GuestSessionRatedTvEpisodes",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/guest_session/%s/rated/tv/episodes", url.PathEscape(guestSessionId)),
 	}

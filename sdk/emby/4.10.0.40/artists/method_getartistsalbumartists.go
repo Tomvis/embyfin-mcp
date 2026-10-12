@@ -30,6 +30,7 @@ func (c Client) GetArtistsAlbumArtists(ctx context.Context, options ...emby.GetA
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetArtistsAlbumArtists",
 		OptionsObject: option,
 		Path:          "/Artists/AlbumArtists",
 	}

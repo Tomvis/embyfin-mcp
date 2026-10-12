@@ -22,6 +22,7 @@ func (c Client) PostEnvironmentValidatePath(ctx context.Context, input emby.Vali
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostEnvironmentValidatePath",
 		OptionsObject: option,
 		Path:          "/Environment/ValidatePath",
 	}

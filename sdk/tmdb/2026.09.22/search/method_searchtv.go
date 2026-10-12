@@ -20,6 +20,7 @@ func (c Client) SearchTv(ctx context.Context, options tmdb.SearchTvOptions) (res
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "SearchTv",
 		OptionsObject: options,
 		Path:          "/3/search/tv",
 	}

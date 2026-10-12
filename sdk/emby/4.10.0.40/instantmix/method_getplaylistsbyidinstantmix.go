@@ -31,6 +31,7 @@ func (c Client) GetPlaylistsByIdInstantMix(ctx context.Context, id string, optio
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPlaylistsByIdInstantMix",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Playlists/%s/InstantMix", url.PathEscape(id)),
 	}

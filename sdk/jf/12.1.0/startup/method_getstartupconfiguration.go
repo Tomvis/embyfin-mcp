@@ -20,6 +20,7 @@ func (c Client) GetStartupConfiguration(ctx context.Context) (result jf.GetStart
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetStartupConfiguration",
 		Path:       "/Startup/Configuration",
 	}
 

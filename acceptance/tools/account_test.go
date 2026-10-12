@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // What user_delete says of what goes with an account and what stays: its playlist is still there afterwards, belonging to nobody, and an account made
@@ -24,27 +24,27 @@ func TestADeletedAccountsPlaylistStaysAndItsMarksGo(t *testing.T) {
 	const account, list = "zzyzxgone", "Zzyzx Left Behind"
 	arrival := findItem(t, "Movies", "Movie", "Arrival")
 	t.Cleanup(func() {
-		for _, u := range acc.Rows(t, suite.Call(t, "user_list", nil)["users"], "users") {
-			if acc.Str(u["name"]) == account {
+		for _, u := range acctest.Rows(t, suite.Call(t, "user_list", nil)["users"], "users") {
+			if acctest.Str(u["name"]) == account {
 				suite.Call(t, "user_delete", map[string]any{"user": account, "confirm": true})
 			}
 		}
-		for _, p := range acc.RowsOf(suite.Call(t, "playlist_list", nil)["playlists"]) {
-			if acc.Str(p["name"]) == list {
-				suite.Call(t, "playlist_delete", map[string]any{"playlist": acc.Str(p["id"])})
+		for _, p := range acctest.RowsOf(suite.Call(t, "playlist_list", nil)["playlists"]) {
+			if acctest.Str(p["name"]) == list {
+				suite.Call(t, "playlist_delete", map[string]any{"playlist": acctest.Str(p["id"])})
 			}
 		}
 	})
 
-	first := acc.Str(suite.Call(t, "user_create", map[string]any{"name": account, "password": password, "libraries": []any{"Movies"}})["id"])
-	playlist := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": list, "user": account, "item_ids": []any{arrival}})["id"])
+	first := acctest.Str(suite.Call(t, "user_create", map[string]any{"name": account, "password": password, "libraries": []any{"Movies"}})["id"])
+	playlist := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": list, "user": account, "item_ids": []any{arrival}})["id"])
 	suite.Call(t, "item_set_state", map[string]any{"id": arrival, "user": account, "watched": true, "favourite": true})
-	if stats := suite.Call(t, "user_stats", map[string]any{"user": account}); acc.Num(t, stats["movies_watched"], "movies_watched") != 1 || acc.Num(t, stats["favourites"], "favourites") != 1 {
+	if stats := suite.Call(t, "user_stats", map[string]any{"user": account}); acctest.Num(t, stats["movies_watched"], "movies_watched") != 1 || acctest.Num(t, stats["favourites"], "favourites") != 1 {
 		t.Fatalf("user_stats before the delete = %v, want one film watched and favourited", stats)
 	}
 
 	gone := suite.Call(t, "user_delete", map[string]any{"user": account, "confirm": true})
-	if acc.Str(gone["id"]) != first || !strings.Contains(acc.Str(gone["note"]), "playlists are not removed") {
+	if acctest.Str(gone["id"]) != first || !strings.Contains(acctest.Str(gone["note"]), "playlists are not removed") {
 		t.Errorf("user_delete = %v", gone)
 	}
 	if msg := suite.CallErr(t, "user_get", map[string]any{"user": account}); !strings.Contains(msg, "no user named") {
@@ -55,10 +55,10 @@ func TestADeletedAccountsPlaylistStaysAndItsMarksGo(t *testing.T) {
 	}
 
 	// its playlist is still listed, and still holds the film
-	rows := acc.RowsOf(suite.Call(t, "playlist_list", nil)["playlists"])
+	rows := acctest.RowsOf(suite.Call(t, "playlist_list", nil)["playlists"])
 	listed := make([]string, 0, len(rows))
 	for _, p := range rows {
-		listed = append(listed, acc.Str(p["id"]))
+		listed = append(listed, acctest.Str(p["id"]))
 	}
 	if !slices.Contains(listed, playlist) {
 		t.Errorf("the deleted account's playlist %s is not among %v: user_delete says it stays", playlist, listed)
@@ -68,13 +68,13 @@ func TestADeletedAccountsPlaylistStaysAndItsMarksGo(t *testing.T) {
 
 	// the name again is another account, with nothing of the first one's
 	second := suite.Call(t, "user_create", map[string]any{"name": account, "password": password})
-	if acc.Str(second["id"]) == first || acc.Str(second["id"]) == "" || !acc.BoolOf(second["all_libraries"]) {
+	if acctest.Str(second["id"]) == first || acctest.Str(second["id"]) == "" || !acctest.BoolOf(second["all_libraries"]) {
 		t.Errorf("the account made again = %v, want a new id (the first was %s) and every library", second, first)
 	}
-	if note, cleared := acc.Str(second["note"]), "listed with such state on 1 of the items it sees, each cleared again"; strings.Contains(note, cleared) != isJellyfin() || strings.Contains(note, "could not be cleared") {
+	if note, cleared := acctest.Str(second["note"]), "listed with such state on 1 of the items it sees, each cleared again"; strings.Contains(note, cleared) != isJellyfin() || strings.Contains(note, "could not be cleared") {
 		t.Errorf("user_create's note for the account made again = %q: on Jellyfin it says the one film it was listed with was cleared (%q), and on Emby nothing of the kind", note, cleared)
 	}
-	if stats := suite.Call(t, "user_stats", map[string]any{"user": account}); acc.Num(t, stats["movies_watched"], "movies_watched") != 0 || acc.Num(t, stats["favourites"], "favourites") != 0 {
+	if stats := suite.Call(t, "user_stats", map[string]any{"user": account}); acctest.Num(t, stats["movies_watched"], "movies_watched") != 0 || acctest.Num(t, stats["favourites"], "favourites") != 0 {
 		t.Errorf("user_stats of the account made again = %v, want nothing watched or favourited", stats)
 	}
 }

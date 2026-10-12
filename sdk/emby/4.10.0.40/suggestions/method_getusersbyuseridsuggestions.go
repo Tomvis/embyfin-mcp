@@ -31,6 +31,7 @@ func (c Client) GetUsersByUserIdSuggestions(ctx context.Context, userId string, 
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersByUserIdSuggestions",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Suggestions", url.PathEscape(userId)),
 	}

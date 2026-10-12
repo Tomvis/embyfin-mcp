@@ -18,6 +18,7 @@ func (c Client) UpdateConfiguration(ctx context.Context, input jf.ServerConfigur
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateConfiguration",
 		Path:       "/System/Configuration",
 	}
 

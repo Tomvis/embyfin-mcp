@@ -17,6 +17,7 @@ func (c Client) SyncPlayPause(ctx context.Context) (result jf.SyncPlayPauseRespo
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayPause",
 		Path:       "/SyncPlay/Pause",
 	}
 

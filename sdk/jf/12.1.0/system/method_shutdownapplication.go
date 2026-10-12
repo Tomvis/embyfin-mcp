@@ -17,6 +17,7 @@ func (c Client) ShutdownApplication(ctx context.Context) (result jf.ShutdownAppl
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "ShutdownApplication",
 		Path:       "/System/Shutdown",
 	}
 

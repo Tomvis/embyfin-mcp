@@ -29,6 +29,7 @@ func (c Client) GetPlaybackInfo(ctx context.Context, itemId string, userId ...st
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPlaybackInfo",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(itemId)),
 	}

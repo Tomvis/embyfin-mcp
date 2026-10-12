@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // Limitless is a film of 2011 in the clean movie library and a series of
@@ -20,16 +20,16 @@ func TestOneNameForAFilmAndAShow(t *testing.T) {
 
 	// the show tools by name: the series, matched whole, and the film is not
 	// even a candidate
-	resolved := acc.Rows(t, suite.Call(t, "show_resolve", map[string]any{"title": "Limitless"})["candidates"], "candidates")
-	if len(resolved) != 1 || acc.Str(resolved[0]["series_id"]) != series || acc.Decimal(t, resolved[0]["score"], "score") != 1 {
+	resolved := acctest.Rows(t, suite.Call(t, "show_resolve", map[string]any{"title": "Limitless"})["candidates"], "candidates")
+	if len(resolved) != 1 || acctest.Str(resolved[0]["series_id"]) != series || acctest.Decimal(t, resolved[0]["score"], "score") != 1 {
 		t.Errorf("show_resolve Limitless = %v, want the series alone", resolved)
 	}
 	eps := suite.Call(t, "library_episodes", map[string]any{"series": "Limitless"})
-	if acc.Str(eps["series_id"]) != series || !slices.Equal(episodeKeys(t, eps), []string{"Limitless S01E01"}) {
+	if acctest.Str(eps["series_id"]) != series || !slices.Equal(episodeKeys(t, eps), []string{"Limitless S01E01"}) {
 		t.Errorf("library_episodes Limitless = %v %v, want the series' pilot", eps["series_id"], episodeKeys(t, eps))
 	}
 	exists := suite.Call(t, "show_episodes_exist", map[string]any{"series": "Limitless", "episodes": []map[string]any{{"season": 1, "episode": 1}}})
-	if acc.Str(exists["series_id"]) != series || acc.Num(t, exists["absent"], "absent") != 0 {
+	if acctest.Str(exists["series_id"]) != series || acctest.Num(t, exists["absent"], "absent") != 0 {
 		t.Errorf("show_episodes_exist Limitless = %v", exists)
 	}
 	// and a film's id is refused as a series by every show tool
@@ -39,8 +39,8 @@ func TestOneNameForAFilmAndAShow(t *testing.T) {
 
 	// a search is both, each as what it is
 	got := map[string]string{}
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"query": "Limitless", "limit": 50})["items"], "items") {
-		got[acc.Str(it["type"])+" "+acc.Str(it["path"])] = acc.Str(it["id"])
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"query": "Limitless", "limit": 50})["items"], "items") {
+		got[acctest.Str(it["type"])+" "+acctest.Str(it["path"])] = acctest.Str(it["id"])
 	}
 	want := map[string]string{"Movie /media/movies/Limitless (2011)/Limitless (2011).mp4": film, "Series /media/shows/Limitless": series}
 	if len(got) != len(want) {
@@ -61,8 +61,8 @@ func TestOneNameForAFilmAndAShow(t *testing.T) {
 		{"tvdb", "295743", "series", series},
 	} {
 		var ids []string
-		for _, it := range acc.Rows(t, suite.Call(t, "item_find_by_metadata_id", map[string]any{"metadata_provider": tc.provider, "id": tc.id, "type": tc.typ})["items"], "items") {
-			ids = append(ids, acc.Str(it["id"]))
+		for _, it := range acctest.Rows(t, suite.Call(t, "item_find_by_metadata_id", map[string]any{"metadata_provider": tc.provider, "id": tc.id, "type": tc.typ})["items"], "items") {
+			ids = append(ids, acctest.Str(it["id"]))
 		}
 		if !slices.Equal(ids, []string{tc.want}) {
 			t.Errorf("%s %s = %v, want %s alone", tc.provider, tc.id, ids, tc.want)
@@ -70,10 +70,10 @@ func TestOneNameForAFilmAndAShow(t *testing.T) {
 	}
 
 	// and one name is no duplicate: the two share no id
-	groups := acc.RowsOfAny(suite.Call(t, "audit_duplicates", nil)["groups"])
+	groups := acctest.RowsOfAny(suite.Call(t, "audit_duplicates", nil)["groups"])
 	for _, g := range groups {
-		for _, it := range acc.Rows(t, g, "group") {
-			if acc.Str(it["name"]) == "Limitless" {
+		for _, it := range acctest.Rows(t, g, "group") {
+			if acctest.Str(it["name"]) == "Limitless" {
 				t.Errorf("audit_duplicates groups Limitless: %v", g)
 			}
 		}

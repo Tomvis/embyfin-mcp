@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/katbyte/go-kt/test/env"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
@@ -56,7 +56,7 @@ func versionCount(id string) int {
 	if err != nil {
 		return -1
 	}
-	versions := acc.RowsOfAny(out["versions"])
+	versions := acctest.RowsOfAny(out["versions"])
 
 	return max(len(versions), 1)
 }
@@ -67,9 +67,9 @@ func itemsTitled(t *testing.T, library, types, name string) []string { //nolint:
 	t.Helper()
 
 	var ids []string
-	for _, row := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": library, "types": types, "query": name, "limit": 50})["items"], "items") {
-		if strings.EqualFold(title(acc.Str(row["name"])), name) {
-			ids = append(ids, acc.Str(row["id"]))
+	for _, row := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": library, "types": types, "query": name, "limit": 50})["items"], "items") {
+		if strings.EqualFold(title(acctest.Str(row["name"])), name) {
+			ids = append(ids, acctest.Str(row["id"]))
 		}
 	}
 	if len(ids) == 0 {
@@ -100,11 +100,11 @@ func TestAVersionBesideABetterOne(t *testing.T) {
 	scanUntilTrue(t, "Messy Movies", func() bool { return versionCount(blade) == 3 })
 
 	// item_get lists every version with its own facts
-	rows := acc.Rows(t, suite.Call(t, "item_get", map[string]any{"id": blade})["versions"], "versions")
+	rows := acctest.Rows(t, suite.Call(t, "item_get", map[string]any{"id": blade})["versions"], "versions")
 	heights := make([]int, 0, len(rows))
 	for _, v := range rows {
-		heights = append(heights, acc.Num(t, v["height"], "height"))
-		if strings.HasSuffix(acc.Str(v["path"]), " - 360p.mp4") && acc.Str(v["label"]) != "360p" {
+		heights = append(heights, acctest.Num(t, v["height"], "height"))
+		if strings.HasSuffix(acctest.Str(v["path"]), " - 360p.mp4") && acctest.Str(v["label"]) != "360p" {
 			t.Errorf("the staged version's label = %v", v)
 		}
 	}
@@ -118,13 +118,13 @@ func TestAVersionBesideABetterOne(t *testing.T) {
 		t.Errorf("audit_quality reports Blade Runner by its 360p version, beside a 2160p one: %v", after["findings"])
 	}
 	for _, field := range []string{"items_scanned", "total_findings"} {
-		if acc.Num(t, after[field], field) != acc.Num(t, before[field], field) {
+		if acctest.Num(t, after[field], field) != acctest.Num(t, before[field], field) {
 			t.Errorf("%s = %v with a third version staged, %v before: a version is not an item", field, after[field], before[field])
 		}
 	}
 	for _, list := range []string{"unprobed", "replaced"} {
-		for _, row := range acc.Rows(t, after[list], list) {
-			if strings.Contains(acc.Str(row["path"]), " - 360p.mp4") {
+		for _, row := range acctest.Rows(t, after[list], list) {
+			if strings.Contains(acctest.Str(row["path"]), " - 360p.mp4") {
 				t.Errorf("the staged version is listed %s: %v", list, row)
 			}
 		}
@@ -132,12 +132,12 @@ func TestAVersionBesideABetterOne(t *testing.T) {
 
 	versions := suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Movies", "types": "Movie"})
 	found := false
-	for _, f := range acc.Rows(t, versions["findings"], "findings") {
-		if title(acc.Str(f["name"])) != "Blade Runner" {
+	for _, f := range acctest.Rows(t, versions["findings"], "findings") {
+		if title(acctest.Str(f["name"])) != "Blade Runner" {
 			continue
 		}
 		found = true
-		if d := acc.Str(f["detail"]); !strings.HasPrefix(d, "3 versions: ") || !strings.Contains(d, messyBladeRunner+" - 360p.mp4") || f["warning"] != nil {
+		if d := acctest.Str(f["detail"]); !strings.HasPrefix(d, "3 versions: ") || !strings.Contains(d, messyBladeRunner+" - 360p.mp4") || f["warning"] != nil {
 			t.Errorf("Blade Runner's versions = %v", f)
 		}
 	}
@@ -193,9 +193,9 @@ func TestAnEpisodeInTwoVersions(t *testing.T) {
 			return -1
 		}
 		most := 0
-		for _, row := range acc.RowsOf(out["episodes"]) {
-			if acc.Num(t, row["episode"], "episode") == 1 {
-				most = max(most, versionCount(acc.Str(row["id"])))
+		for _, row := range acctest.RowsOf(out["episodes"]) {
+			if acctest.Num(t, row["episode"], "episode") == 1 {
+				most = max(most, versionCount(acctest.Str(row["id"])))
 			}
 		}
 		return most
@@ -211,8 +211,8 @@ func TestAnEpisodeInTwoVersions(t *testing.T) {
 	scanUntilTrue(t, "Messy Shows", func() bool { return pilotVersions() == 2 })
 
 	out := suite.Call(t, "audit_duplicate_episodes", map[string]any{"library": "Messy Shows"})
-	for _, g := range acc.Rows(t, out["groups"], "groups") {
-		if strings.EqualFold(acc.Str(g["title"]), "Good News About Hell") {
+	for _, g := range acctest.Rows(t, out["groups"], "groups") {
+		if strings.EqualFold(acctest.Str(g["title"]), "Good News About Hell") {
 			t.Errorf("the episode's two versions are reported as its title filed twice: %v", g)
 		}
 	}
@@ -251,7 +251,7 @@ func TestAFilmMatchedToAnothersIDs(t *testing.T) {
 	}
 	var genuine, staged string
 	for _, id := range itemsTitled(t, "Messy Movies", "Movie", "Interstellar") {
-		if strings.Contains(acc.Str(suite.Call(t, "item_get", map[string]any{"id": id})["path"]), "The Thirteenth Floor") {
+		if strings.Contains(acctest.Str(suite.Call(t, "item_get", map[string]any{"id": id})["path"]), "The Thirteenth Floor") {
 			staged = id
 		} else {
 			genuine = id
@@ -264,15 +264,15 @@ func TestAFilmMatchedToAnothersIDs(t *testing.T) {
 
 	versions := suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Movies", "types": "Movie"})
 	var merged map[string]any
-	for _, f := range acc.Rows(t, versions["findings"], "findings") {
-		if title(acc.Str(f["name"])) == "Interstellar" {
+	for _, f := range acctest.Rows(t, versions["findings"], "findings") {
+		if title(acctest.Str(f["name"])) == "Interstellar" {
 			merged = f
 		}
 	}
 	var group []map[string]any
-	for _, g := range acc.RowsOfAny(suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Movies", "types": "Movie"})["groups"]) {
-		members := acc.Rows(t, g, "group")
-		if title(acc.Str(members[0]["name"])) == "Interstellar" {
+	for _, g := range acctest.RowsOfAny(suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Movies", "types": "Movie"})["groups"]) {
+		members := acctest.Rows(t, g, "group")
+		if title(acctest.Str(members[0]["name"])) == "Interstellar" {
 			group = members
 		}
 	}
@@ -280,14 +280,14 @@ func TestAFilmMatchedToAnothersIDs(t *testing.T) {
 		// shown as one film in two versions, whichever of the two is read
 		for _, id := range []string{genuine, staged} {
 			got := suite.Call(t, "item_get", map[string]any{"id": id})
-			if w := acc.Str(got["warning"]); !strings.HasPrefix(w, "probably not one film") || !strings.Contains(w, named) || !strings.Contains(w, " 169 min") || !strings.Contains(w, " 100 min") {
+			if w := acctest.Str(got["warning"]); !strings.HasPrefix(w, "probably not one film") || !strings.Contains(w, named) || !strings.Contains(w, " 169 min") || !strings.Contains(w, " 100 min") {
 				t.Errorf("item_get %s warning = %q", id, w)
 			}
-			if n := len(acc.Rows(t, got["versions"], "versions")); n != 2 {
+			if n := len(acctest.Rows(t, got["versions"], "versions")); n != 2 {
 				t.Errorf("item_get %s lists %d versions, want the two files", id, n)
 			}
 		}
-		if merged == nil || !strings.HasPrefix(acc.Str(merged["warning"]), "probably not one film") {
+		if merged == nil || !strings.HasPrefix(acctest.Str(merged["warning"]), "probably not one film") {
 			t.Errorf("audit_multiple_versions Interstellar = %v", merged)
 		}
 		if group != nil {
@@ -295,7 +295,7 @@ func TestAFilmMatchedToAnothersIDs(t *testing.T) {
 		}
 	} else {
 		// held apart: the staged entry's own file names another film
-		if w := acc.Str(suite.Call(t, "item_get", map[string]any{"id": staged})["warning"]); !strings.HasPrefix(w, "probably a different film matched to this one's ids") || !strings.Contains(w, named) {
+		if w := acctest.Str(suite.Call(t, "item_get", map[string]any{"id": staged})["warning"]); !strings.HasPrefix(w, "probably a different film matched to this one's ids") || !strings.Contains(w, named) {
 			t.Errorf("item_get of the staged entry warning = %q", w)
 		}
 		if got := suite.Call(t, "item_get", map[string]any{"id": genuine}); got["warning"] != nil || got["versions"] != nil {
@@ -305,7 +305,7 @@ func TestAFilmMatchedToAnothersIDs(t *testing.T) {
 			t.Fatalf("audit_duplicates Interstellar = %v", group)
 		}
 		for _, m := range group {
-			if w := acc.Str(m["warning"]); !strings.HasPrefix(w, "probably not copies of one film") || !strings.Contains(w, named) {
+			if w := acctest.Str(m["warning"]); !strings.HasPrefix(w, "probably not copies of one film") || !strings.Contains(w, named) {
 				t.Errorf("%v warning = %q", m["path"], w)
 			}
 		}
@@ -316,7 +316,7 @@ func TestAFilmMatchedToAnothersIDs(t *testing.T) {
 
 	// compared, they are two films: a caveat, never the verdict
 	compared := suite.Call(t, "quality_compare", map[string]any{"a": map[string]any{"item_id": genuine}, "b": map[string]any{"item_id": staged}})
-	caveats := strings.Join(acc.Strs(t, compared["caveats"], "caveats"), " | ")
+	caveats := strings.Join(acctest.Strs(t, compared["caveats"], "caveats"), " | ")
 	if !strings.Contains(caveats, "these may not be the same film") || !strings.Contains(caveats, named) || !strings.Contains(caveats, "they run 169 min and 100 min: a different cut, or a different film") {
 		t.Errorf("quality_compare caveats = %q", caveats)
 	}
@@ -325,17 +325,17 @@ func TestAFilmMatchedToAnothersIDs(t *testing.T) {
 	// says which film the path names, beside the id the item carries
 	needsTMDBRecording(t, searchKey("query=The+Thirteenth+Floor&year=1999"))
 	paths := suite.Call(t, "audit_file_path", map[string]any{"ids": []any{staged}})
-	row := acc.Rows(t, paths["findings"], "findings")
-	if len(row) != 1 || acc.Num(t, paths["items_scanned"], "items_scanned") != 1 {
+	row := acctest.Rows(t, paths["findings"], "findings")
+	if len(row) != 1 || acctest.Num(t, paths["items_scanned"], "items_scanned") != 1 {
 		t.Fatalf("audit_file_path of the staged film = %v", paths)
 	}
-	problems := acc.Strs(t, row[0]["problems"], "problems")
+	problems := acctest.Strs(t, row[0]["problems"], "problems")
 	if len(problems) != 2 || !strings.HasPrefix(problems[0], `title: the path is named "The Thirteenth Floor", the server holds "Interstellar"`) || problems[1] != "year: path says 1999, metadata says 2014" {
 		t.Errorf("problems = %v", problems)
 	}
-	if acc.Str(row[0]["path_tmdb"]) != "1090 The Thirteenth Floor (1999)" || acc.Str(row[0]["item_tmdb"]) != "157336" ||
-		!strings.Contains(acc.Str(row[0]["diagnosis"]), "the path names TMDB's film 1090, The Thirteenth Floor (1999); the item carries TMDB 157336") ||
-		!strings.Contains(acc.Str(row[0]["diagnosis"]), "the file runs 100 min, and TMDB's 1090 runs 100 and its 157336 169: the file's runtime is the path's film's") {
+	if acctest.Str(row[0]["path_tmdb"]) != "1090 The Thirteenth Floor (1999)" || acctest.Str(row[0]["item_tmdb"]) != "157336" ||
+		!strings.Contains(acctest.Str(row[0]["diagnosis"]), "the path names TMDB's film 1090, The Thirteenth Floor (1999); the item carries TMDB 157336") ||
+		!strings.Contains(acctest.Str(row[0]["diagnosis"]), "the file runs 100 min, and TMDB's 1090 runs 100 and its 157336 169: the file's runtime is the path's film's") {
 		t.Errorf("the TMDB diagnosis = %v", row[0])
 	}
 }

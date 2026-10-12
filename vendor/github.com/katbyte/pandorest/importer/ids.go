@@ -31,6 +31,8 @@ type idKind struct {
 	fromOf int
 	byName int
 	byIn   int
+	// joinedUsed is each Joined entry that reached a parameter, so one that reached none is refused
+	joinedUsed map[string]bool
 }
 
 // applyIDs types every place a kind of id sits (config.Service.IDs) and
@@ -140,6 +142,11 @@ func (im *importer) applyIDs(groups map[string]*definitions.Group) []definitions
 				im.fail(fmt.Sprintf("%s: Except %q leaves nothing alone", k.cfg.Name, entry))
 			}
 		}
+		for _, entry := range k.cfg.Joined {
+			if !k.joinedUsed[strings.ToLower(entry)] {
+				im.fail(fmt.Sprintf("%s: Joined %q matches no string parameter: it takes a parameter's name, not a place", k.cfg.Name, entry))
+			}
+		}
 		im.log(fmt.Sprintf("%s: ids: %s in %s (%d from Of, %d by name, %d by In)", im.cfg.Name, k.cfg.Name, placesWord(total), k.fromOf, k.byName, k.byIn))
 		if k.cfg.Shape != "" {
 			re, err := regexp.Compile(k.cfg.Shape)
@@ -193,7 +200,7 @@ func (im *importer) idBase(c config.ID) (definitions.ObjectType, bool) {
 
 			return "", false
 		}
-		f := fieldNamed(m.Fields, "id")
+		f := idField(m.Fields)
 		if f == nil {
 			im.fail(fmt.Sprintf("%s: Of names %s, which has no id", c.Name, name))
 
@@ -263,7 +270,15 @@ func claims(k *idKind, p *place, groups map[string]*definitions.Group, inUsed, e
 	}
 	inferred := ""
 	switch {
-	case slices.ContainsFunc(k.cfg.Names, func(n string) bool { return strings.EqualFold(n, p.name) }) || slices.ContainsFunc(k.cfg.Joined, func(n string) bool { return strings.EqualFold(n, p.name) }):
+	case p.option != nil && slices.ContainsFunc(k.cfg.Joined, func(n string) bool { return strings.EqualFold(n, p.name) }):
+		// a joined string is a parameter's shape alone, so a field of the name is not claimed by it; this goes before Names so a name in
+		// both lists (prowlarr's tags, a joined parameter and fifteen fields) still counts the parameter as the Joined entry's use
+		if k.joinedUsed == nil {
+			k.joinedUsed = map[string]bool{}
+		}
+		k.joinedUsed[strings.ToLower(p.name)] = true
+		inferred = "name"
+	case slices.ContainsFunc(k.cfg.Names, func(n string) bool { return strings.EqualFold(n, p.name) }):
 		inferred = "name"
 	case strings.EqualFold(p.name, "id") && p.model != "" && slices.ContainsFunc(k.cfg.Of, func(n string) bool { return typeName(n) == p.model }):
 		inferred = "Of"
@@ -290,6 +305,17 @@ func claims(k *idKind, p *place, groups map[string]*definitions.Group, inUsed, e
 
 // pathIsOf reports whether the path of the operation at where is one of the
 // kind's: an operation on that path, by any method, answers or takes one of
+// idField is a model's own id, spelt id or Id (Emby and Jellyfin capitalise theirs), or nil.
+func idField(fields []definitions.Field) *definitions.Field {
+	for i := range fields {
+		if strings.EqualFold(fields[i].JSONName, "id") {
+			return &fields[i]
+		}
+	}
+
+	return nil
+}
+
 // the kind's models, alone or as a list; or the path is under such a path
 // (/movie/{id}/folder under /movie/{id}), whose {id} it carries. A delete
 // answers nothing and a sub-path answers something else, so the GET or PUT
@@ -338,6 +364,10 @@ func (im *importer) typeAsID(k *idKind, p *place, source string) bool {
 	case p.typ.Type == definitions.List && p.typ.NestedItem != nil && baseFits(k.base, p.typ.NestedItem.Type, false):
 		*p.typ.NestedItem = id
 	case baseFits(k.base, p.typ.Type, p.path):
+		if p.option != nil && p.typ.Type == definitions.String && strings.HasSuffix(strings.ToLower(p.name), "ids") {
+			// Emby's ExcludeItemIds is one text value carrying several, which only Joined says; typed as one id, a caller finds out by reading the options
+			im.oneIDTexts = append(im.oneIDTexts, p.name+" in "+p.where)
+		}
 		*p.typ = id
 	default:
 		hint := ""
@@ -391,6 +421,11 @@ func (im *importer) plain(p *place) bool {
 // word over many places, the models whose bare id it leaves plain, where a
 // kind's id under another model's name would hide.
 func (im *importer) logUncovered(places []place, typed map[*definitions.TypeRef]string) {
+	if n := len(im.oneIDTexts); n == 1 {
+		im.log(fmt.Sprintf("%s: 1 text parameter named like a list is typed as one id (name it in Joined if it carries several joined by commas): %s", im.cfg.Name, im.oneIDTexts[0]))
+	} else if n > 1 {
+		im.log(fmt.Sprintf("%s: %d text parameters named like lists are typed as one id each (name each in Joined if it carries several joined by commas): %s", im.cfg.Name, n, strings.Join(im.oneIDTexts, ", ")))
+	}
 	var plainModels []string
 	byName := map[string][]string{}
 	for i := range places {

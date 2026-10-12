@@ -17,6 +17,7 @@ func (c Client) GetVirtualFolders(ctx context.Context) (result jf.GetVirtualFold
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetVirtualFolders",
 		Path:       "/Library/VirtualFolders",
 	}
 

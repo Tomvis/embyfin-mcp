@@ -20,6 +20,7 @@ func (c Client) PostLiveTvListingProviders(ctx context.Context, input emby.LiveT
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLiveTvListingProviders",
 		Path:       "/LiveTv/ListingProviders",
 	}
 

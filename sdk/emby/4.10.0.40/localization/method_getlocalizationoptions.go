@@ -18,6 +18,7 @@ func (c Client) GetLocalizationOptions(ctx context.Context) (result emby.GetLoca
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLocalizationOptions",
 		Path:       "/Localization/Options",
 	}
 

@@ -17,6 +17,7 @@ func (c Client) PostPingSystem(ctx context.Context) (result jf.PostPingSystemRes
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostPingSystem",
 		Path:       "/System/Ping",
 	}
 

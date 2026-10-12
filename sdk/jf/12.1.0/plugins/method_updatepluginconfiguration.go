@@ -19,6 +19,7 @@ func (c Client) UpdatePluginConfiguration(ctx context.Context, pluginId string) 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdatePluginConfiguration",
 		Path:       fmt.Sprintf("/Plugins/%s/Configuration", url.PathEscape(pluginId)),
 	}
 

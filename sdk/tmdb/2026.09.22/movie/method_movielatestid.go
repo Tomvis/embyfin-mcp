@@ -18,6 +18,7 @@ func (c Client) MovieLatestId(ctx context.Context) (result tmdb.MovieLatestIdRes
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "MovieLatestId",
 		Path:       "/3/movie/latest",
 	}
 

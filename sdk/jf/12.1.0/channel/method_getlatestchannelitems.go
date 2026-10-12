@@ -29,6 +29,7 @@ func (c Client) GetLatestChannelItems(ctx context.Context, options ...jf.GetLate
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLatestChannelItems",
 		OptionsObject: option,
 		Path:          "/Channels/Items/Latest",
 	}

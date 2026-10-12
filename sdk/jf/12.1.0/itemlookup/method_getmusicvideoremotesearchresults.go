@@ -18,6 +18,7 @@ func (c Client) GetMusicVideoRemoteSearchResults(ctx context.Context, input jf.M
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetMusicVideoRemoteSearchResults",
 		Path:       "/Items/RemoteSearch/MusicVideo",
 	}
 

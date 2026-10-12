@@ -28,6 +28,7 @@ func (c Client) GetRecordingFolders(ctx context.Context, userId ...string) (resu
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetRecordingFolders",
 		OptionsObject: option,
 		Path:          "/LiveTv/Recordings/Folders",
 	}

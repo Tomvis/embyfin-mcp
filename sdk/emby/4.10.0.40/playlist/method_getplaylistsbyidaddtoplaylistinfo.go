@@ -21,6 +21,7 @@ func (c Client) GetPlaylistsByIdAddToPlaylistInfo(ctx context.Context, id string
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPlaylistsByIdAddToPlaylistInfo",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/Playlists/%s/AddToPlaylistInfo", url.PathEscape(id)),
 	}

@@ -17,6 +17,7 @@ func (c Client) AuthorizeQuickConnect(ctx context.Context, options jf.AuthorizeQ
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "AuthorizeQuickConnect",
 		OptionsObject: options,
 		Path:          "/QuickConnect/Authorize",
 	}

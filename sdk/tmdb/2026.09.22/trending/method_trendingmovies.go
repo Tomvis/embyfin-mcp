@@ -29,6 +29,7 @@ func (c Client) TrendingMovies(ctx context.Context, timeWindow string, language 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TrendingMovies",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/trending/movie/%s", url.PathEscape(timeWindow)),
 	}

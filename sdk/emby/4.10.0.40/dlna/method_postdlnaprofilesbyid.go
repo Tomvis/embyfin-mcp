@@ -21,6 +21,7 @@ func (c Client) PostDlnaProfilesById(ctx context.Context, id string, input emby.
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostDlnaProfilesById",
 		Path:       fmt.Sprintf("/Dlna/Profiles/%s", url.PathEscape(id)),
 	}
 

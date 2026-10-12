@@ -30,6 +30,7 @@ func (c Client) GetContainers(ctx context.Context, options ...emby.GetContainers
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetContainers",
 		OptionsObject: option,
 		Path:          "/Containers",
 	}

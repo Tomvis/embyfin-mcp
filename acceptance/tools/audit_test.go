@@ -13,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 
@@ -25,10 +25,10 @@ import (
 func findings(t *testing.T, out map[string]any) []string {
 	t.Helper()
 
-	found := acc.Rows(t, out["findings"], "findings")
+	found := acctest.Rows(t, out["findings"], "findings")
 	names := make([]string, 0, len(found))
 	for _, f := range found {
-		names = append(names, title(acc.Str(f["name"])))
+		names = append(names, title(acctest.Str(f["name"])))
 	}
 	slices.Sort(names)
 
@@ -46,11 +46,11 @@ const (
 // rowKey names one of audit_all's rows: the audit, and for
 // audit_missing_metadata the problem the row counts after a colon.
 func rowKey(row map[string]any) string {
-	if p := acc.Str(row["problems"]); p != "" {
-		return acc.Str(row["audit"]) + ":" + p
+	if p := acctest.Str(row["problems"]); p != "" {
+		return acctest.Str(row["audit"]) + ":" + p
 	}
 
-	return acc.Str(row["audit"])
+	return acctest.Str(row["audit"])
 }
 
 // rowArgs are the arguments that ask an audit for the count one of
@@ -62,7 +62,7 @@ func rowArgs(row, args map[string]any) map[string]any {
 	own := map[string]any{}
 	maps.Copy(own, args)
 	for _, field := range []string{"types", "where", "problems"} {
-		if v := acc.Str(row[field]); v != "" {
+		if v := acctest.Str(row[field]); v != "" {
 			own[field] = v
 		}
 	}
@@ -124,10 +124,10 @@ func TestAuditsLeaveTheCleanLibrariesAlone(t *testing.T) {
 	} {
 		for lib, n := range map[string]int{"Movies": want.movies, "Shows": want.shows} {
 			out := suite.Call(t, audit, map[string]any{"library": lib})
-			if got := acc.Num(t, out["total_findings"], "total_findings"); got != n {
+			if got := acctest.Num(t, out["total_findings"], "total_findings"); got != n {
 				t.Errorf("%s on %s found %d, want %d: %v", audit, lib, got, n, out)
 			}
-			scanned := acc.Num(t, out["items_scanned"], "items_scanned")
+			scanned := acctest.Num(t, out["items_scanned"], "items_scanned")
 			switch {
 			case lib == "Movies" && want.seriesOnly && scanned != 0:
 				t.Errorf("%s swept %d items of a film library", audit, scanned)
@@ -144,15 +144,15 @@ func TestAuditsLeaveTheCleanLibrariesAlone(t *testing.T) {
 		}
 	}
 	// and the two the show library carries are the ones named
-	if f := acc.Rows(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Shows"})["findings"], "findings"); len(f) != 1 || acc.Str(f[0]["title_in_file"]) != "Dulcinea" {
+	if f := acctest.Rows(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Shows"})["findings"], "findings"); len(f) != 1 || acctest.Str(f[0]["title_in_file"]) != "Dulcinea" {
 		t.Errorf("the path finding in Shows = %v, want The Expanse's file named Dulcinea", f)
 	}
-	if g := acc.Rows(t, suite.Call(t, "audit_duplicate_episodes", map[string]any{"library": "Shows"})["groups"], "groups"); len(g) != 1 || acc.Str(g[0]["series"]) != "Breaking Bad" {
+	if g := acctest.Rows(t, suite.Call(t, "audit_duplicate_episodes", map[string]any{"library": "Shows"})["groups"], "groups"); len(g) != 1 || acctest.Str(g[0]["series"]) != "Breaking Bad" {
 		t.Errorf("the repeated title in Shows = %v, want Breaking Bad's", g)
 	}
 	// nothing kept apart that the anime list folds into another show
-	if out := suite.Call(t, "audit_anime_ids", map[string]any{"library": "Shows"}); acc.Num(t, out["items_scanned"], "items_scanned") != len(shows) ||
-		acc.Num(t, out["total_ids_disagree"], "total_ids_disagree")+acc.Num(t, out["total_split_out"], "total_split_out")+acc.Num(t, out["total_kept_separate"], "total_kept_separate") != 0 {
+	if out := suite.Call(t, "audit_anime_ids", map[string]any{"library": "Shows"}); acctest.Num(t, out["items_scanned"], "items_scanned") != len(shows) ||
+		acctest.Num(t, out["total_ids_disagree"], "total_ids_disagree")+acctest.Num(t, out["total_split_out"], "total_split_out")+acctest.Num(t, out["total_kept_separate"], "total_kept_separate") != 0 {
 		t.Errorf("audit_anime_ids on Shows = %v", out)
 	}
 }
@@ -168,11 +168,11 @@ func TestAuditMissingMetadataProvider(t *testing.T) {
 	if got := findings(t, out); !slices.Equal(got, messyUnmatched) {
 		t.Errorf("unmatched movies = %v, want %v", got, messyUnmatched)
 	}
-	if got := acc.Num(t, out["items_scanned"], "items_scanned"); got != messyMovies() {
+	if got := acctest.Num(t, out["items_scanned"], "items_scanned"); got != messyMovies() {
 		t.Errorf("scanned %d, want %d", got, messyMovies())
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if acc.Str(f["id"]) == "" || !strings.HasPrefix(acc.Str(f["path"]), "/media/messy-movies/") || acc.Str(f["detail"]) != "no provider id" || !slices.Equal(acc.Strs(t, f["problems"], "problems"), []string{"provider_id"}) {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if acctest.Str(f["id"]) == "" || !strings.HasPrefix(acctest.Str(f["path"]), "/media/messy-movies/") || acctest.Str(f["detail"]) != "no provider id" || !slices.Equal(acctest.Strs(t, f["problems"], "problems"), []string{"provider_id"}) {
 			t.Errorf("finding = %v", f)
 		}
 	}
@@ -185,12 +185,12 @@ func TestAuditMissingMetadataProvider(t *testing.T) {
 	// across every library the count is the sum
 	everywhere := len(messyUnmatched) + len(unmatchedShows)
 	out = missing(t, "provider_id", nil)
-	if n := acc.Num(t, out["total_findings"], "total_findings"); n != everywhere {
+	if n := acctest.Num(t, out["total_findings"], "total_findings"); n != everywhere {
 		t.Errorf("unmatched everywhere = %d, want %d", n, everywhere)
 	}
 	// and a limit caps the worklist, not the count
 	out = missing(t, "provider_id", map[string]any{"limit": 1})
-	if n := len(acc.Rows(t, out["findings"], "findings")); n != 1 || acc.Num(t, out["total_findings"], "total_findings") != everywhere {
+	if n := len(acctest.Rows(t, out["findings"], "findings")); n != 1 || acctest.Num(t, out["total_findings"], "total_findings") != everywhere {
 		t.Errorf("limit 1 = %d findings of %v", n, out["total_findings"])
 	}
 
@@ -198,12 +198,12 @@ func TestAuditMissingMetadataProvider(t *testing.T) {
 	// carry TMDB and IMDB ids and never a TVDB one, so every film lacks
 	// TVDB, and each lists the ids it does have
 	out = missing(t, "provider_id", map[string]any{"library": "Messy Movies", "missing": "tvdb"})
-	if n := acc.Num(t, out["total_findings"], "total_findings"); n != messyMovies() {
+	if n := acctest.Num(t, out["total_findings"], "total_findings"); n != messyMovies() {
 		t.Errorf("missing tvdb = %d, want every messy film (%d): %v", n, messyMovies(), out["findings"])
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		name := title(acc.Str(f["name"]))
-		detail, unmatched := acc.Str(f["detail"]), slices.Contains(messyUnmatched, name)
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		name := title(acctest.Str(f["name"]))
+		detail, unmatched := acctest.Str(f["detail"]), slices.Contains(messyUnmatched, name)
 		switch {
 		case unmatched && detail != "no tvdb id":
 			t.Errorf("a film matched nowhere has no ids to list: %v", f)
@@ -216,7 +216,7 @@ func TestAuditMissingMetadataProvider(t *testing.T) {
 	// TMDB alone finds the films matched nowhere, and the one matched on its
 	// IMDb id alone
 	out = missing(t, "provider_id", map[string]any{"library": "Messy Movies", "missing": "tmdb"})
-	if got, want := findings(t, out), acc.Sorted(append([]string{"Memento"}, messyUnmatched...)); !slices.Equal(got, want) {
+	if got, want := findings(t, out), acctest.Sorted(append([]string{"Memento"}, messyUnmatched...)); !slices.Equal(got, want) {
 		t.Errorf("missing tmdb = %v, want %v", got, want)
 	}
 	// two providers named is an item holding neither: Memento's IMDb id
@@ -225,8 +225,8 @@ func TestAuditMissingMetadataProvider(t *testing.T) {
 	if got := findings(t, out); !slices.Equal(got, messyUnmatched) {
 		t.Errorf("missing tmdb and imdb = %v, want %v", got, messyUnmatched)
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if acc.Str(f["detail"]) != "no tmdb/imdb id" {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if acctest.Str(f["detail"]) != "no tmdb/imdb id" {
 			t.Errorf("a film matched nowhere = %v", f)
 		}
 	}
@@ -241,39 +241,39 @@ func TestAuditMissingMetadataProvider(t *testing.T) {
 		"Asterix & Obelix: The Big Fight": "tmdb:11625 imdb:tt0096842",
 	}
 	out = missing(t, "provider_id", map[string]any{"library": "Messy Shows", "missing": "anidb"})
-	if got, want := findings(t, out), acc.Sorted(append([]string{"Severance", "The Wire", "The Wire", "Red Dwarf", "Asterix & Obelix: The Big Fight"}, unmatchedShows...)); !slices.Equal(got, want) {
+	if got, want := findings(t, out), acctest.Sorted(append([]string{"Severance", "The Wire", "The Wire", "Red Dwarf", "Asterix & Obelix: The Big Fight"}, unmatchedShows...)); !slices.Equal(got, want) {
 		t.Errorf("missing anidb = %v, want %v", got, want)
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
 		want := "no anidb id"
-		if ids := has[acc.Str(f["name"])]; ids != "" {
+		if ids := has[acctest.Str(f["name"])]; ids != "" {
 			want += "; has " + ids
 		}
-		if acc.Str(f["detail"]) != want {
+		if acctest.Str(f["detail"]) != want {
 			t.Errorf("%v = %q, want %q", f["name"], f["detail"], want)
 		}
 	}
 	out = missing(t, "provider_id", map[string]any{"library": "Messy Shows", "missing": "myanimelist"})
-	if n := acc.Num(t, out["total_findings"], "total_findings"); n != messySeries {
+	if n := acctest.Num(t, out["total_findings"], "total_findings"); n != messySeries {
 		t.Errorf("missing myanimelist = %d, want every messy series (%d): %v", n, messySeries, out["findings"])
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if acc.Str(f["name"]) == ".hack//Liminality" && acc.Str(f["detail"]) != "no myanimelist id; has anidb:222" {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if acctest.Str(f["name"]) == ".hack//Liminality" && acctest.Str(f["detail"]) != "no myanimelist id; has anidb:222" {
 			t.Errorf(".hack//Liminality = %v", f)
 		}
 	}
 	// the messy episodes' sidecars name no ids at all, so each is an episode
 	// matched nowhere; the clean show library's were all matched
 	out = missing(t, "provider_id", map[string]any{"library": "Messy Shows", "types": "Episode"})
-	if n, scanned := acc.Num(t, out["total_findings"], "total_findings"), acc.Num(t, out["items_scanned"], "items_scanned"); n != messyEpisodes() || scanned != messyEpisodes() {
+	if n, scanned := acctest.Num(t, out["total_findings"], "total_findings"), acctest.Num(t, out["items_scanned"], "items_scanned"); n != messyEpisodes() || scanned != messyEpisodes() {
 		t.Errorf("messy episodes matched nowhere = %d of %d, want all %d", n, scanned, messyEpisodes())
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if acc.Str(f["detail"]) != "no provider id" || !strings.HasPrefix(acc.Str(f["path"]), "/media/messy-shows/") {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if acctest.Str(f["detail"]) != "no provider id" || !strings.HasPrefix(acctest.Str(f["path"]), "/media/messy-shows/") {
 			t.Errorf("episode finding = %v", f)
 		}
 	}
-	if tidy := missing(t, "provider_id", map[string]any{"library": "Shows", "types": "Series,Episode"}); acc.Num(t, tidy["total_findings"], "total_findings") != 0 || acc.Num(t, tidy["items_scanned"], "items_scanned") != len(shows)+showEpisodes() {
+	if tidy := missing(t, "provider_id", map[string]any{"library": "Shows", "types": "Series,Episode"}); acctest.Num(t, tidy["total_findings"], "total_findings") != 0 || acctest.Num(t, tidy["items_scanned"], "items_scanned") != len(shows)+showEpisodes() {
 		t.Errorf("the clean show library = %v, want its %d series and %d episodes all matched", tidy, len(shows), showEpisodes())
 	}
 	// and a misspelling is refused rather than flagging every item
@@ -292,7 +292,7 @@ func TestAuditMissingMetadataProvider(t *testing.T) {
 	if got := findings(t, out); !slices.Equal(got, messyUnmatched) {
 		t.Errorf("ignoring Messy Shows = %v, want %v", got, messyUnmatched)
 	}
-	if got, want := acc.Num(t, out["items_scanned"], "items_scanned"), acc.Num(t, all["items_scanned"], "items_scanned")-messySeries; got != want {
+	if got, want := acctest.Num(t, out["items_scanned"], "items_scanned"), acctest.Num(t, all["items_scanned"], "items_scanned")-messySeries; got != want {
 		t.Errorf("ignoring Messy Shows scanned %d, want %d", got, want)
 	}
 	if msg := suite.CallErr(t, "audit_missing_metadata", map[string]any{"ignore": []any{"No Such Library"}}); !strings.Contains(msg, "no library named") {
@@ -307,17 +307,17 @@ func TestAuditMissingMetadataProvider(t *testing.T) {
 // Moon a poster alone.
 func TestAuditMissingMetadataProblems(t *testing.T) {
 	out := suite.Call(t, "audit_missing_metadata", map[string]any{"library": "Messy Movies"})
-	if got := findings(t, out); !slices.Equal(got, messyPosterless) || acc.Num(t, out["total_findings"], "total_findings") != len(messyPosterless) {
+	if got := findings(t, out); !slices.Equal(got, messyPosterless) || acctest.Num(t, out["total_findings"], "total_findings") != len(messyPosterless) {
 		t.Errorf("items missing anything = %v (%v), want %v", got, out["total_findings"], messyPosterless)
 	}
 	byProblem := mediaacc.ObjectOf(out["by_problem"])
 	for problem, want := range map[string]int{"provider_id": len(messyUnmatched), "poster": len(messyPosterless), "overview": len(messyBare)} {
-		if acc.Num(t, byProblem[problem], problem) != want {
+		if acctest.Num(t, byProblem[problem], problem) != want {
 			t.Errorf("by_problem %s = %v, want %d", problem, byProblem[problem], want)
 		}
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		name, problems := title(acc.Str(f["name"])), acc.Strs(t, f["problems"], "problems")
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		name, problems := title(acctest.Str(f["name"])), acctest.Strs(t, f["problems"], "problems")
 		want := []string{"poster"}
 		switch {
 		case slices.Contains(messyUnmatched, name):
@@ -328,7 +328,7 @@ func TestAuditMissingMetadataProblems(t *testing.T) {
 		if !slices.Equal(problems, want) {
 			t.Errorf("%s has problems %v, want %v", name, problems, want)
 		}
-		if strings.Count(acc.Str(f["detail"]), ";")+1 != len(want) {
+		if strings.Count(acctest.Str(f["detail"]), ";")+1 != len(want) {
 			t.Errorf("%s's detail %q does not say each of its %d problems", name, f["detail"], len(want))
 		}
 	}
@@ -337,8 +337,8 @@ func TestAuditMissingMetadataProblems(t *testing.T) {
 	if got := findings(t, two); !slices.Equal(got, messyBare) {
 		t.Errorf("items missing a plot or an id = %v, want %v", got, messyBare)
 	}
-	for _, f := range acc.Rows(t, two["findings"], "findings") {
-		if problems := acc.Strs(t, f["problems"], "problems"); problems[len(problems)-1] != "overview" || len(problems) > 2 {
+	for _, f := range acctest.Rows(t, two["findings"], "findings") {
+		if problems := acctest.Strs(t, f["problems"], "problems"); problems[len(problems)-1] != "overview" || len(problems) > 2 {
 			t.Errorf("%v has problems %v, want provider_id then overview", f["name"], problems)
 		}
 	}
@@ -346,19 +346,19 @@ func TestAuditMissingMetadataProblems(t *testing.T) {
 
 // The films with no plot and no poster: Arrival's nfo has ids and nothing
 // else, and the three no nfo names at all.
-var messyBare = acc.Sorted(append([]string{"Arrival"}, messyUnmatched...))
+var messyBare = acctest.Sorted(append([]string{"Arrival"}, messyUnmatched...))
 
 // The films with no poster: those, and Moon, the DVD kept whole, whose nfo
 // has its plot and nothing beside it is a poster.
-var messyPosterless = acc.Sorted(append([]string{"Moon"}, messyBare...))
+var messyPosterless = acctest.Sorted(append([]string{"Moon"}, messyBare...))
 
 func TestAuditMissingOverview(t *testing.T) {
 	out := missing(t, "overview", map[string]any{"library": "Messy Movies"})
 	if got := findings(t, out); !slices.Equal(got, messyBare) {
 		t.Errorf("no overview = %v, want %v", got, messyBare)
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if acc.Str(f["detail"]) != "no overview" || acc.Str(f["id"]) == "" {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if acctest.Str(f["detail"]) != "no overview" || acctest.Str(f["id"]) == "" {
 			t.Errorf("finding = %v", f)
 		}
 	}
@@ -375,20 +375,20 @@ func TestAuditMissingOverview(t *testing.T) {
 		want = append(want, "Featurette")
 	}
 	out = missing(t, "overview", map[string]any{"library": "Messy Shows", "types": "Episode"})
-	if got := findings(t, out); !slices.Equal(got, want) || acc.Num(t, out["items_scanned"], "items_scanned") != messyEpisodes() {
+	if got := findings(t, out); !slices.Equal(got, want) || acctest.Num(t, out["items_scanned"], "items_scanned") != messyEpisodes() {
 		t.Errorf("episodes with no overview = %v of %v scanned, want %v of %d", got, out["items_scanned"], want, messyEpisodes())
 	}
 
 	// an overview of nothing but spaces is no overview: Jellyfin keeps one
 	// as it was sent, Emby keeps none, and the audit reads both alike
 	dune := findItem(t, "Messy Movies", "Movie", "Dune")
-	plot := acc.Str(suite.Call(t, "item_get", map[string]any{"id": dune})["overview"])
+	plot := acctest.Str(suite.Call(t, "item_get", map[string]any{"id": dune})["overview"])
 	if plot == "" {
 		t.Fatal("the messy Dune has no plot to take away")
 	}
 	t.Cleanup(func() { updateItem(t, dune, map[string]any{"Overview": plot}) })
 	updateItem(t, dune, map[string]any{"Overview": "   "})
-	if got := findings(t, missing(t, "overview", map[string]any{"library": "Messy Movies"})); !slices.Equal(got, acc.Sorted(append([]string{"Dune"}, messyBare...))) {
+	if got := findings(t, missing(t, "overview", map[string]any{"library": "Messy Movies"})); !slices.Equal(got, acctest.Sorted(append([]string{"Dune"}, messyBare...))) {
 		t.Errorf("with Dune's plot all spaces = %v, want Dune beside %v", got, messyBare)
 	}
 }
@@ -398,25 +398,25 @@ func TestAuditMissingPoster(t *testing.T) {
 	if got := findings(t, out); !slices.Equal(got, messyPosterless) {
 		t.Errorf("no poster = %v, want %v", got, messyPosterless)
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if acc.Str(f["detail"]) != "no primary image" {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if acctest.Str(f["detail"]) != "no primary image" {
 			t.Errorf("finding = %v", f)
 		}
 	}
 	// no messy series has a poster.jpg, and with the fetchers off nothing
 	// gave it one
 	out = missing(t, "poster", map[string]any{"library": "Messy Shows"})
-	if got, want := findings(t, out), acc.Sorted(append([]string{".hack//Liminality", ".hack//SIGN", "Severance", "The Wire", "The Wire", "Red Dwarf", "Asterix & Obelix: The Big Fight"}, unmatchedShows...)); !slices.Equal(got, want) || len(want) != messySeries {
+	if got, want := findings(t, out), acctest.Sorted(append([]string{".hack//Liminality", ".hack//SIGN", "Severance", "The Wire", "The Wire", "Red Dwarf", "Asterix & Obelix: The Big Fight"}, unmatchedShows...)); !slices.Equal(got, want) || len(want) != messySeries {
 		t.Errorf("series with no poster = %v, want every one of the %d: %v", got, messySeries, want)
 	}
 	// nor any messy episode an image, where the clean show library's were
 	// all given one
 	out = missing(t, "poster", map[string]any{"library": "Messy Shows", "types": "Episode"})
-	if n := acc.Num(t, out["total_findings"], "total_findings"); n != messyEpisodes() || acc.Num(t, out["items_scanned"], "items_scanned") != messyEpisodes() {
+	if n := acctest.Num(t, out["total_findings"], "total_findings"); n != messyEpisodes() || acctest.Num(t, out["items_scanned"], "items_scanned") != messyEpisodes() {
 		t.Errorf("messy episodes with no image = %d of %v, want all %d", n, out["items_scanned"], messyEpisodes())
 	}
 	out = missing(t, "poster", map[string]any{"library": "Shows", "types": "Series,Episode"})
-	if n := acc.Num(t, out["total_findings"], "total_findings"); n != 0 || acc.Num(t, out["items_scanned"], "items_scanned") != len(shows)+showEpisodes() {
+	if n := acctest.Num(t, out["total_findings"], "total_findings"); n != 0 || acctest.Num(t, out["items_scanned"], "items_scanned") != len(shows)+showEpisodes() {
 		t.Errorf("the clean show library = %d missing of %v, want none of %d", n, out["items_scanned"], len(shows)+showEpisodes())
 	}
 }
@@ -432,11 +432,11 @@ func TestAuditFilePath(t *testing.T) {
 	if got := findings(t, out); !slices.Equal(got, []string{"Dune", "Stargate: Continuum"}) {
 		t.Fatalf("file path = %v, want [Dune Stargate: Continuum]", got)
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		problems := acc.Strs(t, f["problems"], "problems")
-		switch title(acc.Str(f["name"])) {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		problems := acctest.Strs(t, f["problems"], "problems")
+		switch title(acctest.Str(f["name"])) {
 		case "Dune":
-			if len(problems) != 1 || !strings.Contains(problems[0], "year: path says 2021, metadata says 1984") || acc.Str(f["type"]) != "Movie" {
+			if len(problems) != 1 || !strings.Contains(problems[0], "year: path says 2021, metadata says 1984") || acctest.Str(f["type"]) != "Movie" {
 				t.Errorf("Dune = %v", f)
 			}
 		case "Stargate: Continuum":
@@ -447,7 +447,7 @@ func TestAuditFilePath(t *testing.T) {
 	}
 	byCheck := mediaacc.ObjectOf(out["by_check"])
 	// Stargate's row fails both checks, and counts under each
-	if acc.Num(t, byCheck["year"], "year") != 2 || acc.Num(t, byCheck["title"], "title") != 1 || len(byCheck) != 2 {
+	if acctest.Num(t, byCheck["year"], "year") != 2 || acctest.Num(t, byCheck["title"], "title") != 1 || len(byCheck) != 2 {
 		t.Errorf("by_check = %v", byCheck)
 	}
 	// the year check alone, and the title check alone
@@ -458,7 +458,7 @@ func TestAuditFilePath(t *testing.T) {
 		t.Errorf("checks=title = %v", got)
 	}
 	// types narrows what is swept: the films alone are the whole library
-	if n := acc.Num(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Movies", "types": "Series"})["items_scanned"], "items_scanned"); n != 0 {
+	if n := acctest.Num(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Movies", "types": "Series"})["items_scanned"], "items_scanned"); n != 0 {
 		t.Errorf("types=Series swept %d items of a film library", n)
 	}
 	// a check it does not have is refused rather than running none
@@ -479,12 +479,12 @@ func TestAuditFilePath(t *testing.T) {
 func TestAuditFilePathSeriesSeasonAndEpisode(t *testing.T) {
 	out := suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Shows"})
 	got := map[string][]string{}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if acc.Str(f["series"]) != "Andor" || acc.Str(f["type"]) != "Episode" {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if acctest.Str(f["series"]) != "Andor" || acctest.Str(f["type"]) != "Episode" {
 			t.Errorf("a finding outside Andor: %v", f)
 			continue
 		}
-		got[filepath.Base(acc.Str(f["path"]))] = acc.Strs(t, f["problems"], "problems")
+		got[filepath.Base(acctest.Str(f["path"]))] = acctest.Strs(t, f["problems"], "problems")
 	}
 	want := map[string]string{
 		"Breaking Bad S01E06.mp4": `series: the file is named for "Breaking Bad", the server holds it under "Andor"`,
@@ -504,17 +504,17 @@ func TestAuditFilePathSeriesSeasonAndEpisode(t *testing.T) {
 			t.Errorf("%s was reported: %v", file, got[file])
 		}
 	}
-	byCheck := acc.Object(t, out["by_check"], "by_check")
+	byCheck := acctest.Object(t, out["by_check"], "by_check")
 	episodes := 1
 	if isJellyfin() {
 		episodes = 2
 	}
-	if acc.Num(t, byCheck["series"], "series") != 1 || acc.Num(t, byCheck["season"], "season") != 1 || acc.Num(t, byCheck["episode"], "episode") != episodes {
+	if acctest.Num(t, byCheck["series"], "series") != 1 || acctest.Num(t, byCheck["season"], "season") != 1 || acctest.Num(t, byCheck["episode"], "episode") != episodes {
 		t.Errorf("by_check = %v", byCheck)
 	}
 	// one check at a time finds its own rows and no others
 	for check, n := range map[string]int{"series": 1, "season": 1, "episode": episodes} {
-		if got := acc.Num(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Shows", "checks": check})["total_findings"], "total_findings"); got != n {
+		if got := acctest.Num(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Shows", "checks": check})["total_findings"], "total_findings"); got != n {
 			t.Errorf("checks=%s found %d, want %d", check, got, n)
 		}
 	}
@@ -523,10 +523,10 @@ func TestAuditFilePathSeriesSeasonAndEpisode(t *testing.T) {
 	// Expanse's file named for another episode and Stargate held as another
 	// film, then the messy Dune's year, and a limit keeps the first of them
 	all := suite.Call(t, "audit_file_path", nil)
-	inOrder := acc.Rows(t, all["findings"], "findings")
+	inOrder := acctest.Rows(t, all["findings"], "findings")
 	order := make([]string, 0, len(inOrder))
 	for _, f := range inOrder {
-		check, _, _ := strings.Cut(acc.Strs(t, f["problems"], "problems")[0], ":")
+		check, _, _ := strings.Cut(acctest.Strs(t, f["problems"], "problems")[0], ":")
 		order = append(order, check)
 	}
 	numbers := len(got)
@@ -539,16 +539,16 @@ func TestAuditFilePathSeriesSeasonAndEpisode(t *testing.T) {
 		}
 	}
 	capped := suite.Call(t, "audit_file_path", map[string]any{"limit": 1})
-	found := acc.Rows(t, capped["findings"], "findings")
-	if len(found) != 1 || acc.Num(t, capped["total_findings"], "total_findings") != numbers+3 {
+	found := acctest.Rows(t, capped["findings"], "findings")
+	if len(found) != 1 || acctest.Num(t, capped["total_findings"], "total_findings") != numbers+3 {
 		t.Fatalf("limit 1 = %v of %v, want one row of %d", found, capped["total_findings"], numbers+3)
 	}
-	if acc.Str(found[0]["series"]) != "Andor" || !slices.Contains([]string{"series", "season", "episode"}, strings.SplitN(acc.Strs(t, found[0]["problems"], "problems")[0], ":", 2)[0]) {
+	if acctest.Str(found[0]["series"]) != "Andor" || !slices.Contains([]string{"series", "season", "episode"}, strings.SplitN(acctest.Strs(t, found[0]["problems"], "problems")[0], ":", 2)[0]) {
 		t.Errorf("the row a limit of 1 keeps = %v, want one of Andor's numbers or its series", found[0])
 	}
 	// the episode held as a run is held whole: E03 is covered, not missing
 	andor := findItem(t, "Messy Shows", "Series", "Andor")
-	e03s := acc.Rows(t, suite.Call(t, "show_episodes_exist", map[string]any{"series_id": andor, "episodes": []map[string]any{{"season": 1, "episode": 3}}})["episodes"], "episodes")
+	e03s := acctest.Rows(t, suite.Call(t, "show_episodes_exist", map[string]any{"series_id": andor, "episodes": []map[string]any{{"season": 1, "episode": 3}}})["episodes"], "episodes")
 	if len(e03s) != 1 {
 		t.Fatalf("show_episodes_exist answered %v for one pair", e03s)
 	}
@@ -565,30 +565,30 @@ func TestAuditFilePathSeriesSeasonAndEpisode(t *testing.T) {
 // it has no duplicates at all.
 func TestAuditDuplicates(t *testing.T) {
 	out := suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Movies"})
-	groups := acc.RowsOfAny(out["groups"])
+	groups := acctest.RowsOfAny(out["groups"])
 	if !isJellyfin() {
-		if acc.Num(t, out["total_findings"], "total_findings") != 0 || len(groups) != 0 {
+		if acctest.Num(t, out["total_findings"], "total_findings") != 0 || len(groups) != 0 {
 			t.Errorf("duplicates in the messy library on Emby = %v, want none", out)
 		}
 		// what Emby shows: the eleven folders' films, both Aliens as one
 		// and both Blade Runner files as one
-		if n := acc.Num(t, out["items_scanned"], "items_scanned"); n != messyMovies()-2 {
+		if n := acctest.Num(t, out["items_scanned"], "items_scanned"); n != messyMovies()-2 {
 			t.Errorf("items_scanned = %d, want the %d films Emby shows", n, messyMovies()-2)
 		}
 	} else {
-		if acc.Num(t, out["total_findings"], "total_findings") != 1 || len(groups) != 1 {
+		if acctest.Num(t, out["total_findings"], "total_findings") != 1 || len(groups) != 1 {
 			t.Fatalf("duplicates = %v", out)
 		}
-		group := acc.Rows(t, groups[0], "group")
+		group := acctest.Rows(t, groups[0], "group")
 		var plain, cut bool
 		for _, it := range group {
-			if acc.Str(it["name"]) != "Alien" {
+			if acctest.Str(it["name"]) != "Alien" {
 				t.Errorf("a duplicate of %v", it["name"])
 			}
 			switch {
-			case strings.Contains(acc.Str(it["path"]), messyAlien+"/"):
+			case strings.Contains(acctest.Str(it["path"]), messyAlien+"/"):
 				plain = true
-			case strings.Contains(acc.Str(it["path"]), messyAlienCut+"/"):
+			case strings.Contains(acctest.Str(it["path"]), messyAlienCut+"/"):
 				cut = true
 			}
 		}
@@ -601,7 +601,7 @@ func TestAuditDuplicates(t *testing.T) {
 	// returned but not the count: Alien, Arrival and Blade Runner are each in
 	// both film libraries, and Alien sorts first
 	out = suite.Call(t, "audit_duplicates", map[string]any{"types": "Movie", "limit": 1})
-	groups = acc.RowsOfAny(out["groups"])
+	groups = acctest.RowsOfAny(out["groups"])
 	if len(groups) != 1 {
 		t.Fatalf("limit 1 returned %d groups", len(groups))
 	}
@@ -612,12 +612,12 @@ func TestAuditDuplicates(t *testing.T) {
 	if names := names(t, groups[0], "group"); len(names) != aliens || names[0] != "Alien" {
 		t.Errorf("the first group across libraries = %v, want %d Aliens", names, aliens)
 	}
-	if n := acc.Num(t, out["total_findings"], "total_findings"); n != 3 {
+	if n := acctest.Num(t, out["total_findings"], "total_findings"); n != 3 {
 		t.Errorf("total_findings = %d, want Alien, Arrival and Blade Runner", n)
 	}
 	// the clean libraries alone have none
 	out = suite.Call(t, "audit_duplicates", map[string]any{"library": "Movies"})
-	if acc.Num(t, out["total_findings"], "total_findings") != 0 {
+	if acctest.Num(t, out["total_findings"], "total_findings") != 0 {
 		t.Errorf("Movies has duplicates: %v", out)
 	}
 
@@ -625,14 +625,14 @@ func TestAuditDuplicates(t *testing.T) {
 	// film that holds Breaking Bad's to Breaking Bad: an IMDb id names one
 	// title whatever its kind, where a TMDB or TVDB number is a film's in one
 	// list and a series' in another, and only joins its own kind
-	all := acc.RowsOfAny(suite.Call(t, "audit_duplicates", nil)["groups"])
+	all := acctest.RowsOfAny(suite.Call(t, "audit_duplicates", nil)["groups"])
 	got := make([]string, 0, len(all))
 	for _, g := range all {
 		var members []string
-		for _, it := range acc.Rows(t, g, "group") {
-			members = append(members, acc.Str(it["type"])+" "+title(acc.Str(it["name"])))
+		for _, it := range acctest.Rows(t, g, "group") {
+			members = append(members, acctest.Str(it["type"])+" "+title(acctest.Str(it["name"])))
 		}
-		got = append(got, strings.Join(acc.Sorted(members), " + "))
+		got = append(got, strings.Join(acctest.Sorted(members), " + "))
 	}
 	alien := "Movie Alien + Movie Alien + Movie Alien"
 	if !isJellyfin() {
@@ -647,8 +647,8 @@ func TestAuditDuplicates(t *testing.T) {
 		// one show split by a folder rename
 		"Series The Wire + Series The Wire",
 	}
-	if !slices.Equal(acc.Sorted(got), want) {
-		t.Errorf("duplicates across every kind = %v, want %v", acc.Sorted(got), want)
+	if !slices.Equal(acctest.Sorted(got), want) {
+		t.Errorf("duplicates across every kind = %v, want %v", acctest.Sorted(got), want)
 	}
 }
 
@@ -705,7 +705,7 @@ func TestEmbyVersionsArePlacedAsItsSingleReadsSay(t *testing.T) {
 		return fmt.Appendf(nil, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<episodedetails>\n  <season>%d</season>\n  <episode>%d</episode>\n%s  <lockdata>true</lockdata>\n</episodedetails>\n", season, episode, ids)
 	}
 	video := fixtureVideo(t, "messy-movies", messyArrival, messyArrival+".mp4")
-	messyShows := acc.Str(suite.Call(t, "library_get", map[string]any{"library": "Messy Shows"})["id"])
+	messyShows := acctest.Str(suite.Call(t, "library_get", map[string]any{"library": "Messy Shows"})["id"])
 	severance := len(itemsTitledEpisodes(t.Context(), t, client, messyShows, "Severance"))
 	// the scans back to the fixtures run after the staged files go
 	t.Cleanup(func() {
@@ -759,7 +759,7 @@ func TestEmbyVersionsArePlacedAsItsSingleReadsSay(t *testing.T) {
 		t.Fatal(err)
 	}
 	library := func(name string) string {
-		return acc.Str(suite.Call(t, "library_get", map[string]any{"library": name})["id"])
+		return acctest.Str(suite.Call(t, "library_get", map[string]any{"library": name})["id"])
 	}
 	stored, _, err := client.Search(t.Context(), embyfin.SearchOptions{ParentID: library("Messy Movies"), IncludeItemTypes: "Movie", Fields: "Path", Limit: 1000})
 	if err != nil {
@@ -818,10 +818,10 @@ func TestEmbyVersionsArePlacedAsItsSingleReadsSay(t *testing.T) {
 		}
 
 		out := suite.Call(t, "audit_multiple_versions", map[string]any{"library": c.library, "types": c.types})
-		found := acc.Rows(t, out["findings"], "findings")
+		found := acctest.Rows(t, out["findings"], "findings")
 		got := make([]string, 0, len(found))
 		for _, f := range found {
-			_, list, _ := strings.Cut(acc.Str(f["detail"]), ": ")
+			_, list, _ := strings.Cut(acctest.Str(f["detail"]), ": ")
 			files := strings.Split(list, ", ")
 			slices.Sort(files)
 			got = append(got, strings.Join(files, " + "))
@@ -831,7 +831,7 @@ func TestEmbyVersionsArePlacedAsItsSingleReadsSay(t *testing.T) {
 			t.Errorf("%s: in versions by the audit: %v; by their own reads: %v", c.library, got, want)
 		}
 		// placed by the key, and the sample of those placings agreeing
-		if note := acc.Str(out["note"]); !strings.Contains(note, "were placed by the key Emby merges versions by") || !strings.Contains(note, "all agreeing") {
+		if note := acctest.Str(out["note"]); !strings.Contains(note, "were placed by the key Emby merges versions by") || !strings.Contains(note, "all agreeing") {
 			t.Errorf("%s: note = %q, want the placings by key, checked", c.library, note)
 		}
 	}
@@ -866,15 +866,15 @@ func TestAuditMultipleVersions(t *testing.T) {
 	if !isJellyfin() {
 		want, shown = []string{"Alien", "Blade Runner"}, messyMovies()-2
 	}
-	if got := acc.Num(t, out["items_scanned"], "items_scanned"); got != shown {
+	if got := acctest.Num(t, out["items_scanned"], "items_scanned"); got != shown {
 		t.Errorf("scanned %d, want the %d films the server shows", got, shown)
 	}
 	if got := findings(t, out); !slices.Equal(got, want) {
 		t.Errorf("multiple versions = %v, want %v", got, want)
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		d := acc.Str(f["detail"])
-		switch title(acc.Str(f["name"])) {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		d := acctest.Str(f["detail"])
+		switch title(acctest.Str(f["name"])) {
 		case "Blade Runner":
 			if !strings.HasPrefix(d, "2 versions: ") || !strings.Contains(d, "Blade Runner (1982) - 1080p.mp4") || !strings.Contains(d, "Blade Runner (1982) - 2160p.mp4") {
 				t.Errorf("Blade Runner's detail = %q", d)
@@ -886,11 +886,11 @@ func TestAuditMultipleVersions(t *testing.T) {
 		}
 	}
 	// films alone, capped: the first
-	if got := suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Movies", "types": "Movie", "limit": 1}); len(acc.Rows(t, got["findings"], "findings")) != 1 || acc.Num(t, got["total_findings"], "total_findings") != len(want) {
+	if got := suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Movies", "types": "Movie", "limit": 1}); len(acctest.Rows(t, got["findings"], "findings")) != 1 || acctest.Num(t, got["total_findings"], "total_findings") != len(want) {
 		t.Errorf("types Movie limit 1 = %v", got)
 	}
 	// and episodes alone find none: no episode is held in two versions
-	if n := acc.Num(t, suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Movies", "types": "Episode"})["items_scanned"], "items_scanned"); n != 0 {
+	if n := acctest.Num(t, suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Movies", "types": "Episode"})["items_scanned"], "items_scanned"); n != 0 {
 		t.Errorf("types Episode swept %d items of a film library", n)
 	}
 }
@@ -904,22 +904,22 @@ func TestAuditMultipleVersions(t *testing.T) {
 // runtimes (brokenRuntimes), not from a count written down.
 func TestAuditRuntime(t *testing.T) {
 	out := suite.Call(t, "audit_runtime", map[string]any{"library": "Messy Shows", "limit": 1000})
-	if got := acc.Num(t, out["items_scanned"], "items_scanned"); got != messyEpisodeFiles {
+	if got := acctest.Num(t, out["items_scanned"], "items_scanned"); got != messyEpisodeFiles {
 		t.Errorf("scanned %d episodes, want the %d episode files, the featurette Emby takes for one left out", got, messyEpisodeFiles)
 	}
-	if got, want := findingIDs(t, out), brokenRuntimes(t, "Messy Shows"); !slices.Equal(got, want) || acc.Num(t, out["total_findings"], "total_findings") != len(want) {
+	if got, want := findingIDs(t, out), brokenRuntimes(t, "Messy Shows"); !slices.Equal(got, want) || acctest.Num(t, out["total_findings"], "total_findings") != len(want) {
 		t.Errorf("findings %v (total %v), want %v", got, out["total_findings"], want)
 	}
-	found := acc.Rows(t, out["findings"], "findings")
+	found := acctest.Rows(t, out["findings"], "findings")
 	if len(found) == 0 {
 		t.Fatal("no findings")
 	}
-	if f := found[0]; acc.Str(f["name"]) != "Star Trek: Deep Space Nine S03E01 The Search (1)" || acc.Str(f["detail"]) != "12 h 0 min: not a runtime, the file's duration metadata is broken" || !strings.HasSuffix(acc.Str(f["path"]), "/Season 03/Star Trek Deep Space Nine S03E01.mkv") {
+	if f := found[0]; acctest.Str(f["name"]) != "Star Trek: Deep Space Nine S03E01 The Search (1)" || acctest.Str(f["detail"]) != "12 h 0 min: not a runtime, the file's duration metadata is broken" || !strings.HasSuffix(acctest.Str(f["path"]), "/Season 03/Star Trek Deep Space Nine S03E01.mkv") {
 		t.Errorf("the broken duration = %v", f)
 	}
 	details := map[string]string{}
 	for _, f := range found {
-		details[acc.Str(f["name"])] = acc.Str(f["detail"])
+		details[acctest.Str(f["name"])] = acctest.Str(f["detail"])
 	}
 	if d := details[".hack//Liminality S01E03 In the Case of Kyoko Tohno"]; d != "1 s: too short to be the episode, an incomplete, sample or broken file" {
 		t.Errorf("the one-second episode = %q", d)
@@ -931,8 +931,8 @@ func TestAuditRuntime(t *testing.T) {
 	}
 	// the broken file's own row says what the file claims: twelve hours
 	ds9 := findItem(t, "Messy Shows", "Series", "Star Trek: Deep Space Nine")
-	for _, e := range acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": ds9, "season": 3})["episodes"], "episodes") {
-		if acc.Num(t, e["runtime_s"], "runtime_s") != 43200 {
+	for _, e := range acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": ds9, "season": 3})["episodes"], "episodes") {
+		if acctest.Num(t, e["runtime_s"], "runtime_s") != 43200 {
 			t.Errorf("the broken file's row = %v runtime_s, want 43200", e["runtime_s"])
 		}
 	}
@@ -953,40 +953,40 @@ func brokenRuntimes(t *testing.T, library string) []string {
 
 	extras := []string{"extras", "trailers", "featurettes", "behind the scenes", "deleted scenes", "interviews", "scenes", "samples", "shorts", "clips", "other", "backdrops"}
 	var ids []string
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": library, "types": "Movie,Episode", "limit": 1000})["items"], "items") {
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": library, "types": "Movie,Episode", "limit": 1000})["items"], "items") {
 		files := []map[string]any{it}
-		if versions := acc.RowsOf(it["versions"]); !isJellyfin() && len(versions) > 0 {
+		if versions := acctest.RowsOf(it["versions"]); !isJellyfin() && len(versions) > 0 {
 			files = versions
 		}
 		for _, file := range files {
-			path, seconds := acc.Str(file["path"]), acc.NumOr0(file["runtime_s"])
-			if path == "" || seconds <= 0 || acc.Str(it["type"]) == "Episode" && slices.Contains(extras, strings.ToLower(filepath.Base(filepath.Dir(path)))) {
+			path, seconds := acctest.Str(file["path"]), acctest.NumOr0(file["runtime_s"])
+			if path == "" || seconds <= 0 || acctest.Str(it["type"]) == "Episode" && slices.Contains(extras, strings.ToLower(filepath.Base(filepath.Dir(path)))) {
 				continue
 			}
 			if seconds < 2*60 || seconds >= 12*60*60 {
-				id := acc.Str(file["id"])
+				id := acctest.Str(file["id"])
 				if id == "" {
-					id = acc.Str(it["id"])
+					id = acctest.Str(it["id"])
 				}
 				ids = append(ids, id)
 			}
 		}
 	}
 
-	return acc.Sorted(ids)
+	return acctest.Sorted(ids)
 }
 
 // findingIDs is the ids an audit named, sorted.
 func findingIDs(t *testing.T, out map[string]any) []string {
 	t.Helper()
 
-	rows := acc.Rows(t, out["findings"], "findings")
+	rows := acctest.Rows(t, out["findings"], "findings")
 	ids := make([]string, 0, len(rows))
 	for _, f := range rows {
-		ids = append(ids, acc.Str(f["id"]))
+		ids = append(ids, acctest.Str(f["id"]))
 	}
 
-	return acc.Sorted(ids)
+	return acctest.Sorted(ids)
 }
 
 // Movie runtimes come from TMDB, through the provider proxy. The messy
@@ -1012,14 +1012,14 @@ func TestAuditProviderRuntime(t *testing.T) {
 	if !slices.Equal(got, want) {
 		t.Errorf("runtime off = %v, want %v", got, want)
 	}
-	if got := acc.Num(t, out["items_scanned"], "items_scanned"); got != messyMovies() {
+	if got := acctest.Num(t, out["items_scanned"], "items_scanned"); got != messyMovies() {
 		t.Errorf("scanned %d, want %d", got, messyMovies())
 	}
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if title(acc.Str(f["name"])) == "Arrival" && !slices.Equal(acc.Strs(t, f["problems"], "problems"), []string{"runtime: file 40 min, TMDB says 116 min (65% off)"}) {
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if title(acctest.Str(f["name"])) == "Arrival" && !slices.Equal(acctest.Strs(t, f["problems"], "problems"), []string{"runtime: file 40 min, TMDB says 116 min (65% off)"}) {
 			t.Errorf("Arrival's problems = %v", f["problems"])
 		}
-		if title(acc.Str(f["name"])) == "Stargate: Continuum" && !slices.Equal(acc.Strs(t, f["problems"], "problems"), []string{"runtime: file 121 min, TMDB says 98 min (23% off)"}) {
+		if title(acctest.Str(f["name"])) == "Stargate: Continuum" && !slices.Equal(acctest.Strs(t, f["problems"], "problems"), []string{"runtime: file 121 min, TMDB says 98 min (23% off)"}) {
 			t.Errorf("Stargate's problems = %v", f["problems"])
 		}
 	}
@@ -1070,11 +1070,11 @@ func TestAuditProviderRuntime(t *testing.T) {
 func TestAFilmRunningItsRealLength(t *testing.T) {
 	needsTMDBCassette(t)
 	limitless := findItem(t, "Movies", "Movie", "Limitless")
-	if got := suite.Call(t, "item_get", map[string]any{"id": limitless}); acc.Num(t, got["runtime_s"], "runtime_s") != 106*60 || acc.Num(t, got["height"], "height") != 720 {
+	if got := suite.Call(t, "item_get", map[string]any{"id": limitless}); acctest.Num(t, got["runtime_s"], "runtime_s") != 106*60 || acctest.Num(t, got["height"], "height") != 720 {
 		t.Errorf("Limitless = %vs at %vp, want its 106 minutes at 720p", got["runtime_s"], got["height"])
 	}
 	out := suite.Call(t, "audit_provider", map[string]any{"library": "Movies", "checks": "runtime"})
-	if got := findings(t, out); len(got) != 0 || acc.Num(t, out["items_scanned"], "items_scanned") != len(movies) || acc.Num(t, out["runtime_not_judged"], "runtime_not_judged") != 0 {
+	if got := findings(t, out); len(got) != 0 || acctest.Num(t, out["items_scanned"], "items_scanned") != len(movies) || acctest.Num(t, out["runtime_not_judged"], "runtime_not_judged") != 0 {
 		t.Errorf("runtime off in Movies = %v of %v (not judged %v), want every film judged and none off", got, out["items_scanned"], out["runtime_not_judged"])
 	}
 }
@@ -1113,8 +1113,8 @@ func needsTMDBRecording(t *testing.T, key string) {
 func TestAuditAll(t *testing.T) {
 	out := suite.Call(t, "audit_all", map[string]any{"library": "Messy Movies"})
 	counts := map[string]int{}
-	for _, row := range acc.Rows(t, out["audits"], "audits") {
-		counts[rowKey(row)] = acc.Num(t, row["findings"], "findings")
+	for _, row := range acctest.Rows(t, out["audits"], "audits") {
+		counts[rowKey(row)] = acctest.Num(t, row["findings"], "findings")
 	}
 	want := map[string]int{
 		rowProvider: len(messyUnmatched),
@@ -1158,10 +1158,10 @@ func TestAuditAll(t *testing.T) {
 	// nothing
 	skippedIn := func(out map[string]any) []string {
 		var names []string
-		for _, row := range acc.Rows(t, out["audits"], "audits") {
-			if acc.BoolOf(row["skipped"]) {
+		for _, row := range acctest.Rows(t, out["audits"], "audits") {
+			if acctest.BoolOf(row["skipped"]) {
 				names = append(names, rowKey(row))
-				if acc.Str(row["note"]) == "" {
+				if acctest.Str(row["note"]) == "" {
 					t.Errorf("%s is skipped without a note", row["audit"])
 				}
 			}
@@ -1177,8 +1177,8 @@ func TestAuditAll(t *testing.T) {
 	if out["failed"] != nil {
 		t.Errorf("failed = %v", out["failed"])
 	}
-	for _, row := range acc.Rows(t, out["audits"], "audits") {
-		if _, timed := row["took_s"].(float64); timed == acc.IsBool(row["skipped"], true) || row["failed"] != nil {
+	for _, row := range acctest.Rows(t, out["audits"], "audits") {
+		if _, timed := row["took_s"].(float64); timed == acctest.IsBool(row["skipped"], true) || row["failed"] != nil {
 			t.Errorf("row %v: a row that ran is timed, a skipped one is not, and none failed", row)
 		}
 	}
@@ -1190,7 +1190,7 @@ func TestAuditAll(t *testing.T) {
 	for _, n := range want {
 		total += n
 	}
-	if acc.Num(t, out["total_findings"], "total_findings") != total {
+	if acctest.Num(t, out["total_findings"], "total_findings") != total {
 		t.Errorf("total_findings = %v, want %d", out["total_findings"], total)
 	}
 	// across the server, the orphans check runs and the four it does not
@@ -1206,21 +1206,21 @@ func TestAuditAll(t *testing.T) {
 	// fixtures, seconds long, which no film or episode runs
 	// (TestAuditsLeaveTheCleanLibrariesAlone)
 	clean := suite.Call(t, "audit_all", map[string]any{"library": "Movies"})
-	if n, want := acc.Num(t, clean["total_findings"], "total_findings"), len(brokenRuntimes(t, "Movies")); n != want {
+	if n, want := acctest.Num(t, clean["total_findings"], "total_findings"), len(brokenRuntimes(t, "Movies")); n != want {
 		t.Errorf("Movies total_findings = %d, want the %d runtimes: %v", n, want, clean["audits"])
 	}
-	if n, want := acc.Num(t, suite.Call(t, "audit_all", map[string]any{"library": "Shows"})["total_findings"], "total_findings"), 2+len(brokenRuntimes(t, "Shows")); n != want {
+	if n, want := acctest.Num(t, suite.Call(t, "audit_all", map[string]any{"library": "Shows"})["total_findings"], "total_findings"), 2+len(brokenRuntimes(t, "Shows")); n != want {
 		t.Errorf("Shows total_findings = %d, want %d: The Expanse's path, Breaking Bad's repeated title and the runtimes", n, want)
 	}
 	// and each clean row is the audit's own count, which TestAuditAllMatchesEachAudit
 	// checks for the other libraries
-	for _, row := range acc.Rows(t, clean["audits"], "audits") {
+	for _, row := range acctest.Rows(t, clean["audits"], "audits") {
 		name := rowKey(row)
-		if acc.BoolOf(row["skipped"]) {
+		if acctest.BoolOf(row["skipped"]) {
 			continue
 		}
-		own := suite.Call(t, acc.Str(row["audit"]), rowArgs(row, map[string]any{"library": "Movies"}))
-		if acc.Num(t, own["total_findings"], name) != acc.Num(t, row["findings"], "findings") || acc.Num(t, own["items_scanned"], name) != acc.Num(t, row["items_scanned"], "items_scanned") {
+		own := suite.Call(t, acctest.Str(row["audit"]), rowArgs(row, map[string]any{"library": "Movies"}))
+		if acctest.Num(t, own["total_findings"], name) != acctest.Num(t, row["findings"], "findings") || acctest.Num(t, own["items_scanned"], name) != acctest.Num(t, row["items_scanned"], "items_scanned") {
 			t.Errorf("Movies %s: audit_all counted %v of %v, the audit %v of %v", name, row["findings"], row["items_scanned"], own["total_findings"], own["items_scanned"])
 		}
 	}
@@ -1238,10 +1238,10 @@ func TestAuditAll(t *testing.T) {
 	}
 	music := suite.Call(t, "audit_all", map[string]any{"library": "Music"})
 	ran := map[string]bool{}
-	for _, row := range acc.Rows(t, music["audits"], "audits") {
+	for _, row := range acctest.Rows(t, music["audits"], "audits") {
 		name := rowKey(row)
-		if acc.BoolOf(row["skipped"]) {
-			if acc.Str(row["note"]) == "" {
+		if acctest.BoolOf(row["skipped"]) {
+			if acctest.Str(row["note"]) == "" {
 				t.Errorf("Music %s is skipped without a note", name)
 			}
 			continue
@@ -1251,8 +1251,8 @@ func TestAuditAll(t *testing.T) {
 		// of which there are none out of place
 		if name == "audit_whitespace" {
 			own := suite.Call(t, name, map[string]any{"library": "Music"})
-			if items := artists() + musicAlbums() + songs(); acc.Num(t, row["findings"], "findings") != 0 || acc.Num(t, row["items_scanned"], "items_scanned") != items ||
-				acc.Num(t, own["total_findings"], name) != 0 || acc.Num(t, own["items_scanned"], name) != items {
+			if items := artists() + musicAlbums() + songs(); acctest.Num(t, row["findings"], "findings") != 0 || acctest.Num(t, row["items_scanned"], "items_scanned") != items ||
+				acctest.Num(t, own["total_findings"], name) != 0 || acctest.Num(t, own["items_scanned"], name) != items {
 				t.Errorf("Music %s = %v and on its own %v, want the %d artists, albums and songs read and nothing found", name, row, own, items)
 			}
 
@@ -1264,34 +1264,34 @@ func TestAuditAll(t *testing.T) {
 		switch {
 		case !applies:
 			t.Errorf("Music %s ran: %v", name, row)
-		case acc.Num(t, row["findings"], "findings") != want || acc.Num(t, row["items_scanned"], "items_scanned") != musicAlbums() || acc.Str(row["types"]) != "MusicAlbum":
+		case acctest.Num(t, row["findings"], "findings") != want || acctest.Num(t, row["items_scanned"], "items_scanned") != musicAlbums() || acctest.Str(row["types"]) != "MusicAlbum":
 			t.Errorf("Music %s = %v, want %d of the %d albums, read as MusicAlbum", name, row, want, musicAlbums())
 		}
 		// and it is the audit's own count, asked for the albums
-		own := suite.Call(t, acc.Str(row["audit"]), rowArgs(row, map[string]any{"library": "Music"}))
-		if acc.Num(t, own["total_findings"], name) != acc.Num(t, row["findings"], "findings") || acc.Num(t, own["items_scanned"], name) != acc.Num(t, row["items_scanned"], "items_scanned") {
+		own := suite.Call(t, acctest.Str(row["audit"]), rowArgs(row, map[string]any{"library": "Music"}))
+		if acctest.Num(t, own["total_findings"], name) != acctest.Num(t, row["findings"], "findings") || acctest.Num(t, own["items_scanned"], name) != acctest.Num(t, row["items_scanned"], "items_scanned") {
 			t.Errorf("Music %s: audit_all counted %v of %v, the audit %v of %v", name, row["findings"], row["items_scanned"], own["total_findings"], own["items_scanned"])
 		}
 	}
 	if !ran[rowPoster] || !ran["audit_spelling"] || !ran["audit_whitespace"] || len(ran) != 3 {
 		t.Errorf("over Music audit_all ran %v, want the covers, the spellings and the spaces", ran)
 	}
-	if acc.Num(t, music["total_findings"], "total_findings") != covers+3 {
+	if acctest.Num(t, music["total_findings"], "total_findings") != covers+3 {
 		t.Errorf("Music total_findings = %v, want the %d albums with no cover and the three spellings", music["total_findings"], covers)
 	}
 	// and across the server they count the albums beside the films and series
-	for _, row := range acc.Rows(t, whole["audits"], "audits") {
+	for _, row := range acctest.Rows(t, whole["audits"], "audits") {
 		switch rowKey(row) {
 		case rowPoster, "audit_spelling":
-			if !strings.HasSuffix(acc.Str(row["types"]), ",MusicAlbum") {
+			if !strings.HasSuffix(acctest.Str(row["types"]), ",MusicAlbum") {
 				t.Errorf("across the server %v, want the albums read too", row)
 			}
 		}
 	}
 	// and the messy shows' defects are each counted
 	shows := map[string]int{}
-	for _, row := range acc.Rows(t, suite.Call(t, "audit_all", map[string]any{"library": "Messy Shows"})["audits"], "audits") {
-		shows[rowKey(row)] = acc.Num(t, row["findings"], "findings")
+	for _, row := range acctest.Rows(t, suite.Call(t, "audit_all", map[string]any{"library": "Messy Shows"})["audits"], "audits") {
+		shows[rowKey(row)] = acctest.Num(t, row["findings"], "findings")
 	}
 	pathRows := 3 // Andor's series, episode and season rows
 	if isJellyfin() {
@@ -1351,10 +1351,10 @@ func TestAuditFamilyIsComplete(t *testing.T) {
 // language tag - which is what most real rips carry too.
 func TestAuditLanguage(t *testing.T) {
 	names := func(out map[string]any) []string {
-		findingRows := acc.Rows(t, out["findings"], "findings")
+		findingRows := acctest.Rows(t, out["findings"], "findings")
 		got := make([]string, 0, len(findingRows))
 		for _, f := range findingRows {
-			got = append(got, title(acc.Str(f["name"])))
+			got = append(got, title(acctest.Str(f["name"])))
 		}
 
 		return got
@@ -1371,8 +1371,8 @@ func TestAuditLanguage(t *testing.T) {
 	// Japanese audio and English audio alike
 	for _, language := range []string{"ja", "eng"} {
 		out := suite.Call(t, "audit_language", map[string]any{"language": language, "library": "Messy Movies"})
-		f := acc.Rows(t, out["findings"], "findings")
-		if got := names(out); !slices.Equal(got, []string{"Princess Mononoke"}) || len(f) != 1 || acc.Str(f[0]["detail"]) != "audio: jpn, eng; subtitles: none" {
+		f := acctest.Rows(t, out["findings"], "findings")
+		if got := names(out); !slices.Equal(got, []string{"Princess Mononoke"}) || len(f) != 1 || acctest.Str(f[0]["detail"]) != "audio: jpn, eng; subtitles: none" {
 			t.Errorf("%s audio = %v, want Princess Mononoke's two tracks", language, f)
 		}
 	}
@@ -1380,8 +1380,8 @@ func TestAuditLanguage(t *testing.T) {
 	// two as one language whichever is asked for
 	for _, language := range []string{"deu", "ger", "de"} {
 		out := suite.Call(t, "audit_language", map[string]any{"language": language, "library": "Messy Movies"})
-		f := acc.Rows(t, out["findings"], "findings")
-		if len(f) != 1 || title(acc.Str(f[0]["name"])) != despecialized || acc.Str(f[0]["detail"]) != "audio: deu; subtitles: none" {
+		f := acctest.Rows(t, out["findings"], "findings")
+		if len(f) != 1 || title(acctest.Str(f[0]["name"])) != despecialized || acctest.Str(f[0]["detail"]) != "audio: deu; subtitles: none" {
 			t.Errorf("%s audio = %v, want the Despecialized Edition's German track", language, f)
 		}
 	}
@@ -1392,24 +1392,24 @@ func TestAuditLanguage(t *testing.T) {
 	// whole no audio track the server knows of
 	for _, find := range []string{"no_audio", "unwatchable"} {
 		out := suite.Call(t, "audit_language", map[string]any{"language": "eng", "find": find, "library": "Messy Movies"})
-		scanned := acc.Num(t, out["items_scanned"], "items_scanned")
-		f := acc.Rows(t, out["findings"], "findings")
-		if len(f) != 1 || title(acc.Str(f[0]["name"])) != despecialized || acc.Str(f[0]["detail"]) != "audio: deu; subtitles: none" || acc.Num(t, out["total_findings"], "total_findings") != 1 {
+		scanned := acctest.Num(t, out["items_scanned"], "items_scanned")
+		f := acctest.Rows(t, out["findings"], "findings")
+		if len(f) != 1 || title(acctest.Str(f[0]["name"])) != despecialized || acctest.Str(f[0]["detail"]) != "audio: deu; subtitles: none" || acctest.Num(t, out["total_findings"], "total_findings") != 1 {
 			t.Errorf("%s in English = %v, want the Despecialized Edition alone", find, f)
 		}
 		// the films as people are shown them: Emby's versions judged together
-		if scanned != messyMoviesShown() || acc.Num(t, out["untagged"], "untagged") != scanned-2-noTrack || acc.Num(t, out["no_audio_track"], "no_audio_track") != noTrack {
+		if scanned != messyMoviesShown() || acctest.Num(t, out["untagged"], "untagged") != scanned-2-noTrack || acctest.Num(t, out["no_audio_track"], "no_audio_track") != noTrack {
 			t.Errorf("%s in English: untagged %v and no_audio_track %v of %d scanned, want all but the two tagged and the %d with none, and %d", find, out["untagged"], out["no_audio_track"], scanned, noTrack, noTrack)
 		}
 	}
 	// episodes are swept too, and every messy one is untagged: nothing to
 	// report, and each counted
 	out := suite.Call(t, "audit_language", map[string]any{"language": "eng", "find": "unwatchable", "library": "Messy Shows"})
-	if acc.Num(t, out["total_findings"], "total_findings") != 0 || acc.Num(t, out["items_scanned"], "items_scanned") != messyEpisodesShown() || acc.Num(t, out["untagged"], "untagged") != messyEpisodesShown() {
+	if acctest.Num(t, out["total_findings"], "total_findings") != 0 || acctest.Num(t, out["items_scanned"], "items_scanned") != messyEpisodesShown() || acctest.Num(t, out["untagged"], "untagged") != messyEpisodesShown() {
 		t.Errorf("the messy episodes = %v, want all %d scanned and untagged", out, messyEpisodesShown())
 	}
 	// a series is not a file: asked for series alone, there is nothing to read
-	if out := suite.Call(t, "audit_language", map[string]any{"language": "eng", "library": "Messy Shows", "types": "Series"}); acc.Num(t, out["total_findings"], "total_findings")+acc.Num(t, out["untagged"], "untagged")+acc.Num(t, out["no_audio_track"], "no_audio_track") != 0 {
+	if out := suite.Call(t, "audit_language", map[string]any{"language": "eng", "library": "Messy Shows", "types": "Series"}); acctest.Num(t, out["total_findings"], "total_findings")+acctest.Num(t, out["untagged"], "untagged")+acctest.Num(t, out["no_audio_track"], "no_audio_track") != 0 {
 		t.Errorf("types=Series = %v, want nothing judged", out)
 	}
 
@@ -1418,11 +1418,11 @@ func TestAuditLanguage(t *testing.T) {
 	// discs kept whole none the server knows of, each counted apart rather
 	// than judged
 	lacking := suite.Call(t, "audit_language", map[string]any{"language": "jpn", "find": "no_audio", "library": "Messy Movies"})
-	scanned := acc.Num(t, lacking["items_scanned"], "items_scanned")
+	scanned := acctest.Num(t, lacking["items_scanned"], "items_scanned")
 	if got := names(lacking); !slices.Equal(got, []string{despecialized}) || scanned != messyMoviesShown() {
 		t.Errorf("of %d scanned, lacking japanese: %v, want the Despecialized Edition", scanned, got)
 	}
-	if n, none := acc.Num(t, lacking["untagged"], "untagged"), acc.Num(t, lacking["no_audio_track"], "no_audio_track"); none != noTrack || n != scanned-2-noTrack {
+	if n, none := acctest.Num(t, lacking["untagged"], "untagged"), acctest.Num(t, lacking["no_audio_track"], "no_audio_track"); none != noTrack || n != scanned-2-noTrack {
 		t.Errorf("untagged = %d and no_audio_track %d of %d scanned, want all but the two tagged and the %d with no track, and those", n, none, scanned, noTrack)
 	}
 
@@ -1432,18 +1432,18 @@ func TestAuditLanguage(t *testing.T) {
 	}
 	// the films alone are the whole library (a limit is read where there
 	// are two to cap, TestAuditLanguageStaged)
-	if films := suite.Call(t, "audit_language", map[string]any{"language": "eng", "find": "subtitles", "library": "Movies", "types": "Movie"}); !slices.Equal(names(films), []string{"The Thirteenth Floor"}) || acc.Num(t, films["items_scanned"], "items_scanned") != len(movies) {
+	if films := suite.Call(t, "audit_language", map[string]any{"language": "eng", "find": "subtitles", "library": "Movies", "types": "Movie"}); !slices.Equal(names(films), []string{"The Thirteenth Floor"}) || acctest.Num(t, films["items_scanned"], "items_scanned") != len(movies) {
 		t.Errorf("types Movie = %v of %v", names(films), films["items_scanned"])
 	}
 
 	// and it is what makes that film watchable in English when nothing else
 	// in the library can be judged
 	unwatchable := suite.Call(t, "audit_language", map[string]any{"language": "eng", "find": "unwatchable", "library": "Movies"})
-	scanned = acc.Num(t, unwatchable["items_scanned"], "items_scanned")
-	if n := acc.Num(t, unwatchable["total_findings"], "total_findings"); n != 0 {
+	scanned = acctest.Num(t, unwatchable["items_scanned"], "items_scanned")
+	if n := acctest.Num(t, unwatchable["total_findings"], "total_findings"); n != 0 {
 		t.Errorf("unwatchable in english = %v", unwatchable["findings"])
 	}
-	if n := acc.Num(t, unwatchable["untagged"], "untagged"); n != scanned-1 {
+	if n := acctest.Num(t, unwatchable["untagged"], "untagged"); n != scanned-1 {
 		t.Errorf("untagged = %d of %d scanned, want all but The Thirteenth Floor", n, scanned)
 	}
 

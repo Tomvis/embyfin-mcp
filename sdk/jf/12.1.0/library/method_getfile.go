@@ -20,6 +20,7 @@ func (c Client) GetFile(ctx context.Context, itemId string) (result jf.GetFileRe
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetFile",
 		Path:           fmt.Sprintf("/Items/%s/File", url.PathEscape(itemId)),
 		StreamResponse: true,
 	}

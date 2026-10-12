@@ -19,6 +19,7 @@ func (c Client) GetBackupRestoreBackupInfo(ctx context.Context) (result emby.Get
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetBackupRestoreBackupInfo",
 		Path:       "/BackupRestore/BackupInfo",
 	}
 

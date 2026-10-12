@@ -20,6 +20,7 @@ func (c Client) GetPersonsByIdCredits(ctx context.Context, id string) (result em
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPersonsByIdCredits",
 		Path:       fmt.Sprintf("/Persons/%s/Credits", url.PathEscape(id)),
 	}
 

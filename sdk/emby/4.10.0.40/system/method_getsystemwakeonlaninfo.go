@@ -18,6 +18,7 @@ func (c Client) GetSystemWakeOnLanInfo(ctx context.Context) (result emby.GetSyst
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemWakeOnLanInfo",
 		Path:       "/System/WakeOnLanInfo",
 	}
 

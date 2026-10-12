@@ -18,6 +18,7 @@ func (c Client) GetSwaggerJson(ctx context.Context) (result emby.GetSwaggerJsonR
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSwaggerJson",
 		Path:       "/swagger.json",
 	}
 

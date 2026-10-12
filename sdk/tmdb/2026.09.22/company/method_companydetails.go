@@ -19,6 +19,7 @@ func (c Client) CompanyDetails(ctx context.Context, companyId int) (result tmdb.
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "CompanyDetails",
 		Path:       fmt.Sprintf("/3/company/%d", companyId),
 	}
 

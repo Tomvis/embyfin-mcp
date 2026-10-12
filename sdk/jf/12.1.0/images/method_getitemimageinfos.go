@@ -19,6 +19,7 @@ func (c Client) GetItemImageInfos(ctx context.Context, itemId string) (result jf
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetItemImageInfos",
 		Path:       fmt.Sprintf("/Items/%s/Images", url.PathEscape(itemId)),
 	}
 

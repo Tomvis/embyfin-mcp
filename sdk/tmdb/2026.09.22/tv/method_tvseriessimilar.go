@@ -29,6 +29,7 @@ func (c Client) TvSeriesSimilar(ctx context.Context, seriesId int, options ...tm
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TvSeriesSimilar",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/tv/%d/similar", seriesId),
 	}

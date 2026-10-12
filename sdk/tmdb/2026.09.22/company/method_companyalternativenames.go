@@ -19,6 +19,7 @@ func (c Client) CompanyAlternativeNames(ctx context.Context, companyId int) (res
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "CompanyAlternativeNames",
 		Path:       fmt.Sprintf("/3/company/%d/alternative_names", companyId),
 	}
 

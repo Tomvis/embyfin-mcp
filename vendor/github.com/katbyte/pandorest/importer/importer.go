@@ -53,8 +53,9 @@ func FromSpec(cfg config.Service, spec *openapi.Spec, applied []string, log func
 
 	im.checkWords()
 	im.importSchemas()
-	im.keepNull()
 	groups := im.importOperations()
+	// after the operations, since an answer declared inline is a model only once its operation is read (dockhand's document has no components at all)
+	im.keepNull()
 	for _, g := range groups {
 		for i := range g.Operations {
 			im.markPageable(&g.Operations[i])
@@ -108,6 +109,8 @@ type importer struct {
 	// typeNames maps every Go type name declared so far to where it came from
 	typeNames map[string]string
 	failures  []string
+	// oneIDTexts is each text parameter named like a list (excludeItemIds) a kind typed as one id, to say so
+	oneIDTexts []string
 }
 
 // checkWords holds the config's Words to spelling only: a key in lower case,
@@ -133,7 +136,8 @@ func (im *importer) keepNull() {
 		schema, prop, ok := strings.Cut(name, ".")
 		var field *definitions.Field
 		for _, m := range im.models {
-			if ok && m.SchemaName == schema {
+			// by the document's schema name, or by the model's own name for a record the document declares inline and the importer named
+			if ok && (m.SchemaName == schema || m.Name == schema) {
 				field = fieldNamed(m.Fields, prop)
 			}
 		}

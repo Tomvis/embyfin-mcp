@@ -21,6 +21,7 @@ func (c Client) PostLiveTvTimersById(ctx context.Context, id string, input emby.
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLiveTvTimersById",
 		Path:       fmt.Sprintf("/LiveTv/Timers/%s", url.PathEscape(id)),
 	}
 

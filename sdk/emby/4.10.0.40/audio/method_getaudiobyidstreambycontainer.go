@@ -29,6 +29,7 @@ func (c Client) GetAudioByIdStreamByContainer(ctx context.Context, id string, co
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetAudioByIdStreamByContainer",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Audio/%s/stream.%s", url.PathEscape(id), url.PathEscape(container)),
 		StreamResponse: true,

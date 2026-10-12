@@ -29,6 +29,7 @@ func (c Client) MoviePopularList(ctx context.Context, options ...tmdb.MoviePopul
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "MoviePopularList",
 		OptionsObject: option,
 		Path:          "/3/movie/popular",
 	}

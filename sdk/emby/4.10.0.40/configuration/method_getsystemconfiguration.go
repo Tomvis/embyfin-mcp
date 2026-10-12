@@ -19,6 +19,7 @@ func (c Client) GetSystemConfiguration(ctx context.Context) (result emby.GetSyst
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemConfiguration",
 		Path:       "/System/Configuration",
 	}
 

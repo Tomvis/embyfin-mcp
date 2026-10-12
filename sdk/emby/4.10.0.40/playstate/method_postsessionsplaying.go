@@ -19,6 +19,7 @@ func (c Client) PostSessionsPlaying(ctx context.Context, input emby.PlaybackStar
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSessionsPlaying",
 		Path:       "/Sessions/Playing",
 	}
 

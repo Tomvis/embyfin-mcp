@@ -24,6 +24,7 @@ func (c Client) PostUsersByUserIdItemsByIdHideFromResume(ctx context.Context, us
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostUsersByUserIdItemsByIdHideFromResume",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Items/%s/HideFromResume", url.PathEscape(userId), url.PathEscape(id)),
 	}

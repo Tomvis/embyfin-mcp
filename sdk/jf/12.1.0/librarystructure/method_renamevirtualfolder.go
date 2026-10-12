@@ -27,6 +27,7 @@ func (c Client) RenameVirtualFolder(ctx context.Context, options ...jf.RenameVir
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "RenameVirtualFolder",
 		OptionsObject: option,
 		Path:          "/Library/VirtualFolders/Name",
 	}

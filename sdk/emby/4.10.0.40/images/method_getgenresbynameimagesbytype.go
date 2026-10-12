@@ -29,6 +29,7 @@ func (c Client) GetGenresByNameImagesByType(ctx context.Context, name string, ty
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetGenresByNameImagesByType",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Genres/%s/Images/%s", url.PathEscape(name), url.PathEscape(string(typeParam))),
 		StreamResponse: true,

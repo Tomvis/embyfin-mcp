@@ -21,6 +21,7 @@ func (c Client) GetQuickConnectState(ctx context.Context, secret string) (result
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetQuickConnectState",
 		OptionsObject: option,
 		Path:          "/QuickConnect/Connect",
 	}

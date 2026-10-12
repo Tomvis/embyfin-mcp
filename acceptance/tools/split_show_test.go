@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // The Wire, split by a folder rename: "The Wire" with no year and "The Wire
@@ -23,9 +23,9 @@ import (
 // each half holds all three episodes as far as a question by id goes.
 func TestAShowSplitByAFolderRename(t *testing.T) {
 	halves := map[string]string{} // folder -> series id
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "query": "The Wire", "limit": 50})["items"], "items") {
-		if acc.Str(it["name"]) == "The Wire" {
-			halves[acc.Str(it["path"])] = acc.Str(it["id"])
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "query": "The Wire", "limit": 50})["items"], "items") {
+		if acctest.Str(it["name"]) == "The Wire" {
+			halves[acctest.Str(it["path"])] = acctest.Str(it["id"])
 		}
 	}
 	old, renamed := halves["/media/messy-shows/The Wire"], halves["/media/messy-shows/The Wire (2002)"]
@@ -38,28 +38,28 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 		// with, so this is not the rename that audit catches (a space, a
 		// letter's case): only the Knight pair is grouped
 		out := suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})
-		for _, g := range acc.Rows(t, out["folder_groups"], "folder_groups") {
-			if strings.Contains(acc.Str(g["key"]), "wire") {
+		for _, g := range acctest.Rows(t, out["folder_groups"], "folder_groups") {
+			if strings.Contains(acctest.Str(g["key"]), "wire") {
 				t.Errorf("audit_duplicates' folder rule groups The Wire: %v", g)
 			}
 		}
-		if acc.Num(t, out["total_folder_groups"], "total_folder_groups") != 1 {
+		if acctest.Num(t, out["total_folder_groups"], "total_folder_groups") != 1 {
 			t.Errorf("audit_duplicates folder_groups = %v, want the Knight pair alone", out["folder_groups"])
 		}
 	})
 
 	t.Run("the id audit joins them", func(t *testing.T) {
 		var wire [][]string
-		groups := acc.RowsOfAny(suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})["groups"])
+		groups := acctest.RowsOfAny(suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})["groups"])
 		for _, g := range groups {
 			var paths []string
-			for _, it := range acc.Rows(t, g, "group") {
-				if acc.Str(it["name"]) == "The Wire" && acc.Str(it["type"]) == "Series" {
-					paths = append(paths, acc.Str(it["path"]))
+			for _, it := range acctest.Rows(t, g, "group") {
+				if acctest.Str(it["name"]) == "The Wire" && acctest.Str(it["type"]) == "Series" {
+					paths = append(paths, acctest.Str(it["path"]))
 				}
 			}
 			if len(paths) > 0 {
-				wire = append(wire, acc.Sorted(paths))
+				wire = append(wire, acctest.Sorted(paths))
 			}
 		}
 		// the episodes carry no ids of their own, so the second one held
@@ -74,17 +74,17 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 		for half, id := range map[string]string{"the old folder": old, "the renamed one": renamed} {
 			other := map[string]string{old: renamed, renamed: old}[id]
 			out := suite.Call(t, "show_episodes_exist", map[string]any{"series_id": id, "episodes": ask, "quality": true})
-			got := acc.Rows(t, out["episodes"], "episodes")
-			if len(got) != 4 || acc.Num(t, out["absent"], "absent") != 1 || !acc.IsBool(got[3]["exists"], false) {
+			got := acctest.Rows(t, out["episodes"], "episodes")
+			if len(got) != 4 || acctest.Num(t, out["absent"], "absent") != 1 || !acctest.IsBool(got[3]["exists"], false) {
 				t.Errorf("%s: %v, absent %v: want E01 to E03 held and E04 absent", half, got, out["absent"])
 				continue
 			}
-			if dup := acc.Strs(t, out["duplicate_entries"], "duplicate_entries"); !slices.Equal(dup, []string{other}) {
+			if dup := acctest.Strs(t, out["duplicate_entries"], "duplicate_entries"); !slices.Equal(dup, []string{other}) {
 				t.Errorf("%s: duplicate_entries = %v, want the other half %s", half, dup, other)
 			}
 			// E01 is the old folder's alone and E03 the renamed one's
 			for i, folder := range map[int]string{0: "/The Wire/", 2: "/The Wire (2002)/"} {
-				if !strings.Contains(acc.Str(got[i]["path"]), folder) || got[i]["other_copies"] != nil {
+				if !strings.Contains(acctest.Str(got[i]["path"]), folder) || got[i]["other_copies"] != nil {
 					t.Errorf("%s: S01E%02d = %v, want the one file in %s", half, i+1, got[i], folder)
 				}
 			}
@@ -94,16 +94,16 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 			if id == renamed {
 				own, theirs = 720, 360
 			}
-			copies := acc.Rows(t, got[1]["other_copies"], "other_copies")
-			if acc.Num(t, got[1]["height"], "height") != own || len(copies) != 1 || acc.Str(copies[0]["series_id"]) != other || acc.Num(t, copies[0]["height"], "height") != theirs {
+			copies := acctest.Rows(t, got[1]["other_copies"], "other_copies")
+			if acctest.Num(t, got[1]["height"], "height") != own || len(copies) != 1 || acctest.Str(copies[0]["series_id"]) != other || acctest.Num(t, copies[0]["height"], "height") != theirs {
 				t.Errorf("%s: S01E02 = %vp, other copies %v: want its own %dp copy and the other half's %dp one", half, got[1]["height"], copies, own, theirs)
 			}
 		}
 	})
 
 	t.Run("by name it is two series", func(t *testing.T) {
-		cands := acc.Rows(t, suite.Call(t, "show_resolve", map[string]any{"title": "The Wire", "library": "Messy Shows"})["candidates"], "candidates")
-		if len(cands) < 2 || acc.Str(cands[0]["name"]) != "The Wire" || acc.Str(cands[1]["name"]) != "The Wire" || acc.Decimal(t, cands[0]["score"], "score") != 1 || acc.Decimal(t, cands[1]["score"], "score") != 1 {
+		cands := acctest.Rows(t, suite.Call(t, "show_resolve", map[string]any{"title": "The Wire", "library": "Messy Shows"})["candidates"], "candidates")
+		if len(cands) < 2 || acctest.Str(cands[0]["name"]) != "The Wire" || acctest.Str(cands[1]["name"]) != "The Wire" || acctest.Decimal(t, cands[0]["score"], "score") != 1 || acctest.Decimal(t, cands[1]["score"], "score") != 1 {
 			t.Fatalf("show_resolve The Wire = %v, want both halves first, each a whole match", cands)
 		}
 		// a tie is refused naming both, however narrowed
@@ -119,11 +119,11 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 		// run from TMDB is missing the fourth on
 		for _, id := range []string{old, renamed} {
 			out := suite.Call(t, "show_missing", map[string]any{"series_id": id})
-			if got := missingKeys(t, out); !acc.IsBool(out["supported"], true) || len(got) == 0 || got[0] != "S01E04" || out["gaps_on_disk"] != nil {
+			if got := missingKeys(t, out); !acctest.IsBool(out["supported"], true) || len(got) == 0 || got[0] != "S01E04" || out["gaps_on_disk"] != nil {
 				t.Errorf("show_missing %s = %v from %v, want the run from S01E04", id, got, out["source"])
 			}
 			// in TMDB's aired order, which the files are numbered by
-			if acc.Str(out["order"]) != "TMDB aired order" || out["held_not_in_run"] != nil || out["warning"] != nil {
+			if acctest.Str(out["order"]) != "TMDB aired order" || out["held_not_in_run"] != nil || out["warning"] != nil {
 				t.Errorf("show_missing %s: order %v, held_not_in_run %v, warning %v", id, out["order"], out["held_not_in_run"], out["warning"])
 			}
 		}
@@ -131,8 +131,8 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 		// was missing the episodes the other holds
 		out := suite.Call(t, "audit_missing_episodes", map[string]any{"library": "Messy Shows", "provider": true})
 		var wire []map[string]any
-		for _, f := range acc.Rows(t, out["findings"], "findings") {
-			if acc.Str(f["name"]) == "The Wire" {
+		for _, f := range acctest.Rows(t, out["findings"], "findings") {
+			if acctest.Str(f["name"]) == "The Wire" {
 				wire = append(wire, f)
 			}
 		}
@@ -140,9 +140,9 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 			t.Fatalf("The Wire's findings = %v, want one", wire)
 		}
 		f := wire[0]
-		other := map[string]string{old: renamed, renamed: old}[acc.Str(f["id"])]
-		if !strings.HasPrefix(acc.Str(f["detail"]), "listed by TMDB without a file: S01E04, S01E05") || other == "" ||
-			!strings.Contains(acc.Str(f["warning"]), `holds "The Wire" under 2 entries sharing its ids (also id `+other+" at ") {
+		other := map[string]string{old: renamed, renamed: old}[acctest.Str(f["id"])]
+		if !strings.HasPrefix(acctest.Str(f["detail"]), "listed by TMDB without a file: S01E04, S01E05") || other == "" ||
+			!strings.Contains(acctest.Str(f["warning"]), `holds "The Wire" under 2 entries sharing its ids (also id `+other+" at ") {
 			t.Errorf("The Wire = %v, want the run from S01E04 and the other half named", f)
 		}
 	})
@@ -153,10 +153,10 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 		// them as two episodes of two series, and the 360p one is a rip
 		// worth replacing
 		versions := suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Shows"})
-		rows := acc.Rows(t, versions["findings"], "findings")
+		rows := acctest.Rows(t, versions["findings"], "findings")
 		shownTwice := make([]string, 0, len(rows))
 		for _, f := range rows {
-			shownTwice = append(shownTwice, acc.Str(f["name"])+": "+acc.Str(f["detail"]))
+			shownTwice = append(shownTwice, acctest.Str(f["name"])+": "+acctest.Str(f["detail"]))
 		}
 		want := []string{}
 		if !isJellyfin() {
@@ -166,8 +166,8 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 			t.Errorf("episodes in two versions = %v, want %v", shownTwice, want)
 		}
 		rip := false
-		for _, f := range acc.Rows(t, suite.Call(t, "audit_quality", map[string]any{"library": "Messy Shows"})["findings"], "findings") {
-			if acc.Str(f["path"]) == "/media/messy-shows/The Wire/Season 01/The Wire S01E02.mp4" {
+		for _, f := range acctest.Rows(t, suite.Call(t, "audit_quality", map[string]any{"library": "Messy Shows"})["findings"], "findings") {
+			if acctest.Str(f["path"]) == "/media/messy-shows/The Wire/Season 01/The Wire S01E02.mp4" {
 				rip = true
 			}
 		}
@@ -180,9 +180,9 @@ func TestAShowSplitByAFolderRename(t *testing.T) {
 		for _, id := range []string{old, renamed} {
 			var numbers []int
 			folders := map[string]string{} // entry -> the season's folder
-			for _, s := range acc.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": id})["seasons"], "seasons") {
-				numbers = append(numbers, acc.Num(t, s["season"], "season"))
-				folders[acc.Str(s["series_id"])] = acc.Str(s["path"])
+			for _, s := range acctest.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": id})["seasons"], "seasons") {
+				numbers = append(numbers, acctest.Num(t, s["season"], "season"))
+				folders[acctest.Str(s["series_id"])] = acctest.Str(s["path"])
 			}
 			if !slices.Equal(numbers, []int{1, 1}) {
 				t.Errorf("show_seasons %s = %v, want season 1 once from each folder", id, numbers)

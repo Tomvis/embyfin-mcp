@@ -18,6 +18,7 @@ func (c Client) PostLiveStreamsClose(ctx context.Context, options emby.PostLiveS
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostLiveStreamsClose",
 		OptionsObject: options,
 		Path:          "/LiveStreams/Close",
 	}

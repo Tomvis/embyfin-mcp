@@ -28,6 +28,7 @@ func (c Client) GetUsersPrefixes(ctx context.Context, options ...emby.GetUsersPr
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersPrefixes",
 		OptionsObject: option,
 		Path:          "/Users/Prefixes",
 	}

@@ -27,6 +27,7 @@ func (c Client) GetTasks(ctx context.Context, options ...jf.GetTasksOptions) (re
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetTasks",
 		OptionsObject: option,
 		Path:          "/ScheduledTasks",
 	}

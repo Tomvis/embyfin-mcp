@@ -18,6 +18,7 @@ func (c Client) GetEncodingCodecConfigurationDefaults(ctx context.Context) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEncodingCodecConfigurationDefaults",
 		Path:       "/Encoding/CodecConfiguration/Defaults",
 	}
 

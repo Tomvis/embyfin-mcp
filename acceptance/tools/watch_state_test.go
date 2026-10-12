@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // Two films part way and two series started, their first episodes marked
@@ -26,7 +26,7 @@ func TestInProgressPastTheNextEpisodes(t *testing.T) {
 	pilots := make([]string, 0, len(shows))
 	for _, show := range shows {
 		series := findItem(t, "Shows", "Series", show)
-		pilots = append(pilots, acc.Str(acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")[0]["id"]))
+		pilots = append(pilots, acctest.Str(acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")[0]["id"]))
 	}
 	t.Cleanup(func() {
 		for _, id := range append([]string{alien, arrival}, pilots...) {
@@ -113,15 +113,15 @@ func TestUnwatchedAfterLosingAccess(t *testing.T) {
 	// and item_last_watched says the same: her watch, marked as made by an
 	// account that has lost the library since
 	var row map[string]any
-	for _, u := range acc.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": arrival})["users"], "users") {
-		if acc.Str(u["user"]) == "alice" {
+	for _, u := range acctest.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": arrival})["users"], "users") {
+		if acctest.Str(u["user"]) == "alice" {
 			row = u
 		}
 	}
-	if row == nil || !acc.BoolOf(row["played"]) || !acc.BoolOf(row["no_access"]) || acc.Num(t, row["play_count"], "play_count") < 1 || acc.Str(row["last_played"]) == "" {
+	if row == nil || !acctest.BoolOf(row["played"]) || !acctest.BoolOf(row["no_access"]) || acctest.Num(t, row["play_count"], "play_count") < 1 || acctest.Str(row["last_played"]) == "" {
 		t.Errorf("item_last_watched for alice after she lost the library = %v, want her watch, marked no_access", row)
 	}
-	if got := suite.Call(t, "user_stats", map[string]any{"user": "alice"}); acc.Num(t, got["movies_watched"], "movies_watched") != 0 {
+	if got := suite.Call(t, "user_stats", map[string]any{"user": "alice"}); acctest.Num(t, got["movies_watched"], "movies_watched") != 0 {
 		t.Errorf("user_stats alice = %v: in her own view she has watched no film she can see", got)
 	}
 }
@@ -152,11 +152,11 @@ func TestAnIDNoItemHas(t *testing.T) {
 	arrival := findItem(t, "Movies", "Movie", "Arrival")
 	restrictAlice(t, "Shows")
 	out := suite.Call(t, "item_last_watched", map[string]any{"id": arrival})
-	if title(acc.Str(out["item"])) != "Arrival" {
+	if title(acctest.Str(out["item"])) != "Arrival" {
 		t.Errorf("item_last_watched = %v", out)
 	}
-	for _, u := range acc.Rows(t, out["users"], "users") {
-		if acc.Str(u["user"]) == "alice" {
+	for _, u := range acctest.Rows(t, out["users"], "users") {
+		if acctest.Str(u["user"]) == "alice" {
 			t.Errorf("alice is reported on a film she may not see: %v", u)
 		}
 	}

@@ -28,6 +28,7 @@ func (c Client) GetLibraryOptionsInfo(ctx context.Context, options ...jf.GetLibr
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLibraryOptionsInfo",
 		OptionsObject: option,
 		Path:          "/Libraries/AvailableOptions",
 	}

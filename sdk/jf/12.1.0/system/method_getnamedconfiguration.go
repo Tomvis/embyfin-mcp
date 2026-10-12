@@ -19,6 +19,7 @@ func (c Client) GetNamedConfiguration(ctx context.Context, key string) (result j
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetNamedConfiguration",
 		Path:       fmt.Sprintf("/System/Configuration/%s", url.PathEscape(key)),
 	}
 

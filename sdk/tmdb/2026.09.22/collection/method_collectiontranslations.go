@@ -19,6 +19,7 @@ func (c Client) CollectionTranslations(ctx context.Context, collectionId int) (r
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "CollectionTranslations",
 		Path:       fmt.Sprintf("/3/collection/%d/translations", collectionId),
 	}
 

@@ -18,6 +18,7 @@ func (c Client) GetLiveTvTunerHosts(ctx context.Context) (result emby.GetLiveTvT
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvTunerHosts",
 		Path:       "/LiveTv/TunerHosts",
 	}
 

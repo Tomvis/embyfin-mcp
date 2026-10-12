@@ -19,6 +19,7 @@ func (c Client) StartTask(ctx context.Context, taskId string) (result jf.StartTa
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "StartTask",
 		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(taskId)),
 	}
 

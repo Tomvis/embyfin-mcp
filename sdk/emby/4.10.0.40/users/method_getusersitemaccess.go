@@ -30,6 +30,7 @@ func (c Client) GetUsersItemAccess(ctx context.Context, options ...emby.GetUsers
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersItemAccess",
 		OptionsObject: option,
 		Path:          "/Users/ItemAccess",
 	}

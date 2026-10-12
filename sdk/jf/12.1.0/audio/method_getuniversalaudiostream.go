@@ -30,6 +30,7 @@ func (c Client) GetUniversalAudioStream(ctx context.Context, itemId string, opti
 			http.StatusFound,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetUniversalAudioStream",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Audio/%s/universal", url.PathEscape(itemId)),
 		StreamResponse: true,

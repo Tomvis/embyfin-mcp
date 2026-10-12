@@ -20,6 +20,7 @@ func (c Client) UpdateTask(ctx context.Context, taskId string, input []jf.TaskTr
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateTask",
 		Path:       fmt.Sprintf("/ScheduledTasks/%s/Triggers", url.PathEscape(taskId)),
 	}
 

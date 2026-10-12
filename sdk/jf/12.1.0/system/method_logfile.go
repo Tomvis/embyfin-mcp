@@ -22,6 +22,7 @@ func (c Client) LogFile(ctx context.Context, input io.Reader, contentType string
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "LogFile",
 		Path:       "/ClientLog/Document",
 	}
 

@@ -30,6 +30,7 @@ func (c Client) GetAudioCodecs(ctx context.Context, options ...emby.GetAudioCode
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetAudioCodecs",
 		OptionsObject: option,
 		Path:          "/AudioCodecs",
 	}

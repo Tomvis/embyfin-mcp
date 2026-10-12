@@ -20,6 +20,7 @@ func (c Client) PostUsersByUserIdPlayingItemsById(ctx context.Context, userId st
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostUsersByUserIdPlayingItemsById",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/Users/%s/PlayingItems/%s", url.PathEscape(userId), url.PathEscape(id)),
 	}

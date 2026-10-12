@@ -29,6 +29,7 @@ func (c Client) ApplySearchCriteria(ctx context.Context, itemId string, input jf
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "ApplySearchCriteria",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/RemoteSearch/Apply/%s", url.PathEscape(itemId)),
 	}

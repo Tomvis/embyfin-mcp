@@ -17,6 +17,7 @@ func (c Client) SyncPlayStop(ctx context.Context) (result jf.SyncPlayStopRespons
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayStop",
 		Path:       "/SyncPlay/Stop",
 	}
 

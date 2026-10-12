@@ -29,6 +29,7 @@ func (c Client) PostSyncByTargetIdItemsDelete(ctx context.Context, targetId stri
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostSyncByTargetIdItemsDelete",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Sync/%s/Items/Delete", url.PathEscape(targetId)),
 	}

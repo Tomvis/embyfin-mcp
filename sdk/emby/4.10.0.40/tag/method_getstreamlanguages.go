@@ -30,6 +30,7 @@ func (c Client) GetStreamLanguages(ctx context.Context, options ...emby.GetStrea
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetStreamLanguages",
 		OptionsObject: option,
 		Path:          "/StreamLanguages",
 	}

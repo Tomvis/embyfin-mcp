@@ -18,6 +18,7 @@ func (c Client) GetOpenapiJson(ctx context.Context) (result emby.GetOpenapiJsonR
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetOpenapiJson",
 		Path:       "/openapi.json",
 	}
 

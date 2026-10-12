@@ -30,6 +30,7 @@ func (c Client) GetVideoCodecs(ctx context.Context, options ...emby.GetVideoCode
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetVideoCodecs",
 		OptionsObject: option,
 		Path:          "/VideoCodecs",
 	}

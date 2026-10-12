@@ -18,6 +18,7 @@ func (c Client) PostSystemShutdown(ctx context.Context) (result emby.PostSystemS
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSystemShutdown",
 		Path:       "/System/Shutdown",
 	}
 

@@ -29,6 +29,7 @@ func (c Client) GetStudio(ctx context.Context, name string, userId ...string) (r
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetStudio",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Studios/%s", url.PathEscape(name)),
 	}

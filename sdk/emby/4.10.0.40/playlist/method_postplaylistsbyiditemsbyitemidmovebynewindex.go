@@ -20,6 +20,7 @@ func (c Client) PostPlaylistsByIdItemsByItemIdMoveByNewIndex(ctx context.Context
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostPlaylistsByIdItemsByItemIdMoveByNewIndex",
 		Path:       fmt.Sprintf("/Playlists/%s/Items/%d/Move/%d", url.PathEscape(id), itemId, newIndex),
 	}
 

@@ -18,6 +18,7 @@ func (c Client) PostLibrarySeriesUpdated(ctx context.Context) (result emby.PostL
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLibrarySeriesUpdated",
 		Path:       "/Library/Series/Updated",
 	}
 

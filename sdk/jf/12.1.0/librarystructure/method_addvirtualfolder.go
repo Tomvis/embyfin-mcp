@@ -28,6 +28,7 @@ func (c Client) AddVirtualFolder(ctx context.Context, input jf.AddVirtualFolderD
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "AddVirtualFolder",
 		OptionsObject: option,
 		Path:          "/Library/VirtualFolders",
 	}

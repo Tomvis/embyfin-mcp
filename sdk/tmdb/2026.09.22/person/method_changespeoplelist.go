@@ -29,6 +29,7 @@ func (c Client) ChangesPeopleList(ctx context.Context, options ...tmdb.ChangesPe
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "ChangesPeopleList",
 		OptionsObject: option,
 		Path:          "/3/person/changes",
 	}

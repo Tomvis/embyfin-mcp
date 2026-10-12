@@ -20,6 +20,7 @@ func (c Client) GetVideosByIdLiveSubtitlesM3u8(ctx context.Context, id string, o
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideosByIdLiveSubtitlesM3u8",
 		OptionsObject:  options,
 		Path:           fmt.Sprintf("/Videos/%s/live_subtitles.m3u8", url.PathEscape(id)),
 		StreamResponse: true,

@@ -18,6 +18,7 @@ func (c Client) SyncPlaySetRepeatMode(ctx context.Context, input jf.SetRepeatMod
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlaySetRepeatMode",
 		Path:       "/SyncPlay/SetRepeatMode",
 	}
 

@@ -18,6 +18,7 @@ func (c Client) GetSystemInfo(ctx context.Context) (result jf.GetSystemInfoRespo
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemInfo",
 		Path:       "/System/Info",
 	}
 

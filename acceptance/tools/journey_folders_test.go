@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 	"github.com/katbyte/go-kt/test/env"
@@ -27,9 +27,9 @@ func itemsUnder(t *testing.T, library, folder string) map[string]map[string]any 
 	t.Helper()
 
 	out := map[string]map[string]any{}
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": library, "types": "Movie", "limit": 200})["items"], "items") {
-		if strings.HasPrefix(acc.Str(it["path"]), folder+"/") {
-			out[acc.Str(it["path"])] = it
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": library, "types": "Movie", "limit": 200})["items"], "items") {
+		if strings.HasPrefix(acctest.Str(it["path"]), folder+"/") {
+			out[acctest.Str(it["path"])] = it
 		}
 	}
 
@@ -78,7 +78,7 @@ func TestRenamingAFilmsFolder(t *testing.T) {
 	find := func(name string) (string, map[string]any) {
 		for path, it := range itemsUnder(t, "Messy Movies", "/media/messy-movies/"+name) {
 			if strings.HasPrefix(path, "/media/messy-movies/"+name+"/") {
-				return acc.Str(it["id"]), it
+				return acctest.Str(it["id"]), it
 			}
 		}
 		return "", nil
@@ -99,9 +99,9 @@ func TestRenamingAFilmsFolder(t *testing.T) {
 			t.Fatalf("before the rename %s for alice: watched %v favourite %v", id, w, f)
 		}
 	}
-	pl := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Renamed", "item_ids": []any{dune, bareID, knownID}, "media_type": "Video"})["id"])
+	pl := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Renamed", "item_ids": []any{dune, bareID, knownID}, "media_type": "Video"})["id"])
 	deleteLater(t, "playlist_delete", "playlist", pl)
-	col := acc.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Renamed", "item_ids": []any{arrival, bareID, knownID}})["id"])
+	col := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Renamed", "item_ids": []any{arrival, bareID, knownID}})["id"])
 	deleteLater(t, "collection_delete", "collection", col)
 	if n := collectionSize(t, col, 3); n != 3 {
 		t.Fatalf("the collection holds %d, want 3", n)
@@ -140,7 +140,7 @@ func TestRenamingAFilmsFolder(t *testing.T) {
 	// cleared at the end: Jellyfin names an item by its path, and would hand
 	// what is left on these ids to the next run's films at the same paths
 	unmarkLater(t, "alice", newBare, newKnown)
-	if ids := mediaacc.ObjectOf(knownRow["metadata_provider_ids"]); acc.Str(ids["tmdb"]) != "1090" {
+	if ids := mediaacc.ObjectOf(knownRow["metadata_provider_ids"]); acctest.Str(ids["tmdb"]) != "1090" {
 		t.Errorf("the renamed film with an nfo holds %v, want tmdb 1090", ids)
 	}
 	if ids := mediaacc.ObjectOf(bareRow["metadata_provider_ids"]); len(ids) != 0 {
@@ -158,7 +158,7 @@ func TestRenamingAFilmsFolder(t *testing.T) {
 	if got := names(t, suite.Call(t, "collection_get", map[string]any{"collection": col})["items"], "items"); !slices.Equal(got, []string{"Arrival"}) {
 		t.Errorf("after the rename the collection holds %v, want [Arrival]", got)
 	}
-	if n := acc.Num(t, suite.Call(t, "audit_orphans", nil)["total_findings"], "total_findings"); n != 0 {
+	if n := acctest.Num(t, suite.Call(t, "audit_orphans", nil)["total_findings"], "total_findings"); n != 0 {
 		t.Errorf("after the rename audit_orphans finds %d", n)
 	}
 }
@@ -200,18 +200,18 @@ func TestSwappingALibrarysFolder(t *testing.T) {
 		if err != nil {
 			return "", ""
 		}
-		for _, it := range acc.RowsOf(out["items"]) {
-			switch path := acc.Str(it["path"]); {
+		for _, it := range acctest.RowsOf(out["items"]) {
+			switch path := acctest.Str(it["path"]); {
 			case strings.HasPrefix(path, folder+"/"+bare+"/"):
-				bareID = acc.Str(it["id"])
+				bareID = acctest.Str(it["id"])
 			case strings.HasPrefix(path, folder+"/"+known+"/"):
-				knownID = acc.Str(it["id"])
+				knownID = acctest.Str(it["id"])
 			}
 		}
 		return bareID, knownID
 	}
 	var bareID, knownID string
-	if !acc.EventuallyWithin(scanPatience, func() bool { bareID, knownID = holding("/media/swap-a"); return bareID != "" && knownID != "" }) {
+	if !acctest.EventuallyWithin(scanPatience, func() bool { bareID, knownID = holding("/media/swap-a"); return bareID != "" && knownID != "" }) {
 		t.Fatal("the library never held its two films")
 	}
 	if err := suite.WaitForExpectedScan(isJellyfin()); err != nil {
@@ -226,7 +226,7 @@ func TestSwappingALibrarysFolder(t *testing.T) {
 		t.Fatal(err)
 	}
 	out := suite.Call(t, "library_edit", map[string]any{"library": library, "add_paths": []any{"/media/swap-b"}, "remove_paths": []any{"/media/swap-a"}})
-	if locs := acc.Strs(t, out["locations"], "locations"); !slices.Equal(locs, []string{"/media/swap-b"}) {
+	if locs := acctest.Strs(t, out["locations"], "locations"); !slices.Equal(locs, []string{"/media/swap-b"}) {
 		t.Fatalf("library_edit locations = %v", locs)
 	}
 	var newBare, newKnown string

@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 
@@ -26,10 +26,10 @@ import (
 func heldPaths(t *testing.T, library string) []string {
 	t.Helper()
 
-	rows := acc.RowsOf(suite.Call(t, "library_items", map[string]any{"library": library, "types": "Movie", "limit": 200})["items"])
+	rows := acctest.RowsOf(suite.Call(t, "library_items", map[string]any{"library": library, "types": "Movie", "limit": 200})["items"])
 	out := make([]string, 0, len(rows))
 	for _, it := range rows {
-		out = append(out, acc.Str(it["path"]))
+		out = append(out, acctest.Str(it["path"]))
 	}
 
 	return out
@@ -58,7 +58,7 @@ func TestABulkEditStoppedPartWay(t *testing.T) {
 	suite.PutBack(t, "item_edit", map[string]any{"ids": []any{arrival, dune}, "remove_tags": []any{"zzyzx-bulk"}})
 	tagged := func(id string) int {
 		n := 0
-		for _, tag := range acc.Strs(t, suite.Call(t, "item_get", map[string]any{"id": id})["tags"], "tags") {
+		for _, tag := range acctest.Strs(t, suite.Call(t, "item_get", map[string]any{"id": id})["tags"], "tags") {
 			if tag == "zzyzx-bulk" {
 				n++
 			}
@@ -77,7 +77,7 @@ func TestABulkEditStoppedPartWay(t *testing.T) {
 
 	for range 2 {
 		out := suite.Call(t, "item_edit", map[string]any{"ids": []any{arrival, dune}, "add_tags": []any{"zzyzx-bulk"}})
-		if acc.Num(t, out["updated"], "updated") != 2 || !slices.Equal(names(t, out["items"], "items"), []string{"Arrival", "Dune"}) {
+		if acctest.Num(t, out["updated"], "updated") != 2 || !slices.Equal(names(t, out["items"], "items"), []string{"Arrival", "Dune"}) {
 			t.Errorf("the edit again = %v", out)
 		}
 		if a, d := tagged(arrival), tagged(dune); a != 1 || d != 1 {
@@ -118,9 +118,9 @@ func TestFixingWhileAScanRuns(t *testing.T) {
 		t.Fatal(err)
 	}
 	var staged string
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "query": "Thirteenth", "limit": 50})["items"], "items") {
-		if strings.Contains(acc.Str(it["path"]), "/messy-movies/"+name+"/") {
-			staged = acc.Str(it["id"])
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "query": "Thirteenth", "limit": 50})["items"], "items") {
+		if strings.Contains(acctest.Str(it["path"]), "/messy-movies/"+name+"/") {
+			staged = acctest.Str(it["id"])
 		}
 	}
 	if staged == "" {
@@ -129,12 +129,12 @@ func TestFixingWhileAScanRuns(t *testing.T) {
 	idx := candidateFor(t, map[string]any{"id": mononoke, "kind": "movie"}, "128", "tt0119698")
 
 	slowScan(t)
-	if out := suite.Call(t, "library_scan", nil); !acc.BoolOf(out["started"]) {
+	if out := suite.Call(t, "library_scan", nil); !acctest.BoolOf(out["started"]) {
 		t.Fatalf("library_scan = %v", out)
 	}
 	const overview = "Zzyzx: fixed while a scan ran."
 	suite.Call(t, "item_edit", map[string]any{"ids": []any{arrival}, "overview": overview})
-	if out := suite.Call(t, "item_identify_apply", withCandidateIDs(t, map[string]any{"id": mononoke, "kind": "movie", "candidate": idx})); !strings.Contains(acc.Str(out["note"]), "metadata fetchers off") {
+	if out := suite.Call(t, "item_identify_apply", withCandidateIDs(t, map[string]any{"id": mononoke, "kind": "movie", "candidate": idx})); !strings.Contains(acctest.Str(out["note"]), "metadata fetchers off") {
 		t.Errorf("item_identify_apply = %v", out)
 	}
 	// on Jellyfin the scan can undo the change within the second the tool
@@ -157,13 +157,13 @@ func TestFixingWhileAScanRuns(t *testing.T) {
 	}
 	// the delete says what the scan it raced may do, and so does the change
 	// of alice's state, which a scan saving the item can undo
-	if note := acc.Str(deleted["note"]); !strings.Contains(note, "was running: it can list this item again") || !strings.Contains(note, "until a later scan lets it go") || !strings.Contains(note, "if it stays listed, delete it again") {
+	if note := acctest.Str(deleted["note"]); !strings.Contains(note, "was running: it can list this item again") || !strings.Contains(note, "until a later scan lets it go") || !strings.Contains(note, "if it stays listed, delete it again") {
 		t.Errorf("item_delete during a scan: note = %q, want it to say a scan was running", note)
 	}
 	switch msg := fmt.Sprint(markErr); {
 	case markErr != nil && (!strings.Contains(msg, "favourite reads false, not true: the server did not keep it") || !strings.Contains(msg, "was running, and saving the item can undo a change")):
 		t.Errorf("item_set_state during a scan failed without naming the favourite and the scan: %v", markErr)
-	case markErr == nil && !strings.Contains(acc.Str(marked["note"]), "was running: it may overwrite this change once it finishes; check it afterwards"):
+	case markErr == nil && !strings.Contains(acctest.Str(marked["note"]), "was running: it may overwrite this change once it finishes; check it afterwards"):
 		t.Errorf("item_set_state during a scan: note = %q, want it to say a scan was running", marked["note"])
 	}
 
@@ -179,10 +179,10 @@ func TestFixingWhileAScanRuns(t *testing.T) {
 	}
 	stand := func(when string, last bool) {
 		t.Helper()
-		if got := acc.Str(suite.Call(t, "item_get", map[string]any{"id": arrival})["overview"]); got != overview {
+		if got := acctest.Str(suite.Call(t, "item_get", map[string]any{"id": arrival})["overview"]); got != overview {
 			t.Errorf("%s the messy Arrival's overview is %q", when, got)
 		}
-		if ids := mediaacc.ObjectOf(suite.Call(t, "item_get", map[string]any{"id": mononoke})["metadata_provider_ids"]); acc.Str(ids["tmdb"]) != "128" && acc.Str(ids["imdb"]) != "tt0119698" {
+		if ids := mediaacc.ObjectOf(suite.Call(t, "item_get", map[string]any{"id": mononoke})["metadata_provider_ids"]); acctest.Str(ids["tmdb"]) != "128" && acctest.Str(ids["imdb"]) != "tt0119698" {
 			t.Errorf("%s the messy Princess Mononoke holds %v, want its own tmdb or imdb id", when, ids)
 		}
 		// a scan saving the item can undo a change made while it ran (seen
@@ -197,7 +197,7 @@ func TestFixingWhileAScanRuns(t *testing.T) {
 				t.Errorf("%s Blade Runner for alice reads favourite, where item_set_state's error said the server did not keep it", when)
 			}
 		case !w || !f:
-			if isJellyfin() && strings.Contains(acc.Str(marked["note"]), "was running: it may overwrite this change") {
+			if isJellyfin() && strings.Contains(acctest.Str(marked["note"]), "was running: it may overwrite this change") {
 				t.Logf("%s Blade Runner for alice: watched %v favourite %v - the scan undid the change its answer read back as kept, and said a scan could", when, w, f)
 			} else {
 				t.Errorf("%s Blade Runner for alice: watched %v favourite %v", when, w, f)
@@ -257,7 +257,7 @@ func TestAnEditRightAfterARefreshStays(t *testing.T) {
 	settled := func() {
 		t.Helper()
 		last, same := itemEtag(t, id), 0
-		if !acc.EventuallyWithin(time.Minute, func() bool {
+		if !acctest.EventuallyWithin(time.Minute, func() bool {
 			if now := itemEtag(t, id); now != last {
 				last, same = now, 0
 			} else {
@@ -270,12 +270,12 @@ func TestAnEditRightAfterARefreshStays(t *testing.T) {
 	}
 	for i := range 6 {
 		tag := fmt.Sprintf("zzyzx-after-refresh-%d", i)
-		if out := suite.Call(t, "item_refresh", map[string]any{"id": id, "replace_all": true}); !acc.BoolOf(out["landed"]) {
+		if out := suite.Call(t, "item_refresh", map[string]any{"id": id, "replace_all": true}); !acctest.BoolOf(out["landed"]) {
 			t.Errorf("try %d: item_refresh = %v, want the refresh seen to land", i, out)
 		}
 		suite.Call(t, "item_edit", map[string]any{"ids": []any{id}, "add_tags": []any{tag}})
 		settled()
-		if tags := acc.Strs(t, suite.Call(t, "item_get", map[string]any{"id": id})["tags"], "tags"); !slices.Contains(tags, tag) {
+		if tags := acctest.Strs(t, suite.Call(t, "item_get", map[string]any{"id": id})["tags"], "tags"); !slices.Contains(tags, tag) {
 			t.Errorf("try %d: the edit made after item_refresh answered was undone by the refresh: tags %v", i, tags)
 		}
 	}

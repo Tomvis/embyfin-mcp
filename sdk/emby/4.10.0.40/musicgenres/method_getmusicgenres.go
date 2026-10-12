@@ -30,6 +30,7 @@ func (c Client) GetMusicGenres(ctx context.Context, options ...emby.GetMusicGenr
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetMusicGenres",
 		OptionsObject: option,
 		Path:          "/MusicGenres",
 	}

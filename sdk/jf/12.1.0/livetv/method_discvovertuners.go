@@ -27,6 +27,7 @@ func (c Client) DiscvoverTuners(ctx context.Context, newDevicesOnly ...bool) (re
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "DiscvoverTuners",
 		OptionsObject: option,
 		Path:          "/LiveTv/Tuners/Discvover",
 	}

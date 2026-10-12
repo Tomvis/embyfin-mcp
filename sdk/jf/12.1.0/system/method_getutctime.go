@@ -18,6 +18,7 @@ func (c Client) GetUtcTime(ctx context.Context) (result jf.GetUtcTimeResponse, e
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetUtcTime",
 		Path:       "/GetUtcTime",
 	}
 

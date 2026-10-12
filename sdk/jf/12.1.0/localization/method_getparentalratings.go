@@ -17,6 +17,7 @@ func (c Client) GetParentalRatings(ctx context.Context) (result jf.GetParentalRa
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetParentalRatings",
 		Path:       "/Localization/ParentalRatings",
 	}
 

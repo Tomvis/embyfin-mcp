@@ -21,6 +21,7 @@ func (c Client) DeleteUsersByUserIdPlayedItemsById(ctx context.Context, userId s
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteUsersByUserIdPlayedItemsById",
 		Path:       fmt.Sprintf("/Users/%s/PlayedItems/%s", url.PathEscape(userId), url.PathEscape(id)),
 	}
 

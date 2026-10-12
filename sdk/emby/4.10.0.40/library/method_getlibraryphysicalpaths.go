@@ -18,6 +18,7 @@ func (c Client) GetLibraryPhysicalPaths(ctx context.Context) (result emby.GetLib
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLibraryPhysicalPaths",
 		Path:       "/Library/PhysicalPaths",
 	}
 

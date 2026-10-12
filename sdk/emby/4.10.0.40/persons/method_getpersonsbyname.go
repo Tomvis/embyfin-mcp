@@ -30,6 +30,7 @@ func (c Client) GetPersonsByName(ctx context.Context, name string, userId ...str
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPersonsByName",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Persons/%s", url.PathEscape(name)),
 	}

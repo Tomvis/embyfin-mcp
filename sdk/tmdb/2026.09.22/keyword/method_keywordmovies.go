@@ -29,6 +29,7 @@ func (c Client) KeywordMovies(ctx context.Context, keywordId int, options ...tmd
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "KeywordMovies",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/keyword/%d/movies", keywordId),
 	}

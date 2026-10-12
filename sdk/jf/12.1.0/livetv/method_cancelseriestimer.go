@@ -19,6 +19,7 @@ func (c Client) CancelSeriesTimer(ctx context.Context, timerId string) (result j
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "CancelSeriesTimer",
 		Path:       fmt.Sprintf("/LiveTv/SeriesTimers/%s", url.PathEscape(timerId)),
 	}
 

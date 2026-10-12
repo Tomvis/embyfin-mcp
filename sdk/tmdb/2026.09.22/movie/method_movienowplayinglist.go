@@ -29,6 +29,7 @@ func (c Client) MovieNowPlayingList(ctx context.Context, options ...tmdb.MovieNo
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "MovieNowPlayingList",
 		OptionsObject: option,
 		Path:          "/3/movie/now_playing",
 	}

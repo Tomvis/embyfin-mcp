@@ -19,6 +19,7 @@ func (c Client) PostSessionsPlayingStopped(ctx context.Context, input emby.Playb
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSessionsPlayingStopped",
 		Path:       "/Sessions/Playing/Stopped",
 	}
 

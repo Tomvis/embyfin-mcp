@@ -21,6 +21,7 @@ func (c Client) PostDevicesDelete(ctx context.Context, id string) (result emby.P
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostDevicesDelete",
 		OptionsObject: option,
 		Path:          "/Devices/Delete",
 	}

@@ -28,6 +28,7 @@ func (c Client) PostSessionsPlayingPing(ctx context.Context, playSessionId ...st
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostSessionsPlayingPing",
 		OptionsObject: option,
 		Path:          "/Sessions/Playing/Ping",
 	}

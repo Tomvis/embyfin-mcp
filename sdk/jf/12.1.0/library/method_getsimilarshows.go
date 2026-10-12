@@ -29,6 +29,7 @@ func (c Client) GetSimilarShows(ctx context.Context, itemId string, options ...j
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSimilarShows",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Shows/%s/Similar", url.PathEscape(itemId)),
 	}

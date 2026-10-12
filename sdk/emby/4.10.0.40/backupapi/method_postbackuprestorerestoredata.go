@@ -19,6 +19,7 @@ func (c Client) PostBackupRestoreRestoreData(ctx context.Context, input emby.MBB
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostBackupRestoreRestoreData",
 		Path:       "/BackupRestore/RestoreData",
 	}
 

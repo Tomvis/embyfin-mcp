@@ -29,6 +29,7 @@ func (c Client) GetUsersByUserIdItemsByIdSpecialFeatures(ctx context.Context, us
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersByUserIdItemsByIdSpecialFeatures",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Users/%s/Items/%s/SpecialFeatures", url.PathEscape(userId), url.PathEscape(id)),
 	}

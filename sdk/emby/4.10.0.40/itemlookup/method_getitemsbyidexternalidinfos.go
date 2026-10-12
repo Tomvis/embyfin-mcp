@@ -20,6 +20,7 @@ func (c Client) GetItemsByIdExternalIdInfos(ctx context.Context, id string) (res
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetItemsByIdExternalIdInfos",
 		Path:       fmt.Sprintf("/Items/%s/ExternalIdInfos", url.PathEscape(id)),
 	}
 

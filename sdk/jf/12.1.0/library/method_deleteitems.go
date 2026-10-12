@@ -22,6 +22,7 @@ func (c Client) DeleteItems(ctx context.Context, ids ...string) (result jf.Delet
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "DeleteItems",
 		OptionsObject: option,
 		Path:          "/Items",
 	}

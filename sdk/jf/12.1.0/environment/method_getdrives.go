@@ -17,6 +17,7 @@ func (c Client) GetDrives(ctx context.Context) (result jf.GetDrivesResponse, err
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetDrives",
 		Path:       "/Environment/Drives",
 	}
 

@@ -20,6 +20,7 @@ func (c Client) CloseLiveStream(ctx context.Context, liveStreamId string) (resul
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "CloseLiveStream",
 		OptionsObject: option,
 		Path:          "/LiveStreams/Close",
 	}

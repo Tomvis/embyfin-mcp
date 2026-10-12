@@ -18,6 +18,7 @@ func (c Client) SyncPlayQueue(ctx context.Context, input jf.QueueRequestDto) (re
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayQueue",
 		Path:       "/SyncPlay/Queue",
 	}
 

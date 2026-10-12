@@ -20,6 +20,7 @@ func (c Client) SearchKeyword(ctx context.Context, options tmdb.SearchKeywordOpt
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "SearchKeyword",
 		OptionsObject: options,
 		Path:          "/3/search/keyword",
 	}

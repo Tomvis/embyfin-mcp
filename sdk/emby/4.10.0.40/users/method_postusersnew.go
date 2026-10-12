@@ -20,6 +20,7 @@ func (c Client) PostUsersNew(ctx context.Context, input emby.CreateUserByName) (
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersNew",
 		Path:       "/Users/New",
 	}
 

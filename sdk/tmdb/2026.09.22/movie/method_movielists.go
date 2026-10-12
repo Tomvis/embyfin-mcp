@@ -29,6 +29,7 @@ func (c Client) MovieLists(ctx context.Context, movieId int, options ...tmdb.Mov
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "MovieLists",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/movie/%d/lists", movieId),
 	}

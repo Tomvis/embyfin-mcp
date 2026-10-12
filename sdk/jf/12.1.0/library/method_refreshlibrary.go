@@ -17,6 +17,7 @@ func (c Client) RefreshLibrary(ctx context.Context) (result jf.RefreshLibraryRes
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "RefreshLibrary",
 		Path:       "/Library/Refresh",
 	}
 

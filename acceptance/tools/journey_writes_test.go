@@ -14,7 +14,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/katbyte/go-kt/test/env"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
@@ -33,9 +33,9 @@ func watchedEpisodes(t *testing.T, user, series string) []string {
 	t.Helper()
 
 	var ids []string
-	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"user": user, "watched": "watched", "types": "Episode", "library": "Shows", "limit": 200})["items"], "items") {
-		if acc.Str(it["series"]) == series {
-			ids = append(ids, acc.Str(it["id"]))
+	for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"user": user, "watched": "watched", "types": "Episode", "library": "Shows", "limit": 200})["items"], "items") {
+		if acctest.Str(it["series"]) == series {
+			ids = append(ids, acctest.Str(it["id"]))
 		}
 	}
 	slices.Sort(ids)
@@ -52,10 +52,10 @@ func watchedEpisodes(t *testing.T, user, series string) []string {
 // Jellyfin.
 func TestAWatchedMarkOnASeries(t *testing.T) {
 	series := findItem(t, "Shows", "Series", "Breaking Bad")
-	rows := acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes")
+	rows := acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes")
 	episodes := make([]string, 0, len(rows))
 	for _, e := range rows {
-		episodes = append(episodes, acc.Str(e["id"]))
+		episodes = append(episodes, acctest.Str(e["id"]))
 	}
 	slices.Sort(episodes)
 	if len(episodes) != 3 {
@@ -68,7 +68,7 @@ func TestAWatchedMarkOnASeries(t *testing.T) {
 	}
 
 	out := suite.Call(t, "item_set_state", map[string]any{"id": series, "user": "alice", "watched": true})
-	if acc.Num(t, out["reaches"], "reaches") != 1+len(episodes) || acc.Num(t, out["items_changed"], "items_changed") < len(episodes) {
+	if acctest.Num(t, out["reaches"], "reaches") != 1+len(episodes) || acctest.Num(t, out["items_changed"], "items_changed") < len(episodes) {
 		t.Errorf("watched on the series = %v, want the series and its %d episodes reached, each episode changed", out, len(episodes))
 	}
 	if got := watchedEpisodes(t, "alice", "Breaking Bad"); !slices.Equal(got, episodes) {
@@ -77,17 +77,17 @@ func TestAWatchedMarkOnASeries(t *testing.T) {
 
 	// unwatched takes the plays away for good: was says what they were
 	out = suite.Call(t, "item_set_state", map[string]any{"id": series, "user": "alice", "watched": false})
-	was := acc.Rows(t, out["was"], "was")
+	was := acctest.Rows(t, out["was"], "was")
 	played := 0
 	for _, row := range was[1:] {
-		if acc.BoolOf(row["played"]) && acc.Num(t, row["play_count"], "play_count") >= 1 && acc.Str(row["last_played"]) != "" {
+		if acctest.BoolOf(row["played"]) && acctest.Num(t, row["play_count"], "play_count") >= 1 && acctest.Str(row["last_played"]) != "" {
 			played++
 		}
 	}
 	if len(was) != 1+len(episodes) || played != len(episodes) {
 		t.Errorf("unwatched on the series: was = %v, want each episode played, with its plays and date", was)
 	}
-	if note := acc.Str(out["note"]); !strings.Contains(note, fmt.Sprintf("the play counts, last played dates and resume points of the %d items under Breaking Bad are cleared for good: no tool restores them", len(episodes))) {
+	if note := acctest.Str(out["note"]); !strings.Contains(note, fmt.Sprintf("the play counts, last played dates and resume points of the %d items under Breaking Bad are cleared for good: no tool restores them", len(episodes))) {
 		t.Errorf("unwatched on the series: note = %q, want it to say the plays are gone for good", note)
 	}
 	if got := watchedEpisodes(t, "alice", "Breaking Bad"); len(got) != 0 {
@@ -97,10 +97,10 @@ func TestAWatchedMarkOnASeries(t *testing.T) {
 	// a collection: every film in it
 	arrival, alien := findItem(t, "Movies", "Movie", "Arrival"), findItem(t, "Movies", "Movie", "Alien")
 	unmarkLater(t, "alice", arrival, alien)
-	col := acc.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Counted", "item_ids": []any{arrival, alien}})["id"])
+	col := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Counted", "item_ids": []any{arrival, alien}})["id"])
 	deleteLater(t, "collection_delete", "collection", col)
 	out = suite.Call(t, "item_set_state", map[string]any{"id": col, "user": "alice", "watched": true})
-	if acc.Num(t, out["reaches"], "reaches") != 3 || acc.Num(t, out["items_changed"], "items_changed") < 2 {
+	if acctest.Num(t, out["reaches"], "reaches") != 3 || acctest.Num(t, out["items_changed"], "items_changed") < 2 {
 		t.Errorf("watched on a collection = %v, want the collection and its two films", out)
 	}
 	for _, id := range []string{arrival, alien} {
@@ -121,8 +121,8 @@ func TestAWatchedMarkOnASeries(t *testing.T) {
 	// is read there
 	clean := findItem(t, "Movies", "Movie", "Alien")
 	var messy []string
-	for _, it := range acc.Rows(t, suite.Call(t, "item_find_by_metadata_id", map[string]any{"metadata_provider": "tmdb", "id": "348", "type": "movie"})["items"], "items") {
-		if id := acc.Str(it["id"]); id != clean {
+	for _, it := range acctest.Rows(t, suite.Call(t, "item_find_by_metadata_id", map[string]any{"metadata_provider": "tmdb", "id": "348", "type": "movie"})["items"], "items") {
+		if id := acctest.Str(it["id"]); id != clean {
 			messy = append(messy, id)
 		}
 	}
@@ -135,17 +135,17 @@ func TestAWatchedMarkOnASeries(t *testing.T) {
 		suite.Call(t, "item_set_state", map[string]any{"id": id, "user": "alice", "watched": false})
 	}
 	out = suite.Call(t, "item_set_state", map[string]any{"id": clean, "user": "alice", "watched": true})
-	copiesChanged := acc.RowsOf(out["copies_changed"])
+	copiesChanged := acctest.RowsOf(out["copies_changed"])
 	copies := make([]string, 0, len(copiesChanged))
 	for _, c := range copiesChanged {
-		copies = append(copies, acc.Str(c["id"]))
+		copies = append(copies, acctest.Str(c["id"]))
 	}
 	slices.Sort(copies)
 	var marked []string
 	if isJellyfin() {
-		for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"user": "alice", "watched": "watched", "types": "Movie", "library": "Messy Movies", "limit": 100})["items"], "items") {
-			if slices.Contains(messy, acc.Str(it["id"])) {
-				marked = append(marked, acc.Str(it["id"]))
+		for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"user": "alice", "watched": "watched", "types": "Movie", "library": "Messy Movies", "limit": 100})["items"], "items") {
+			if slices.Contains(messy, acctest.Str(it["id"])) {
+				marked = append(marked, acctest.Str(it["id"]))
 			}
 		}
 	} else {
@@ -164,10 +164,10 @@ func TestAWatchedMarkOnASeries(t *testing.T) {
 	// show's two folders): on Emby, which keeps an episode's state by its
 	// series' ids and its number, a mark on one marks the other, and the
 	// answer names it; on Jellyfin the other is left as it was
-	itemRows := acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "types": "Episode", "query": "The Detail", "limit": 10})["items"], "items")
+	itemRows := acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "types": "Episode", "query": "The Detail", "limit": 10})["items"], "items")
 	twice := make([]string, 0, len(itemRows))
 	for _, it := range itemRows {
-		twice = append(twice, acc.Str(it["id"]))
+		twice = append(twice, acctest.Str(it["id"]))
 	}
 	if len(twice) != 2 {
 		t.Fatalf("The Wire's second episode is held %d times, want the fixture's 2", len(twice))
@@ -179,19 +179,19 @@ func TestAWatchedMarkOnASeries(t *testing.T) {
 	out = suite.Call(t, "item_set_state", map[string]any{"id": twice[0], "user": "alice", "watched": true})
 	other := false
 	if isJellyfin() {
-		for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"user": "alice", "watched": "watched", "types": "Episode", "library": "Messy Shows", "limit": 100})["items"], "items") {
-			other = other || acc.Str(it["id"]) == twice[1]
+		for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"user": "alice", "watched": "watched", "types": "Episode", "library": "Messy Shows", "limit": 100})["items"], "items") {
+			other = other || acctest.Str(it["id"]) == twice[1]
 		}
 	} else {
 		other, _ = stateOf(t, twice[1], "alice")
 	}
-	named := acc.RowsOf(out["copies_changed"])
+	named := acctest.RowsOf(out["copies_changed"])
 	switch {
-	case acc.Num(t, out["reaches"], "reaches") != 1:
+	case acctest.Num(t, out["reaches"], "reaches") != 1:
 		t.Errorf("a mark on one copy of an episode reached %v items, want the one", out["reaches"])
 	case isJellyfin() && (other || len(named) != 0):
 		t.Errorf("on Jellyfin a mark on one copy of an episode: the other copy watched %v, the answer names %v; want neither", other, named)
-	case !isJellyfin() && (!other || len(named) != 1 || acc.Str(named[0]["id"]) != twice[1]):
+	case !isJellyfin() && (!other || len(named) != 1 || acctest.Str(named[0]["id"]) != twice[1]):
 		t.Errorf("on Emby a mark on one copy of an episode: the other copy watched %v, the answer names %v; want it marked and named", other, named)
 	}
 }
@@ -206,7 +206,7 @@ func aliceSees(t *testing.T, library string) int {
 		return 0
 	}
 
-	return len(acc.RowsOf(out["items"]))
+	return len(acctest.RowsOf(out["items"]))
 }
 
 // A library renamed under an account given it alone: Emby keeps the
@@ -234,7 +234,7 @@ func TestRenamingALibraryGivenToOneAccount(t *testing.T) {
 		}
 	})
 	suite.Call(t, "library_create", map[string]any{"name": name, "type": "movies", "paths": []any{"/media/access"}, "scan": true, "save_nfo": false})
-	if !acc.EventuallyWithin(scanPatience, func() bool { return typeCount(t, name, "Movie") == 1 }) {
+	if !acctest.EventuallyWithin(scanPatience, func() bool { return typeCount(t, name, "Movie") == 1 }) {
 		t.Fatal("the library never held its film")
 	}
 	if err := suite.WaitForExpectedScan(isJellyfin()); err != nil {
@@ -244,16 +244,16 @@ func TestRenamingALibraryGivenToOneAccount(t *testing.T) {
 	if n := aliceSees(t, name); n != 1 {
 		t.Fatalf("alice, given the library, sees %d films in it", n)
 	}
-	was := acc.Str(suite.Call(t, "library_get", map[string]any{"library": name})["id"])
+	was := acctest.Str(suite.Call(t, "library_get", map[string]any{"library": name})["id"])
 
 	out := suite.Call(t, "library_edit", map[string]any{"library": name, "name": renamed})
 	if err := suite.WaitForExpectedScan(isJellyfin()); err != nil {
 		t.Fatal(err)
 	}
-	now := acc.Str(suite.Call(t, "library_get", map[string]any{"library": renamed})["id"])
-	lost := acc.Strs(t, acc.OrEmptyList(out["access_lost"]), "access_lost")
+	now := acctest.Str(suite.Call(t, "library_get", map[string]any{"library": renamed})["id"])
+	lost := acctest.Strs(t, acctest.OrEmptyList(out["access_lost"]), "access_lost")
 	if isJellyfin() {
-		if now == was || acc.Str(out["was_id"]) != was || len(lost) != 0 {
+		if now == was || acctest.Str(out["was_id"]) != was || len(lost) != 0 {
 			t.Errorf("the rename on Jellyfin = %v (id %s, was %s), want a new id, the old one said, and nobody losing it", out, now, was)
 		}
 		if n := aliceSees(t, renamed); n != 1 {
@@ -279,7 +279,7 @@ func TestRenamingALibraryGivenToOneAccount(t *testing.T) {
 // the renamed collection is left as it was.
 func TestACollectionUnderAnotherCollectionsFirstName(t *testing.T) {
 	arrival, alien := findItem(t, "Movies", "Movie", "Arrival"), findItem(t, "Movies", "Movie", "Alien")
-	col := acc.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Twin", "item_ids": []any{arrival}})["id"])
+	col := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Twin", "item_ids": []any{arrival}})["id"])
 	deleteLater(t, "collection_delete", "collection", col)
 	suite.Call(t, "collection_edit", map[string]any{"collection": col, "name": "Zzyzx Twice"})
 
@@ -291,14 +291,14 @@ func TestACollectionUnderAnotherCollectionsFirstName(t *testing.T) {
 	if !strings.Contains(msg, want) {
 		t.Errorf("a collection under the renamed one's first name: %s", msg)
 	}
-	for _, c := range acc.Rows(t, suite.Call(t, "collection_list", nil)["collections"], "collections") {
-		if acc.Str(c["name"]) == "Zzyzx Twin" {
+	for _, c := range acctest.Rows(t, suite.Call(t, "collection_list", nil)["collections"], "collections") {
+		if acctest.Str(c["name"]) == "Zzyzx Twin" {
 			t.Errorf("a collection is named Zzyzx Twin after the refusal: %v", c)
-			deleteLater(t, "collection_delete", "collection", acc.Str(c["id"]))
+			deleteLater(t, "collection_delete", "collection", acctest.Str(c["id"]))
 		}
 	}
 	got := suite.Call(t, "collection_get", map[string]any{"collection": col})
-	if members := names(t, got["items"], "items"); acc.Str(got["name"]) != "Zzyzx Twice" || !slices.Equal(members, []string{"Arrival"}) {
+	if members := names(t, got["items"], "items"); acctest.Str(got["name"]) != "Zzyzx Twice" || !slices.Equal(members, []string{"Arrival"}) {
 		t.Errorf("the renamed collection after the refusal is %v holding %v, want Zzyzx Twice holding Arrival", got["name"], members)
 	}
 }
@@ -363,7 +363,7 @@ func TestThePosterBesideAFilm(t *testing.T) {
 		t.Fatal(err)
 	}
 	out := suite.Call(t, "item_refresh", map[string]any{"id": id, "replace_all": true})
-	if !acc.BoolOf(out["landed"]) {
+	if !acctest.BoolOf(out["landed"]) {
 		t.Fatalf("the replace_all refresh never landed: %v", out)
 	}
 	// the answer names the poster the refresh deleted, where it did, the
@@ -372,11 +372,11 @@ func TestThePosterBesideAFilm(t *testing.T) {
 	if said := posterNamed(out["removed_beside_media"]); said != !isJellyfin() {
 		t.Errorf("the replace_all refresh's answer names the poster as removed: %v, want it named only on Emby (removed %v)", said, out["removed_beside_media"])
 	}
-	if read := acc.Str(out["folder_read"]); !strings.HasSuffix(read, "/Blade Runner (1982)") {
+	if read := acctest.Str(out["folder_read"]); !strings.HasSuffix(read, "/Blade Runner (1982)") {
 		t.Errorf("the refresh listed %q, want the film's folder", read)
 	}
-	saves := acc.BoolOf(suite.Call(t, "library_get", map[string]any{"library": "Movies"})["saves_nfo"])
-	if said := strings.Contains(acc.Str(out["note"]), "saves nfos, so the server may have written the nfo beside the media over"); said != saves {
+	saves := acctest.BoolOf(suite.Call(t, "library_get", map[string]any{"library": "Movies"})["saves_nfo"])
+	if said := strings.Contains(acctest.Str(out["note"]), "saves nfos, so the server may have written the nfo beside the media over"); said != saves {
 		t.Errorf("the refresh's note speaks of the nfo written over: %v, want %v (the library saves nfos: %v): %q", said, saves, saves, out["note"])
 	}
 	nfoAfter, err := os.ReadFile(filepath.Join(folder, "movie.nfo")) //nolint:gosec // same
@@ -389,7 +389,7 @@ func TestThePosterBesideAFilm(t *testing.T) {
 		t.Errorf("after a replace_all refresh the poster beside the film is kept: %v (want kept only on Jellyfin)", kept)
 	}
 	// the refresh read the same nfo, so the film is who it was
-	if acc.BoolOf(out["identity_changed"]) {
+	if acctest.BoolOf(out["identity_changed"]) {
 		t.Errorf("a refresh of a film its nfo names changed its identity: %v", out)
 	}
 
@@ -415,7 +415,7 @@ func beyondNfoUnseen(note string) string {
 
 // posterNamed says whether a list of paths from an answer names a poster.jpg.
 func posterNamed(v any) bool {
-	for _, p := range acc.Texts(v) {
+	for _, p := range acctest.Texts(v) {
 		if strings.HasSuffix(p, "/poster.jpg") {
 			return true
 		}
@@ -435,7 +435,7 @@ func posterNamed(v any) bool {
 // in - and the renamed collection holds what it held.
 func TestACollectionNamedWithASlash(t *testing.T) {
 	arrival, alien, blade := findItem(t, "Movies", "Movie", "Arrival"), findItem(t, "Movies", "Movie", "Alien"), findItem(t, "Movies", "Movie", "Blade Runner")
-	col := acc.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx AC/DC", "item_ids": []any{arrival, alien}})["id"])
+	col := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx AC/DC", "item_ids": []any{arrival, alien}})["id"])
 	deleteLater(t, "collection_delete", "collection", col)
 	suite.Call(t, "collection_edit", map[string]any{"collection": col, "name": "Zzyzx Rock"})
 
@@ -447,16 +447,16 @@ func TestACollectionNamedWithASlash(t *testing.T) {
 	if !strings.Contains(msg, want) {
 		t.Errorf("a collection under the renamed one's first name, which holds a slash: %s", msg)
 	}
-	for _, c := range acc.Rows(t, suite.Call(t, "collection_list", nil)["collections"], "collections") {
-		if acc.Str(c["name"]) == "Zzyzx AC/DC" {
+	for _, c := range acctest.Rows(t, suite.Call(t, "collection_list", nil)["collections"], "collections") {
+		if acctest.Str(c["name"]) == "Zzyzx AC/DC" {
 			t.Errorf("a collection is named Zzyzx AC/DC after the refusal: %v", c)
-			deleteLater(t, "collection_delete", "collection", acc.Str(c["id"]))
+			deleteLater(t, "collection_delete", "collection", acctest.Str(c["id"]))
 		}
 	}
 	got := suite.Call(t, "collection_get", map[string]any{"collection": col})
 	members := names(t, got["items"], "items")
 	slices.Sort(members)
-	if acc.Str(got["name"]) != "Zzyzx Rock" || !slices.Equal(members, []string{"Alien", "Arrival"}) {
+	if acctest.Str(got["name"]) != "Zzyzx Rock" || !slices.Equal(members, []string{"Alien", "Arrival"}) {
 		t.Errorf("the renamed collection after the refusal is %v holding %v, want Zzyzx Rock holding Alien and Arrival", got["name"], members)
 	}
 }
@@ -470,7 +470,7 @@ func TestACollectionNamedWithASlash(t *testing.T) {
 func TestACollectionOfASeries(t *testing.T) {
 	series, alien := findItem(t, "Shows", "Series", "Breaking Bad"), findItem(t, "Movies", "Movie", "Alien")
 	out := suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Mixed", "item_ids": []any{series, alien}})
-	col := acc.Str(out["id"])
+	col := acctest.Str(out["id"])
 	deleted := false
 	t.Cleanup(func() {
 		if !deleted {
@@ -479,7 +479,7 @@ func TestACollectionOfASeries(t *testing.T) {
 			}
 		}
 	})
-	if n := acc.Num(t, out["items"], "items"); n != 2 {
+	if n := acctest.Num(t, out["items"], "items"); n != 2 {
 		t.Errorf("collection_create answered %d items, want the series and the film", n)
 	}
 	got := names(t, suite.Call(t, "collection_get", map[string]any{"collection": col})["items"], "items")
@@ -488,7 +488,7 @@ func TestACollectionOfASeries(t *testing.T) {
 		t.Errorf("collection_get = %v, want Alien and Breaking Bad", got)
 	}
 
-	episode := acc.Str(acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes")[0]["id"])
+	episode := acctest.Str(acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes")[0]["id"])
 	if msg := suite.CallErr(t, "item_delete", map[string]any{"id": episode}); !strings.Contains(msg, "No playlist or collection holds it") || strings.Contains(msg, "Zzyzx Mixed") {
 		t.Errorf("an episode's delete, whose series a collection holds: %s", msg)
 	}
@@ -512,18 +512,18 @@ func TestACollectionOfASeries(t *testing.T) {
 // playlist is not deleted by item_delete.
 func TestDeletingOneCopyNamesOnlyItsLists(t *testing.T) {
 	var plain, cut string
-	for _, it := range acc.Rows(t, suite.Call(t, "item_find_by_metadata_id", map[string]any{"metadata_provider": "tmdb", "id": "348", "type": "movie"})["items"], "items") {
-		switch p := acc.Str(it["path"]); {
+	for _, it := range acctest.Rows(t, suite.Call(t, "item_find_by_metadata_id", map[string]any{"metadata_provider": "tmdb", "id": "348", "type": "movie"})["items"], "items") {
+		switch p := acctest.Str(it["path"]); {
 		case strings.Contains(p, "/messy-movies/") && strings.Contains(p, "Directors Cut"):
-			cut = acc.Str(it["id"])
+			cut = acctest.Str(it["id"])
 		case strings.Contains(p, "/messy-movies/"):
-			plain = acc.Str(it["id"])
+			plain = acctest.Str(it["id"])
 		}
 	}
 	if plain == "" || cut == "" {
 		t.Fatalf("the messy library's Aliens: plain %q, cut %q", plain, cut)
 	}
-	pl := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Cut", "item_ids": []any{cut}, "media_type": "Video"})["id"])
+	pl := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Cut", "item_ids": []any{cut}, "media_type": "Video"})["id"])
 	deleteLater(t, "playlist_delete", "playlist", pl)
 
 	if msg := suite.CallErr(t, "item_delete", map[string]any{"id": plain}); !strings.Contains(msg, "No playlist or collection holds it") || strings.Contains(msg, "Zzyzx Cut") {
@@ -548,7 +548,7 @@ func libraryOptionsSet(t *testing.T, library, option string, value any) {
 		t.Fatal(err)
 	}
 	// both servers take the library's item id here
-	id := acc.Str(suite.Call(t, "library_get", map[string]any{"library": library})["id"])
+	id := acctest.Str(suite.Call(t, "library_get", map[string]any{"library": library})["id"])
 	t.Cleanup(func() {
 		var back map[string]any
 		if err := json.Unmarshal(was, &back); err != nil {
@@ -583,7 +583,7 @@ func TestArtworkSavedBesideTheMedia(t *testing.T) {
 	}
 	libraryOptionsSet(t, "Movies", "SaveLocalMetadata", true)
 
-	cands := acc.Rows(t, suite.Call(t, "item_artwork", map[string]any{"id": id, "type": "Primary", "limit": 1})["candidates"], "candidates")
+	cands := acctest.Rows(t, suite.Call(t, "item_artwork", map[string]any{"id": id, "type": "Primary", "limit": 1})["candidates"], "candidates")
 	if len(cands) == 0 {
 		t.Fatal("no poster candidates")
 	}
@@ -592,7 +592,7 @@ func TestArtworkSavedBesideTheMedia(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	out := suite.Call(t, "item_artwork_set", map[string]any{"id": id, "url": acc.Str(cands[0]["url"]), "type": "Primary"})
+	out := suite.Call(t, "item_artwork_set", map[string]any{"id": id, "url": acctest.Str(cands[0]["url"]), "type": "Primary"})
 	server := "/media/movies/Blade Runner (1982)"
 	// Jellyfin writes the film's nfo again with the image; Emby leaves it
 	nfoAfter, err := os.ReadFile(nfo) //nolint:gosec // same
@@ -600,7 +600,7 @@ func TestArtworkSavedBesideTheMedia(t *testing.T) {
 		t.Errorf("after item_artwork_set saving artwork beside the media the nfo changed: %v (%v); want it written again on Jellyfin alone", !bytes.Equal(nfoAfter, nfoBefore), err)
 	}
 	if isJellyfin() {
-		if acc.Str(out["removed"]) != server+"/poster.jpg" || acc.Str(out["written"]) != server+"/folder.jpg" {
+		if acctest.Str(out["removed"]) != server+"/poster.jpg" || acctest.Str(out["written"]) != server+"/folder.jpg" {
 			t.Errorf("item_artwork_set saving artwork beside the media on Jellyfin = %v, want poster.jpg removed and folder.jpg written", out)
 		}
 		if posterNow(t, poster) != nil {
@@ -611,7 +611,7 @@ func TestArtworkSavedBesideTheMedia(t *testing.T) {
 		}
 		return
 	}
-	if acc.Str(out["replaced"]) != server+"/poster.jpg" || out["removed"] != nil {
+	if acctest.Str(out["replaced"]) != server+"/poster.jpg" || out["removed"] != nil {
 		t.Errorf("item_artwork_set saving artwork beside the media on Emby = %v, want poster.jpg written over", out)
 	}
 	if now := posterNow(t, poster); now == nil || bytes.Equal(now, fixturePoster) {
@@ -645,11 +645,11 @@ func nfoSays(t *testing.T, folder, text string) bool {
 // seasons and episodes only, and the nfo it expects is written.
 func TestTheNfoAnEditWrites(t *testing.T) {
 	film := findItem(t, "Movies", "Movie", "Arrival")
-	songs := acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Music", "types": "Audio", "limit": 1})["items"], "items")
+	songs := acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Music", "types": "Audio", "limit": 1})["items"], "items")
 	if len(songs) == 0 {
 		t.Fatal("the Music library holds no song")
 	}
-	song := acc.Str(songs[0]["id"])
+	song := acctest.Str(songs[0]["id"])
 	filmFolder, songFolder := itemFolder(t, film), itemFolder(t, song)
 	keepFiles(t, filmFolder, songFolder)
 	restoreLater(t, film)
@@ -662,16 +662,16 @@ func TestTheNfoAnEditWrites(t *testing.T) {
 		{film, "Movies", filmFolder, true},
 		{song, "Music", songFolder, false},
 	} {
-		saves := acc.BoolOf(suite.Call(t, "library_get", map[string]any{"library": tc.library})["saves_nfo"])
+		saves := acctest.BoolOf(suite.Call(t, "library_get", map[string]any{"library": tc.library})["saves_nfo"])
 		out := suite.Call(t, "item_edit", map[string]any{"ids": []any{tc.id}, "add_tags": []any{"Zzyzx Nfo"}})
-		expected := slices.Contains(acc.Texts(out["nfo_expected"]), tc.id)
+		expected := slices.Contains(acctest.Texts(out["nfo_expected"]), tc.id)
 		if want := saves && tc.kindWrites; expected != want {
 			t.Errorf("%s (library saves nfos: %v): nfo_expected names it: %v, want %v", tc.library, saves, expected, want)
 		}
 		switch {
-		case expected && !acc.Eventually(func() bool { return nfoSays(t, tc.folder, "Zzyzx Nfo") }):
+		case expected && !acctest.Eventually(func() bool { return nfoSays(t, tc.folder, "Zzyzx Nfo") }):
 			t.Errorf("the %s item's nfo was expected and no nfo in %s holds the edit", tc.library, tc.folder)
-		case !expected && !acc.Holds(func() bool { return !nfoSays(t, tc.folder, "Zzyzx Nfo") }):
+		case !expected && !acctest.Holds(func() bool { return !nfoSays(t, tc.folder, "Zzyzx Nfo") }):
 			t.Errorf("the %s item's nfo was not expected and an nfo in %s holds the edit", tc.library, tc.folder)
 		}
 	}
@@ -718,10 +718,10 @@ func setPolicy(t *testing.T, userID string, change func(policy map[string]any)) 
 // deletes that need it refused with it.
 func TestListsReadWholeWhenTheAdminIsNarrowed(t *testing.T) {
 	series, alien, arrival := findItem(t, "Shows", "Series", "Breaking Bad"), findItem(t, "Movies", "Movie", "Alien"), findItem(t, "Movies", "Movie", "Arrival")
-	pilot := acc.Str(acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes")[0]["id"])
-	col := acc.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Narrowed", "item_ids": []any{series, alien}})["id"])
+	pilot := acctest.Str(acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes")[0]["id"])
+	col := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Narrowed", "item_ids": []any{series, alien}})["id"])
 	deleteLater(t, "collection_delete", "collection", col)
-	pl := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Narrowed", "item_ids": []any{arrival, pilot}, "media_type": "Video"})["id"])
+	pl := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Narrowed", "item_ids": []any{arrival, pilot}, "media_type": "Video"})["id"])
 	deleteLater(t, "playlist_delete", "playlist", pl)
 
 	ids := libraryIDs(t)
@@ -753,7 +753,7 @@ func TestListsReadWholeWhenTheAdminIsNarrowed(t *testing.T) {
 				t.Errorf("%s with no administrator seeing every library: %s", tool, msg)
 			}
 		}
-		if !slices.ContainsFunc(acc.Rows(t, suite.Call(t, "playlist_list", nil)["playlists"], "playlists"), func(p map[string]any) bool { return acc.Str(p["id"]) == pl }) {
+		if !slices.ContainsFunc(acctest.Rows(t, suite.Call(t, "playlist_list", nil)["playlists"], "playlists"), func(p map[string]any) bool { return acctest.Str(p["id"]) == pl }) {
 			t.Error("the playlist was deleted, though what it held could not be read whole")
 		}
 	}
@@ -774,7 +774,7 @@ func TestListsReadWholeWhenTheAdminIsNarrowed(t *testing.T) {
 // items are stored, and names the copies elsewhere. Jellyfin shows every
 // copy as its own row and keeps each one's state, and says neither.
 func TestAWatchedMarkOnALibraryCountsWhatIsStored(t *testing.T) {
-	lib := acc.Str(suite.Call(t, "library_get", map[string]any{"library": "Messy Movies"})["id"])
+	lib := acctest.Str(suite.Call(t, "library_get", map[string]any{"library": "Messy Movies"})["id"])
 	clean := findItem(t, "Movies", "Movie", "Alien")
 	// the library put back by its watched mark alone: Emby refuses a
 	// favourite on a library with a 500
@@ -783,10 +783,10 @@ func TestAWatchedMarkOnALibraryCountsWhatIsStored(t *testing.T) {
 	suite.Call(t, "item_set_state", map[string]any{"id": lib, "user": "alice", "watched": false})
 
 	out := suite.Call(t, "item_set_state", map[string]any{"id": lib, "user": "alice", "watched": true})
-	copiesChanged := acc.RowsOf(out["copies_changed"])
+	copiesChanged := acctest.RowsOf(out["copies_changed"])
 	elsewhere := make([]string, 0, len(copiesChanged))
 	for _, c := range copiesChanged {
-		elsewhere = append(elsewhere, acc.Str(c["id"]))
+		elsewhere = append(elsewhere, acctest.Str(c["id"]))
 	}
 	unmarkLater(t, "alice", elsewhere...)
 	cleanWatched, _ := stateOf(t, clean, "alice")
@@ -797,7 +797,7 @@ func TestAWatchedMarkOnALibraryCountsWhatIsStored(t *testing.T) {
 		}
 		return
 	}
-	if n := acc.Num(t, out["stored_under"], "stored_under"); n != messyMovies() || !strings.Contains(acc.Str(out["note"]), fmt.Sprintf("the server stores %d items under Messy Movies", messyMovies())) {
+	if n := acctest.Num(t, out["stored_under"], "stored_under"); n != messyMovies() || !strings.Contains(acctest.Str(out["note"]), fmt.Sprintf("the server stores %d items under Messy Movies", messyMovies())) {
 		t.Errorf("a mark on Emby's Messy Movies = stored %d, note %q; want the %d films it stores said", n, out["note"], messyMovies())
 	}
 	if !slices.Contains(elsewhere, clean) || !cleanWatched {
@@ -816,8 +816,8 @@ func TestAWatchedMarkOnALibraryCountsWhatIsStored(t *testing.T) {
 func TestAMarkReachesWhatTheUserCannotSee(t *testing.T) {
 	series := findItem(t, "Shows", "Series", "Breaking Bad")
 	byNumber := map[int]string{}
-	for _, e := range acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes") {
-		byNumber[acc.Num(t, e["episode"], "episode")] = acc.Str(e["id"])
+	for _, e := range acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series})["episodes"], "episodes") {
+		byNumber[acctest.Num(t, e["episode"], "episode")] = acctest.Str(e["id"])
 	}
 	hidden, seen := byNumber[1], byNumber[2]
 	if hidden == "" || seen == "" {
@@ -830,25 +830,25 @@ func TestAMarkReachesWhatTheUserCannotSee(t *testing.T) {
 	suite.PutBack(t, "item_edit", map[string]any{"ids": []any{hidden}, "remove_tags": []any{"zzyzx-hidden"}})
 	alice := os.Getenv("EMBYFIN_TEST_USER_ID")
 	setPolicy(t, alice, func(p map[string]any) { p["BlockedTags"] = []any{"zzyzx-hidden"} })
-	aliceSees := acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Shows", "types": "Episode", "user": "alice", "limit": 100})["items"], "items")
+	aliceSees := acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Shows", "types": "Episode", "user": "alice", "limit": 100})["items"], "items")
 	view := make([]string, 0, len(aliceSees))
 	for _, e := range aliceSees {
-		view = append(view, acc.Str(e["id"]))
+		view = append(view, acctest.Str(e["id"]))
 	}
 	if slices.Contains(view, hidden) || !slices.Contains(view, seen) {
 		t.Fatalf("alice's view of Shows' episodes = %v, want the second episode (%s) and not the first (%s), blocked by its tag", view, seen, hidden)
 	}
 
 	out := suite.Call(t, "item_set_state", map[string]any{"id": series, "user": "alice", "watched": false})
-	note := acc.Str(out["note"])
+	note := acctest.Str(out["note"])
 	changed := map[string]bool{}
-	for _, c := range acc.RowsOf(out["copies_changed"]) {
-		changed[acc.Str(c["id"])] = acc.BoolOf(c["played"])
+	for _, c := range acctest.RowsOf(out["copies_changed"]) {
+		changed[acctest.Str(c["id"])] = acctest.BoolOf(c["played"])
 	}
 	wasPlayed, wasListed := false, false
-	for _, w := range acc.RowsOf(out["was"]) {
-		if acc.Str(w["id"]) == hidden {
-			wasListed, wasPlayed = true, acc.BoolOf(w["played"])
+	for _, w := range acctest.RowsOf(out["was"]) {
+		if acctest.Str(w["id"]) == hidden {
+			wasListed, wasPlayed = true, acctest.BoolOf(w["played"])
 		}
 	}
 	if strings.Contains(note, "reaches all") || strings.Contains(note, "is not marked") {
@@ -863,9 +863,9 @@ func TestAMarkReachesWhatTheUserCannotSee(t *testing.T) {
 	// its first season marked in her name: Emby reaches the hidden episode
 	// and reads it back watched; Jellyfin leaves it, and says so
 	season := ""
-	for _, s := range acc.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": series})["seasons"], "seasons") {
-		if acc.Num(t, s["season"], "season") == 1 {
-			season = acc.Str(s["id"])
+	for _, s := range acctest.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": series})["seasons"], "seasons") {
+		if acctest.Num(t, s["season"], "season") == 1 {
+			season = acctest.Str(s["id"])
 		}
 	}
 	if season == "" {
@@ -873,12 +873,12 @@ func TestAMarkReachesWhatTheUserCannotSee(t *testing.T) {
 	}
 	out = suite.Call(t, "item_set_state", map[string]any{"id": season, "user": "alice", "watched": true})
 	named, played := false, false
-	for _, c := range acc.RowsOf(out["copies_changed"]) {
-		if acc.Str(c["id"]) == hidden {
-			named, played = true, acc.BoolOf(c["played"])
+	for _, c := range acctest.RowsOf(out["copies_changed"]) {
+		if acctest.Str(c["id"]) == hidden {
+			named, played = true, acctest.BoolOf(c["played"])
 		}
 	}
-	if isJellyfin() && (named || !strings.Contains(acc.Str(out["note"]), "not under a season")) || !isJellyfin() && (!named || !played) {
+	if isJellyfin() && (named || !strings.Contains(acctest.Str(out["note"]), "not under a season")) || !isJellyfin() && (!named || !played) {
 		t.Errorf("marking Breaking Bad's first season for alice on %s: note %q, the hidden episode in copies_changed %v (played %v)", backend, out["note"], named, played)
 	}
 

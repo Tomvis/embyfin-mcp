@@ -17,6 +17,7 @@ func (c Client) ConfigurationJobs(ctx context.Context) (result tmdb.Configuratio
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "ConfigurationJobs",
 		Path:       "/3/configuration/jobs",
 	}
 

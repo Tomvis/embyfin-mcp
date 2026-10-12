@@ -28,6 +28,7 @@ func (c Client) ListDetails(ctx context.Context, listId int, options ...tmdb.Lis
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "ListDetails",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/list/%d", listId),
 	}

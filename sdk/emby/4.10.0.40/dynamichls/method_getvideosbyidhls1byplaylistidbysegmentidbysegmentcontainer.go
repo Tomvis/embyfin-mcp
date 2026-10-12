@@ -20,6 +20,7 @@ func (c Client) GetVideosByIdHls1ByPlaylistIdBySegmentIdBySegmentContainer(ctx c
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideosByIdHls1ByPlaylistIdBySegmentIdBySegmentContainer",
 		Path:           fmt.Sprintf("/Videos/%s/hls1/%s/%s.%s", url.PathEscape(id), url.PathEscape(playlistId), url.PathEscape(segmentId), url.PathEscape(segmentContainer)),
 		StreamResponse: true,
 	}

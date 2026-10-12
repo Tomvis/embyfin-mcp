@@ -18,6 +18,7 @@ func (c Client) SyncPlayPing(ctx context.Context, input jf.PingRequestDto) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayPing",
 		Path:       "/SyncPlay/Ping",
 	}
 

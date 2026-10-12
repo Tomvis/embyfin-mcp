@@ -29,6 +29,7 @@ func (c Client) GetSessionsPlayQueue(ctx context.Context, options ...emby.GetSes
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSessionsPlayQueue",
 		OptionsObject: option,
 		Path:          "/Sessions/PlayQueue",
 	}

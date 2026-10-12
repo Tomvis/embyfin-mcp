@@ -19,6 +19,7 @@ func (c Client) PostLibraryVirtualFolders(ctx context.Context, input emby.Librar
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLibraryVirtualFolders",
 		Path:       "/Library/VirtualFolders",
 	}
 

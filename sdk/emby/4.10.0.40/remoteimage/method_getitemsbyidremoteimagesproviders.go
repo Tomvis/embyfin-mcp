@@ -20,6 +20,7 @@ func (c Client) GetItemsByIdRemoteImagesProviders(ctx context.Context, id string
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetItemsByIdRemoteImagesProviders",
 		Path:       fmt.Sprintf("/Items/%s/RemoteImages/Providers", url.PathEscape(id)),
 	}
 

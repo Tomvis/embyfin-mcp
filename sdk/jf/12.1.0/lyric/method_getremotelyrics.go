@@ -20,6 +20,7 @@ func (c Client) GetRemoteLyrics(ctx context.Context, lyricId string) (result jf.
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetRemoteLyrics",
 		Path:       fmt.Sprintf("/Providers/Lyrics/%s", url.PathEscape(lyricId)),
 	}
 

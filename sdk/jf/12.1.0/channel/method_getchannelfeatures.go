@@ -20,6 +20,7 @@ func (c Client) GetChannelFeatures(ctx context.Context, channelId string) (resul
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetChannelFeatures",
 		Path:       fmt.Sprintf("/Channels/%s/Features", url.PathEscape(channelId)),
 	}
 

@@ -18,6 +18,7 @@ func (c Client) GetEncodingCodecInformationVideo(ctx context.Context) (result em
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetEncodingCodecInformationVideo",
 		Path:       "/Encoding/CodecInformation/Video",
 	}
 

@@ -18,6 +18,7 @@ func (c Client) DeleteVideosActiveEncodings(ctx context.Context, options emby.De
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "DeleteVideosActiveEncodings",
 		OptionsObject: options,
 		Path:          "/Videos/ActiveEncodings",
 	}

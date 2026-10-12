@@ -29,6 +29,7 @@ func (c Client) AccountAddToWatchlist(ctx context.Context, accountId int, input 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "AccountAddToWatchlist",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/account/%d/watchlist", accountId),
 	}

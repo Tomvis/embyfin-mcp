@@ -21,6 +21,7 @@ func (c Client) GetSyncTargets(ctx context.Context, userId string) (result emby.
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSyncTargets",
 		OptionsObject: option,
 		Path:          "/Sync/Targets",
 	}

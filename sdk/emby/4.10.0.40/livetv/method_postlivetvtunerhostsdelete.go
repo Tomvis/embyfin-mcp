@@ -28,6 +28,7 @@ func (c Client) PostLiveTvTunerHostsDelete(ctx context.Context, id ...string) (r
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostLiveTvTunerHostsDelete",
 		OptionsObject: option,
 		Path:          "/LiveTv/TunerHosts/Delete",
 	}

@@ -24,6 +24,7 @@ func (c Client) SetItemImageByIndex(ctx context.Context, itemId string, imageTyp
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SetItemImageByIndex",
 		Path:       fmt.Sprintf("/Items/%s/Images/%s/%d", url.PathEscape(itemId), url.PathEscape(string(imageType)), imageIndex),
 	}
 

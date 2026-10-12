@@ -17,6 +17,7 @@ func (c Client) DeleteCustomSplashscreen(ctx context.Context) (result jf.DeleteC
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteCustomSplashscreen",
 		Path:       "/Branding/Splashscreen",
 	}
 

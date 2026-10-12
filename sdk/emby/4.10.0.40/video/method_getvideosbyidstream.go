@@ -20,6 +20,7 @@ func (c Client) GetVideosByIdStream(ctx context.Context, id string, options emby
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideosByIdStream",
 		OptionsObject:  options,
 		Path:           fmt.Sprintf("/Videos/%s/stream", url.PathEscape(id)),
 		StreamResponse: true,

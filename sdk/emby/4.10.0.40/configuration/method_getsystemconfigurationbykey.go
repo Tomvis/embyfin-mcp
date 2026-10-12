@@ -20,6 +20,7 @@ func (c Client) GetSystemConfigurationByKey(ctx context.Context, key string) (re
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemConfigurationByKey",
 		Path:       fmt.Sprintf("/System/Configuration/%s", url.PathEscape(key)),
 	}
 

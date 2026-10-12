@@ -18,6 +18,7 @@ func (c Client) SyncPlaySetShuffleMode(ctx context.Context, input jf.SetShuffleM
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlaySetShuffleMode",
 		Path:       "/SyncPlay/SetShuffleMode",
 	}
 

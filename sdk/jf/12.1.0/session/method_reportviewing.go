@@ -17,6 +17,7 @@ func (c Client) ReportViewing(ctx context.Context, options jf.ReportViewingOptio
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "ReportViewing",
 		OptionsObject: options,
 		Path:          "/Sessions/Viewing",
 	}

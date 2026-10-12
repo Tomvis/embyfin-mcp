@@ -20,6 +20,7 @@ func (c Client) CreateKey(ctx context.Context, app string) (result jf.CreateKeyR
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "CreateKey",
 		OptionsObject: option,
 		Path:          "/Auth/Keys",
 	}

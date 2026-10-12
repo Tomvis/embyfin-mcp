@@ -31,6 +31,7 @@ func (c Client) GetSongsByIdInstantMix(ctx context.Context, id string, options .
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSongsByIdInstantMix",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Songs/%s/InstantMix", url.PathEscape(id)),
 	}

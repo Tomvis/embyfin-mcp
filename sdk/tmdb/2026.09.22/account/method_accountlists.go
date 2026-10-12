@@ -29,6 +29,7 @@ func (c Client) AccountLists(ctx context.Context, accountId int, options ...tmdb
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "AccountLists",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/account/%d/lists", accountId),
 	}

@@ -21,6 +21,7 @@ func (c Client) DeleteDevices(ctx context.Context, id string) (result emby.Delet
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "DeleteDevices",
 		OptionsObject: option,
 		Path:          "/Devices",
 	}

@@ -29,6 +29,7 @@ func (c Client) GetGenres(ctx context.Context, options ...jf.GetGenresOptions) (
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetGenres",
 		OptionsObject: option,
 		Path:          "/Genres",
 	}

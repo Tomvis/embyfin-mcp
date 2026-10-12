@@ -21,6 +21,7 @@ func (c Client) GetAudioBooksNextUp(ctx context.Context, options emby.GetAudioBo
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetAudioBooksNextUp",
 		OptionsObject: options,
 		Path:          "/AudioBooks/NextUp",
 	}

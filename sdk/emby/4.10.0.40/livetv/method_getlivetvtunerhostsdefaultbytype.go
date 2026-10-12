@@ -21,6 +21,7 @@ func (c Client) GetLiveTvTunerHostsDefaultByType(ctx context.Context, typeParam 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvTunerHostsDefaultByType",
 		Path:       fmt.Sprintf("/LiveTv/TunerHosts/Default/%s", url.PathEscape(typeParam)),
 	}
 

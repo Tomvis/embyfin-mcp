@@ -28,6 +28,7 @@ func (c Client) GetItemsPrefixes(ctx context.Context, options ...emby.GetItemsPr
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsPrefixes",
 		OptionsObject: option,
 		Path:          "/Items/Prefixes",
 	}

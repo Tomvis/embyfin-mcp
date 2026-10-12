@@ -19,6 +19,7 @@ func (c Client) TvSeriesTranslations(ctx context.Context, seriesId int) (result 
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "TvSeriesTranslations",
 		Path:       fmt.Sprintf("/3/tv/%d/translations", seriesId),
 	}
 

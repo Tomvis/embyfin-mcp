@@ -19,6 +19,7 @@ func (c Client) CreateBackup(ctx context.Context, input jf.BackupOptionsDto) (re
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "CreateBackup",
 		Path:       "/Backup/Create",
 	}
 

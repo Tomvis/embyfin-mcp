@@ -21,6 +21,7 @@ func (c Client) PostPartiesByIdJoin(ctx context.Context, id string) (result emby
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostPartiesByIdJoin",
 		Path:       fmt.Sprintf("/Parties/%s/Join", url.PathEscape(id)),
 	}
 

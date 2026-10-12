@@ -19,6 +19,7 @@ func (c Client) GetLiveTvListingProvidersDefault(ctx context.Context) (result em
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvListingProvidersDefault",
 		Path:       "/LiveTv/ListingProviders/Default",
 	}
 

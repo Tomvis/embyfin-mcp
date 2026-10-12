@@ -28,6 +28,7 @@ func (c Client) GetArtistsPrefixes(ctx context.Context, options ...emby.GetArtis
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetArtistsPrefixes",
 		OptionsObject: option,
 		Path:          "/Artists/Prefixes",
 	}

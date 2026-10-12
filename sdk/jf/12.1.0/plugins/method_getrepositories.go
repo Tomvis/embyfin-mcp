@@ -17,6 +17,7 @@ func (c Client) GetRepositories(ctx context.Context) (result jf.GetRepositoriesR
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetRepositories",
 		Path:       "/Repositories",
 	}
 

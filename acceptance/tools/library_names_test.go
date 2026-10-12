@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // library_edit renames a library only to a name no other library has, apart
@@ -16,7 +16,7 @@ import (
 func TestALibraryRenamedOntoAnother(t *testing.T) {
 	list := func() []map[string]any {
 		t.Helper()
-		return acc.Rows(t, suite.Call(t, "library_list", nil)["libraries"], "libraries")
+		return acctest.Rows(t, suite.Call(t, "library_list", nil)["libraries"], "libraries")
 	}
 	before := list()
 	for _, name := range []string{"Movies", "movies", "MOVIES"} {

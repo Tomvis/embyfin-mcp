@@ -24,6 +24,7 @@ func (c Client) GetItemsByIdPlaybackInfo(ctx context.Context, id string, userId 
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsByIdPlaybackInfo",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(id)),
 	}

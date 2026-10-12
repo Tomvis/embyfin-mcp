@@ -18,6 +18,7 @@ func (c Client) AuthenticationCreateRequestToken(ctx context.Context) (result tm
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "AuthenticationCreateRequestToken",
 		Path:       "/3/authentication/token/new",
 	}
 

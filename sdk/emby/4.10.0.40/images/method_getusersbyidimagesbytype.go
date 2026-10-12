@@ -29,6 +29,7 @@ func (c Client) GetUsersByIdImagesByType(ctx context.Context, id string, typePar
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetUsersByIdImagesByType",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Users/%s/Images/%s", url.PathEscape(id), url.PathEscape(string(typeParam))),
 		StreamResponse: true,

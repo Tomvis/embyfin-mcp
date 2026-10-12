@@ -22,6 +22,7 @@ func (c Client) ListDelete(ctx context.Context, listId int, sessionId string) (r
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "ListDelete",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/list/%d", listId),
 	}

@@ -20,6 +20,7 @@ func (c Client) GetFirstUser(ctx context.Context) (result jf.GetFirstUserRespons
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetFirstUser",
 		Path:       "/Startup/User",
 	}
 

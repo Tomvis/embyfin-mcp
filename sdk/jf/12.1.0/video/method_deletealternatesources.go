@@ -19,6 +19,7 @@ func (c Client) DeleteAlternateSources(ctx context.Context, itemId string) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteAlternateSources",
 		Path:       fmt.Sprintf("/Videos/%s/AlternateSources", url.PathEscape(itemId)),
 	}
 

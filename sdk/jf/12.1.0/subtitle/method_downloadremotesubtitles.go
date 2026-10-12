@@ -19,6 +19,7 @@ func (c Client) DownloadRemoteSubtitles(ctx context.Context, itemId string, subt
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "DownloadRemoteSubtitles",
 		Path:       fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(itemId), url.PathEscape(subtitleId)),
 	}
 

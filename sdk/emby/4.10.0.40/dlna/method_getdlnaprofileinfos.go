@@ -18,6 +18,7 @@ func (c Client) GetDlnaProfileInfos(ctx context.Context) (result emby.GetDlnaPro
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetDlnaProfileInfos",
 		Path:       "/Dlna/ProfileInfos",
 	}
 

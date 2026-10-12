@@ -20,6 +20,7 @@ func (c Client) TvEpisodeGroupDetails(ctx context.Context, tvEpisodeGroupId stri
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "TvEpisodeGroupDetails",
 		Path:       fmt.Sprintf("/3/tv/episode_group/%s", url.PathEscape(tvEpisodeGroupId)),
 	}
 

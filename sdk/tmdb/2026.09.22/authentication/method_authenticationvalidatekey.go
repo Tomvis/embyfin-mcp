@@ -18,6 +18,7 @@ func (c Client) AuthenticationValidateKey(ctx context.Context) (result tmdb.Auth
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "AuthenticationValidateKey",
 		Path:       "/3/authentication",
 	}
 

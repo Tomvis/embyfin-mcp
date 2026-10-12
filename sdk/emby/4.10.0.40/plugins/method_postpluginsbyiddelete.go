@@ -20,6 +20,7 @@ func (c Client) PostPluginsByIdDelete(ctx context.Context, id string) (result em
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostPluginsByIdDelete",
 		Path:       fmt.Sprintf("/Plugins/%s/Delete", url.PathEscape(id)),
 	}
 

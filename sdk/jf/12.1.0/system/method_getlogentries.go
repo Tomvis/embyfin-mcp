@@ -29,6 +29,7 @@ func (c Client) GetLogEntries(ctx context.Context, options ...jf.GetLogEntriesOp
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLogEntries",
 		OptionsObject: option,
 		Path:          "/System/ActivityLog/Entries",
 	}

@@ -28,6 +28,7 @@ func (c Client) GetMoviesRecommendations(ctx context.Context, options ...emby.Ge
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetMoviesRecommendations",
 		OptionsObject: option,
 		Path:          "/Movies/Recommendations",
 	}

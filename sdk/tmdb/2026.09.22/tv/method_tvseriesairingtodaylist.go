@@ -29,6 +29,7 @@ func (c Client) TvSeriesAiringTodayList(ctx context.Context, options ...tmdb.TvS
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TvSeriesAiringTodayList",
 		OptionsObject: option,
 		Path:          "/3/tv/airing_today",
 	}

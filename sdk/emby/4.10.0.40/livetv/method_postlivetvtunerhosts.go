@@ -20,6 +20,7 @@ func (c Client) PostLiveTvTunerHosts(ctx context.Context, input emby.LiveTvTuner
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLiveTvTunerHosts",
 		Path:       "/LiveTv/TunerHosts",
 	}
 

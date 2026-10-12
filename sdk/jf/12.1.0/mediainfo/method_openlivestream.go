@@ -29,6 +29,7 @@ func (c Client) OpenLiveStream(ctx context.Context, input jf.OpenLiveStreamDto, 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "OpenLiveStream",
 		OptionsObject: option,
 		Path:          "/LiveStreams/Open",
 	}

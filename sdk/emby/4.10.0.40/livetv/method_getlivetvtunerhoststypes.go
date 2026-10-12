@@ -18,6 +18,7 @@ func (c Client) GetLiveTvTunerHostsTypes(ctx context.Context) (result emby.GetLi
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvTunerHostsTypes",
 		Path:       "/LiveTv/TunerHosts/Types",
 	}
 

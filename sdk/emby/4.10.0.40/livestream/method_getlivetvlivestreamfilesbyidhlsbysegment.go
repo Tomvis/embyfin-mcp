@@ -20,6 +20,7 @@ func (c Client) GetLiveTvLiveStreamFilesByIdHlsBySegment(ctx context.Context, id
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetLiveTvLiveStreamFilesByIdHlsBySegment",
 		Path:           fmt.Sprintf("/LiveTv/LiveStreamFiles/%s/hls/%s", url.PathEscape(id), url.PathEscape(segment)),
 		StreamResponse: true,
 	}

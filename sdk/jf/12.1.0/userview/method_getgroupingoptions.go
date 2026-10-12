@@ -27,6 +27,7 @@ func (c Client) GetGroupingOptions(ctx context.Context, userId ...string) (resul
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetGroupingOptions",
 		OptionsObject: option,
 		Path:          "/UserViews/GroupingOptions",
 	}

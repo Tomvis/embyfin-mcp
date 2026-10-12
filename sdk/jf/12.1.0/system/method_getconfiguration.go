@@ -18,6 +18,7 @@ func (c Client) GetConfiguration(ctx context.Context) (result jf.GetConfiguratio
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetConfiguration",
 		Path:       "/System/Configuration",
 	}
 

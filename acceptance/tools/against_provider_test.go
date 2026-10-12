@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/katbyte/go-kt/test/env"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
@@ -33,13 +33,13 @@ func TestAuditProviderIDs(t *testing.T) {
 
 	problems := func(out map[string]any) map[string]string {
 		got := map[string]string{}
-		for _, f := range acc.Rows(t, out["findings"], "findings") {
-			ps := acc.Strs(t, f["problems"], "problems")
+		for _, f := range acctest.Rows(t, out["findings"], "findings") {
+			ps := acctest.Strs(t, f["problems"], "problems")
 			if len(ps) != 1 {
 				t.Errorf("%v has %d problems: %v", f["name"], len(ps), ps)
 				continue
 			}
-			got[title(acc.Str(f["name"]))] = ps[0] + " | holds " + acc.Str(f["holds"])
+			got[title(acctest.Str(f["name"]))] = ps[0] + " | holds " + acctest.Str(f["holds"])
 		}
 		return got
 	}
@@ -48,10 +48,10 @@ func TestAuditProviderIDs(t *testing.T) {
 		"Star Wars: Episode IV - A New Hope (Despecialized Edition)": "ids: TMDB has no film 99999999: the id is wrong, or the film was taken down | holds tmdb:99999999",
 	}
 	out := suite.Call(t, "audit_provider", map[string]any{"library": "Messy Movies", "checks": "ids", "types": "Movie"})
-	if got := problems(out); !reflect.DeepEqual(got, lasting) || acc.Num(t, out["items_scanned"], "items_scanned") != messyMovies() {
+	if got := problems(out); !reflect.DeepEqual(got, lasting) || acctest.Num(t, out["items_scanned"], "items_scanned") != messyMovies() {
 		t.Errorf("the messy films' ids = %v (scanned %v), want %v", got, out["items_scanned"], lasting)
 	}
-	if byCheck := acc.Object(t, out["by_check"], "by_check"); acc.Num(t, byCheck["ids"], "ids") != 2 || byCheck["runtime"] != nil {
+	if byCheck := acctest.Object(t, out["by_check"], "by_check"); acctest.Num(t, byCheck["ids"], "ids") != 2 || byCheck["runtime"] != nil {
 		t.Errorf("by_check = %v", byCheck)
 	}
 	// films and episodes are the kinds checked, said plainly
@@ -112,33 +112,33 @@ func TestAuditProviderIDs(t *testing.T) {
 		runtimeOff = 3
 	}
 	out = suite.Call(t, "audit_provider", map[string]any{"library": "Messy Movies"})
-	byCheck := acc.Object(t, out["by_check"], "by_check")
-	total := acc.Num(t, out["total_findings"], "total_findings")
-	if acc.Num(t, byCheck["ids"], "ids") != 3 || acc.Num(t, byCheck["runtime"], "runtime") != runtimeOff+1 || total != runtimeOff+3 || len(byCheck) != 2 {
+	byCheck := acctest.Object(t, out["by_check"], "by_check")
+	total := acctest.Num(t, out["total_findings"], "total_findings")
+	if acctest.Num(t, byCheck["ids"], "ids") != 3 || acctest.Num(t, byCheck["runtime"], "runtime") != runtimeOff+1 || total != runtimeOff+3 || len(byCheck) != 2 {
 		t.Errorf("both checks: by_check %v of %d findings, want ids 3 and runtime %d of %d", byCheck, total, runtimeOff+1, runtimeOff+3)
 	}
 	var machinist []string
-	for _, f := range acc.Rows(t, out["findings"], "findings") {
-		if title(acc.Str(f["name"])) == "The Machinist" {
-			machinist = acc.Strs(t, f["problems"], "problems")
+	for _, f := range acctest.Rows(t, out["findings"], "findings") {
+		if title(acctest.Str(f["name"])) == "The Machinist" {
+			machinist = acctest.Strs(t, f["problems"], "problems")
 		}
 	}
 	if len(machinist) != 2 || machinist[0] != crossed || !strings.HasPrefix(machinist[1], "runtime: file 0 min, TMDB says ") {
 		t.Errorf("the staged film's problems = %v, want its ids then its runtime", machinist)
 	}
-	if n := acc.Num(t, out["items_scanned"], "items_scanned"); n != messyMovies()+1 {
+	if n := acctest.Num(t, out["items_scanned"], "items_scanned"); n != messyMovies()+1 {
 		t.Errorf("scanned %d, want %d", n, messyMovies()+1)
 	}
 	// a limit caps the rows and not the counts
 	capped := suite.Call(t, "audit_provider", map[string]any{"library": "Messy Movies", "limit": 1})
-	if len(acc.Rows(t, capped["findings"], "findings")) != 1 || acc.Num(t, capped["total_findings"], "total_findings") != total || !reflect.DeepEqual(capped["by_check"], out["by_check"]) {
+	if len(acctest.Rows(t, capped["findings"], "findings")) != 1 || acctest.Num(t, capped["total_findings"], "total_findings") != total || !reflect.DeepEqual(capped["by_check"], out["by_check"]) {
 		t.Errorf("limit 1 = %v", capped)
 	}
 	// every library's films: the clean films' ids hold, and so do their
 	// runtimes, each file running TMDB's length for its film
 	whole := suite.Call(t, "audit_provider", map[string]any{"types": "Movie"})
-	if byCheck := acc.Object(t, whole["by_check"], "by_check"); acc.Num(t, byCheck["ids"], "ids") != 3 || acc.Num(t, byCheck["runtime"], "runtime") != runtimeOff+1 ||
-		acc.Num(t, whole["items_scanned"], "items_scanned") != len(movies)+messyMovies()+1 {
+	if byCheck := acctest.Object(t, whole["by_check"], "by_check"); acctest.Num(t, byCheck["ids"], "ids") != 3 || acctest.Num(t, byCheck["runtime"], "runtime") != runtimeOff+1 ||
+		acctest.Num(t, whole["items_scanned"], "items_scanned") != len(movies)+messyMovies()+1 {
 		t.Errorf("every library: by_check %v of %v scanned, want ids 3 and runtime %d of %d", byCheck, whole["items_scanned"], runtimeOff+1, len(movies)+messyMovies()+1)
 	}
 	if msg := suite.CallErr(t, "audit_provider", map[string]any{"checks": "ids,year"}); !strings.Contains(msg, `checks must be among ids, runtime, not "year"`) {
@@ -181,24 +181,24 @@ func TestAuditProviderIDs(t *testing.T) {
 // numbered another way than TMDB's reads as that.
 func TestAuditProviderEpisodes(t *testing.T) {
 	episodeIDs := func(series string) []any {
-		episodeRows := acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")
+		episodeRows := acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")
 		ids := make([]any, 0, len(episodeRows))
 		for _, e := range episodeRows {
-			ids = append(ids, acc.Str(e["id"]))
+			ids = append(ids, acctest.Str(e["id"]))
 		}
 		return ids
 	}
 	judged := func(ids []any) (map[string]string, map[string]any) {
 		out := suite.Call(t, "audit_provider", map[string]any{"ids": ids, "checks": "runtime"})
 		got := map[string]string{}
-		for _, f := range acc.Rows(t, out["findings"], "findings") {
-			got[acc.Str(f["name"])] = acc.Str(f["holds"]) + ": " + strings.Join(acc.Strs(t, f["problems"], "problems"), " | ")
+		for _, f := range acctest.Rows(t, out["findings"], "findings") {
+			got[acctest.Str(f["name"])] = acctest.Str(f["holds"]) + ": " + strings.Join(acctest.Strs(t, f["problems"], "problems"), " | ")
 		}
 		return got, out
 	}
 
 	ids := episodeIDs(findItem(t, "Shows", "Series", "Breaking Bad"))
-	if got, out := judged(ids); len(got) != 0 || acc.Num(t, out["items_scanned"], "items_scanned") != 3 || acc.Num(t, out["runtime_not_judged"], "runtime_not_judged") != 0 {
+	if got, out := judged(ids); len(got) != 0 || acctest.Num(t, out["items_scanned"], "items_scanned") != 3 || acctest.Num(t, out["runtime_not_judged"], "runtime_not_judged") != 0 {
 		t.Errorf("Breaking Bad's episodes = %v (scanned %v, not judged %v), want all three judged and none off", got, out["items_scanned"], out["runtime_not_judged"])
 	}
 

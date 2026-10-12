@@ -17,6 +17,7 @@ func (c Client) GetDirectoryContents(ctx context.Context, options jf.GetDirector
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetDirectoryContents",
 		OptionsObject: options,
 		Path:          "/Environment/DirectoryContents",
 	}

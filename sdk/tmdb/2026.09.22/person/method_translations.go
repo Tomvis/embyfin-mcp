@@ -19,6 +19,7 @@ func (c Client) Translations(ctx context.Context, personId int) (result tmdb.Tra
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "Translations",
 		Path:       fmt.Sprintf("/3/person/%d/translations", personId),
 	}
 

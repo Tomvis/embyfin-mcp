@@ -29,6 +29,7 @@ func (c Client) GetPersonImage(ctx context.Context, name string, imageType jf.Im
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetPersonImage",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Persons/%s/Images/%s", url.PathEscape(name), url.PathEscape(string(imageType))),
 		StreamResponse: true,

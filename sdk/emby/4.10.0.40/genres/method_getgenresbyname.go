@@ -30,6 +30,7 @@ func (c Client) GetGenresByName(ctx context.Context, name string, userId ...stri
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetGenresByName",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Genres/%s", url.PathEscape(name)),
 	}

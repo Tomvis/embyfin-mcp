@@ -20,6 +20,7 @@ func (c Client) DeletePluginsById(ctx context.Context, id string) (result emby.D
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeletePluginsById",
 		Path:       fmt.Sprintf("/Plugins/%s", url.PathEscape(id)),
 	}
 

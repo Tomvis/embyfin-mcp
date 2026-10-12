@@ -18,6 +18,7 @@ func (c Client) ReportPlaybackProgress(ctx context.Context, input jf.PlaybackPro
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "ReportPlaybackProgress",
 		Path:       "/Sessions/Playing/Progress",
 	}
 

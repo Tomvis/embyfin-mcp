@@ -25,6 +25,7 @@ func (c Client) GetItemSegments(ctx context.Context, itemId string, includeSegme
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemSegments",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/MediaSegments/%s", url.PathEscape(itemId)),
 	}

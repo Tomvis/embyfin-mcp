@@ -20,6 +20,7 @@ func (c Client) GetDlnaByUuIdConnectionmanagerConnectionmanager(ctx context.Cont
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetDlnaByUuIdConnectionmanagerConnectionmanager",
 		Path:           fmt.Sprintf("/Dlna/%s/connectionmanager/connectionmanager", url.PathEscape(uuId)),
 		StreamResponse: true,
 	}

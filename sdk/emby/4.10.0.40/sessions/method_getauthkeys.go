@@ -28,6 +28,7 @@ func (c Client) GetAuthKeys(ctx context.Context, options ...emby.GetAuthKeysOpti
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetAuthKeys",
 		OptionsObject: option,
 		Path:          "/Auth/Keys",
 	}

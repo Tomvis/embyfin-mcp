@@ -29,6 +29,7 @@ func (c Client) GetNextUp(ctx context.Context, options ...jf.GetNextUpOptions) (
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetNextUp",
 		OptionsObject: option,
 		Path:          "/Shows/NextUp",
 	}

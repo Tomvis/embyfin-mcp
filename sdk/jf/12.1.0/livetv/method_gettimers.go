@@ -28,6 +28,7 @@ func (c Client) GetTimers(ctx context.Context, options ...jf.GetTimersOptions) (
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetTimers",
 		OptionsObject: option,
 		Path:          "/LiveTv/Timers",
 	}

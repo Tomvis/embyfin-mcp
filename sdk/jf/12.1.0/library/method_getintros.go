@@ -29,6 +29,7 @@ func (c Client) GetIntros(ctx context.Context, itemId string, userId ...string) 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetIntros",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Intros", url.PathEscape(itemId)),
 	}

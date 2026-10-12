@@ -29,6 +29,7 @@ func (c Client) ListsCopy(ctx context.Context, seriesId int, options ...tmdb.Lis
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "ListsCopy",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/tv/%d/lists", seriesId),
 	}

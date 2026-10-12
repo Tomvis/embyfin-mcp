@@ -19,6 +19,7 @@ func (c Client) PostPartiesMessages(ctx context.Context, input emby.SessionParty
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostPartiesMessages",
 		Path:       "/Parties/Messages",
 	}
 

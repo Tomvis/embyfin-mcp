@@ -22,6 +22,7 @@ func (c Client) PostLiveTvManageChannelsByIdSortIndex(ctx context.Context, id st
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLiveTvManageChannelsByIdSortIndex",
 		Path:       fmt.Sprintf("/LiveTv/Manage/Channels/%s/SortIndex", url.PathEscape(id)),
 	}
 

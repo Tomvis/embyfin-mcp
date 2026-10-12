@@ -18,6 +18,7 @@ func (c Client) GetPlugins(ctx context.Context) (result emby.GetPluginsResponse,
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPlugins",
 		Path:       "/Plugins",
 	}
 

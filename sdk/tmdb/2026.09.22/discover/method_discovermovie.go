@@ -29,6 +29,7 @@ func (c Client) DiscoverMovie(ctx context.Context, options ...tmdb.DiscoverMovie
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "DiscoverMovie",
 		OptionsObject: option,
 		Path:          "/3/discover/movie",
 	}

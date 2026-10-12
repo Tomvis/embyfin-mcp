@@ -20,6 +20,7 @@ func (c Client) PostUsersByIdConnectLinkDelete(ctx context.Context, id string) (
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByIdConnectLinkDelete",
 		Path:       fmt.Sprintf("/Users/%s/Connect/Link/Delete", url.PathEscape(id)),
 	}
 

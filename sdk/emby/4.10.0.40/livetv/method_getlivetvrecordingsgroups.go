@@ -19,6 +19,7 @@ func (c Client) GetLiveTvRecordingsGroups(ctx context.Context) (result emby.GetL
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvRecordingsGroups",
 		Path:       "/LiveTv/Recordings/Groups",
 	}
 

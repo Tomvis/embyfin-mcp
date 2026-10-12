@@ -5,7 +5,7 @@ package tools_test
 import (
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
 )
@@ -35,9 +35,9 @@ func TestAuditProviderWalksEveryFilmOnce(t *testing.T) {
 	whole := suite.Call(t, "audit_provider", map[string]any{"library": "Messy Movies", "checks": "runtime"})
 	want := map[string]int{}
 	aliens := 0
-	for _, f := range acc.Rows(t, whole["findings"], "findings") {
-		want[acc.Str(f["id"])] = 1
-		if title(acc.Str(f["name"])) == "Aliens" {
+	for _, f := range acctest.Rows(t, whole["findings"], "findings") {
+		want[acctest.Str(f["id"])] = 1
+		if title(acctest.Str(f["name"])) == "Aliens" {
 			aliens++
 		}
 	}
@@ -53,15 +53,15 @@ func TestAuditProviderWalksEveryFilmOnce(t *testing.T) {
 			t.Fatal("the walk never ended")
 		}
 		out := suite.Call(t, "audit_provider", map[string]any{"library": "Messy Movies", "checks": "runtime", "max_lookups": 1, "offset": offset})
-		scanned += acc.Num(t, out["items_scanned"], "items_scanned")
-		for _, f := range acc.Rows(t, out["findings"], "findings") {
-			seen[acc.Str(f["id"])]++
+		scanned += acctest.Num(t, out["items_scanned"], "items_scanned")
+		for _, f := range acctest.Rows(t, out["findings"], "findings") {
+			seen[acctest.Str(f["id"])]++
 		}
 		next, ok := out["next_offset"]
 		if !ok {
 			break
 		}
-		offset = acc.Num(t, next, "next_offset")
+		offset = acctest.Num(t, next, "next_offset")
 	}
 	if scanned != messyMovies()+2 {
 		t.Errorf("the walk scanned %d films, want every one of the %d once", scanned, messyMovies()+2)
@@ -78,7 +78,7 @@ func TestAuditProviderWalksEveryFilmOnce(t *testing.T) {
 	// a handful by id, without a sweep
 	one := findItem(t, "Messy Movies", "Movie", "Arrival")
 	out := suite.Call(t, "audit_provider", map[string]any{"ids": []any{one}, "checks": "runtime"})
-	if acc.Num(t, out["items_scanned"], "items_scanned") != 1 || acc.Num(t, out["total_findings"], "total_findings") != 1 {
+	if acctest.Num(t, out["items_scanned"], "items_scanned") != 1 || acctest.Num(t, out["total_findings"], "total_findings") != 1 {
 		t.Errorf("audit_provider by id = %v", out)
 	}
 }

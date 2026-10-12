@@ -19,6 +19,7 @@ func (c Client) EnablePlugin(ctx context.Context, pluginId string, version strin
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "EnablePlugin",
 		Path:       fmt.Sprintf("/Plugins/%s/%s/Enable", url.PathEscape(pluginId), url.PathEscape(version)),
 	}
 

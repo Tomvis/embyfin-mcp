@@ -19,6 +19,7 @@ func (c Client) AuthenticationCreateSession(ctx context.Context, input tmdb.Auth
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "AuthenticationCreateSession",
 		Path:       "/3/authentication/session/new",
 	}
 

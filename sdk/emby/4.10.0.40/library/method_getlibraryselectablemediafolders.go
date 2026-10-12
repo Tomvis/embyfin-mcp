@@ -18,6 +18,7 @@ func (c Client) GetLibrarySelectableMediaFolders(ctx context.Context) (result em
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLibrarySelectableMediaFolders",
 		Path:       "/Library/SelectableMediaFolders",
 	}
 

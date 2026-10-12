@@ -18,6 +18,7 @@ func (c Client) PostLibraryRefresh(ctx context.Context) (result emby.PostLibrary
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLibraryRefresh",
 		Path:       "/Library/Refresh",
 	}
 

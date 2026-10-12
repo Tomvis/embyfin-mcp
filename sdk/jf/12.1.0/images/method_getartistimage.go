@@ -29,6 +29,7 @@ func (c Client) GetArtistImage(ctx context.Context, name string, imageType jf.Im
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetArtistImage",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Artists/%s/Images/%s/%d", url.PathEscape(name), url.PathEscape(string(imageType)), imageIndex),
 		StreamResponse: true,

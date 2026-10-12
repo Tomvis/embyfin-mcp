@@ -19,6 +19,7 @@ func (c Client) AuthenticateWithQuickConnect(ctx context.Context, input jf.Quick
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "AuthenticateWithQuickConnect",
 		Path:       "/Users/AuthenticateWithQuickConnect",
 	}
 

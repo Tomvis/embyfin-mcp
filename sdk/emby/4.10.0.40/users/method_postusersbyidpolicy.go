@@ -21,6 +21,7 @@ func (c Client) PostUsersByIdPolicy(ctx context.Context, id string, input emby.U
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByIdPolicy",
 		Path:       fmt.Sprintf("/Users/%s/Policy", url.PathEscape(id)),
 	}
 

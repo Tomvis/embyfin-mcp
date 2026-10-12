@@ -29,6 +29,7 @@ func (c Client) GetUpcomingEpisodes(ctx context.Context, options ...jf.GetUpcomi
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUpcomingEpisodes",
 		OptionsObject: option,
 		Path:          "/Shows/Upcoming",
 	}

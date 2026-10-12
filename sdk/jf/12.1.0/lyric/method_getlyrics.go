@@ -20,6 +20,7 @@ func (c Client) GetLyrics(ctx context.Context, itemId string) (result jf.GetLyri
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLyrics",
 		Path:       fmt.Sprintf("/Audio/%s/Lyrics", url.PathEscape(itemId)),
 	}
 

@@ -29,6 +29,7 @@ func (c Client) MarkPlayedItem(ctx context.Context, itemId string, options ...jf
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "MarkPlayedItem",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/UserPlayedItems/%s", url.PathEscape(itemId)),
 	}

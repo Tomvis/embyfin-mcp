@@ -20,6 +20,7 @@ func (c Client) PostUsersByIdRecentlySearchedDelete(ctx context.Context, id stri
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByIdRecentlySearchedDelete",
 		Path:       fmt.Sprintf("/Users/%s/RecentlySearched/Delete", url.PathEscape(id)),
 	}
 

@@ -20,6 +20,7 @@ func (c Client) GetPluginsByIdThumb(ctx context.Context, id string) (result emby
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetPluginsByIdThumb",
 		Path:           fmt.Sprintf("/Plugins/%s/Thumb", url.PathEscape(id)),
 		StreamResponse: true,
 	}

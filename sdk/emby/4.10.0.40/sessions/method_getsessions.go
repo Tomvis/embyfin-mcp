@@ -28,6 +28,7 @@ func (c Client) GetSessions(ctx context.Context, options ...emby.GetSessionsOpti
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSessions",
 		OptionsObject: option,
 		Path:          "/Sessions",
 	}

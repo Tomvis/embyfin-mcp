@@ -17,6 +17,7 @@ func (c Client) SyncPlayLeaveGroup(ctx context.Context) (result jf.SyncPlayLeave
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayLeaveGroup",
 		Path:       "/SyncPlay/Leave",
 	}
 

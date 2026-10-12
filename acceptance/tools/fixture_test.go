@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 )
@@ -21,19 +21,19 @@ func TestFixturesAreWhatTheScriptLaidOut(t *testing.T) {
 		id := findItem(t, "Movies", "Movie", m.Title)
 		got := suite.Call(t, "item_get", map[string]any{"id": id})
 		ids := mediaacc.ObjectOf(got["metadata_provider_ids"])
-		if acc.Num(t, got["year"], "year") != m.Year || acc.Str(ids["tmdb"]) != m.TMDB || acc.Str(ids["imdb"]) != m.IMDB {
+		if acctest.Num(t, got["year"], "year") != m.Year || acctest.Str(ids["tmdb"]) != m.TMDB || acctest.Str(ids["imdb"]) != m.IMDB {
 			t.Errorf("%s = %v %v, want %d tmdb %s imdb %s", m.Title, got["year"], ids, m.Year, m.TMDB, m.IMDB)
 		}
-		if acc.Str(got["overview"]) == "" {
+		if acctest.Str(got["overview"]) == "" {
 			t.Errorf("%s has no overview", m.Title)
 		}
 		// the nfo's genre alone: the providers add none to a film whose nfo
 		// names one
-		if genres := acc.Strs(t, got["genres"], "genres"); !slices.Equal(genres, []string{m.Genre}) {
+		if genres := acctest.Strs(t, got["genres"], "genres"); !slices.Equal(genres, []string{m.Genre}) {
 			t.Errorf("%s genres = %v, want [%s]", m.Title, genres, m.Genre)
 		}
-		if !slices.ContainsFunc(acc.Rows(t, got["people"], "people"), func(p map[string]any) bool {
-			return acc.Str(p["name"]) == m.Director && acc.Str(p["type"]) == "Director"
+		if !slices.ContainsFunc(acctest.Rows(t, got["people"], "people"), func(p map[string]any) bool {
+			return acctest.Str(p["name"]) == m.Director && acctest.Str(p["type"]) == "Director"
 		}) {
 			t.Errorf("%s's people = %v, want %s as the director", m.Title, got["people"], m.Director)
 		}
@@ -43,13 +43,13 @@ func TestFixturesAreWhatTheScriptLaidOut(t *testing.T) {
 		id := findItem(t, "Shows", "Series", s.Title)
 		got := suite.Call(t, "item_get", map[string]any{"id": id})
 		ids := mediaacc.ObjectOf(got["metadata_provider_ids"])
-		if acc.Num(t, got["year"], "year") != s.Year || acc.Str(ids["tmdb"]) != s.TMDB || acc.Str(ids["tvdb"]) != s.TVDB {
+		if acctest.Num(t, got["year"], "year") != s.Year || acctest.Str(ids["tmdb"]) != s.TMDB || acctest.Str(ids["tvdb"]) != s.TVDB {
 			t.Errorf("%s = %v %v, want %d tmdb %s tvdb %s", s.Title, got["year"], ids, s.Year, s.TMDB, s.TVDB)
 		}
 		eps := suite.Call(t, "library_episodes", map[string]any{"series_id": id})
 		var have, want []string
-		for _, e := range acc.Rows(t, eps["episodes"], "episodes") {
-			have = append(have, fmt.Sprintf("S%02dE%02d", acc.Num(t, e["season"], "season"), acc.Num(t, e["episode"], "episode")))
+		for _, e := range acctest.Rows(t, eps["episodes"], "episodes") {
+			have = append(have, fmt.Sprintf("S%02dE%02d", acctest.Num(t, e["season"], "season"), acctest.Num(t, e["episode"], "episode")))
 		}
 		for season, numbers := range s.Episodes {
 			for _, n := range numbers {
@@ -70,9 +70,9 @@ func TestFixturesAreWhatTheScriptLaidOut(t *testing.T) {
 	for _, s := range messyShows {
 		path := "/media/messy-shows/" + s.Folder
 		var got map[string]any
-		for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "query": s.Title, "limit": 50})["items"], "items") {
-			if acc.Str(it["path"]) == path {
-				got = suite.Call(t, "item_get", map[string]any{"id": acc.Str(it["id"])})
+		for _, it := range acctest.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Shows", "query": s.Title, "limit": 50})["items"], "items") {
+			if acctest.Str(it["path"]) == path {
+				got = suite.Call(t, "item_get", map[string]any{"id": acctest.Str(it["id"])})
 			}
 		}
 		if got == nil {
@@ -80,13 +80,13 @@ func TestFixturesAreWhatTheScriptLaidOut(t *testing.T) {
 			continue
 		}
 		ids := mediaacc.ObjectOf(got["metadata_provider_ids"])
-		if acc.Str(got["name"]) != s.Title || acc.Str(ids["tmdb"]) != s.TMDB || acc.Str(ids["tvdb"]) != s.TVDB || acc.Str(ids["imdb"]) != s.IMDB {
+		if acctest.Str(got["name"]) != s.Title || acctest.Str(ids["tmdb"]) != s.TMDB || acctest.Str(ids["tvdb"]) != s.TVDB || acctest.Str(ids["imdb"]) != s.IMDB {
 			t.Errorf("%s = %v %v, want %s tmdb %s tvdb %s imdb %s", path, got["name"], ids, s.Title, s.TMDB, s.TVDB, s.IMDB)
 		}
 		var have, want []string
-		for _, e := range acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": acc.Str(got["id"])})["episodes"], "episodes") {
-			if strings.HasPrefix(acc.Str(e["path"]), path+"/") {
-				have = append(have, fmt.Sprintf("S%02dE%02d", acc.Num(t, e["season"], "season"), acc.Num(t, e["episode"], "episode")))
+		for _, e := range acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": acctest.Str(got["id"])})["episodes"], "episodes") {
+			if strings.HasPrefix(acctest.Str(e["path"]), path+"/") {
+				have = append(have, fmt.Sprintf("S%02dE%02d", acctest.Num(t, e["season"], "season"), acctest.Num(t, e["episode"], "episode")))
 			}
 		}
 		for season, numbers := range s.Episodes {

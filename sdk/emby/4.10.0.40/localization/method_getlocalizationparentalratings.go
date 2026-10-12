@@ -18,6 +18,7 @@ func (c Client) GetLocalizationParentalRatings(ctx context.Context) (result emby
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLocalizationParentalRatings",
 		Path:       "/Localization/ParentalRatings",
 	}
 

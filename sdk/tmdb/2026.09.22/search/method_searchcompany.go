@@ -20,6 +20,7 @@ func (c Client) SearchCompany(ctx context.Context, options tmdb.SearchCompanyOpt
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "SearchCompany",
 		OptionsObject: options,
 		Path:          "/3/search/company",
 	}

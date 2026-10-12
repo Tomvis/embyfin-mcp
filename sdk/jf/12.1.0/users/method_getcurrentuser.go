@@ -18,6 +18,7 @@ func (c Client) GetCurrentUser(ctx context.Context) (result jf.GetCurrentUserRes
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetCurrentUser",
 		Path:       "/Users/Me",
 	}
 

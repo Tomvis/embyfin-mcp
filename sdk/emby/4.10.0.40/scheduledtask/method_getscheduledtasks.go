@@ -28,6 +28,7 @@ func (c Client) GetScheduledTasks(ctx context.Context, options ...emby.GetSchedu
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetScheduledTasks",
 		OptionsObject: option,
 		Path:          "/ScheduledTasks",
 	}

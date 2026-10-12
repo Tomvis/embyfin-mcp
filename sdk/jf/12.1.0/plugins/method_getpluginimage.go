@@ -20,6 +20,7 @@ func (c Client) GetPluginImage(ctx context.Context, pluginId string, version str
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetPluginImage",
 		Path:           fmt.Sprintf("/Plugins/%s/%s/Image", url.PathEscape(pluginId), url.PathEscape(version)),
 		StreamResponse: true,
 	}

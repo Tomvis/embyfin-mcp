@@ -28,6 +28,7 @@ func (c Client) TvSeasonCredits(ctx context.Context, seriesId int, seasonNumber 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TvSeasonCredits",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/tv/%d/season/%d/credits", seriesId, seasonNumber),
 	}

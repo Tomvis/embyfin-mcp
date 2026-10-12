@@ -29,6 +29,7 @@ func (c Client) GetItemUserData(ctx context.Context, itemId string, userId ...st
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemUserData",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/UserItems/%s/UserData", url.PathEscape(itemId)),
 	}

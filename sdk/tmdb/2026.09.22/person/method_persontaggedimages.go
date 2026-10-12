@@ -29,6 +29,7 @@ func (c Client) PersonTaggedImages(ctx context.Context, personId int, options ..
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "PersonTaggedImages",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/person/%d/tagged_images", personId),
 	}

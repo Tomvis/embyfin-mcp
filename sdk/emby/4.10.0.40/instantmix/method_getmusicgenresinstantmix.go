@@ -30,6 +30,7 @@ func (c Client) GetMusicGenresInstantMix(ctx context.Context, options ...emby.Ge
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetMusicGenresInstantMix",
 		OptionsObject: option,
 		Path:          "/MusicGenres/InstantMix",
 	}

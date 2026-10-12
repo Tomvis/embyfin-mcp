@@ -31,6 +31,7 @@ func (c Client) GetAlbumArtists(ctx context.Context, options ...jf.GetAlbumArtis
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetAlbumArtists",
 		OptionsObject: option,
 		Path:          "/Artists/AlbumArtists",
 	}

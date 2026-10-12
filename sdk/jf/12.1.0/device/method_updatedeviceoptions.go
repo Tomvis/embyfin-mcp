@@ -21,6 +21,7 @@ func (c Client) UpdateDeviceOptions(ctx context.Context, input jf.DeviceOptionsD
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateDeviceOptions",
 		OptionsObject: option,
 		Path:          "/Devices/Options",
 	}

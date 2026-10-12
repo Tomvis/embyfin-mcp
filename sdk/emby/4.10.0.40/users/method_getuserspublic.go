@@ -18,6 +18,7 @@ func (c Client) GetUsersPublic(ctx context.Context) (result emby.GetUsersPublicR
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetUsersPublic",
 		Path:       "/Users/Public",
 	}
 

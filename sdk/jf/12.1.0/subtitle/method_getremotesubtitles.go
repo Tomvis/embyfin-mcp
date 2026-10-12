@@ -20,6 +20,7 @@ func (c Client) GetRemoteSubtitles(ctx context.Context, subtitleId string) (resu
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetRemoteSubtitles",
 		Path:           fmt.Sprintf("/Providers/Subtitles/Subtitles/%s", url.PathEscape(subtitleId)),
 		StreamResponse: true,
 	}

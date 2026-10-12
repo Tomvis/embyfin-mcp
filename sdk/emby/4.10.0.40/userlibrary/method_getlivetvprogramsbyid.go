@@ -21,6 +21,7 @@ func (c Client) GetLiveTvProgramsById(ctx context.Context, id string) (result em
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvProgramsById",
 		Path:       fmt.Sprintf("/LiveTv/Programs/%s", url.PathEscape(id)),
 	}
 

@@ -19,6 +19,7 @@ func (c Client) GetDlnaProfilesDefault(ctx context.Context) (result emby.GetDlna
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetDlnaProfilesDefault",
 		Path:       "/Dlna/Profiles/Default",
 	}
 

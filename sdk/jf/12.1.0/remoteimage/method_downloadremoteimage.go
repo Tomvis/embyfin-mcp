@@ -19,6 +19,7 @@ func (c Client) DownloadRemoteImage(ctx context.Context, itemId string, options 
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "DownloadRemoteImage",
 		OptionsObject: options,
 		Path:          fmt.Sprintf("/Items/%s/RemoteImages/Download", url.PathEscape(itemId)),
 	}

@@ -18,6 +18,7 @@ func (c Client) TvSeriesLatestId(ctx context.Context) (result tmdb.TvSeriesLates
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "TvSeriesLatestId",
 		Path:       "/3/tv/latest",
 	}
 

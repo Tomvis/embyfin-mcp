@@ -21,6 +21,7 @@ func (c Client) PostItemsDelete(ctx context.Context, ids string) (result emby.Po
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostItemsDelete",
 		OptionsObject: option,
 		Path:          "/Items/Delete",
 	}

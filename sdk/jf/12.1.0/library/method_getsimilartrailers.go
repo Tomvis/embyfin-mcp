@@ -29,6 +29,7 @@ func (c Client) GetSimilarTrailers(ctx context.Context, itemId string, options .
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSimilarTrailers",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Trailers/%s/Similar", url.PathEscape(itemId)),
 	}

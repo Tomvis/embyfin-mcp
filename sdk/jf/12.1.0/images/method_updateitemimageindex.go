@@ -22,6 +22,7 @@ func (c Client) UpdateItemImageIndex(ctx context.Context, itemId string, imageTy
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "UpdateItemImageIndex",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Images/%s/%d/Index", url.PathEscape(itemId), url.PathEscape(string(imageType)), imageIndex),
 	}

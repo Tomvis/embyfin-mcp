@@ -29,6 +29,7 @@ func (c Client) MovieTopRatedList(ctx context.Context, options ...tmdb.MovieTopR
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "MovieTopRatedList",
 		OptionsObject: option,
 		Path:          "/3/movie/top_rated",
 	}

@@ -29,6 +29,7 @@ func (c Client) GetPerson(ctx context.Context, name string, userId ...string) (r
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPerson",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Persons/%s", url.PathEscape(name)),
 	}

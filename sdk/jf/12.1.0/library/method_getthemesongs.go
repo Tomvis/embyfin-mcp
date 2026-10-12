@@ -29,6 +29,7 @@ func (c Client) GetThemeSongs(ctx context.Context, itemId string, options ...jf.
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetThemeSongs",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/ThemeSongs", url.PathEscape(itemId)),
 	}

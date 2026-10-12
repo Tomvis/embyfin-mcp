@@ -19,6 +19,7 @@ func (c Client) GetSystemEndpoint(ctx context.Context) (result emby.GetSystemEnd
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemEndpoint",
 		Path:       "/System/Endpoint",
 	}
 

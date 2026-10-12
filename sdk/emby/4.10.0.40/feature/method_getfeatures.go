@@ -18,6 +18,7 @@ func (c Client) GetFeatures(ctx context.Context) (result emby.GetFeaturesRespons
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetFeatures",
 		Path:       "/Features",
 	}
 

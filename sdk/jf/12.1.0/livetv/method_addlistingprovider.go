@@ -29,6 +29,7 @@ func (c Client) AddListingProvider(ctx context.Context, input jf.ListingsProvide
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "AddListingProvider",
 		OptionsObject: option,
 		Path:          "/LiveTv/ListingProviders",
 	}

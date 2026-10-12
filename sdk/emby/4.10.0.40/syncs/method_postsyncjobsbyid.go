@@ -20,6 +20,7 @@ func (c Client) PostSyncJobsById(ctx context.Context, id int64, input emby.SyncJ
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSyncJobsById",
 		Path:       fmt.Sprintf("/Sync/Jobs/%d", id),
 	}
 

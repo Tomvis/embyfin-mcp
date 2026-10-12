@@ -29,6 +29,7 @@ func (c Client) GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicks
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/%d/Stream.%s", url.PathEscape(id), url.PathEscape(mediaSourceId), index, startPositionTicks, url.PathEscape(format)),
 		StreamResponse: true,

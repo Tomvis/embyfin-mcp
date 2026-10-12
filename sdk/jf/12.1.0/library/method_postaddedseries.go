@@ -27,6 +27,7 @@ func (c Client) PostAddedSeries(ctx context.Context, tvdbId ...string) (result j
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostAddedSeries",
 		OptionsObject: option,
 		Path:          "/Library/Series/Added",
 	}

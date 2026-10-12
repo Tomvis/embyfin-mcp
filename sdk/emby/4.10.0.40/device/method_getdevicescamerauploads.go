@@ -19,6 +19,7 @@ func (c Client) GetDevicesCameraUploads(ctx context.Context) (result emby.GetDev
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetDevicesCameraUploads",
 		Path:       "/Devices/CameraUploads",
 	}
 

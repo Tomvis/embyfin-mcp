@@ -21,6 +21,7 @@ func (c Client) GetShowsNextUp(ctx context.Context, options emby.GetShowsNextUpO
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetShowsNextUp",
 		OptionsObject: options,
 		Path:          "/Shows/NextUp",
 	}

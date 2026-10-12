@@ -20,6 +20,7 @@ func (c Client) GetDownload(ctx context.Context, itemId string) (result jf.GetDo
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetDownload",
 		Path:           fmt.Sprintf("/Items/%s/Download", url.PathEscape(itemId)),
 		StreamResponse: true,
 	}

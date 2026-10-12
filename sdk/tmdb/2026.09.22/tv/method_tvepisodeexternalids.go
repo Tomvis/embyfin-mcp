@@ -19,6 +19,7 @@ func (c Client) TvEpisodeExternalIds(ctx context.Context, seriesId int, seasonNu
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "TvEpisodeExternalIds",
 		Path:       fmt.Sprintf("/3/tv/%d/season/%d/episode/%d/external_ids", seriesId, seasonNumber, episodeNumber),
 	}
 

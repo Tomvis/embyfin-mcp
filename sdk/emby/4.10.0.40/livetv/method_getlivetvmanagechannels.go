@@ -30,6 +30,7 @@ func (c Client) GetLiveTvManageChannels(ctx context.Context, options ...emby.Get
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLiveTvManageChannels",
 		OptionsObject: option,
 		Path:          "/LiveTv/Manage/Channels",
 	}

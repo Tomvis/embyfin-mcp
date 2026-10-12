@@ -31,6 +31,7 @@ func (c Client) GetCollectionsByIdMissing(ctx context.Context, id string, option
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetCollectionsByIdMissing",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Collections/%s/Missing", url.PathEscape(id)),
 	}

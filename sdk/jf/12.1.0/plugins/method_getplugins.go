@@ -17,6 +17,7 @@ func (c Client) GetPlugins(ctx context.Context) (result jf.GetPluginsResponse, e
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPlugins",
 		Path:       "/Plugins",
 	}
 

@@ -18,6 +18,7 @@ func (c Client) GetSystemReleaseNotesVersions(ctx context.Context) (result emby.
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetSystemReleaseNotesVersions",
 		Path:       "/System/ReleaseNotes/Versions",
 	}
 

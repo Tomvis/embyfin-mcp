@@ -29,6 +29,7 @@ func (c Client) GetChannel(ctx context.Context, channelId string, userId ...stri
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetChannel",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/LiveTv/Channels/%s", url.PathEscape(channelId)),
 	}

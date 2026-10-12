@@ -20,6 +20,7 @@ func (c Client) GetUsersByUserIdHomeSections(ctx context.Context, userId string)
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetUsersByUserIdHomeSections",
 		Path:       fmt.Sprintf("/Users/%s/HomeSections", url.PathEscape(userId)),
 	}
 

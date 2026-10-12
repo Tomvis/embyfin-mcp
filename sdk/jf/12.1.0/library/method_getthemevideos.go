@@ -29,6 +29,7 @@ func (c Client) GetThemeVideos(ctx context.Context, itemId string, options ...jf
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetThemeVideos",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/ThemeVideos", url.PathEscape(itemId)),
 	}

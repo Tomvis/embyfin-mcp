@@ -29,6 +29,7 @@ func (c Client) CreditDetails(ctx context.Context, creditId string, language ...
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "CreditDetails",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/credit/%s", url.PathEscape(creditId)),
 	}

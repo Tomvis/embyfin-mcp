@@ -19,6 +19,7 @@ func (c Client) GetLiveTvGuideInfo(ctx context.Context) (result emby.GetLiveTvGu
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvGuideInfo",
 		Path:       "/LiveTv/GuideInfo",
 	}
 

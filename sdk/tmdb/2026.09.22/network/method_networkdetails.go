@@ -19,6 +19,7 @@ func (c Client) NetworkDetails(ctx context.Context, networkId int) (result tmdb.
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "NetworkDetails",
 		Path:       fmt.Sprintf("/3/network/%d", networkId),
 	}
 

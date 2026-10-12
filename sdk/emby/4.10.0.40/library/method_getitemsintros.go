@@ -18,6 +18,7 @@ func (c Client) GetItemsIntros(ctx context.Context) (result emby.GetItemsIntrosR
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetItemsIntros",
 		Path:       "/Items/Intros",
 	}
 

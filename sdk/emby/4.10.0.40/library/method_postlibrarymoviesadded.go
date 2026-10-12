@@ -18,6 +18,7 @@ func (c Client) PostLibraryMoviesAdded(ctx context.Context) (result emby.PostLib
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLibraryMoviesAdded",
 		Path:       "/Library/Movies/Added",
 	}
 

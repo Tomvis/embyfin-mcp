@@ -19,6 +19,7 @@ func (c Client) PostLibraryMediaUpdated(ctx context.Context, input emby.LibraryP
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostLibraryMediaUpdated",
 		Path:       "/Library/Media/Updated",
 	}
 

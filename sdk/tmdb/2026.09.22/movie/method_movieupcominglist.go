@@ -29,6 +29,7 @@ func (c Client) MovieUpcomingList(ctx context.Context, options ...tmdb.MovieUpco
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "MovieUpcomingList",
 		OptionsObject: option,
 		Path:          "/3/movie/upcoming",
 	}

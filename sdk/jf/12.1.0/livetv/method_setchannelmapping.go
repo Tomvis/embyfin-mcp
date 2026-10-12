@@ -19,6 +19,7 @@ func (c Client) SetChannelMapping(ctx context.Context, input jf.SetChannelMappin
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SetChannelMapping",
 		Path:       "/LiveTv/ChannelMappings",
 	}
 

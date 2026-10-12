@@ -17,6 +17,7 @@ func (c Client) GetPingSystem(ctx context.Context) (result jf.GetPingSystemRespo
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPingSystem",
 		Path:       "/System/Ping",
 	}
 

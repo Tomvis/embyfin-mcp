@@ -29,6 +29,7 @@ func (c Client) GetStudiosByNameImagesByTypeByIndex(ctx context.Context, name st
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetStudiosByNameImagesByTypeByIndex",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Studios/%s/Images/%s/%d", url.PathEscape(name), url.PathEscape(string(typeParam)), index),
 		StreamResponse: true,

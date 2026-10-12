@@ -18,6 +18,7 @@ func (c Client) GetWebConfigurationPage(ctx context.Context) (result emby.GetWeb
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetWebConfigurationPage",
 		Path:           "/web/ConfigurationPage",
 		StreamResponse: true,
 	}

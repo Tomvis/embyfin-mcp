@@ -29,6 +29,7 @@ func (c Client) TrendingPeople(ctx context.Context, timeWindow string, language 
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "TrendingPeople",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/trending/person/%s", url.PathEscape(timeWindow)),
 	}

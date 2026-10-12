@@ -19,6 +19,7 @@ func (c Client) PostItemsAccess(ctx context.Context, input emby.UserLibraryUpdat
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostItemsAccess",
 		Path:       "/Items/Access",
 	}
 

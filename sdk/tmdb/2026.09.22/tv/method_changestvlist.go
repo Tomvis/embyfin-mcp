@@ -29,6 +29,7 @@ func (c Client) ChangesTvList(ctx context.Context, options ...tmdb.ChangesTvList
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "ChangesTvList",
 		OptionsObject: option,
 		Path:          "/3/tv/changes",
 	}

@@ -22,6 +22,7 @@ func (c Client) PostDevicesOptions(ctx context.Context, input emby.DevicesDevice
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostDevicesOptions",
 		OptionsObject: option,
 		Path:          "/Devices/Options",
 	}

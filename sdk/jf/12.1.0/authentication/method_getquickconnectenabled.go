@@ -17,6 +17,7 @@ func (c Client) GetQuickConnectEnabled(ctx context.Context) (result jf.GetQuickC
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetQuickConnectEnabled",
 		Path:       "/QuickConnect/Enabled",
 	}
 

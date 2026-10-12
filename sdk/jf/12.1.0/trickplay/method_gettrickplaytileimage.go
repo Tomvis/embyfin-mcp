@@ -29,6 +29,7 @@ func (c Client) GetTrickplayTileImage(ctx context.Context, itemId string, width 
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetTrickplayTileImage",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Videos/%s/Trickplay/%d/%d.jpg", url.PathEscape(itemId), width, index),
 		StreamResponse: true,

@@ -22,6 +22,7 @@ func (c Client) PostSessionsCapabilitiesFull(ctx context.Context, input emby.Cli
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostSessionsCapabilitiesFull",
 		OptionsObject: option,
 		Path:          "/Sessions/Capabilities/Full",
 	}

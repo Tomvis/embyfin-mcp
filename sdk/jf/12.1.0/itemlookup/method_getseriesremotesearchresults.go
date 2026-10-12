@@ -18,6 +18,7 @@ func (c Client) GetSeriesRemoteSearchResults(ctx context.Context, input jf.Serie
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetSeriesRemoteSearchResults",
 		Path:       "/Items/RemoteSearch/Series",
 	}
 

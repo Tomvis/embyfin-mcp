@@ -14,7 +14,8 @@
 
 ### Changed
 
-- built on pandorest 0.8.0: an error from any of the three SDKs never repeats the API key or token it was given
+- built on pandorest 0.8.3: an error from any of the three SDKs never repeats the API key or token it was given
+- built on go-kt 0.6.4: a tool that takes no arguments refuses one, where it was answered as if the argument had meant something: `library_list`, `server_info` and seven more. A failure's words reach the caller without what an address in them may carry a credential in: who it signs in as, its query values and what follows its `#`
 - `sdk/embyfin` names the two API versions it is built on, `EmbyAPIVersion` and `JellyfinAPIVersion`, and `server_info` reports both as `sdk_api_versions`, beside the one for the connected server
 - a call none of whose options is required can leave the options out: `c.Sessions.GetSessions(ctx)`
 - the generator's settings moved out of `sdk/pandorest`: the program is `sdk/main.go` (`go run ./sdk`), the list of services is `sdk/zservices`, and each service's workarounds sit beside its SDK in `sdk/<service>/workarounds`

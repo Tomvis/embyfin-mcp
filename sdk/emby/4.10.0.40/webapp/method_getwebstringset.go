@@ -28,6 +28,7 @@ func (c Client) GetWebStringset(ctx context.Context, pluginId ...string) (result
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetWebStringset",
 		OptionsObject: option,
 		Path:          "/web/stringset",
 	}

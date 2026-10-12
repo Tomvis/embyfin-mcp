@@ -29,6 +29,7 @@ func (c Client) AccountRatedMovies(ctx context.Context, accountId int, options .
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "AccountRatedMovies",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/account/%d/rated/movies", accountId),
 	}

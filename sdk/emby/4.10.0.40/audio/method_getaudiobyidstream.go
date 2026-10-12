@@ -20,6 +20,7 @@ func (c Client) GetAudioByIdStream(ctx context.Context, id string, options emby.
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetAudioByIdStream",
 		OptionsObject:  options,
 		Path:           fmt.Sprintf("/Audio/%s/stream", url.PathEscape(id)),
 		StreamResponse: true,

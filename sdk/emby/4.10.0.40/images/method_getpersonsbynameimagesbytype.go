@@ -29,6 +29,7 @@ func (c Client) GetPersonsByNameImagesByType(ctx context.Context, name string, t
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetPersonsByNameImagesByType",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Persons/%s/Images/%s", url.PathEscape(name), url.PathEscape(string(typeParam))),
 		StreamResponse: true,

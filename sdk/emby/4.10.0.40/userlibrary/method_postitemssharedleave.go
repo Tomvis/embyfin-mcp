@@ -19,6 +19,7 @@ func (c Client) PostItemsSharedLeave(ctx context.Context, input emby.UserLibrary
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostItemsSharedLeave",
 		Path:       "/Items/Shared/Leave",
 	}
 

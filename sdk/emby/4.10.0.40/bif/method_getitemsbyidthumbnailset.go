@@ -24,6 +24,7 @@ func (c Client) GetItemsByIdThumbnailSet(ctx context.Context, id string, width i
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemsByIdThumbnailSet",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/ThumbnailSet", url.PathEscape(id)),
 	}

@@ -28,6 +28,7 @@ func (c Client) CollectionDetails(ctx context.Context, collectionId int, languag
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "CollectionDetails",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/collection/%d", collectionId),
 	}

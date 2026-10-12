@@ -19,6 +19,7 @@ func (c Client) PostItemsRemoteSearchSeries(ctx context.Context, input emby.Remo
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostItemsRemoteSearchSeries",
 		Path:       "/Items/RemoteSearch/Series",
 	}
 

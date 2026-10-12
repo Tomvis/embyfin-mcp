@@ -18,6 +18,7 @@ func (c Client) SyncPlayJoinGroup(ctx context.Context, input jf.JoinGroupRequest
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "SyncPlayJoinGroup",
 		Path:       "/SyncPlay/Join",
 	}
 

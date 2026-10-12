@@ -24,6 +24,7 @@ func (c Client) PostUsersByIdImagesByType(ctx context.Context, id string, typePa
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByIdImagesByType",
 		Path:       fmt.Sprintf("/Users/%s/Images/%s", url.PathEscape(id), url.PathEscape(string(typeParam))),
 	}
 

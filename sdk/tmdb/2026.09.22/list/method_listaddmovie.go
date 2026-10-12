@@ -23,6 +23,7 @@ func (c Client) ListAddMovie(ctx context.Context, listId int, input tmdb.ListAdd
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "ListAddMovie",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/list/%d/add_item", listId),
 	}

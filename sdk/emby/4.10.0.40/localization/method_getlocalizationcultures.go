@@ -18,6 +18,7 @@ func (c Client) GetLocalizationCultures(ctx context.Context) (result emby.GetLoc
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLocalizationCultures",
 		Path:       "/Localization/Cultures",
 	}
 

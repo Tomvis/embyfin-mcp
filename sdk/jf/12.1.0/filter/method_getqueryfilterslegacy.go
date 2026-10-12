@@ -28,6 +28,7 @@ func (c Client) GetQueryFiltersLegacy(ctx context.Context, options ...jf.GetQuer
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetQueryFiltersLegacy",
 		OptionsObject: option,
 		Path:          "/Items/Filters",
 	}

@@ -19,6 +19,7 @@ func (c Client) TvEpisodeChangesById(ctx context.Context, episodeId int) (result
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "TvEpisodeChangesById",
 		Path:       fmt.Sprintf("/3/tv/episode/%d/changes", episodeId),
 	}
 

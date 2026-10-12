@@ -28,6 +28,7 @@ func (c Client) PersonCombinedCredits(ctx context.Context, personId int, languag
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "PersonCombinedCredits",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/person/%d/combined_credits", personId),
 	}

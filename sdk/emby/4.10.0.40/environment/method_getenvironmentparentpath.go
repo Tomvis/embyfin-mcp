@@ -22,6 +22,7 @@ func (c Client) GetEnvironmentParentPath(ctx context.Context, path string) (resu
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetEnvironmentParentPath",
 		OptionsObject: option,
 		Path:          "/Environment/ParentPath",
 	}

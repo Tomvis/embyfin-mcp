@@ -19,6 +19,7 @@ func (c Client) DeleteUser(ctx context.Context, userId string) (result jf.Delete
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "DeleteUser",
 		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(userId)),
 	}
 

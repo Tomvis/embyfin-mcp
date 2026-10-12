@@ -17,6 +17,7 @@ func (c Client) GetPublicUsers(ctx context.Context) (result jf.GetPublicUsersRes
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetPublicUsers",
 		Path:       "/Users/Public",
 	}
 

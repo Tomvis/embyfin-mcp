@@ -28,7 +28,7 @@ import (
 	"testing"
 	"time"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	"github.com/katbyte/embyfin-mcp/tools"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -282,7 +282,7 @@ func (b binary) serveHTTP(t *testing.T, env []string, args ...string) *httpServe
 	s := &httpServer{base: "http://" + addr, cmd: cmd, stderr: stderr, exited: make(chan error, 1)}
 	go func() { s.exited <- cmd.Wait() }()
 	t.Cleanup(func() { _ = cmd.Process.Kill() })
-	if !acc.Eventually(func() bool {
+	if !acctest.Eventually(func() bool {
 		resp, err := http.Get(s.base + "/healthz") //nolint:noctx // a probe with the test's own timeout
 		if err != nil {
 			return false
@@ -385,7 +385,7 @@ func TestTheBinary(t *testing.T) {
 					t.Errorf("tools = %v\nwant %v", got, want)
 				}
 				// a real answer came back over stdout, uncorrupted
-				if out := callOn(t, cs, "server_info", nil); acc.Str(out["backend"]) != os.Getenv("EMBYFIN_BACKEND") {
+				if out := callOn(t, cs, "server_info", nil); acctest.Str(out["backend"]) != os.Getenv("EMBYFIN_BACKEND") {
 					t.Errorf("server_info = %v", out)
 				}
 				// closing stdin ends the process cleanly
@@ -425,7 +425,7 @@ func TestTheBinary(t *testing.T) {
 			if len(kinds["read"]) != 62 || len(kinds["write"]) != 24 || len(kinds["delete"]) != 6 {
 				t.Errorf("read %d, write %d, delete %d, want 62, 24 and 6", len(kinds["read"]), len(kinds["write"]), len(kinds["delete"]))
 			}
-			if want := []string{"collection_delete", "item_delete", "item_orphans_delete", "library_delete", "playlist_delete", "user_delete"}; !slices.Equal(acc.Sorted(kinds["delete"]), want) {
+			if want := []string{"collection_delete", "item_delete", "item_orphans_delete", "library_delete", "playlist_delete", "user_delete"}; !slices.Equal(acctest.Sorted(kinds["delete"]), want) {
 				t.Errorf("delete tools = %v, want %v", kinds["delete"], want)
 			}
 			if !slices.Contains(kinds["read"], "library_export") {
@@ -472,7 +472,7 @@ func TestTheBinary(t *testing.T) {
 					t.Errorf("%s without --enable-delete: %v %v, want it refused naming the flag", name, err, res)
 				}
 			}
-			if locs := acc.Strs(t, suite.Call(t, "library_get", map[string]any{"library": "Movies"})["locations"], "locations"); !slices.Equal(locs, []string{"/media/movies"}) {
+			if locs := acctest.Strs(t, suite.Call(t, "library_get", map[string]any{"library": "Movies"})["locations"], "locations"); !slices.Equal(locs, []string{"/media/movies"}) {
 				t.Errorf("Movies' folders after the refusal: %v", locs)
 			}
 		})
@@ -497,7 +497,7 @@ func TestTheBinary(t *testing.T) {
 
 			arrival := findItem(t, "Movies", "Movie", "Arrival")
 			favourites := func() int {
-				return len(acc.Rows(t, callOn(t, cs, "library_items", map[string]any{"watched": "favourite"})["items"], "items"))
+				return len(acctest.Rows(t, callOn(t, cs, "library_items", map[string]any{"watched": "favourite"})["items"], "items"))
 			}
 			before := favourites()
 			// a delete of nothing and a favourite: neither could do harm had
@@ -532,8 +532,8 @@ func TestTheBinary(t *testing.T) {
 			arrival := findItem(t, "Movies", "Movie", "Arrival")
 			favourite := func(on bool) bool {
 				callOn(t, cs, "item_set_state", map[string]any{"id": arrival, "favourite": on})
-				for _, it := range acc.Rows(t, callOn(t, cs, "library_items", map[string]any{"watched": "favourite"})["items"], "items") {
-					if acc.Str(it["id"]) == arrival {
+				for _, it := range acctest.Rows(t, callOn(t, cs, "library_items", map[string]any{"watched": "favourite"})["items"], "items") {
+					if acctest.Str(it["id"]) == arrival {
 						return true
 					}
 				}
@@ -652,7 +652,7 @@ func TestTheBinary(t *testing.T) {
 	t.Run("show_missing without a TMDB token", func(t *testing.T) {
 		cs := bin.serveStdio(t, nil, "--toolsets", "show")
 		out := callOn(t, cs, "show_missing", map[string]any{"series_id": findItem(t, "Shows", "Series", "Severance")})
-		if !acc.IsBool(out["supported"], false) || out["missing"] != nil || acc.Str(out["source"]) != "none" || !strings.Contains(acc.Str(out["reason"]), "no metadata provider is configured to be asked instead: set EMBYFIN_TMDB_TOKEN") {
+		if !acctest.IsBool(out["supported"], false) || out["missing"] != nil || acctest.Str(out["source"]) != "none" || !strings.Contains(acctest.Str(out["reason"]), "no metadata provider is configured to be asked instead: set EMBYFIN_TMDB_TOKEN") {
 			t.Errorf("show_missing with no token = supported %v missing %v source %v reason %q", out["supported"], out["missing"], out["source"], out["reason"])
 		}
 	})
@@ -708,7 +708,7 @@ func TestTheBinary(t *testing.T) {
 		if status := s.initialize(t, ""); status != http.StatusOK {
 			t.Errorf("/mcp with no auth and no token = HTTP %d, want 200", status)
 		}
-		if out := callOn(t, s.sessionWith(t, ""), "server_info", nil); acc.Str(out["backend"]) != os.Getenv("EMBYFIN_BACKEND") {
+		if out := callOn(t, s.sessionWith(t, ""), "server_info", nil); acctest.Str(out["backend"]) != os.Getenv("EMBYFIN_BACKEND") {
 			t.Errorf("server_info with no auth = %v", out)
 		}
 		if !strings.Contains(s.stderr.String(), "no auth token set") {

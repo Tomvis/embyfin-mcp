@@ -19,6 +19,7 @@ func (c Client) CancelPackageInstallation(ctx context.Context, packageId string)
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
+		Operation:  "CancelPackageInstallation",
 		Path:       fmt.Sprintf("/Packages/Installing/%s", url.PathEscape(packageId)),
 	}
 

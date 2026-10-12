@@ -19,6 +19,7 @@ func (c Client) GetBrandingConfiguration(ctx context.Context) (result emby.GetBr
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetBrandingConfiguration",
 		Path:       "/Branding/Configuration",
 	}
 

@@ -20,6 +20,7 @@ func (c Client) PostSyncJobItemsByIdTransferred(ctx context.Context, id string) 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostSyncJobItemsByIdTransferred",
 		Path:       fmt.Sprintf("/Sync/JobItems/%s/Transferred", url.PathEscape(id)),
 	}
 

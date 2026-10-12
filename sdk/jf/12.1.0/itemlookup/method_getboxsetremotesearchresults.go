@@ -18,6 +18,7 @@ func (c Client) GetBoxSetRemoteSearchResults(ctx context.Context, input jf.BoxSe
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "GetBoxSetRemoteSearchResults",
 		Path:       "/Items/RemoteSearch/BoxSet",
 	}
 

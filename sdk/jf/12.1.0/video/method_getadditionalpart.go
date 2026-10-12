@@ -29,6 +29,7 @@ func (c Client) GetAdditionalPart(ctx context.Context, itemId string, userId ...
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetAdditionalPart",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Videos/%s/AdditionalParts", url.PathEscape(itemId)),
 	}

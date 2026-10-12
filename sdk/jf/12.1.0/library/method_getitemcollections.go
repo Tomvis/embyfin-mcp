@@ -30,6 +30,7 @@ func (c Client) GetItemCollections(ctx context.Context, itemId string, options .
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetItemCollections",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Items/%s/Collections", url.PathEscape(itemId)),
 	}

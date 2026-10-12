@@ -29,6 +29,7 @@ func (c Client) GetItemImageByIndex(ctx context.Context, itemId string, imageTyp
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetItemImageByIndex",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Items/%s/Images/%s/%d", url.PathEscape(itemId), url.PathEscape(string(imageType)), imageIndex),
 		StreamResponse: true,

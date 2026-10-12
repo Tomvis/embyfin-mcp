@@ -18,6 +18,7 @@ func (c Client) GetDefaultMetadataOptions(ctx context.Context) (result jf.GetDef
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetDefaultMetadataOptions",
 		Path:       "/System/Configuration/MetadataOptions/Default",
 	}
 

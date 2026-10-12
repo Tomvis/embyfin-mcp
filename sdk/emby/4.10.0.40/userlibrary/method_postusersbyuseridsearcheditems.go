@@ -21,6 +21,7 @@ func (c Client) PostUsersByUserIdSearchedItems(ctx context.Context, userId strin
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByUserIdSearchedItems",
 		Path:       fmt.Sprintf("/Users/%s/SearchedItems/", url.PathEscape(userId)),
 	}
 

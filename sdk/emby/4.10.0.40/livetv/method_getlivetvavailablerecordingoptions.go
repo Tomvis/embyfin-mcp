@@ -19,6 +19,7 @@ func (c Client) GetLiveTvAvailableRecordingOptions(ctx context.Context) (result 
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "GetLiveTvAvailableRecordingOptions",
 		Path:       "/LiveTv/AvailableRecordingOptions",
 	}
 

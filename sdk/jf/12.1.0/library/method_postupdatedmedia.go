@@ -18,6 +18,7 @@ func (c Client) PostUpdatedMedia(ctx context.Context, input jf.MediaUpdateInfoDt
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUpdatedMedia",
 		Path:       "/Library/Media/Updated",
 	}
 

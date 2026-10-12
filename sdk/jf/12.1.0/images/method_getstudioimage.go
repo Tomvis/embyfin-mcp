@@ -29,6 +29,7 @@ func (c Client) GetStudioImage(ctx context.Context, name string, imageType jf.Im
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetStudioImage",
 		OptionsObject:  option,
 		Path:           fmt.Sprintf("/Studios/%s/Images/%s", url.PathEscape(name), url.PathEscape(string(imageType))),
 		StreamResponse: true,

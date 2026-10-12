@@ -30,6 +30,7 @@ func (c Client) PostSessionsByIdPlayingByCommand(ctx context.Context, id string,
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostSessionsByIdPlayingByCommand",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Sessions/%s/Playing/%s", url.PathEscape(id), url.PathEscape(string(command))),
 	}

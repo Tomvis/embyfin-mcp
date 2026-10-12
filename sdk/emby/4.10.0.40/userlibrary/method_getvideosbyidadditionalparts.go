@@ -30,6 +30,7 @@ func (c Client) GetVideosByIdAdditionalParts(ctx context.Context, id string, opt
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetVideosByIdAdditionalParts",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/Videos/%s/AdditionalParts", url.PathEscape(id)),
 	}

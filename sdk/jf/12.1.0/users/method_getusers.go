@@ -27,6 +27,7 @@ func (c Client) GetUsers(ctx context.Context, options ...jf.GetUsersOptions) (re
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsers",
 		OptionsObject: option,
 		Path:          "/Users",
 	}

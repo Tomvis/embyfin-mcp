@@ -19,6 +19,7 @@ func (c Client) PersonExternalIds(ctx context.Context, personId int) (result tmd
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
+		Operation:  "PersonExternalIds",
 		Path:       fmt.Sprintf("/3/person/%d/external_ids", personId),
 	}
 

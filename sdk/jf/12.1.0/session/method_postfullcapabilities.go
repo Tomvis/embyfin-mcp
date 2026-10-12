@@ -28,6 +28,7 @@ func (c Client) PostFullCapabilities(ctx context.Context, input jf.ClientCapabil
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostFullCapabilities",
 		OptionsObject: option,
 		Path:          "/Sessions/Capabilities/Full",
 	}

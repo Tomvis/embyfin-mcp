@@ -23,6 +23,7 @@ func (c Client) PostSyncData(ctx context.Context, input emby.SyncDataRequest, ta
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodPost,
+		Operation:     "PostSyncData",
 		OptionsObject: option,
 		Path:          "/Sync/Data",
 	}

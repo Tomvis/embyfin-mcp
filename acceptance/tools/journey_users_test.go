@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
 // Journeys in another user's name: a restricted user's own playlists, what a
@@ -38,14 +38,14 @@ func TestARestrictedUsersPlaylists(t *testing.T) {
 	dune2 := findItem(t, "Movies", "Movie", "Dune: Part Two")
 	arrival := findItem(t, "Movies", "Movie", "Arrival")
 	series := findItem(t, "Shows", "Series", "Breaking Bad")
-	pilot := acc.Str(acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")[0]["id"])
+	pilot := acctest.Str(acctest.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")[0]["id"])
 	restrictAlice(t, "Movies", "Music")
 
-	pl := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Alice Films", "user": "alice", "item_ids": []any{dune}, "media_type": "Video"})["id"])
+	pl := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Alice Films", "user": "alice", "item_ids": []any{dune}, "media_type": "Video"})["id"])
 	deleteLater(t, "playlist_delete", "playlist", pl)
 	listed := false
-	for _, p := range acc.Rows(t, suite.Call(t, "playlist_list", nil)["playlists"], "playlists") {
-		listed = listed || acc.Str(p["id"]) == pl
+	for _, p := range acctest.Rows(t, suite.Call(t, "playlist_list", nil)["playlists"], "playlists") {
+		listed = listed || acctest.Str(p["id"]) == pl
 	}
 	if !listed {
 		t.Error("playlist_list does not list alice's playlist")
@@ -56,25 +56,25 @@ func TestARestrictedUsersPlaylists(t *testing.T) {
 		}
 	}
 
-	if out := suite.Call(t, "playlist_edit", map[string]any{"playlist": pl, "user": "alice", "add_items": []any{dune2, arrival}}); acc.Num(t, out["added"], "added") != 2 {
+	if out := suite.Call(t, "playlist_edit", map[string]any{"playlist": pl, "user": "alice", "add_items": []any{dune2, arrival}}); acctest.Num(t, out["added"], "added") != 2 {
 		t.Errorf("playlist_edit add_items as alice = %v", out)
 	}
 	var entry string
-	for _, e := range acc.Rows(t, suite.Call(t, "playlist_get", map[string]any{"playlist": pl, "user": "alice"})["entries"], "entries") {
-		if acc.Str(e["name"]) == "Arrival" {
-			entry = acc.Str(e["entry_id"])
+	for _, e := range acctest.Rows(t, suite.Call(t, "playlist_get", map[string]any{"playlist": pl, "user": "alice"})["entries"], "entries") {
+		if acctest.Str(e["name"]) == "Arrival" {
+			entry = acctest.Str(e["entry_id"])
 		}
 	}
 	edit := suite.Call(t, "playlist_edit", map[string]any{"playlist": pl, "user": "alice", "move_entry_id": entry, "move_item_id": arrival, "position": 1, "name": "Zzyzx Alice Renamed"})
-	if got := names(t, edit["entries"], "entries"); acc.Str(edit["name"]) != "Zzyzx Alice Renamed" || !slices.Equal(got, []string{"Arrival", "Dune", "Dune: Part Two"}) {
+	if got := names(t, edit["entries"], "entries"); acctest.Str(edit["name"]) != "Zzyzx Alice Renamed" || !slices.Equal(got, []string{"Arrival", "Dune", "Dune: Part Two"}) {
 		t.Errorf("playlist_edit as alice = %v, entries %v", edit["name"], got)
 	}
-	for _, e := range acc.Rows(t, suite.Call(t, "playlist_get", map[string]any{"playlist": pl, "user": "alice"})["entries"], "entries") {
-		if acc.Str(e["name"]) == "Dune: Part Two" {
-			entry = acc.Str(e["entry_id"])
+	for _, e := range acctest.Rows(t, suite.Call(t, "playlist_get", map[string]any{"playlist": pl, "user": "alice"})["entries"], "entries") {
+		if acctest.Str(e["name"]) == "Dune: Part Two" {
+			entry = acctest.Str(e["entry_id"])
 		}
 	}
-	if out := suite.Call(t, "playlist_edit", map[string]any{"playlist": pl, "user": "alice", "remove_entries": []any{map[string]any{"entry_id": entry, "item_id": dune2}}}); acc.Num(t, out["removed"], "removed") != 1 {
+	if out := suite.Call(t, "playlist_edit", map[string]any{"playlist": pl, "user": "alice", "remove_entries": []any{map[string]any{"entry_id": entry, "item_id": dune2}}}); acctest.Num(t, out["removed"], "removed") != 1 {
 		t.Errorf("playlist_edit remove_entries as alice = %v", out)
 	}
 	for _, user := range []string{"alice", ""} {
@@ -99,10 +99,10 @@ func TestARestrictedUsersPlaylists(t *testing.T) {
 	if msg := suite.CallErr(t, "playlist_create", map[string]any{"name": "Zzyzx Alice Hidden", "user": "alice", "item_ids": []any{pilot}, "media_type": "Video"}); !strings.Contains(msg, "alice cannot see Pilot") {
 		t.Errorf("creating alice's playlist with what she cannot see: %s", msg)
 	}
-	for _, p := range acc.Rows(t, suite.Call(t, "playlist_list", nil)["playlists"], "playlists") {
-		if acc.Str(p["name"]) == "Zzyzx Alice Hidden" {
+	for _, p := range acctest.Rows(t, suite.Call(t, "playlist_list", nil)["playlists"], "playlists") {
+		if acctest.Str(p["name"]) == "Zzyzx Alice Hidden" {
 			t.Errorf("the refused playlist was made: %v", p)
-			deleteLater(t, "playlist_delete", "playlist", acc.Str(p["id"]))
+			deleteLater(t, "playlist_delete", "playlist", acctest.Str(p["id"]))
 		}
 	}
 }
@@ -114,14 +114,14 @@ func TestPlaylistsOfTracksAndSeasons(t *testing.T) {
 	valkyrie := findItem(t, "Music", "Audio", "Valkyrie")
 	polygon := findItem(t, "Music", "MusicAlbum", "Polygon")
 
-	pl := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Tracks", "user": "alice", "item_ids": []any{belgrade, valkyrie}, "media_type": "Audio"})["id"])
+	pl := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Tracks", "user": "alice", "item_ids": []any{belgrade, valkyrie}, "media_type": "Audio"})["id"])
 	deleteLater(t, "playlist_delete", "playlist", pl)
 	got := suite.Call(t, "playlist_get", map[string]any{"playlist": pl, "user": "alice"})["entries"]
 	if n := names(t, got, "entries"); !slices.Equal(n, []string{"Belgrade", "Valkyrie"}) {
 		t.Errorf("the audio playlist = %v", n)
 	}
-	for _, e := range acc.Rows(t, got, "entries") {
-		if acc.Str(e["type"]) != "Audio" {
+	for _, e := range acctest.Rows(t, got, "entries") {
+		if acctest.Str(e["type"]) != "Audio" {
 			t.Errorf("an audio playlist holds a %v", e["type"])
 		}
 	}
@@ -130,7 +130,7 @@ func TestPlaylistsOfTracksAndSeasons(t *testing.T) {
 	// holds each of the album's once more
 	out := suite.Call(t, "playlist_edit", map[string]any{"playlist": pl, "user": "alice", "add_items": []any{polygon}})
 	want := []string{"Belgrade", "Valkyrie", "Belgrade", "Valkyrie", "Solid Gold", "Private Dancer"}
-	if acc.Num(t, out["added"], "added") != 4 {
+	if acctest.Num(t, out["added"], "added") != 4 {
 		t.Errorf("adding the album = %v, want its 4 tracks added", out)
 	}
 	if got := playlistNames(t, pl, "alice"); !slices.Equal(got, want) {
@@ -140,14 +140,14 @@ func TestPlaylistsOfTracksAndSeasons(t *testing.T) {
 	// a season is its episodes, in order
 	series := findItem(t, "Shows", "Series", "Breaking Bad")
 	var season string
-	for _, s := range acc.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": series})["seasons"], "seasons") {
-		if acc.Num(t, s["season"], "season") == 1 {
-			season = acc.Str(s["id"])
+	for _, s := range acctest.Rows(t, suite.Call(t, "show_seasons", map[string]any{"series_id": series})["seasons"], "seasons") {
+		if acctest.Num(t, s["season"], "season") == 1 {
+			season = acctest.Str(s["id"])
 		}
 	}
-	video := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Season", "media_type": "Video"})["id"])
+	video := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Season", "media_type": "Video"})["id"])
 	deleteLater(t, "playlist_delete", "playlist", video)
-	if out := suite.Call(t, "playlist_edit", map[string]any{"playlist": video, "add_items": []any{season}}); acc.Num(t, out["added"], "added") != 3 {
+	if out := suite.Call(t, "playlist_edit", map[string]any{"playlist": video, "add_items": []any{season}}); acctest.Num(t, out["added"], "added") != 3 {
 		t.Errorf("adding the season = %v, want its 3 episodes", out)
 	}
 	if got := playlistNames(t, video, ""); !slices.Equal(got, []string{"Pilot", "Cat's in the Bag...", "Cat's in the Bag..."}) {
@@ -218,12 +218,12 @@ func limitAlice(t *testing.T, rating string) int {
 func TestAParentalRatingLimit(t *testing.T) {
 	film := findItem(t, "Movies", "Movie", "Dune: Part Two")
 	arrival := findItem(t, "Movies", "Movie", "Arrival")
-	rating := acc.Str(suite.Call(t, "item_get", map[string]any{"id": film})["official_rating"])
+	rating := acctest.Str(suite.Call(t, "item_get", map[string]any{"id": film})["official_rating"])
 	// put back through the HTTP API: item_edit takes an empty rating for no
 	// edit at all, so a film that had none would have stayed R
 	t.Cleanup(func() {
 		updateItem(t, film, map[string]any{"OfficialRating": rating})
-		if out, err := suite.Invoke("item_get", map[string]any{"id": film}); err != nil || acc.Str(out["official_rating"]) != rating {
+		if out, err := suite.Invoke("item_get", map[string]any{"id": film}); err != nil || acctest.Str(out["official_rating"]) != rating {
 			t.Errorf("the film's rating was not put back to %q: %v %v", rating, out["official_rating"], err)
 		}
 	})
@@ -237,11 +237,11 @@ func TestAParentalRatingLimit(t *testing.T) {
 	// watched while nothing stopped her; cleaned up after the limit is lifted
 	suite.Call(t, "item_set_state", map[string]any{"id": film, "user": "alice", "watched": true})
 	suite.PutBack(t, "item_set_state", map[string]any{"id": film, "user": "alice", "watched": false})
-	watched := acc.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["movies_watched"], "movies_watched")
+	watched := acctest.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["movies_watched"], "movies_watched")
 	aliceWatched := func() (listed, played bool) {
-		for _, u := range acc.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": film})["users"], "users") {
-			if acc.Str(u["user"]) == "alice" {
-				return true, acc.BoolOf(u["played"])
+		for _, u := range acctest.Rows(t, suite.Call(t, "item_last_watched", map[string]any{"id": film})["users"], "users") {
+			if acctest.Str(u["user"]) == "alice" {
+				return true, acctest.BoolOf(u["played"])
 			}
 		}
 		return false, false
@@ -250,17 +250,17 @@ func TestAParentalRatingLimit(t *testing.T) {
 		t.Fatalf("before the limit item_last_watched has alice listed %v, played %v", listed, played)
 	}
 
-	if out := suite.Call(t, "item_edit", map[string]any{"ids": []any{film}, "official_rating": "R"}); !slices.Equal(acc.Strs(t, out["changed"], "changed"), []string{"OfficialRating"}) {
+	if out := suite.Call(t, "item_edit", map[string]any{"ids": []any{film}, "official_rating": "R"}); !slices.Equal(acctest.Strs(t, out["changed"], "changed"), []string{"OfficialRating"}) {
 		t.Errorf("item_edit official_rating = %v", out)
 	}
 	// what the limit hides is every film rated above it, by the number the
 	// server ranks each rating by; a film with no rating is not hidden
 	limit := ratingValue(t, "PG-13")
-	all := acc.Num(t, suite.Call(t, "library_items", map[string]any{"library": "Movies", "limit": 50})["total"], "total")
+	all := acctest.Num(t, suite.Call(t, "library_items", map[string]any{"library": "Movies", "limit": 50})["total"], "total")
 	hidden := 0
-	for _, r := range acc.Rows(t, suite.Call(t, "library_filters", map[string]any{"library": "Movies"})["official_ratings"], "official_ratings") {
-		if ratingValue(t, acc.Str(r["value"])) > limit {
-			hidden += acc.Num(t, r["items"], "items")
+	for _, r := range acctest.Rows(t, suite.Call(t, "library_filters", map[string]any{"library": "Movies"})["official_ratings"], "official_ratings") {
+		if ratingValue(t, acctest.Str(r["value"])) > limit {
+			hidden += acctest.Num(t, r["items"], "items")
 		}
 	}
 	if hidden == 0 || hidden >= all {
@@ -270,18 +270,18 @@ func TestAParentalRatingLimit(t *testing.T) {
 		t.Fatalf("alice was limited at %d, PG-13 is %d", got, limit)
 	}
 
-	if got := suite.Call(t, "user_get", map[string]any{"user": "alice"}); acc.Num(t, got["max_parental_rating"], "max_parental_rating") != limit {
+	if got := suite.Call(t, "user_get", map[string]any{"user": "alice"}); acctest.Num(t, got["max_parental_rating"], "max_parental_rating") != limit {
 		t.Errorf("user_get alice max_parental_rating = %v, want %d (PG-13 on this server)", got["max_parental_rating"], limit)
 	}
 	films := suite.Call(t, "library_items", map[string]any{"library": "Movies", "user": "alice", "limit": 50})
-	if got := names(t, films["items"], "items"); slices.Contains(got, "Dune: Part Two") || acc.Num(t, films["total"], "total") != all-hidden {
+	if got := names(t, films["items"], "items"); slices.Contains(got, "Dune: Part Two") || acctest.Num(t, films["total"], "total") != all-hidden {
 		t.Errorf("alice sees %v, want the %d films not rated above PG-13, and not Dune: Part Two", got, all-hidden)
 	}
 	if msg := suite.CallErr(t, "item_set_state", map[string]any{"id": film, "user": "alice", "favourite": true}); !strings.Contains(msg, "rated above what they may watch") {
 		t.Errorf("item_set_state on a film above alice's limit: %s", msg)
 	}
 	// a playlist of hers takes what she may watch and refuses the rest
-	pl := acc.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Alice Limited", "user": "alice", "item_ids": []any{arrival}, "media_type": "Video"})["id"])
+	pl := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": "Zzyzx Alice Limited", "user": "alice", "item_ids": []any{arrival}, "media_type": "Video"})["id"])
 	deleteLater(t, "playlist_delete", "playlist", pl)
 	if msg := suite.CallErr(t, "playlist_edit", map[string]any{"playlist": pl, "user": "alice", "add_items": []any{film}}); !strings.Contains(msg, "alice cannot see Dune: Part Two") {
 		t.Errorf("adding a film above alice's limit to her playlist: %s", msg)
@@ -289,7 +289,7 @@ func TestAParentalRatingLimit(t *testing.T) {
 	if got := playlistNames(t, pl, ""); !slices.Equal(got, []string{"Arrival"}) {
 		t.Errorf("after the refused add alice's playlist holds %v, want [Arrival]", got)
 	}
-	if n := acc.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["movies_watched"], "movies_watched"); n != watched-1 {
+	if n := acctest.Num(t, suite.Call(t, "user_stats", map[string]any{"user": "alice"})["movies_watched"], "movies_watched"); n != watched-1 {
 		t.Errorf("alice's movies_watched = %d under the limit, %d before it: the hidden film still counts", n, watched)
 	}
 	if listed, played := aliceWatched(); listed {
@@ -302,14 +302,14 @@ func TestAParentalRatingLimit(t *testing.T) {
 	// answer says the mark reaches what her view leaves out (both seen on
 	// the servers: Emby 4.10, Jellyfin 12.1). Neither says the mark reached
 	// only what she sees, nor all that is stored
-	coll := acc.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Alice Limited Films", "item_ids": []any{arrival, film}})["id"])
+	coll := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Alice Limited Films", "item_ids": []any{arrival, film}})["id"])
 	deleteLater(t, "collection_delete", "collection", coll)
 	cleared := suite.Call(t, "item_set_state", map[string]any{"id": coll, "user": "alice", "watched": false})
-	note := acc.Str(cleared["note"])
-	copiesChanged := acc.RowsOf(cleared["copies_changed"])
+	note := acctest.Str(cleared["note"])
+	copiesChanged := acctest.RowsOf(cleared["copies_changed"])
 	changed := make([]string, 0, len(copiesChanged))
 	for _, c := range copiesChanged {
-		changed = append(changed, acc.Str(c["id"]))
+		changed = append(changed, acctest.Str(c["id"]))
 	}
 	if strings.Contains(note, "reaches all") || strings.Contains(note, "is not marked") || slices.Contains(changed, film) {
 		t.Errorf("clearing a collection for alice, one of its two films hidden from her: note %q, copies_changed %v", note, changed)

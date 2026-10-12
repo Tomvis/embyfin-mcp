@@ -29,6 +29,7 @@ func (c Client) AccountRatedTvEpisodes(ctx context.Context, accountId int, optio
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "AccountRatedTvEpisodes",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/3/account/%d/rated/tv/episodes", accountId),
 	}

@@ -19,6 +19,7 @@ func (c Client) PostNotificationsServicesTest(ctx context.Context, input emby.Us
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostNotificationsServicesTest",
 		Path:       "/Notifications/Services/Test",
 	}
 

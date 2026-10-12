@@ -29,6 +29,7 @@ func (c Client) ChangesMovieList(ctx context.Context, options ...tmdb.ChangesMov
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "ChangesMovieList",
 		OptionsObject: option,
 		Path:          "/3/movie/changes",
 	}

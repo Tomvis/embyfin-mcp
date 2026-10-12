@@ -29,6 +29,7 @@ func (c Client) UnmarkFavoriteItem(ctx context.Context, itemId string, userId ..
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodDelete,
+		Operation:     "UnmarkFavoriteItem",
 		OptionsObject: option,
 		Path:          fmt.Sprintf("/UserFavoriteItems/%s", url.PathEscape(itemId)),
 	}

@@ -18,6 +18,7 @@ func (c Client) CreateSeriesTimer(ctx context.Context, input jf.SeriesTimerInfoD
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "CreateSeriesTimer",
 		Path:       "/LiveTv/SeriesTimers",
 	}
 

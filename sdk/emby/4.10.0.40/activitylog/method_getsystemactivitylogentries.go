@@ -30,6 +30,7 @@ func (c Client) GetSystemActivityLogEntries(ctx context.Context, options ...emby
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetSystemActivityLogEntries",
 		OptionsObject: option,
 		Path:          "/System/ActivityLog/Entries",
 	}

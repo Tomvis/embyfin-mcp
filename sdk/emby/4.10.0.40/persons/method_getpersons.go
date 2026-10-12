@@ -30,6 +30,7 @@ func (c Client) GetPersons(ctx context.Context, options ...emby.GetPersonsOption
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetPersons",
 		OptionsObject: option,
 		Path:          "/Persons",
 	}

@@ -29,6 +29,7 @@ func (c Client) GetLiveTvChannels(ctx context.Context, options ...jf.GetLiveTvCh
 			http.StatusOK,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetLiveTvChannels",
 		OptionsObject: option,
 		Path:          "/LiveTv/Channels",
 	}

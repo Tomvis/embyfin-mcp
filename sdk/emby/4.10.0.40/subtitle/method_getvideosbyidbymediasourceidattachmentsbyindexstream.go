@@ -20,6 +20,7 @@ func (c Client) GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(ctx context
 			http.StatusOK,
 		},
 		HTTPMethod:     http.MethodGet,
+		Operation:      "GetVideosByIdByMediaSourceIdAttachmentsByIndexStream",
 		Path:           fmt.Sprintf("/Videos/%s/%s/Attachments/%d/Stream", url.PathEscape(id), url.PathEscape(mediaSourceId), index),
 		StreamResponse: true,
 	}

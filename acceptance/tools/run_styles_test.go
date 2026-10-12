@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	acc "github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/go-kt/mcp/acctest"
 
 	"github.com/katbyte/embyfin-mcp/lib/mediapath"
 	"github.com/katbyte/embyfin-mcp/lib/naming"
@@ -61,8 +61,8 @@ func TestRunStylesTheServerReads(t *testing.T) {
 
 	out := suite.Call(t, "library_episodes", map[string]any{"library": "Messy Shows", "series": "Zzyzx Runs", "fields": []string{"path"}})
 	byFile := map[string]map[string]any{}
-	for _, row := range acc.Rows(t, out["episodes"], "episodes") {
-		byFile[mediapath.Base(acc.Str(row["path"]))] = row
+	for _, row := range acctest.Rows(t, out["episodes"], "episodes") {
+		byFile[mediapath.Base(acctest.Str(row["path"]))] = row
 	}
 	if len(byFile) != len(runStyleFiles) {
 		t.Fatalf("the server lists %d episodes of the staged show, want %d: %v", len(byFile), len(runStyleFiles), out["episodes"])
@@ -80,7 +80,7 @@ func TestRunStylesTheServerReads(t *testing.T) {
 		if rel.Episode != f.first || rel.EpisodeEnd != f.first+1 {
 			t.Fatalf("%s: the parser reads S%02dE%02d-%02d, want E%02d-E%02d", f.marker, rel.Season, rel.Episode, rel.EpisodeEnd, f.first, f.first+1)
 		}
-		episode, end := acc.NumOr0(row["episode"]), acc.NumOr0(row["episode_end"])
+		episode, end := acctest.NumOr0(row["episode"]), acctest.NumOr0(row["episode_end"])
 		observed := episode == f.first && end == f.first+1
 		if !observed {
 			unread[name(f.marker)] = true
@@ -100,9 +100,9 @@ func TestRunStylesTheServerReads(t *testing.T) {
 	// the server does not read its style, and none the server read is one
 	audit := suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Shows", "checks": "episode", "limit": 500})
 	said := map[string]string{}
-	for _, row := range acc.Rows(t, audit["findings"], "findings") {
-		if strings.Contains(acc.Str(row["path"]), "/"+show+"/") {
-			said[mediapath.Base(acc.Str(row["path"]))] = strings.Join(acc.Texts(row["problems"]), " | ")
+	for _, row := range acctest.Rows(t, audit["findings"], "findings") {
+		if strings.Contains(acctest.Str(row["path"]), "/"+show+"/") {
+			said[mediapath.Base(acctest.Str(row["path"]))] = strings.Join(acctest.Texts(row["problems"]), " | ")
 		}
 	}
 	for _, f := range runStyleFiles {

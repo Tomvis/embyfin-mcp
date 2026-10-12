@@ -18,6 +18,7 @@ func (c Client) UpdateBrandingConfiguration(ctx context.Context, input jf.Brandi
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "UpdateBrandingConfiguration",
 		Path:       "/System/Configuration/Branding",
 	}
 

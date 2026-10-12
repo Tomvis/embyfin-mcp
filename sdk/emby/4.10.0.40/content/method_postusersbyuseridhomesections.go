@@ -21,6 +21,7 @@ func (c Client) PostUsersByUserIdHomeSections(ctx context.Context, userId string
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "PostUsersByUserIdHomeSections",
 		Path:       fmt.Sprintf("/Users/%s/HomeSections", url.PathEscape(userId)),
 	}
 

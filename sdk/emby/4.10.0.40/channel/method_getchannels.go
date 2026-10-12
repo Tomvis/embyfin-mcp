@@ -30,6 +30,7 @@ func (c Client) GetChannels(ctx context.Context, options ...emby.GetChannelsOpti
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetChannels",
 		OptionsObject: option,
 		Path:          "/Channels",
 	}

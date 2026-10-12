@@ -19,6 +19,7 @@ func (c Client) AddTunerHost(ctx context.Context, input jf.TunerHostInfo) (resul
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodPost,
+		Operation:  "AddTunerHost",
 		Path:       "/LiveTv/TunerHosts",
 	}
 

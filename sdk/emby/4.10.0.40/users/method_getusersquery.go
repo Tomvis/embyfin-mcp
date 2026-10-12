@@ -30,6 +30,7 @@ func (c Client) GetUsersQuery(ctx context.Context, options ...emby.GetUsersQuery
 			http.StatusNoContent,
 		},
 		HTTPMethod:    http.MethodGet,
+		Operation:     "GetUsersQuery",
 		OptionsObject: option,
 		Path:          "/Users/Query",
 	}
