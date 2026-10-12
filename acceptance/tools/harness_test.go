@@ -344,6 +344,13 @@ func runSuite(m *testing.M) int {
 		}
 	}
 
+	// no answer and no refusal may hand a caller a credential, whichever test asked for it: the server's API key, an account's password, or the
+	// token of an account a test signed in
+	if leaks := suite.LeakReport(); leaks != "" {
+		fmt.Fprint(os.Stderr, leaks)
+		code = 1
+	}
+
 	// every registered tool must have answered something above, not only
 	// refused it. Only a whole-suite run can say that, so a -run or -skip
 	// filter skips the check.
@@ -418,6 +425,14 @@ func start() error {
 	}
 	connected.CannotAnswer = cannotAnswer
 	suite.Suite = connected
+
+	// everything a tool says from here on is read for these, and for the token of each account a test signs in (LeakReport, in runSuite): the
+	// server's API key, the password the test accounts share, the second server's key, and a real TMDB token when one is given to record with
+	for _, name := range []string{"EMBYFIN_TOKEN", "EMBYFIN_TEST_PASSWORD", "EMBYFIN_TEST_BESIDE_TOKEN", "EMBYFIN_TMDB_TOKEN", "EMBYFIN_TMDB_KEY"} {
+		if secret := os.Getenv(name); secret != "" {
+			suite.Secret(secret)
+		}
+	}
 
 	return seed()
 }

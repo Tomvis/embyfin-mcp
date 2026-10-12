@@ -85,7 +85,8 @@ func signIn(t *testing.T, user, password, device string) string {
 		t.Fatalf("posting capabilities: HTTP %d: %s", status, raw)
 	}
 
-	return login.AccessToken
+	// the account's token is a credential no tool may show: every answer from here on is read for it
+	return suite.Secret(login.AccessToken)
 }
 
 // signOut ends the session a token signed in, so a device a test made up is

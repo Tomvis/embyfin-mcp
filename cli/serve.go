@@ -34,11 +34,7 @@ lets anyone who can reach the port use every tool, say so with --allow-no-auth
 				return err
 			}
 
-			srv := mcp.NewServer(&mcp.Implementation{
-				Name:    "embyfin",
-				Title:   "Emby/Jellyfin Library Curator",
-				Version: version.Version,
-			}, nil)
+			srv := newServer()
 
 			registered, err := tools.RegisterAll(srv, client, f.ToolOptions())
 			if err != nil {
@@ -49,6 +45,16 @@ lets anyone who can reach the port use every tool, say so with --allow-no-auth
 			return server.Run(cmd.Context(), srv, f.serveOptions())
 		},
 	}
+}
+
+// newServer is the MCP server before any tool is registered: who it says it is, and what it tells a client that connects, which is what go-kt says of
+// every server and then this one's own words.
+func newServer() *mcp.Server {
+	return mcp.NewServer(&mcp.Implementation{
+		Name:    "embyfin",
+		Title:   "Emby/Jellyfin Library Curator",
+		Version: version.Version,
+	}, &mcp.ServerOptions{Instructions: server.Instructions(tools.Instructions...)})
 }
 
 // serveOptions is how this tool serves: stdio, or HTTP at --listen behind

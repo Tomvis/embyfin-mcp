@@ -277,3 +277,22 @@ func TestFilter(t *testing.T) {
 		t.Errorf("ParseLevel(Warning) = %v, %v", l, err)
 	}
 }
+
+// Jellyfin writes a session's access token into its own log when the session signs out. A line read from the log must not carry it on, however
+// the token is written after the words, and a line that only speaks of a token keeps its words.
+func TestCleanBlanksASpokenAccessToken(t *testing.T) {
+	t.Parallel()
+
+	const token = "0123456789abcdef0123456789abcdef"
+	for line, want := range map[string]string{ //nolint:gosec // a made-up token, written the way the server writes a real one
+		`[INF] [21] Emby.Server.Implementations.Session.SessionManager: Logging out access token "` + token + `"`: `[INF] [21] Emby.Server.Implementations.Session.SessionManager: Logging out access token ***`,
+		`[INF] Session.SessionManager: Reissuing access token: "` + token + `"`:                                   `[INF] Session.SessionManager: Reissuing access token: ***`,
+		`[INF] Session.SessionManager: Logging out access token ` + token:                                         `[INF] Session.SessionManager: Logging out access token ***`,
+		`[INF] Session.SessionManager: Creating new access token for user 12`:                                     `[INF] Session.SessionManager: Creating new access token for user 12`,
+		`[WRN] the access token expired and the client signed in again`:                                           `[WRN] the access token expired and the client signed in again`,
+	} {
+		if got := Clean(line); got != want || strings.Contains(got, token) {
+			t.Errorf("Clean(%q) = %q, want %q", line, got, want)
+		}
+	}
+}

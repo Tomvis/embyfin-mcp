@@ -86,6 +86,7 @@ func registerTaskTools(r *registry) {
 			if len(out.ErrorDetail) > errorDetailMost {
 				out.ErrorDetail = fmt.Sprintf("%s\n... (cut: %d more characters)", out.ErrorDetail[:errorDetailMost], len(last.LongErrorMessage)-errorDetailMost)
 			}
+			out.ErrorDetail = severalLines(out.ErrorDetail)
 		}
 
 		return nil, out, nil

@@ -274,7 +274,7 @@ func readLine(br *bufio.Reader) (string, error) {
 			line += "..."
 		}
 
-		return clean(line), err
+		return Clean(line), err
 	}
 }
 
@@ -288,12 +288,19 @@ var zeroWidth = strings.NewReplacer("\u200b", "", "\u200c", "", "\u200d", "", "\
 // request a client made with one.
 var secret = regexp.MustCompile(`(?i)\b(api_key|apikey|x-emby-token|x-mediabrowser-token|token|access_token|password|pw)=([^&\s"'<>]+)`)
 
-// clean takes the invisible marks out of a line and blanks the credentials
-// in it, so that nothing this package hands on can carry one.
-func clean(line string) string {
+// spoken is a session's access token written out in words: Jellyfin logs the token itself when a session signs out (seen on 12.2: Logging out
+// access token "..."). The token is taken quoted or bare, with or without a colon before it, so that a neighbouring line of the same kind is caught.
+var spoken = regexp.MustCompile(`(?i)\b(access token:?\s+)("[^"]*"|[0-9a-f]{16,})`)
+
+// Clean takes the invisible marks out of a line and blanks the credentials in it, so that nothing this package hands on can carry one. It is also for
+// a line of a log read some other way, a tail fetched whole, so that it is shown as a search of the same log shows it.
+func Clean(line string) string {
 	line = zeroWidth.Replace(line)
 	if strings.Contains(line, "=") {
 		line = secret.ReplaceAllString(line, "$1=***")
+	}
+	if strings.Contains(strings.ToLower(line), "access token") {
+		line = spoken.ReplaceAllString(line, "$1***")
 	}
 
 	return line

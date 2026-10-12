@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/katbyte/embyfin-mcp/lib/serverlog"
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
 	"github.com/katbyte/go-kt/version"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -380,7 +381,13 @@ func registerServerTools(r *registry) {
 			return nil, logOut{}, err
 		}
 
-		return nil, logOut{Name: name, Tail: tail, Files: rows, Note: note}, nil
+		// a log holds the address of every request a client made, a key on the end of some: each line is shown as a search of the log shows it
+		shown := strings.Split(tail, "\n")
+		for i, line := range shown {
+			shown[i] = serverlog.Clean(line)
+		}
+
+		return nil, logOut{Name: name, Tail: strings.Join(shown, "\n"), Files: rows, Note: note}, nil
 	})
 
 	type tasksOut struct {

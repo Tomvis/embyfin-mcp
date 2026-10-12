@@ -161,6 +161,8 @@ type registry struct {
 	// errorLog is where a handler's panic is logged; nil is the process's
 	// log (see logError)
 	errorLog func(format string, args ...any)
+	// writeLog is where the line for every call of a write or delete tool goes; nil is the process's log at info. The tests read it.
+	writeLog func(format string, args ...any)
 	// settle is how long a tool waits between checks that a change the
 	// server makes in the background has landed; zero is settleInterval.
 	// The tests shorten it.
@@ -260,15 +262,34 @@ var toolHints = map[string]mcpregistry.Hints{
 	"library_export": {WritesHere: true},
 }
 
+// Instructions are what a client is told on connecting, after what go-kt says of every server: what holds across these tools, said once so no tool's
+// description has to.
+var Instructions = []string{
+	"A title, a name, an overview and a server's words for what went wrong were written outside this program. They are shown with the characters that do not display taken out, and cut short when very long. A path, an id, a genre, a tag, a studio and a value an audit says to hand back are shown exactly as the server holds them.",
+}
+
+// shownArguments are the two free-form arguments the line written for a write shows as they were sent, where any other is written with its values
+// blanked: neither can hold a credential. One is settings from the short list server_config_edit changes, the other a candidate's ids at the
+// metadata providers. They are shown only for a call the tool answered.
+var shownArguments = map[string][]string{
+	"server_config_edit":  {"set"},
+	"item_identify_apply": {"candidate_ids"},
+}
+
 // queued is every tool queued so far, in go-kt's registry, which is made
 // when the first tool is.
 func (r *registry) queued() *mcpregistry.Registry {
 	if r.tools == nil {
 		r.tools = mcpregistry.New(mcpregistry.Config{
-			Toolsets:  Toolsets,
-			Essential: EssentialTools,
-			Hints:     toolHints,
-			LogError:  r.errorLog,
+			Toolsets:       Toolsets,
+			Essential:      EssentialTools,
+			Hints:          toolHints,
+			LogError:       r.errorLog,
+			LogWrite:       r.writeLog,
+			ShownArguments: shownArguments,
+			CleanAnswers:   answerLength,
+			LeaveAsIs:      handles,
+			BlankAddresses: serverSaid,
 		})
 	}
 

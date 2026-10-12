@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/tools"
 	"github.com/katbyte/go-kt/mcp/server"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -23,6 +24,31 @@ func TestServeOptions(t *testing.T) {
 	f := &FlagData{Listen: testListen, AuthToken: testToken, AllowNoAuth: true}
 	if got, want := f.serveOptions(), (server.Options{Listen: testListen, AuthToken: testToken, AllowNoAuth: true, Name: "embyfin-mcp", EnvPrefix: "EMBYFIN"}); got != want {
 		t.Errorf("serveOptions = %+v, want %+v", got, want)
+	}
+}
+
+// A client that connects is told what holds for every tool, in go-kt's words, and then what this server adds of its own.
+func TestAClientIsToldTheInstructions(t *testing.T) {
+	t.Parallel()
+
+	st, ct := mcp.NewInMemoryTransports()
+	if _, err := newServer().Connect(t.Context(), st, nil); err != nil {
+		t.Fatal(err)
+	}
+	cs, err := mcp.NewClient(&mcp.Implementation{Name: "t", Version: "0"}, nil).Connect(t.Context(), ct, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = cs.Close() })
+
+	told := cs.InitializeResult().Instructions
+	if !strings.HasPrefix(told, server.DefaultInstructions) {
+		t.Errorf("the instructions do not start with what every server says: %q", told)
+	}
+	for _, own := range tools.Instructions {
+		if !strings.Contains(told, own) {
+			t.Errorf("the instructions leave out %q", own)
+		}
 	}
 }
 

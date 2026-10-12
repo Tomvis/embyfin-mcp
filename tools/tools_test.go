@@ -235,6 +235,78 @@ func TestAToolThatTakesNoArgumentsRefusesOne(t *testing.T) {
 	}
 }
 
+// The line written for a write shows the free-form arguments shownArguments names as they were sent, and only for a call the tool answered: one it
+// failed is written with the values blanked and the names kept. Every name on the list is a free-form argument of a write tool, so it cannot go stale.
+func TestTheWriteLogShowsTheArgumentsNamed(t *testing.T) {
+	t.Parallel()
+
+	var (
+		mu     sync.Mutex
+		logged []string
+	)
+	s := newSettingsServer(t)
+	r := &registry{client: s.client(t), writeLog: func(format string, args ...any) {
+		mu.Lock()
+		defer mu.Unlock()
+		logged = append(logged, fmt.Sprintf(format, args...))
+	}}
+	queueTools(r)
+	cs := hostRegistry(t, r)
+
+	mustCall(t, cs, "server_config_edit", map[string]any{"set": map[string]any{"TrickplayOptions.ProcessThreads": 4}})
+	mustRefuse(t, cs, "server_config_edit", map[string]any{"set": map[string]any{"ServerName": "Zzyzx Renamed"}})
+	mu.Lock()
+	lines := slices.Clone(logged)
+	mu.Unlock()
+
+	if len(lines) != 2 {
+		t.Fatalf("two write calls wrote %d lines: %q", len(lines), lines)
+	}
+	if !strings.HasPrefix(lines[0], "write server_config_edit answered ") || !strings.Contains(lines[0], `"TrickplayOptions.ProcessThreads":4`) {
+		t.Errorf("the line for a change the tool made = %q, want the setting and its value as sent", lines[0])
+	}
+	if !strings.HasPrefix(lines[1], "write server_config_edit failed ") || !strings.Contains(lines[1], `"ServerName"`) || strings.Contains(lines[1], "Zzyzx Renamed") {
+		t.Errorf("the line for a change the tool would not make = %q, want the setting's name and not its value", lines[1])
+	}
+
+	listed, err := cs.ListTools(t.Context(), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	type schema struct {
+		Properties map[string]struct {
+			Type json.RawMessage `json:"type"`
+		} `json:"properties"`
+	}
+	freeForm := map[string]schema{}
+	for _, tool := range listed.Tools {
+		if a := tool.Annotations; a == nil || a.ReadOnlyHint {
+			continue
+		}
+		raw, err := json.Marshal(tool.InputSchema)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var in schema
+		if err := json.Unmarshal(raw, &in); err != nil {
+			t.Fatal(err)
+		}
+		freeForm[tool.Name] = in
+	}
+	for tool, arguments := range shownArguments {
+		in, ok := freeForm[tool]
+		if !ok {
+			t.Errorf("shownArguments names %s, which is no write tool", tool)
+			continue
+		}
+		for _, argument := range arguments {
+			if kind := string(in.Properties[argument].Type); kind != `"object"` {
+				t.Errorf("shownArguments names %s of %s, which is %s in what the tool takes and not a free-form object", argument, tool, kind)
+			}
+		}
+	}
+}
+
 func TestRegisterAllFilters(t *testing.T) {
 	t.Parallel()
 

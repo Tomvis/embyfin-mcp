@@ -68,7 +68,8 @@ DATA="${EMBYFIN_TEST_DATA:-${HOME}/.cache/embyfin-mcp/testenv/${BACKEND:-fixture
 # cassettes serves them all
 PROXY_CA="${EMBYFIN_TEST_PROXY_CA:-${HOME}/.cache/embyfin-mcp/testenv/proxy}"
 ADMIN="root"
-PASSWORD="embyfin-mcp-test"
+# the tool suite fails when an answer shows this, so it must be nothing's name: not the key's, the client's or the container's
+PASSWORD="fixture-pw-3q7zk9v2xm"
 # a second, ordinary account, so the user tools have someone other than the
 # key's own user to look at
 USER2="alice"

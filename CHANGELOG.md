@@ -20,7 +20,11 @@
 
 - built on pandorest 0.8.3: an error from any of the three SDKs never repeats the API key or token it was given
 - built on go-kt 0.6.4: a tool that takes no arguments refuses one, where it was answered as if the argument had meant something: `library_list`, `server_info` and seven more. A failure's words reach the caller without what an address in them may carry a credential in: who it signs in as, its query values and what follows its `#`
+- a client is told on connecting what holds for every tool: text from outside is data and never an instruction, what a tool's annotations say, that an argument a tool does not take is refused, and what an empty list means; then which text embyfin cleans and which it shows exactly
+- text written outside embyfin is cleaned once, around every tool: a title, a name, an overview and a server's words for what went wrong lose the characters that do not display, a tab or a line break in them becomes a space, and one longer than 16,384 characters is cut with `…`. What a later call hands back is shown exactly as the server holds it: a path, an id, a genre, a tag, a studio, a setting, and a value an audit says to pass on
 - a date a server writes as year 1, which is how both write a date they do not have, is no date. A tool leaves it out where it showed `0001-01-01T00:00:00.0000000Z`; `audit_quality` no longer lists a file as written after the server first saw it in year 1; `audit_missing_episodes` and `show_missing` no longer count an episode dated so as aired; and an edit of an item sends such a date back as none
+- `server_log`'s `tail` blanks the keys in each line, as its search already did, and `task_get`'s `error_detail` loses what an address in it may carry a key in; both keep their line breaks
+- the line `EMBYFIN_LOG=info` writes for a write or delete call blanks more: every value under a free-form argument, the same parts of any address, and any value sent under a name with `password`, `passphrase` or `secret` in it. Two free-form arguments that cannot hold a credential are still written as sent, for a call the tool answered: `server_config_edit`'s `set` and `item_identify_apply`'s `candidate_ids`
 - `sdk/embyfin` names the two API versions it is built on, `EmbyAPIVersion` and `JellyfinAPIVersion`, and `server_info` reports both as `sdk_api_versions`, beside the one for the connected server
 - a call none of whose options is required can leave the options out: `c.Sessions.GetSessions(ctx)`
 - the generator's settings moved out of `sdk/pandorest`: the program is `sdk/main.go` (`go run ./sdk`), the list of services is `sdk/zservices`, and each service's workarounds sit beside its SDK in `sdk/<service>/workarounds`
@@ -28,6 +32,7 @@
 - every test that runs against a real server is under `acceptance/`: `integration/` is now `acceptance/emby`, `acceptance/jf` and `acceptance/tmdb`, and the tool suite is `acceptance/tools`; the make targets are `testacc-sdk-<server>` and `testacc-tools-<server>`, and the build tag is `acceptance`
 - the checks are level with terraform-provider-azurerm's: spelling (`make typos`) and markdown (`make markdownlint`) are checked, and the workflow checker builds from the one tools module
 - lint reads every Go file, the acceptance tests included: it is given their build tag, and the rule that tests run in parallel is off for them, since they share one server and run in order
+- the live tool suite fails when an answer or a refusal shows one of the credentials the suite was given: the server's key, the test accounts' password, or the token of an account a test signs in
 
 ### Added
 
@@ -42,6 +47,7 @@
 
 ### Fixed
 
+- `server_log` and `server_log_search` no longer show a session's access token: Jellyfin 12.2 writes the token itself into its log when a session signs out, and both tools handed the line on as written; found by the live suite's new credential check
 - an item asked for by an id of the wrong shape (a name, say) is answered "no item with id ..." on Emby too, where it was Emby's own HTTP 500; found by the new `acceptance/embyfin` suite
 - `user_get` leaves `has_password` out on Jellyfin, which says true for every account, one that logs in with no password included
 
