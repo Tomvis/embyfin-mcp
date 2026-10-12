@@ -20,6 +20,8 @@
 - the generator's settings moved out of `sdk/pandorest`: the program is `sdk/main.go` (`go run ./sdk`), the list of services is `sdk/zservices`, and each service's workarounds sit beside its SDK in `sdk/<service>/workarounds`
 - `scripts/` is `.scripts/`
 - every test that runs against a real server is under `acceptance/`: `integration/` is now `acceptance/emby`, `acceptance/jf` and `acceptance/tmdb`, and the tool suite is `acceptance/tools`; the make targets are `testacc-sdk-<server>` and `testacc-tools-<server>`, and the build tag is `acceptance`
+- the checks are level with terraform-provider-azurerm's: spelling (`make typos`) and markdown (`make markdownlint`) are checked, and the workflow checker builds from the one tools module
+- lint reads every Go file, the acceptance tests included: it is given their build tag, and the rule that tests run in parallel is off for them, since they share one server and run in order
 
 ### Added
 
@@ -188,7 +190,7 @@
 
 ## 0.2.0 (2026-09-23)
 
-**New**
+### New
 
 - Comparing a download folder or vault against a big TV library without a call per series: `library_episodes`, `library_export`, `show_episodes_exist`, `show_resolve`, `plan_check` and `quality_compare`.
 - Audits: `audit_file_path`, `audit_provider`, `audit_language`, `audit_duplicate_episodes`, `audit_duplicate_series`, `audit_disc_folders`, `audit_anime_ids` and `audit_orphans` (with `item_orphans_delete`). `audit_all` has a row for every audit.
@@ -197,7 +199,7 @@
 - `user_get` reports playback preferences; `server_info` reports its own version and the SDK's.
 - `lib/tmdb` is generated from TMDB's OpenAPI document like the Emby and Jellyfin SDKs, and `make spec-refresh` re-vendors all three.
 
-**Changed**
+### Changed
 
 - Tools that did the same thing are merged: `library_items` searches and filters, `item_set_state` sets watched, favourite and position, `item_edit` takes one id or many. 89 tools: 62 read, 22 write, 5 delete.
 - `playlist_delete` and `collection_delete` need `--enable-delete`.
@@ -205,7 +207,7 @@
 - Breaking: sizes are in bytes and times in seconds everywhere, audio tracks are objects rather than strings, every list pages with `limit` and `offset`, and every audit answers `items_scanned` and `total_findings`.
 - The TMDB setting is `--tmdb-token` / `EMBYFIN_TMDB_TOKEN`; `--tmdb-key` still works.
 
-**Fixed**
+### Fixed
 
 - Emby finding nothing no longer ends the session, and a tool that fails unexpectedly returns an error.
 - Answers that were confidently wrong: a path read as free that was taken, a film and a series reported as duplicates, unprobed files counted as having no audio, a name resolved to the wrong show, one user's plays credited to another, a subtitle download reported that never happened.

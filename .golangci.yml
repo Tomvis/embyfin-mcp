@@ -6,12 +6,16 @@ version: "2"
 run:
   timeout: 60m
   modules-download-mode: vendor
+  # the tests that run against a real server (acceptance/) are behind this tag, and are linted like every other Go file
+  build-tags:
+    - acceptance
 
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
 
 linters:
+  default: none # only the linters listed below run; without this golangci-lint adds its own standard set
   enable:
     - asasalint                 # check for pass []any as any in variadic func(...any)
     - asciicheck                # ensure code does not contain non-ASCII identifiers
@@ -81,13 +85,22 @@ linters:
           - goconst
       # tool names, item types, query keys and fixture titles repeat the same short words by
       # design in the tools, the clients and the suites; constants would only add indirection
-      - path: '(tools|sdk/embyfin|sdk/emby|sdk/jf|lib/mediapath|lib/naming|lib/serverlog|acceptance|integration)/.*\.go'
+      - path: '(tools|sdk/embyfin|sdk/emby|sdk/jf|lib/mediapath|lib/naming|lib/serverlog|lib/sdkacc|acceptance)/.*\.go'
         linters:
           - goconst
-      # media types, type names and HTTP methods are the vocabulary of the documents' workarounds
-      - path: 'sdk/pandorest/.*\.go'
+      # media types, type names and HTTP methods are the vocabulary of the documents' workarounds, and the services list repeats its settings
+      - path: 'sdk/(zservices|(emby|jf|tmdb)/workarounds)/.*\.go'
         linters:
           - goconst
+      # each SDK's package comment is in its generated doc.go, which lint does not read; the hand-written service.go beside it needs none of its own
+      - path: 'sdk/(emby|jf|tmdb)/[0-9.]+/(emby|jf|tmdb)/service\.go'
+        text: 'package-comments'
+        linters:
+          - revive
+      # the acceptance tests share one server and its fixtures, and run in the order they are written: none may run beside another
+      - path: 'acceptance/.*\.go'
+        linters:
+          - paralleltest
       # the idiomatic `if err := f(); err != nil` scoping shadows err on purpose; still flag other variables
       # and err shadows outside the if-statement form (source scopes the rule to the if idiom only)
       - text: 'shadow: declaration of "err"'
@@ -140,6 +153,8 @@ linters:
       checks: ["all"] # adds the ST* style checks, off by default
     nakedret:
       max-func-lines: 30
+    nolintlint:
+      require-specific: true # a nolint that names no linter switches off every linter for the code below it
     misspell:
       # no locale: this codebase is Canadian English, which takes -ize like the
       # US but -our/-re like the UK, and misspell has no locale that matches.

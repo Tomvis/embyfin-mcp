@@ -5,6 +5,8 @@ dist/
 embyfin-mcp
 .tools/bin/
 .tools/venv/
+.tools/npm/
+__pycache__/
 .env
 .embyfin-mcp
 .testenv*.sh

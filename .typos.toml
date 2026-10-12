@@ -1,0 +1,51 @@
+# Configuration for typos (https://github.com/crate-ci/typos), run by `make typos` and
+# .github/workflows/typos.yaml. It checks every file type and splits identifiers, so misspelled
+# function and variable names are caught as well as prose.
+#
+# locale is "en" (accept both UK and US spellings): our own text is Canadian English, which takes
+# -ize like the US but -our/-re like the UK, and names mirroring the Emby and Jellyfin APIs are American.
+
+[files]
+ignore-hidden = false # the default skips dotfiles, which would leave .github/ workflows unchecked
+extend-exclude = [
+  ".git/",
+  ".idea/",
+  ".tools/bin/", # gitignored tool installs (make tools)
+  ".tools/npm/",
+  ".tools/venv/",
+  "**/vendor/",
+  "**/go.mod", # commit hashes in pinned versions
+  "**/go.sum",
+  "**/testdata/", # recorded server answers, other people's words
+  "api-defs/",    # the servers' own API documents and the definitions imported from them
+  "sdk/emby/[0-9]*/", # generated from those documents, names and descriptions as the servers wrote them
+  "sdk/jf/[0-9]*/",
+  "sdk/tmdb/[0-9]*/",
+]
+
+[default]
+locale = "en"
+extend-ignore-re = [
+  '"heigth"',              # tests that a misspelt field is refused
+  '"?YuoTube',             # tests that a misspelt library is refused
+  '"Dystopain\b',         # a misspelt tag the spelling report has to find
+  '"0ther"',               # a test password
+  '(?i)mononoke[- ]hime',  # Princess Mononoke's Japanese title
+  "Ba'al",                 # a character in a fixture film's overview
+  'UPnP',
+  'st\|nd\|rd',            # ordinal endings in a pattern
+  '\\p\{Nd\}',             # the unicode class for a digit
+  '"(fre|tha|wel)"',       # three-letter language codes
+  '\.fre\.',               # and one in a subtitle's file name
+  'Librarys(Name|Folder)', # possessives in test names, which take no apostrophe
+  'AnEntrysNumber',
+  'ToAnothersIDs',
+]
+
+[default.extend-words]
+# short variable names
+anc = "anc"
+ba = "ba"
+# linter names
+decorder = "decorder"
+importas = "importas"
