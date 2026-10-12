@@ -59,3 +59,36 @@ func TestTheServersOwnFolders(t *testing.T) {
 		t.Errorf("ListFolder of a folder that is not there = found %v, %v", found, err)
 	}
 }
+
+// The server's own counts are carried as it gives them. The films, series and episodes it counts are the ones a count of each kind finds; its total
+// of everything is, on Jellyfin, what a count with no filter finds, and Emby leaves it at none while such a count finds plenty.
+func TestTheServersOwnCounts(t *testing.T) {
+	ctx := server(t)
+
+	counts, err := client.Counts(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	everything, err := client.Count(ctx, embyfin.SearchOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for kind, got := range map[string]int{"Movie": counts.MovieCount, "Series": counts.SeriesCount, "Episode": counts.EpisodeCount} {
+		n, err := client.Count(ctx, embyfin.SearchOptions{IncludeItemTypes: kind})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got != n || n == 0 {
+			t.Errorf("the server counts %d of %s, and a count of them finds %d", got, kind, n)
+		}
+	}
+
+	switch {
+	case client.Backend() == embyfin.Emby && (counts.ItemCount != 0 || everything == 0):
+		t.Errorf("Emby's own total = %d, and a count of everything finds %d; it was left at 0 on 4.10.1, so what ItemCounts says of it no longer holds", counts.ItemCount, everything)
+	case client.Backend() == embyfin.Jellyfin && (counts.ItemCount != everything || everything == 0):
+		t.Errorf("Jellyfin's own total = %d, and a count of everything finds %d", counts.ItemCount, everything)
+	}
+}

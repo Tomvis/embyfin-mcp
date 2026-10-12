@@ -358,19 +358,34 @@ type SearchOptions struct {
 // Search returns matching library items plus the total match count
 // (which may exceed len(items) when Limit pages the results).
 func (c *Client) Search(ctx context.Context, opts SearchOptions) ([]Item, int, error) {
-	if opts.SavedSince != "" && !isDate(opts.SavedSince) {
-		// both servers refuse it, Emby with a bare 500 and Jellyfin a 400
-		return nil, 0, fmt.Errorf("saved since %q is not a date: give one such as 2026-01-02 or 2026-01-02T15:04:05Z", opts.SavedSince)
-	}
 	fields := opts.Fields
 	if fields == "" {
 		fields = FieldsDefault
 	}
+
+	return c.searchWith(ctx, opts, fields, nz(opts.Limit))
+}
+
+// Count is how many items a search matches, asked without fetching any of them: both servers answer a limit of none with the total alone (seen on
+// Emby 4.10.1 and Jellyfin 12.2). What only shapes the list is left out of the request: fields, order, start, limit and the user's play state.
+func (c *Client) Count(ctx context.Context, opts SearchOptions) (int, error) {
+	opts.SortBy, opts.SortOrder, opts.StartIndex, opts.EnableUserData = "", "", 0, false
+	_, total, err := c.searchWith(ctx, opts, "", new(0))
+
+	return total, err
+}
+
+// searchWith asks for the matching items with the fields and limit given, which are Search's own or Count's none of either.
+func (c *Client) searchWith(ctx context.Context, opts SearchOptions, fields string, limit *int) ([]Item, int, error) {
+	if opts.SavedSince != "" && !isDate(opts.SavedSince) {
+		// both servers refuse it, Emby with a bare 500 and Jellyfin a 400
+		return nil, 0, fmt.Errorf("saved since %q is not a date: give one such as 2026-01-02 or 2026-01-02T15:04:05Z", opts.SavedSince)
+	}
 	if c.isEmby() {
-		return c.searchEmby(ctx, opts, fields)
+		return c.searchEmby(ctx, opts, fields, limit)
 	}
 
-	return c.searchJF(ctx, opts, fields)
+	return c.searchJF(ctx, opts, fields, limit)
 }
 
 // isDate says whether s is a date both servers read as a saved-since: a day
@@ -391,7 +406,7 @@ func isDate(s string) bool {
 // UserData (seen on 4.10: 0 and nothing, where the single-item read has both).
 const embyPlayFields = "UserDataPlayCount,UserDataLastPlayedDate"
 
-func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields string) ([]Item, int, error) {
+func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields string, limit *int) ([]Item, int, error) {
 	if opts.IsMissing != nil {
 		return nil, 0, errors.New("emby's item query has no filter for missing episodes: read an episode's record by its having no file")
 	}
@@ -421,7 +436,7 @@ func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields stri
 		MinDateLastSaved:  opts.SavedSince,
 		Path:              opts.Path,
 		ParentIndexNumber: opts.ParentIndexNumber,
-		Limit:             nz(opts.Limit),
+		Limit:             limit,
 		StartIndex:        nz(opts.StartIndex),
 	}
 	if opts.EnableUserData {
@@ -480,7 +495,7 @@ func embyUserItemsOptions(o *emby.GetItemsOptions) emby.GetUsersByUserIdItemsOpt
 	}
 }
 
-func (c *Client) searchJF(ctx context.Context, opts SearchOptions, fields string) ([]Item, int, error) {
+func (c *Client) searchJF(ctx context.Context, opts SearchOptions, fields string, limit *int) ([]Item, int, error) {
 	years, err := intList(opts.Years)
 	if err != nil {
 		return nil, 0, fmt.Errorf("years: %w", err)
@@ -512,7 +527,7 @@ func (c *Client) searchJF(ctx context.Context, opts SearchOptions, fields string
 		MinDateLastSaved:    opts.SavedSince,
 		IsMissing:           opts.IsMissing,
 		UserId:              opts.UserID,
-		Limit:               nz(opts.Limit),
+		Limit:               limit,
 		StartIndex:          nz(opts.StartIndex),
 	}
 	if opts.EnableUserData {

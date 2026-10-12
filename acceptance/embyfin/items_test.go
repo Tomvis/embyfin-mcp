@@ -83,3 +83,37 @@ func TestFilmsLikeAnother(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+// A count is a search's total with nothing fetched: the number the search itself gives, for each kind a library holds, for a search by words, and
+// none for a kind the library does not hold.
+func TestACountIsTheTotalOfASearch(t *testing.T) {
+	ctx := server(t)
+	films, shows := library(t, filmLibrary).ItemID, library(t, showLibrary).ItemID
+
+	// want is the fixtures' number where they have one, and -1 where the search's own answer is the only measure
+	for _, tc := range []struct {
+		what string
+		opts embyfin.SearchOptions
+		want int
+	}{
+		{"the films", embyfin.SearchOptions{ParentID: films, IncludeItemTypes: "Movie"}, filmLibrary.FilmCount()},
+		{"the series", embyfin.SearchOptions{ParentID: shows, IncludeItemTypes: "Series"}, showLibrary.Series},
+		{"the seasons", embyfin.SearchOptions{ParentID: shows, IncludeItemTypes: "Season"}, -1},
+		{"the episodes", embyfin.SearchOptions{ParentID: shows, IncludeItemTypes: "Episode"}, showLibrary.EpisodeCount()},
+		{"the films found by a word", embyfin.SearchOptions{ParentID: films, IncludeItemTypes: "Movie", SearchTerm: sdkacc.Alien}, -1},
+		{"the episodes of a library of films", embyfin.SearchOptions{ParentID: films, IncludeItemTypes: "Episode"}, 0},
+	} {
+		n, err := client.Count(ctx, tc.opts)
+		if err != nil {
+			t.Fatalf("counting %s: %v", tc.what, err)
+		}
+		items, total, err := client.Search(ctx, tc.opts)
+		if err != nil {
+			t.Fatalf("searching %s: %v", tc.what, err)
+		}
+
+		if n != total || n != len(items) || (tc.want >= 0 && n != tc.want) || (tc.want < 0 && n == 0) {
+			t.Errorf("a count of %s = %d, and the search lists %d of %d; want %d (-1: as many as the search, and some)", tc.what, n, len(items), total, tc.want)
+		}
+	}
+}

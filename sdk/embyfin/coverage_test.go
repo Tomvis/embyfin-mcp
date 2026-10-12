@@ -662,13 +662,13 @@ func TestSubtitles(t *testing.T) {
 func TestCountsDevicesAndLogFiles(t *testing.T) {
 	t.Parallel()
 
-	counts := `{"MovieCount":10,"SeriesCount":2,"EpisodeCount":30,"AlbumCount":4,"SongCount":50,"MusicVideoCount":1,"BoxSetCount":3,"TrailerCount":7}`
+	counts := `{"MovieCount":10,"SeriesCount":2,"EpisodeCount":30,"AlbumCount":4,"SongCount":50,"MusicVideoCount":1,"BoxSetCount":3,"TrailerCount":7,"ArtistCount":6,"BookCount":8,"ProgramCount":9,"ItemCount":130}`
 	devices := `{"Items":[{"Name":"Zzyzx Phone","AppName":"Zzyzx App","AppVersion":"1.2","LastUserName":"zed","DateLastActivity":"2026-09-14T00:00:00Z","Id":"d9"}],"TotalRecordCount":1}`
 	logs := `[{"Name":"server.txt","Size":2048,"DateModified":"2026-09-14T00:00:00Z","DateCreated":"2026-09-01T00:00:00Z"}]`
 	checkCounts := func(t *testing.T, backend Backend, n *ItemCounts, err error) {
 		t.Helper()
 
-		if err != nil || n.MovieCount != 10 || n.SeriesCount != 2 || n.EpisodeCount != 30 || n.AlbumCount != 4 || n.SongCount != 50 || n.MusicVideoCount != 1 || n.BoxSetCount != 3 || n.TrailerCount != 7 {
+		if want := (ItemCounts{MovieCount: 10, SeriesCount: 2, EpisodeCount: 30, AlbumCount: 4, SongCount: 50, MusicVideoCount: 1, BoxSetCount: 3, TrailerCount: 7, ArtistCount: 6, BookCount: 8, ProgramCount: 9, ItemCount: 130}); err != nil || *n != want {
 			t.Errorf("%s Counts = %+v, %v", backend, n, err)
 		}
 	}

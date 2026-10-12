@@ -31,6 +31,7 @@
 - one acceptance journey per server that goes from nothing to audited to fixed and back: it makes an account and a library, fixes every finding `audit_all` reports with the tools, makes a collection and a playlist, and removes all of it again, leaving the server holding what it held before
 - 92 tools: 62 read, 24 write, 6 delete
 - `acceptance/embyfin`: live tests of the hand-written `sdk/embyfin` layer by itself, each written once and run against both servers (`make testacc-embyfin`)
+- `sdk/embyfin`: `Count` says how many items a search matches without fetching any of them, and `ItemCounts` carries the server's artists, books, programs and its own total of everything, which Emby leaves at 0
 
 ### Fixed
 

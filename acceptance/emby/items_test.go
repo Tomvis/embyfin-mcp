@@ -180,6 +180,20 @@ func TestEmbyItemsQuery(t *testing.T) {
 		if counts.MovieCount < len(sdkacc.Movies) || counts.SeriesCount < len(sdkacc.Shows) || counts.EpisodeCount < sdkacc.SDKShows.Episodes {
 			t.Errorf("counts = %+v, fewer than the fixtures", counts)
 		}
+
+		// a limit of none answers the total alone, on the plain route and the user's: the same count as a limit of one, and no item fetched
+		for _, kind := range []string{"Movie", "Series", "Episode"} {
+			plain := sdkacc.Must(embyc.Items.GetItems(ctx, emby.GetItemsOptions{Recursive: new(true), IncludeItemTypes: kind, Limit: new(0)})).Answer
+			users := sdkacc.Must(embyc.Items.GetUsersByUserIdItems(ctx, adminID, emby.GetUsersByUserIdItemsOptions{Recursive: new(true), IncludeItemTypes: kind, Limit: new(0)})).Answer
+			if want := count(kind); len(plain.Items) != 0 || plain.TotalRecordCount != want || len(users.Items) != 0 || users.TotalRecordCount != want {
+				t.Errorf("a limit of none over %s = %d items of %d, and %d of %d for the user; want none of %d from both", kind, len(plain.Items), plain.TotalRecordCount, len(users.Items), users.TotalRecordCount, want)
+			}
+		}
+
+		inLibrary := sdkacc.Must(embyc.Items.GetItems(ctx, emby.GetItemsOptions{ParentId: moviesID, Recursive: new(true), IncludeItemTypes: "Movie", Limit: new(0)})).Answer
+		if len(inLibrary.Items) != 0 || inLibrary.TotalRecordCount != sdkacc.SDKMovies.FilmCount() {
+			t.Errorf("a limit of none over one library's films = %d items of %d, want none of %d", len(inLibrary.Items), inLibrary.TotalRecordCount, sdkacc.SDKMovies.FilmCount())
+		}
 	})
 }
 

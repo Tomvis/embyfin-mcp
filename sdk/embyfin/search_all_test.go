@@ -11,6 +11,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/katbyte/pandorest/client"
 )
 
 // library is a canned server's items in the order it sorts them, which a
@@ -814,6 +816,65 @@ func TestSearchChecksASavedSince(t *testing.T) {
 			case !fine && (err == nil || !strings.Contains(err.Error(), "is not a date") || len(requests) != 0):
 				t.Errorf("%s: saved since %q = %v after %d requests; want it refused as no date, nothing asked", backend, since, err, len(requests))
 			}
+		}
+	}
+}
+
+// A count asks for the total and nothing else: a limit of none, the filters as a search sends them, and none of what only shapes a list.
+func TestCountAsksForNoItems(t *testing.T) {
+	t.Parallel()
+
+	// Emby's parameters are capitalised and Jellyfin's are not
+	named := func(backend Backend, name string) string {
+		if backend == Jellyfin {
+			return strings.ToLower(name[:1]) + name[1:]
+		}
+
+		return name
+	}
+	none := `{"Items":[],"TotalRecordCount":42}`
+
+	for _, backend := range []Backend{Emby, Jellyfin} {
+		c, f := newFake(t, backend, map[string]route{"GET /Items": ok(none)})
+		total, err := c.Count(t.Context(), SearchOptions{ParentID: "lib1", IncludeItemTypes: "Season", Filters: "IsUnplayed", Fields: FieldsDetail, SortBy: "SortName", SortOrder: "Descending", Limit: 50, StartIndex: 10, EnableUserData: true})
+		if err != nil || total != 42 {
+			t.Errorf("%s: Count = %d, %v, want 42", backend, total, err)
+		}
+
+		q := f.only("GET /Items").query
+		for name, want := range map[string]string{"Limit": "0", "ParentId": "lib1", "IncludeItemTypes": "Season", "Filters": "IsUnplayed", "Recursive": "true"} {
+			if got := q.Get(named(backend, name)); got != want {
+				t.Errorf("%s: a count asked with %s = %q, want %q", backend, name, got, want)
+			}
+		}
+		for _, name := range []string{"Fields", "SortBy", "SortOrder", "StartIndex", "EnableUserData"} {
+			if q.Has(named(backend, name)) {
+				t.Errorf("%s: a count asked with %s = %q, which only shapes a list", backend, name, q.Get(named(backend, name)))
+			}
+		}
+
+		// for a user it is asked the way that user's search is: by Emby's own route, and by Jellyfin's parameter
+		asked, user := "GET /Items", "u1"
+		if backend == Emby {
+			asked, user = "GET /Users/u1/Items", ""
+		}
+		c, f = newFake(t, backend, map[string]route{asked: ok(none)})
+		if total, err := c.Count(t.Context(), SearchOptions{UserID: "u1", Filters: "IsPlayed"}); err != nil || total != 42 {
+			t.Errorf("%s: a user's Count = %d, %v, want 42", backend, total, err)
+		}
+		if q := f.only(asked).query; q.Get(named(backend, "Limit")) != "0" || q.Get(named(backend, "Filters")) != "IsPlayed" || q.Get("userId") != user || q.Has(named(backend, "Fields")) {
+			t.Errorf("%s: a user's count asked %s with %v", backend, asked, q)
+		}
+
+		// a count the server refuses is its refusal, not a count of none, and one that could not be sent is not sent
+		c, _ = newFake(t, backend, map[string]route{"GET /Items": answer(http.StatusForbidden, "")})
+		if total, err := c.Count(t.Context(), SearchOptions{}); client.StatusCode(err) != http.StatusForbidden || total != 0 {
+			t.Errorf("%s: a refused Count = %d, %v", backend, total, err)
+		}
+
+		c, f = newFake(t, backend, map[string]route{"GET /Items": ok(none)})
+		if _, err := c.Count(t.Context(), SearchOptions{SavedSince: "last tuesday"}); err == nil || !strings.Contains(err.Error(), "is not a date") || len(f.all("GET /Items")) != 0 {
+			t.Errorf("%s: a count since no date = %v after %d requests; want it refused, nothing asked", backend, err, len(f.all("GET /Items")))
 		}
 	}
 }

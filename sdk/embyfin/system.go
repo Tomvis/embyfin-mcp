@@ -128,6 +128,12 @@ type ItemCounts struct {
 	MusicVideoCount int `json:"MusicVideoCount"`
 	BoxSetCount     int `json:"BoxSetCount"`
 	TrailerCount    int `json:"TrailerCount"`
+	ArtistCount     int `json:"ArtistCount"`
+	BookCount       int `json:"BookCount"`
+	ProgramCount    int `json:"ProgramCount"`
+	// ItemCount is the server's own total of everything. Jellyfin's is what an item query with no filter counts for whoever asks (seen on 12.2); Emby
+	// leaves it at 0 whatever it holds (seen on 4.10.1).
+	ItemCount int `json:"ItemCount"`
 }
 
 func (c *Client) Counts(ctx context.Context) (*ItemCounts, error) {

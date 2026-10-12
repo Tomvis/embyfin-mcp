@@ -262,6 +262,7 @@ func countsFromJF(d *jf.ItemCounts) *ItemCounts {
 	return &ItemCounts{
 		MovieCount: d.MovieCount, SeriesCount: d.SeriesCount, EpisodeCount: d.EpisodeCount, AlbumCount: d.AlbumCount,
 		SongCount: d.SongCount, MusicVideoCount: d.MusicVideoCount, BoxSetCount: d.BoxSetCount, TrailerCount: d.TrailerCount,
+		ArtistCount: d.ArtistCount, BookCount: d.BookCount, ProgramCount: d.ProgramCount, ItemCount: d.ItemCount,
 	}
 }
 

@@ -155,6 +155,20 @@ func TestJFItemsQuery(t *testing.T) {
 		if counts.MovieCount < len(sdkacc.Movies) || counts.SeriesCount < len(sdkacc.Shows) || counts.EpisodeCount < sdkacc.SDKShows.Episodes {
 			t.Errorf("counts = %+v, fewer than the fixtures", counts)
 		}
+
+		// a limit of none answers the total alone, with a user and without: the same count as a limit of one, and no item fetched
+		for _, kind := range []jf.BaseItemKind{jf.BaseItemKindMovie, jf.BaseItemKindSeries, jf.BaseItemKindEpisode} {
+			plain := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{Recursive: new(true), IncludeItemTypes: []jf.BaseItemKind{kind}, Limit: new(0)})).Answer
+			users := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{UserId: adminID, Recursive: new(true), IncludeItemTypes: []jf.BaseItemKind{kind}, Limit: new(0)})).Answer
+			if want := count(kind); len(plain.Items) != 0 || plain.TotalRecordCount != want || len(users.Items) != 0 || users.TotalRecordCount != want {
+				t.Errorf("a limit of none over %s = %d items of %d, and %d of %d for the user; want none of %d from both", kind, len(plain.Items), plain.TotalRecordCount, len(users.Items), users.TotalRecordCount, want)
+			}
+		}
+
+		inLibrary := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{ParentId: moviesID, Recursive: new(true), IncludeItemTypes: []jf.BaseItemKind{jf.BaseItemKindMovie}, Limit: new(0)})).Answer
+		if len(inLibrary.Items) != 0 || inLibrary.TotalRecordCount != sdkacc.SDKMovies.FilmCount() {
+			t.Errorf("a limit of none over one library's films = %d items of %d, want none of %d", len(inLibrary.Items), inLibrary.TotalRecordCount, sdkacc.SDKMovies.FilmCount())
+		}
 	})
 }
 
