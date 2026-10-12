@@ -104,7 +104,7 @@ api() {
 # The catalogue. Real titles with their real provider ids, so the servers'
 # own metadata fetchers (recorded through the proxy) and the audits have
 # something true to compare against. Change a line here and the suites'
-# fixture tables (acceptance/harness_test.go, integration/harness_test.go)
+# fixture tables (acceptance/tools/harness_test.go, lib/sdkacc/sdkacc.go)
 # must agree.
 #
 # folder|title|year|tmdb|imdb|runtime minutes|genre|director|plot - the
@@ -376,7 +376,7 @@ SEGMENTS="${EMBYFIN_TEST_SEGMENTS:-${HOME}/.cache/embyfin-mcp/testenv/segments}"
 
 # still FILE SECONDS SIZE RATE ENCODER... - SECONDS of the grey frame at
 # SIZE and RATE frames a second, picture only, encoded with ENCODER and kept
-# as FILE, made once. The acceptance and integration suites can make
+# as FILE, made once. The tool and SDK suites can make
 # fixtures side by side, so it is written under a name of its own and moved
 # into place whole.
 still() {

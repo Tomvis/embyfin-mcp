@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 type PlayState struct {
@@ -65,25 +65,25 @@ type Session struct {
 
 func (c *Client) Sessions(ctx context.Context) ([]Session, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetSessions(ctx, emby.GetSessionsOperationOptions{})
+		res, err := c.emby.Sessions.GetSessions(ctx, emby.GetSessionsOptions{})
 		if err != nil {
 			return nil, err
 		}
-		sessions := make([]Session, 0, len(res.Model))
-		for i := range res.Model {
-			sessions = append(sessions, sessionFromEmby(&res.Model[i]))
+		sessions := make([]Session, 0, len(res.Answer))
+		for i := range res.Answer {
+			sessions = append(sessions, sessionFromEmby(&res.Answer[i]))
 		}
 
 		return sessions, nil
 	}
 
-	res, err := c.jf.GetSessions(ctx, jf.GetSessionsOperationOptions{})
+	res, err := c.jf.Session.GetSessions(ctx, jf.GetSessionsOptions{})
 	if err != nil {
 		return nil, err
 	}
-	sessions := make([]Session, 0, len(res.Model))
-	for i := range res.Model {
-		sessions = append(sessions, sessionFromJF(&res.Model[i]))
+	sessions := make([]Session, 0, len(res.Answer))
+	for i := range res.Answer {
+		sessions = append(sessions, sessionFromJF(&res.Answer[i]))
 	}
 
 	return sessions, nil
@@ -102,12 +102,12 @@ func (c *Client) Play(ctx context.Context, sessionID string, itemIDs []string, p
 			}
 			ids = append(ids, n)
 		}
-		_, err := c.emby.PostSessionsByIdPlaying(ctx, sessionID, emby.PlayRequest{}, emby.PostSessionsByIdPlayingOperationOptions{ItemIds: ids, PlayCommand: emby.PlayCommand(playCommand)})
+		_, err := c.emby.Sessions.PostSessionsByIdPlaying(ctx, sessionID, emby.PlayRequest{}, emby.PostSessionsByIdPlayingOptions{ItemIds: ids, PlayCommand: emby.PlayCommand(playCommand)})
 
 		return err
 	}
 
-	_, err := c.jf.Play(ctx, sessionID, jf.PlayOperationOptions{ItemIds: itemIDs, PlayCommand: jf.PlayCommand(playCommand)})
+	_, err := c.jf.Session.Play(ctx, sessionID, jf.PlayOptions{ItemIds: itemIDs, PlayCommand: jf.PlayCommand(playCommand)})
 
 	return err
 }
@@ -123,21 +123,21 @@ func (c *Client) PlayCommand(ctx context.Context, sessionID, command string, see
 		// (emby-playstate-seek-query), where Emby's own web client sends it
 		// and 0 is sent
 		var body emby.PlaystateRequest
-		var options emby.PostSessionsByIdPlayingByCommandOperationOptions
+		var position []int64
 		if seek {
 			body.SeekPositionTicks = seekTicks
-			options.SeekPositionTicks = &seekTicks
+			position = []int64{seekTicks}
 		}
-		_, err := c.emby.PostSessionsByIdPlayingByCommand(ctx, sessionID, emby.PlaystateCommand(command), body, options)
+		_, err := c.emby.Sessions.PostSessionsByIdPlayingByCommand(ctx, sessionID, emby.PlaystateCommand(command), body, position...)
 
 		return err
 	}
 
-	var options jf.SendPlaystateCommandOperationOptions
+	var options jf.SendPlaystateCommandOptions
 	if seek {
 		options.SeekPositionTicks = &seekTicks
 	}
-	_, err := c.jf.SendPlaystateCommand(ctx, sessionID, jf.PlaystateCommand(command), options)
+	_, err := c.jf.Session.SendPlaystateCommand(ctx, sessionID, jf.PlaystateCommand(command), options)
 
 	return err
 }
@@ -146,11 +146,11 @@ func (c *Client) PlayCommand(ctx context.Context, sessionID, command string, see
 // message as query parameters, Jellyfin as a JSON body.
 func (c *Client) Message(ctx context.Context, sessionID, header, text string, timeoutMs int) error {
 	if c.isEmby() {
-		_, err := c.emby.PostSessionsByIdMessage(ctx, sessionID, emby.PostSessionsByIdMessageOperationOptions{Text: text, Header: header, TimeoutMs: nz(int64(timeoutMs))})
+		_, err := c.emby.Sessions.PostSessionsByIdMessage(ctx, sessionID, emby.PostSessionsByIdMessageOptions{Text: text, Header: header, TimeoutMs: nz(int64(timeoutMs))})
 		return err
 	}
 
-	_, err := c.jf.SendMessageCommand(ctx, sessionID, jf.MessageCommand{Header: header, Text: text, TimeoutMs: int64(timeoutMs)})
+	_, err := c.jf.Session.SendMessageCommand(ctx, sessionID, jf.MessageCommand{Header: header, Text: text, TimeoutMs: int64(timeoutMs)})
 
 	return err
 }

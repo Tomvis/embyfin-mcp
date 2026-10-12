@@ -39,7 +39,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ListAddMovieResponse"
+          "ReferenceName": "ListAddMovieAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -83,7 +83,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ListCheckItemStatusResponse"
+          "ReferenceName": "ListCheckItemStatusAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -129,7 +129,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ListClearResponse"
+          "ReferenceName": "ListClearAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -164,7 +164,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ListCreateResponse"
+          "ReferenceName": "ListCreateAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -201,7 +201,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ListDeleteResponse"
+          "ReferenceName": "ListDeleteAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -245,7 +245,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ListDetailsResponse"
+          "ReferenceName": "ListDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -289,7 +289,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ListRemoveMovieResponse"
+          "ReferenceName": "ListRemoveMovieAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -299,19 +299,7 @@
   ],
   "Models": [
     {
-      "Name": "ListAddMovieRequest",
-      "Fields": [
-        {
-          "Name": "MediaId",
-          "JsonName": "media_id",
-          "Type": {
-            "Type": "Integer"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "ListAddMovieResponse",
+      "Name": "ListAddMovieAnswer",
       "Fields": [
         {
           "Name": "StatusCode",
@@ -330,7 +318,19 @@
       ]
     },
     {
-      "Name": "ListCheckItemStatusResponse",
+      "Name": "ListAddMovieRequest",
+      "Fields": [
+        {
+          "Name": "MediaId",
+          "JsonName": "media_id",
+          "Type": {
+            "Type": "Integer"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "ListCheckItemStatusAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -349,7 +349,7 @@
       ]
     },
     {
-      "Name": "ListClearResponse",
+      "Name": "ListClearAnswer",
       "Fields": [
         {
           "Name": "StatusCode",
@@ -368,33 +368,7 @@
       ]
     },
     {
-      "Name": "ListCreateRequest",
-      "Fields": [
-        {
-          "Name": "Description",
-          "JsonName": "description",
-          "Type": {
-            "Type": "String"
-          }
-        },
-        {
-          "Name": "Language",
-          "JsonName": "language",
-          "Type": {
-            "Type": "String"
-          }
-        },
-        {
-          "Name": "Name",
-          "JsonName": "name",
-          "Type": {
-            "Type": "String"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "ListCreateResponse",
+      "Name": "ListCreateAnswer",
       "Fields": [
         {
           "Name": "ListId",
@@ -427,7 +401,33 @@
       ]
     },
     {
-      "Name": "ListDeleteResponse",
+      "Name": "ListCreateRequest",
+      "Fields": [
+        {
+          "Name": "Description",
+          "JsonName": "description",
+          "Type": {
+            "Type": "String"
+          }
+        },
+        {
+          "Name": "Language",
+          "JsonName": "language",
+          "Type": {
+            "Type": "String"
+          }
+        },
+        {
+          "Name": "Name",
+          "JsonName": "name",
+          "Type": {
+            "Type": "String"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "ListDeleteAnswer",
       "Fields": [
         {
           "Name": "StatusCode",
@@ -446,7 +446,7 @@
       ]
     },
     {
-      "Name": "ListDetailsResponse",
+      "Name": "ListDetailsAnswer",
       "Fields": [
         {
           "Name": "CreatedBy",
@@ -497,7 +497,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "ListDetailsResponseItems"
+              "ReferenceName": "ListDetailsAnswerItems"
             }
           }
         },
@@ -518,7 +518,7 @@
       ]
     },
     {
-      "Name": "ListDetailsResponseItems",
+      "Name": "ListDetailsAnswerItems",
       "Fields": [
         {
           "Name": "Adult",
@@ -631,19 +631,7 @@
       ]
     },
     {
-      "Name": "ListRemoveMovieRequest",
-      "Fields": [
-        {
-          "Name": "MediaId",
-          "JsonName": "media_id",
-          "Type": {
-            "Type": "Integer"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "ListRemoveMovieResponse",
+      "Name": "ListRemoveMovieAnswer",
       "Fields": [
         {
           "Name": "StatusCode",
@@ -657,6 +645,18 @@
           "JsonName": "status_message",
           "Type": {
             "Type": "String"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "ListRemoveMovieRequest",
+      "Fields": [
+        {
+          "Name": "MediaId",
+          "JsonName": "media_id",
+          "Type": {
+            "Type": "Integer"
           }
         }
       ]

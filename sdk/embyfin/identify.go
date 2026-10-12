@@ -6,8 +6,8 @@ import (
 	"maps"
 	"strings"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 // RemoteSearchResult is a metadata provider's candidate match for an item.
@@ -139,17 +139,17 @@ func (c *Client) remoteSearchEmby(ctx context.Context, kind, itemID, name string
 
 	var results []emby.RemoteSearchResult
 	if kind == "Movie" {
-		var res emby.PostItemsRemoteSearchMovieOperationResponse
-		res, err = c.emby.PostItemsRemoteSearchMovie(ctx, emby.RemoteSearchQueryMovieInfo{
+		var res emby.PostItemsRemoteSearchMovieResponse
+		res, err = c.emby.ItemLookup.PostItemsRemoteSearchMovie(ctx, emby.RemoteSearchQueryMovieInfo{
 			ItemId: id, SearchInfo: &emby.MovieInfo{Name: name, Year: year, ProviderIds: ids},
 		})
-		results = res.Model
+		results = res.Answer
 	} else {
-		var res emby.PostItemsRemoteSearchSeriesOperationResponse
-		res, err = c.emby.PostItemsRemoteSearchSeries(ctx, emby.RemoteSearchQuerySeriesInfo{
+		var res emby.PostItemsRemoteSearchSeriesResponse
+		res, err = c.emby.ItemLookup.PostItemsRemoteSearchSeries(ctx, emby.RemoteSearchQuerySeriesInfo{
 			ItemId: id, SearchInfo: &emby.SeriesInfo{Name: name, Year: year, ProviderIds: ids},
 		})
-		results = res.Model
+		results = res.Answer
 	}
 	if err != nil {
 		return nil, err
@@ -169,17 +169,17 @@ func (c *Client) remoteSearchJF(ctx context.Context, kind, itemID, name string, 
 		err     error
 	)
 	if kind == "Movie" {
-		var res jf.GetMovieRemoteSearchResultsOperationResponse
-		res, err = c.jf.GetMovieRemoteSearchResults(ctx, jf.MovieInfoRemoteSearchQuery{
+		var res jf.GetMovieRemoteSearchResultsResponse
+		res, err = c.jf.ItemLookup.GetMovieRemoteSearchResults(ctx, jf.MovieInfoRemoteSearchQuery{
 			ItemId: itemID, SearchInfo: &jf.MovieInfo{Name: name, Year: year, ProviderIds: ids},
 		})
-		results = res.Model
+		results = res.Answer
 	} else {
-		var res jf.GetSeriesRemoteSearchResultsOperationResponse
-		res, err = c.jf.GetSeriesRemoteSearchResults(ctx, jf.SeriesInfoRemoteSearchQuery{
+		var res jf.GetSeriesRemoteSearchResultsResponse
+		res, err = c.jf.ItemLookup.GetSeriesRemoteSearchResults(ctx, jf.SeriesInfoRemoteSearchQuery{
 			ItemId: itemID, SearchInfo: &jf.SeriesInfo{Name: name, Year: year, ProviderIds: ids},
 		})
-		results = res.Model
+		results = res.Answer
 	}
 	if err != nil {
 		return nil, err
@@ -214,14 +214,14 @@ func (c *Client) ApplyRemoteSearchResult(ctx context.Context, itemID string, res
 		return nil, err
 	}
 
-	var replace *bool
+	var replace []bool
 	if replaceAllImages {
-		replace = new(true)
+		replace = []bool{true}
 	}
 	if c.isEmby() {
-		_, err = c.emby.PostItemsRemoteSearchApplyById(ctx, itemID, remoteSearchResultToEmby(&result), emby.PostItemsRemoteSearchApplyByIdOperationOptions{ReplaceAllImages: replace})
+		_, err = c.emby.ItemLookup.PostItemsRemoteSearchApplyById(ctx, itemID, remoteSearchResultToEmby(&result), replace...)
 	} else {
-		_, err = c.jf.ApplySearchCriteria(ctx, itemID, remoteSearchResultToJF(&result), jf.ApplySearchCriteriaOperationOptions{ReplaceAllImages: replace})
+		_, err = c.jf.ItemLookup.ApplySearchCriteria(ctx, itemID, remoteSearchResultToJF(&result), replace...)
 	}
 	if err != nil {
 		return nil, err

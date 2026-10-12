@@ -55,12 +55,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "SearchCollectionResponse"
+          "ReferenceName": "SearchCollectionAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "SearchCollectionAnswerResults"
+        }
+      }
     },
     {
       "Name": "SearchCompany",
@@ -91,12 +101,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "SearchCompanyResponse"
+          "ReferenceName": "SearchCompanyAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "SearchCompanyAnswerResults"
+        }
+      }
     },
     {
       "Name": "SearchKeyword",
@@ -127,12 +147,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "SearchKeywordResponse"
+          "ReferenceName": "SearchKeywordAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "SearchKeywordAnswerResults"
+        }
+      }
     },
     {
       "Name": "SearchMovie",
@@ -203,12 +233,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "SearchMovieResponse"
+          "ReferenceName": "SearchMovieAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "SearchMovieAnswerResults"
+        }
+      }
     },
     {
       "Name": "SearchMulti",
@@ -255,12 +295,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "SearchMultiResponse"
+          "ReferenceName": "SearchMultiAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "SearchMultiAnswerResults"
+        }
+      }
     },
     {
       "Name": "SearchPerson",
@@ -307,12 +357,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "SearchPersonResponse"
+          "ReferenceName": "SearchPersonAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "SearchPersonAnswerResults"
+        }
+      }
     },
     {
       "Name": "SearchTv",
@@ -377,17 +437,27 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "SearchTvResponse"
+          "ReferenceName": "SearchTvAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "SearchTvAnswerResults"
+        }
+      }
     }
   ],
   "Models": [
     {
-      "Name": "SearchCollectionResponse",
+      "Name": "SearchCollectionAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -403,7 +473,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "SearchCollectionResponseResults"
+              "ReferenceName": "SearchCollectionAnswerResults"
             }
           }
         },
@@ -424,7 +494,7 @@
       ]
     },
     {
-      "Name": "SearchCollectionResponseResults",
+      "Name": "SearchCollectionAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -485,7 +555,7 @@
       ]
     },
     {
-      "Name": "SearchCompanyResponse",
+      "Name": "SearchCompanyAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -501,7 +571,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "SearchCompanyResponseResults"
+              "ReferenceName": "SearchCompanyAnswerResults"
             }
           }
         },
@@ -522,7 +592,7 @@
       ]
     },
     {
-      "Name": "SearchCompanyResponseResults",
+      "Name": "SearchCompanyAnswerResults",
       "Fields": [
         {
           "Name": "Id",
@@ -555,7 +625,7 @@
       ]
     },
     {
-      "Name": "SearchKeywordResponse",
+      "Name": "SearchKeywordAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -571,7 +641,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "SearchKeywordResponseResults"
+              "ReferenceName": "SearchKeywordAnswerResults"
             }
           }
         },
@@ -592,7 +662,7 @@
       ]
     },
     {
-      "Name": "SearchKeywordResponseResults",
+      "Name": "SearchKeywordAnswerResults",
       "Fields": [
         {
           "Name": "Id",
@@ -611,7 +681,7 @@
       ]
     },
     {
-      "Name": "SearchMovieResponse",
+      "Name": "SearchMovieAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -627,7 +697,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "SearchMovieResponseResults"
+              "ReferenceName": "SearchMovieAnswerResults"
             }
           }
         },
@@ -648,7 +718,7 @@
       ]
     },
     {
-      "Name": "SearchMovieResponseResults",
+      "Name": "SearchMovieAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -754,7 +824,7 @@
       ]
     },
     {
-      "Name": "SearchMultiResponse",
+      "Name": "SearchMultiAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -770,7 +840,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "SearchMultiResponseResults"
+              "ReferenceName": "SearchMultiAnswerResults"
             }
           }
         },
@@ -791,7 +861,7 @@
       ]
     },
     {
-      "Name": "SearchMultiResponseResults",
+      "Name": "SearchMultiAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -918,7 +988,7 @@
       ]
     },
     {
-      "Name": "SearchPersonResponse",
+      "Name": "SearchPersonAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -934,7 +1004,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "SearchPersonResponseResults"
+              "ReferenceName": "SearchPersonAnswerResults"
             }
           }
         },
@@ -955,7 +1025,7 @@
       ]
     },
     {
-      "Name": "SearchPersonResponseResults",
+      "Name": "SearchPersonAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -985,7 +1055,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "SearchPersonResponseResultsKnownFor"
+              "ReferenceName": "SearchPersonAnswerResultsKnownFor"
             }
           }
         },
@@ -1027,7 +1097,7 @@
       ]
     },
     {
-      "Name": "SearchPersonResponseResultsKnownFor",
+      "Name": "SearchPersonAnswerResultsKnownFor",
       "Fields": [
         {
           "Name": "Adult",
@@ -1140,7 +1210,7 @@
       ]
     },
     {
-      "Name": "SearchTvResponse",
+      "Name": "SearchTvAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -1156,7 +1226,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "SearchTvResponseResults"
+              "ReferenceName": "SearchTvAnswerResults"
             }
           }
         },
@@ -1177,7 +1247,7 @@
       ]
     },
     {
-      "Name": "SearchTvResponseResults",
+      "Name": "SearchTvAnswerResults",
       "Fields": [
         {
           "Name": "Adult",

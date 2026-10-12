@@ -38,12 +38,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ChangesMovieListResponse"
+          "ReferenceName": "ChangesMovieListAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "ChangesMovieListAnswerResults"
+        }
+      }
     },
     {
       "Name": "MovieAccountStates",
@@ -82,7 +92,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieAccountStatesResponse"
+          "ReferenceName": "MovieAccountStatesAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -133,7 +143,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieAddRatingResponse"
+          "ReferenceName": "MovieAddRatingAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -170,7 +180,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieAlternativeTitlesResponse"
+          "ReferenceName": "MovieAlternativeTitlesAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -222,7 +232,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieChangesResponse"
+          "ReferenceName": "MovieChangesAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -258,7 +268,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieCreditsResponse"
+          "ReferenceName": "MovieCreditsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -302,7 +312,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieDeleteRatingResponse"
+          "ReferenceName": "MovieDeleteRatingAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -347,7 +357,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieDetailsResponse"
+          "ReferenceName": "MovieDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -373,7 +383,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieExternalIdsResponse"
+          "ReferenceName": "MovieExternalIdsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -418,7 +428,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieImagesResponse"
+          "ReferenceName": "MovieImagesAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -444,7 +454,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieKeywordsResponse"
+          "ReferenceName": "MovieKeywordsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -461,7 +471,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieLatestIdResponse"
+          "ReferenceName": "MovieLatestIdAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -505,12 +515,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieListsResponse"
+          "ReferenceName": "MovieListsAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "MovieListsAnswerResults"
+        }
+      }
     },
     {
       "Name": "MovieNowPlayingList",
@@ -549,12 +569,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieNowPlayingListResponse"
+          "ReferenceName": "MovieNowPlayingListAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "MovieNowPlayingListAnswerResults"
+        }
+      }
     },
     {
       "Name": "MoviePopularList",
@@ -593,12 +623,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MoviePopularListResponse"
+          "ReferenceName": "MoviePopularListAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "MoviePopularListAnswerResults"
+        }
+      }
     },
     {
       "Name": "MovieRecommendations",
@@ -662,7 +702,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieReleaseDatesResponse"
+          "ReferenceName": "MovieReleaseDatesAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -706,12 +746,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieReviewsResponse"
+          "ReferenceName": "MovieReviewsAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "MovieReviewsAnswerResults"
+        }
+      }
     },
     {
       "Name": "MovieSimilar",
@@ -750,12 +800,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieSimilarResponse"
+          "ReferenceName": "MovieSimilarAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "MovieSimilarAnswerResults"
+        }
+      }
     },
     {
       "Name": "MovieTopRatedList",
@@ -794,12 +854,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieTopRatedListResponse"
+          "ReferenceName": "MovieTopRatedListAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "MovieTopRatedListAnswerResults"
+        }
+      }
     },
     {
       "Name": "MovieTranslations",
@@ -820,7 +890,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieTranslationsResponse"
+          "ReferenceName": "MovieTranslationsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -864,12 +934,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieUpcomingListResponse"
+          "ReferenceName": "MovieUpcomingListAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "MovieUpcomingListAnswerResults"
+        }
+      }
     },
     {
       "Name": "MovieVideos",
@@ -900,7 +980,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieVideosResponse"
+          "ReferenceName": "MovieVideosAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -926,7 +1006,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "MovieWatchProvidersResponse"
+          "ReferenceName": "MovieWatchProvidersAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -936,7 +1016,7 @@
   ],
   "Models": [
     {
-      "Name": "ChangesMovieListResponse",
+      "Name": "ChangesMovieListAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -952,7 +1032,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "ChangesMovieListResponseResults"
+              "ReferenceName": "ChangesMovieListAnswerResults"
             }
           }
         },
@@ -973,7 +1053,7 @@
       ]
     },
     {
-      "Name": "ChangesMovieListResponseResults",
+      "Name": "ChangesMovieListAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -992,7 +1072,7 @@
       ]
     },
     {
-      "Name": "MovieAccountStatesResponse",
+      "Name": "MovieAccountStatesAnswer",
       "Fields": [
         {
           "Name": "Favorite",
@@ -1013,7 +1093,7 @@
           "JsonName": "rated",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieAccountStatesResponseRated"
+            "ReferenceName": "MovieAccountStatesAnswerRated"
           }
         },
         {
@@ -1026,7 +1106,7 @@
       ]
     },
     {
-      "Name": "MovieAccountStatesResponseRated",
+      "Name": "MovieAccountStatesAnswerRated",
       "Fields": [
         {
           "Name": "Value",
@@ -1038,19 +1118,7 @@
       ]
     },
     {
-      "Name": "MovieAddRatingRequest",
-      "Fields": [
-        {
-          "Name": "Value",
-          "JsonName": "value",
-          "Type": {
-            "Type": "Double"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "MovieAddRatingResponse",
+      "Name": "MovieAddRatingAnswer",
       "Fields": [
         {
           "Name": "StatusCode",
@@ -1069,7 +1137,19 @@
       ]
     },
     {
-      "Name": "MovieAlternativeTitlesResponse",
+      "Name": "MovieAddRatingRequest",
+      "Fields": [
+        {
+          "Name": "Value",
+          "JsonName": "value",
+          "Type": {
+            "Type": "Double"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "MovieAlternativeTitlesAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -1085,14 +1165,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieAlternativeTitlesResponseTitles"
+              "ReferenceName": "MovieAlternativeTitlesAnswerTitles"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieAlternativeTitlesResponseTitles",
+      "Name": "MovieAlternativeTitlesAnswerTitles",
       "Fields": [
         {
           "Name": "Iso31661",
@@ -1118,7 +1198,7 @@
       ]
     },
     {
-      "Name": "MovieChangesResponse",
+      "Name": "MovieChangesAnswer",
       "Fields": [
         {
           "Name": "Changes",
@@ -1127,14 +1207,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieChangesResponseChanges"
+              "ReferenceName": "MovieChangesAnswerChanges"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieChangesResponseChanges",
+      "Name": "MovieChangesAnswerChanges",
       "Fields": [
         {
           "Name": "Items",
@@ -1143,7 +1223,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieChangesResponseChangesItems"
+              "ReferenceName": "MovieChangesAnswerChangesItems"
             }
           }
         },
@@ -1157,7 +1237,7 @@
       ]
     },
     {
-      "Name": "MovieChangesResponseChangesItems",
+      "Name": "MovieChangesAnswerChangesItems",
       "Fields": [
         {
           "Name": "Action",
@@ -1204,7 +1284,7 @@
       ]
     },
     {
-      "Name": "MovieCreditsResponse",
+      "Name": "MovieCreditsAnswer",
       "Fields": [
         {
           "Name": "Cast",
@@ -1213,7 +1293,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieCreditsResponseCast"
+              "ReferenceName": "MovieCreditsAnswerCast"
             }
           }
         },
@@ -1224,7 +1304,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieCreditsResponseCrew"
+              "ReferenceName": "MovieCreditsAnswerCrew"
             }
           }
         },
@@ -1238,7 +1318,7 @@
       ]
     },
     {
-      "Name": "MovieCreditsResponseCast",
+      "Name": "MovieCreditsAnswerCast",
       "Fields": [
         {
           "Name": "Adult",
@@ -1327,7 +1407,7 @@
       ]
     },
     {
-      "Name": "MovieCreditsResponseCrew",
+      "Name": "MovieCreditsAnswerCrew",
       "Fields": [
         {
           "Name": "Adult",
@@ -1409,7 +1489,7 @@
       ]
     },
     {
-      "Name": "MovieDeleteRatingResponse",
+      "Name": "MovieDeleteRatingAnswer",
       "Fields": [
         {
           "Name": "StatusCode",
@@ -1428,7 +1508,7 @@
       ]
     },
     {
-      "Name": "MovieDetailsResponse",
+      "Name": "MovieDetailsAnswer",
       "Fields": [
         {
           "Name": "Adult",
@@ -1449,7 +1529,7 @@
           "JsonName": "belongs_to_collection",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieDetailsResponseBelongsToCollection"
+            "ReferenceName": "MovieDetailsAnswerBelongsToCollection"
           }
         },
         {
@@ -1466,7 +1546,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieDetailsResponseGenres"
+              "ReferenceName": "MovieDetailsAnswerGenres"
             }
           }
         },
@@ -1543,7 +1623,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieDetailsResponseProductionCompanies"
+              "ReferenceName": "MovieDetailsAnswerProductionCompanies"
             }
           }
         },
@@ -1554,7 +1634,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieDetailsResponseProductionCountries"
+              "ReferenceName": "MovieDetailsAnswerProductionCountries"
             }
           }
         },
@@ -1586,7 +1666,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieDetailsResponseSpokenLanguages"
+              "ReferenceName": "MovieDetailsAnswerSpokenLanguages"
             }
           }
         },
@@ -1635,7 +1715,7 @@
       ]
     },
     {
-      "Name": "MovieDetailsResponseBelongsToCollection",
+      "Name": "MovieDetailsAnswerBelongsToCollection",
       "Fields": [
         {
           "Name": "BackdropPath",
@@ -1668,7 +1748,7 @@
       ]
     },
     {
-      "Name": "MovieDetailsResponseGenres",
+      "Name": "MovieDetailsAnswerGenres",
       "Fields": [
         {
           "Name": "Id",
@@ -1687,7 +1767,7 @@
       ]
     },
     {
-      "Name": "MovieDetailsResponseProductionCompanies",
+      "Name": "MovieDetailsAnswerProductionCompanies",
       "Fields": [
         {
           "Name": "Id",
@@ -1720,7 +1800,7 @@
       ]
     },
     {
-      "Name": "MovieDetailsResponseProductionCountries",
+      "Name": "MovieDetailsAnswerProductionCountries",
       "Fields": [
         {
           "Name": "Iso31661",
@@ -1739,7 +1819,7 @@
       ]
     },
     {
-      "Name": "MovieDetailsResponseSpokenLanguages",
+      "Name": "MovieDetailsAnswerSpokenLanguages",
       "Fields": [
         {
           "Name": "EnglishName",
@@ -1765,7 +1845,7 @@
       ]
     },
     {
-      "Name": "MovieExternalIdsResponse",
+      "Name": "MovieExternalIdsAnswer",
       "Fields": [
         {
           "Name": "FacebookId",
@@ -1812,7 +1892,7 @@
       ]
     },
     {
-      "Name": "MovieImagesResponse",
+      "Name": "MovieImagesAnswer",
       "Fields": [
         {
           "Name": "Backdrops",
@@ -1821,7 +1901,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieImagesResponseBackdrops"
+              "ReferenceName": "MovieImagesAnswerBackdrops"
             }
           }
         },
@@ -1839,7 +1919,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieImagesResponseLogos"
+              "ReferenceName": "MovieImagesAnswerLogos"
             }
           }
         },
@@ -1850,14 +1930,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieImagesResponsePosters"
+              "ReferenceName": "MovieImagesAnswerPosters"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieImagesResponseBackdrops",
+      "Name": "MovieImagesAnswerBackdrops",
       "Fields": [
         {
           "Name": "AspectRatio",
@@ -1911,7 +1991,7 @@
       ]
     },
     {
-      "Name": "MovieImagesResponseLogos",
+      "Name": "MovieImagesAnswerLogos",
       "Fields": [
         {
           "Name": "AspectRatio",
@@ -1965,7 +2045,7 @@
       ]
     },
     {
-      "Name": "MovieImagesResponsePosters",
+      "Name": "MovieImagesAnswerPosters",
       "Fields": [
         {
           "Name": "AspectRatio",
@@ -2019,7 +2099,7 @@
       ]
     },
     {
-      "Name": "MovieKeywordsResponse",
+      "Name": "MovieKeywordsAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -2035,14 +2115,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieKeywordsResponseKeywords"
+              "ReferenceName": "MovieKeywordsAnswerKeywords"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieKeywordsResponseKeywords",
+      "Name": "MovieKeywordsAnswerKeywords",
       "Fields": [
         {
           "Name": "Id",
@@ -2061,7 +2141,7 @@
       ]
     },
     {
-      "Name": "MovieLatestIdResponse",
+      "Name": "MovieLatestIdAnswer",
       "Fields": [
         {
           "Name": "Adult",
@@ -2082,7 +2162,7 @@
           "JsonName": "belongs_to_collection",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieLatestIdResponseBelongsToCollection"
+            "ReferenceName": "MovieLatestIdAnswerBelongsToCollection"
           }
         },
         {
@@ -2099,7 +2179,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieLatestIdResponseGenres"
+              "ReferenceName": "MovieLatestIdAnswerGenres"
             }
           }
         },
@@ -2166,7 +2246,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieLatestIdResponseProductionCompanies"
+              "ReferenceName": "MovieLatestIdAnswerProductionCompanies"
             }
           }
         },
@@ -2177,7 +2257,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieLatestIdResponseProductionCountries"
+              "ReferenceName": "MovieLatestIdAnswerProductionCountries"
             }
           }
         },
@@ -2209,7 +2289,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieLatestIdResponseSpokenLanguages"
+              "ReferenceName": "MovieLatestIdAnswerSpokenLanguages"
             }
           }
         },
@@ -2258,7 +2338,7 @@
       ]
     },
     {
-      "Name": "MovieLatestIdResponseBelongsToCollection",
+      "Name": "MovieLatestIdAnswerBelongsToCollection",
       "Fields": [
         {
           "Name": "BackdropPath",
@@ -2291,7 +2371,7 @@
       ]
     },
     {
-      "Name": "MovieLatestIdResponseGenres",
+      "Name": "MovieLatestIdAnswerGenres",
       "Fields": [
         {
           "Name": "Id",
@@ -2310,7 +2390,7 @@
       ]
     },
     {
-      "Name": "MovieLatestIdResponseProductionCompanies",
+      "Name": "MovieLatestIdAnswerProductionCompanies",
       "Fields": [
         {
           "Name": "Id",
@@ -2343,7 +2423,7 @@
       ]
     },
     {
-      "Name": "MovieLatestIdResponseProductionCountries",
+      "Name": "MovieLatestIdAnswerProductionCountries",
       "Fields": [
         {
           "Name": "Iso31661",
@@ -2362,7 +2442,7 @@
       ]
     },
     {
-      "Name": "MovieLatestIdResponseSpokenLanguages",
+      "Name": "MovieLatestIdAnswerSpokenLanguages",
       "Fields": [
         {
           "Name": "EnglishName",
@@ -2388,7 +2468,7 @@
       ]
     },
     {
-      "Name": "MovieListsResponse",
+      "Name": "MovieListsAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -2411,7 +2491,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieListsResponseResults"
+              "ReferenceName": "MovieListsAnswerResults"
             }
           }
         },
@@ -2432,7 +2512,7 @@
       ]
     },
     {
-      "Name": "MovieListsResponseResults",
+      "Name": "MovieListsAnswerResults",
       "Fields": [
         {
           "Name": "Description",
@@ -2493,14 +2573,14 @@
       ]
     },
     {
-      "Name": "MovieNowPlayingListResponse",
+      "Name": "MovieNowPlayingListAnswer",
       "Fields": [
         {
           "Name": "Dates",
           "JsonName": "dates",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieNowPlayingListResponseDates"
+            "ReferenceName": "MovieNowPlayingListAnswerDates"
           }
         },
         {
@@ -2517,7 +2597,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieNowPlayingListResponseResults"
+              "ReferenceName": "MovieNowPlayingListAnswerResults"
             }
           }
         },
@@ -2538,7 +2618,7 @@
       ]
     },
     {
-      "Name": "MovieNowPlayingListResponseDates",
+      "Name": "MovieNowPlayingListAnswerDates",
       "Fields": [
         {
           "Name": "Maximum",
@@ -2557,7 +2637,7 @@
       ]
     },
     {
-      "Name": "MovieNowPlayingListResponseResults",
+      "Name": "MovieNowPlayingListAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -2663,7 +2743,7 @@
       ]
     },
     {
-      "Name": "MoviePopularListResponse",
+      "Name": "MoviePopularListAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -2679,7 +2759,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MoviePopularListResponseResults"
+              "ReferenceName": "MoviePopularListAnswerResults"
             }
           }
         },
@@ -2700,7 +2780,7 @@
       ]
     },
     {
-      "Name": "MoviePopularListResponseResults",
+      "Name": "MoviePopularListAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -2806,7 +2886,7 @@
       ]
     },
     {
-      "Name": "MovieReleaseDatesResponse",
+      "Name": "MovieReleaseDatesAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -2822,14 +2902,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieReleaseDatesResponseResults"
+              "ReferenceName": "MovieReleaseDatesAnswerResults"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieReleaseDatesResponseResults",
+      "Name": "MovieReleaseDatesAnswerResults",
       "Fields": [
         {
           "Name": "Iso31661",
@@ -2845,14 +2925,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieReleaseDatesResponseResultsReleaseDates"
+              "ReferenceName": "MovieReleaseDatesAnswerResultsReleaseDates"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieReleaseDatesResponseResultsReleaseDates",
+      "Name": "MovieReleaseDatesAnswerResultsReleaseDates",
       "Fields": [
         {
           "Name": "Certification",
@@ -2902,7 +2982,7 @@
       ]
     },
     {
-      "Name": "MovieReviewsResponse",
+      "Name": "MovieReviewsAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -2925,7 +3005,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieReviewsResponseResults"
+              "ReferenceName": "MovieReviewsAnswerResults"
             }
           }
         },
@@ -2946,7 +3026,7 @@
       ]
     },
     {
-      "Name": "MovieReviewsResponseResults",
+      "Name": "MovieReviewsAnswerResults",
       "Fields": [
         {
           "Name": "Author",
@@ -2960,7 +3040,7 @@
           "JsonName": "author_details",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieReviewsResponseResultsAuthorDetails"
+            "ReferenceName": "MovieReviewsAnswerResultsAuthorDetails"
           }
         },
         {
@@ -3001,7 +3081,7 @@
       ]
     },
     {
-      "Name": "MovieReviewsResponseResultsAuthorDetails",
+      "Name": "MovieReviewsAnswerResultsAuthorDetails",
       "Fields": [
         {
           "Name": "AvatarPath",
@@ -3034,7 +3114,7 @@
       ]
     },
     {
-      "Name": "MovieSimilarResponse",
+      "Name": "MovieSimilarAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -3050,7 +3130,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieSimilarResponseResults"
+              "ReferenceName": "MovieSimilarAnswerResults"
             }
           }
         },
@@ -3071,7 +3151,7 @@
       ]
     },
     {
-      "Name": "MovieSimilarResponseResults",
+      "Name": "MovieSimilarAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -3177,7 +3257,7 @@
       ]
     },
     {
-      "Name": "MovieTopRatedListResponse",
+      "Name": "MovieTopRatedListAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -3193,7 +3273,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieTopRatedListResponseResults"
+              "ReferenceName": "MovieTopRatedListAnswerResults"
             }
           }
         },
@@ -3214,7 +3294,7 @@
       ]
     },
     {
-      "Name": "MovieTopRatedListResponseResults",
+      "Name": "MovieTopRatedListAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -3320,7 +3400,7 @@
       ]
     },
     {
-      "Name": "MovieTranslationsResponse",
+      "Name": "MovieTranslationsAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -3336,21 +3416,21 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieTranslationsResponseTranslations"
+              "ReferenceName": "MovieTranslationsAnswerTranslations"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieTranslationsResponseTranslations",
+      "Name": "MovieTranslationsAnswerTranslations",
       "Fields": [
         {
           "Name": "Data",
           "JsonName": "data",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieTranslationsResponseTranslationsData"
+            "ReferenceName": "MovieTranslationsAnswerTranslationsData"
           }
         },
         {
@@ -3384,7 +3464,7 @@
       ]
     },
     {
-      "Name": "MovieTranslationsResponseTranslationsData",
+      "Name": "MovieTranslationsAnswerTranslationsData",
       "Fields": [
         {
           "Name": "Homepage",
@@ -3424,14 +3504,14 @@
       ]
     },
     {
-      "Name": "MovieUpcomingListResponse",
+      "Name": "MovieUpcomingListAnswer",
       "Fields": [
         {
           "Name": "Dates",
           "JsonName": "dates",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieUpcomingListResponseDates"
+            "ReferenceName": "MovieUpcomingListAnswerDates"
           }
         },
         {
@@ -3448,7 +3528,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieUpcomingListResponseResults"
+              "ReferenceName": "MovieUpcomingListAnswerResults"
             }
           }
         },
@@ -3469,7 +3549,7 @@
       ]
     },
     {
-      "Name": "MovieUpcomingListResponseDates",
+      "Name": "MovieUpcomingListAnswerDates",
       "Fields": [
         {
           "Name": "Maximum",
@@ -3488,7 +3568,7 @@
       ]
     },
     {
-      "Name": "MovieUpcomingListResponseResults",
+      "Name": "MovieUpcomingListAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -3594,7 +3674,7 @@
       ]
     },
     {
-      "Name": "MovieVideosResponse",
+      "Name": "MovieVideosAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -3610,14 +3690,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieVideosResponseResults"
+              "ReferenceName": "MovieVideosAnswerResults"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieVideosResponseResults",
+      "Name": "MovieVideosAnswerResults",
       "Fields": [
         {
           "Name": "Id",
@@ -3692,7 +3772,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponse",
+      "Name": "MovieWatchProvidersAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -3706,20 +3786,20 @@
           "JsonName": "results",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResults"
+            "ReferenceName": "MovieWatchProvidersAnswerResults"
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResults",
+      "Name": "MovieWatchProvidersAnswerResults",
       "Fields": [
         {
           "Name": "AE",
           "JsonName": "AE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsAE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsAE"
           }
         },
         {
@@ -3727,7 +3807,7 @@
           "JsonName": "AL",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsAL"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsAL"
           }
         },
         {
@@ -3735,7 +3815,7 @@
           "JsonName": "AR",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsAR"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsAR"
           }
         },
         {
@@ -3743,7 +3823,7 @@
           "JsonName": "AT",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsAT"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsAT"
           }
         },
         {
@@ -3751,7 +3831,7 @@
           "JsonName": "AU",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsAU"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsAU"
           }
         },
         {
@@ -3759,7 +3839,7 @@
           "JsonName": "BA",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsBA"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsBA"
           }
         },
         {
@@ -3767,7 +3847,7 @@
           "JsonName": "BB",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsBB"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsBB"
           }
         },
         {
@@ -3775,7 +3855,7 @@
           "JsonName": "BE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsBE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsBE"
           }
         },
         {
@@ -3783,7 +3863,7 @@
           "JsonName": "BG",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsBG"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsBG"
           }
         },
         {
@@ -3791,7 +3871,7 @@
           "JsonName": "BH",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsBH"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsBH"
           }
         },
         {
@@ -3799,7 +3879,7 @@
           "JsonName": "BO",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsBO"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsBO"
           }
         },
         {
@@ -3807,7 +3887,7 @@
           "JsonName": "BR",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsBR"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsBR"
           }
         },
         {
@@ -3815,7 +3895,7 @@
           "JsonName": "BS",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsBS"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsBS"
           }
         },
         {
@@ -3823,7 +3903,7 @@
           "JsonName": "CA",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsCA"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsCA"
           }
         },
         {
@@ -3831,7 +3911,7 @@
           "JsonName": "CH",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsCH"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsCH"
           }
         },
         {
@@ -3839,7 +3919,7 @@
           "JsonName": "CL",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsCL"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsCL"
           }
         },
         {
@@ -3847,7 +3927,7 @@
           "JsonName": "CO",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsCO"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsCO"
           }
         },
         {
@@ -3855,7 +3935,7 @@
           "JsonName": "CR",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsCR"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsCR"
           }
         },
         {
@@ -3863,7 +3943,7 @@
           "JsonName": "CV",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsCV"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsCV"
           }
         },
         {
@@ -3871,7 +3951,7 @@
           "JsonName": "CZ",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsCZ"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsCZ"
           }
         },
         {
@@ -3879,7 +3959,7 @@
           "JsonName": "DE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsDE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsDE"
           }
         },
         {
@@ -3887,7 +3967,7 @@
           "JsonName": "DK",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsDK"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsDK"
           }
         },
         {
@@ -3895,7 +3975,7 @@
           "JsonName": "DO",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsDO"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsDO"
           }
         },
         {
@@ -3903,7 +3983,7 @@
           "JsonName": "EC",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsEC"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsEC"
           }
         },
         {
@@ -3911,7 +3991,7 @@
           "JsonName": "EE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsEE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsEE"
           }
         },
         {
@@ -3919,7 +3999,7 @@
           "JsonName": "EG",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsEG"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsEG"
           }
         },
         {
@@ -3927,7 +4007,7 @@
           "JsonName": "ES",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsES"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsES"
           }
         },
         {
@@ -3935,7 +4015,7 @@
           "JsonName": "FI",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsFI"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsFI"
           }
         },
         {
@@ -3943,7 +4023,7 @@
           "JsonName": "FJ",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsFJ"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsFJ"
           }
         },
         {
@@ -3951,7 +4031,7 @@
           "JsonName": "FR",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsFR"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsFR"
           }
         },
         {
@@ -3959,7 +4039,7 @@
           "JsonName": "GB",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsGB"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsGB"
           }
         },
         {
@@ -3967,7 +4047,7 @@
           "JsonName": "GF",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsGF"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsGF"
           }
         },
         {
@@ -3975,7 +4055,7 @@
           "JsonName": "GI",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsGI"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsGI"
           }
         },
         {
@@ -3983,7 +4063,7 @@
           "JsonName": "GR",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsGR"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsGR"
           }
         },
         {
@@ -3991,7 +4071,7 @@
           "JsonName": "GT",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsGT"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsGT"
           }
         },
         {
@@ -3999,7 +4079,7 @@
           "JsonName": "HK",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsHK"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsHK"
           }
         },
         {
@@ -4007,7 +4087,7 @@
           "JsonName": "HN",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsHN"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsHN"
           }
         },
         {
@@ -4015,7 +4095,7 @@
           "JsonName": "HR",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsHR"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsHR"
           }
         },
         {
@@ -4023,7 +4103,7 @@
           "JsonName": "HU",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsHU"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsHU"
           }
         },
         {
@@ -4031,7 +4111,7 @@
           "JsonName": "ID",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsID"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsID"
           }
         },
         {
@@ -4039,7 +4119,7 @@
           "JsonName": "IE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsIE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsIE"
           }
         },
         {
@@ -4047,7 +4127,7 @@
           "JsonName": "IL",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsIL"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsIL"
           }
         },
         {
@@ -4055,7 +4135,7 @@
           "JsonName": "IN",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsIN"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsIN"
           }
         },
         {
@@ -4063,7 +4143,7 @@
           "JsonName": "IQ",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsIQ"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsIQ"
           }
         },
         {
@@ -4071,7 +4151,7 @@
           "JsonName": "IS",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsIS"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsIS"
           }
         },
         {
@@ -4079,7 +4159,7 @@
           "JsonName": "IT",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsIT"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsIT"
           }
         },
         {
@@ -4087,7 +4167,7 @@
           "JsonName": "JM",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsJM"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsJM"
           }
         },
         {
@@ -4095,7 +4175,7 @@
           "JsonName": "JO",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsJO"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsJO"
           }
         },
         {
@@ -4103,7 +4183,7 @@
           "JsonName": "JP",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsJP"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsJP"
           }
         },
         {
@@ -4111,7 +4191,7 @@
           "JsonName": "KR",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsKR"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsKR"
           }
         },
         {
@@ -4119,7 +4199,7 @@
           "JsonName": "KW",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsKW"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsKW"
           }
         },
         {
@@ -4127,7 +4207,7 @@
           "JsonName": "LB",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsLB"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsLB"
           }
         },
         {
@@ -4135,7 +4215,7 @@
           "JsonName": "LI",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsLI"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsLI"
           }
         },
         {
@@ -4143,7 +4223,7 @@
           "JsonName": "LT",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsLT"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsLT"
           }
         },
         {
@@ -4151,7 +4231,7 @@
           "JsonName": "LV",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsLV"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsLV"
           }
         },
         {
@@ -4159,7 +4239,7 @@
           "JsonName": "MD",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsMD"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsMD"
           }
         },
         {
@@ -4167,7 +4247,7 @@
           "JsonName": "MK",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsMK"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsMK"
           }
         },
         {
@@ -4175,7 +4255,7 @@
           "JsonName": "MT",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsMT"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsMT"
           }
         },
         {
@@ -4183,7 +4263,7 @@
           "JsonName": "MU",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsMU"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsMU"
           }
         },
         {
@@ -4191,7 +4271,7 @@
           "JsonName": "MX",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsMX"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsMX"
           }
         },
         {
@@ -4199,7 +4279,7 @@
           "JsonName": "MY",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsMY"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsMY"
           }
         },
         {
@@ -4207,7 +4287,7 @@
           "JsonName": "MZ",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsMZ"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsMZ"
           }
         },
         {
@@ -4215,7 +4295,7 @@
           "JsonName": "NL",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsNL"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsNL"
           }
         },
         {
@@ -4223,7 +4303,7 @@
           "JsonName": "NO",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsNO"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsNO"
           }
         },
         {
@@ -4231,7 +4311,7 @@
           "JsonName": "NZ",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsNZ"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsNZ"
           }
         },
         {
@@ -4239,7 +4319,7 @@
           "JsonName": "OM",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsOM"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsOM"
           }
         },
         {
@@ -4247,7 +4327,7 @@
           "JsonName": "PA",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsPA"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsPA"
           }
         },
         {
@@ -4255,7 +4335,7 @@
           "JsonName": "PE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsPE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsPE"
           }
         },
         {
@@ -4263,7 +4343,7 @@
           "JsonName": "PH",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsPH"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsPH"
           }
         },
         {
@@ -4271,7 +4351,7 @@
           "JsonName": "PK",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsPK"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsPK"
           }
         },
         {
@@ -4279,7 +4359,7 @@
           "JsonName": "PL",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsPL"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsPL"
           }
         },
         {
@@ -4287,7 +4367,7 @@
           "JsonName": "PS",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsPS"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsPS"
           }
         },
         {
@@ -4295,7 +4375,7 @@
           "JsonName": "PT",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsPT"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsPT"
           }
         },
         {
@@ -4303,7 +4383,7 @@
           "JsonName": "PY",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsPY"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsPY"
           }
         },
         {
@@ -4311,7 +4391,7 @@
           "JsonName": "QA",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsQA"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsQA"
           }
         },
         {
@@ -4319,7 +4399,7 @@
           "JsonName": "RO",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsRO"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsRO"
           }
         },
         {
@@ -4327,7 +4407,7 @@
           "JsonName": "RS",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsRS"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsRS"
           }
         },
         {
@@ -4335,7 +4415,7 @@
           "JsonName": "RU",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsRU"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsRU"
           }
         },
         {
@@ -4343,7 +4423,7 @@
           "JsonName": "SA",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsSA"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsSA"
           }
         },
         {
@@ -4351,7 +4431,7 @@
           "JsonName": "SE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsSE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsSE"
           }
         },
         {
@@ -4359,7 +4439,7 @@
           "JsonName": "SG",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsSG"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsSG"
           }
         },
         {
@@ -4367,7 +4447,7 @@
           "JsonName": "SI",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsSI"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsSI"
           }
         },
         {
@@ -4375,7 +4455,7 @@
           "JsonName": "SK",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsSK"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsSK"
           }
         },
         {
@@ -4383,7 +4463,7 @@
           "JsonName": "SM",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsSM"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsSM"
           }
         },
         {
@@ -4391,7 +4471,7 @@
           "JsonName": "SV",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsSV"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsSV"
           }
         },
         {
@@ -4399,7 +4479,7 @@
           "JsonName": "TH",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsTH"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsTH"
           }
         },
         {
@@ -4407,7 +4487,7 @@
           "JsonName": "TR",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsTR"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsTR"
           }
         },
         {
@@ -4415,7 +4495,7 @@
           "JsonName": "TT",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsTT"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsTT"
           }
         },
         {
@@ -4423,7 +4503,7 @@
           "JsonName": "TW",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsTW"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsTW"
           }
         },
         {
@@ -4431,7 +4511,7 @@
           "JsonName": "UG",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsUG"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsUG"
           }
         },
         {
@@ -4439,7 +4519,7 @@
           "JsonName": "US",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsUS"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsUS"
           }
         },
         {
@@ -4447,7 +4527,7 @@
           "JsonName": "UY",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsUY"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsUY"
           }
         },
         {
@@ -4455,7 +4535,7 @@
           "JsonName": "VE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsVE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsVE"
           }
         },
         {
@@ -4463,7 +4543,7 @@
           "JsonName": "YE",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsYE"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsYE"
           }
         },
         {
@@ -4471,13 +4551,13 @@
           "JsonName": "ZA",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "MovieWatchProvidersResponseResultsZA"
+            "ReferenceName": "MovieWatchProvidersAnswerResultsZA"
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAE",
+      "Name": "MovieWatchProvidersAnswerResultsAE",
       "Fields": [
         {
           "Name": "Buy",
@@ -4486,7 +4566,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsAEBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsAEBuy"
             }
           }
         },
@@ -4497,7 +4577,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsAEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsAEFlatrate"
             }
           }
         },
@@ -4515,14 +4595,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsAERent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsAERent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAEBuy",
+      "Name": "MovieWatchProvidersAnswerResultsAEBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4555,7 +4635,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsAEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4588,7 +4668,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAERent",
+      "Name": "MovieWatchProvidersAnswerResultsAERent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4621,7 +4701,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAL",
+      "Name": "MovieWatchProvidersAnswerResultsAL",
       "Fields": [
         {
           "Name": "Buy",
@@ -4630,7 +4710,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsALBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsALBuy"
             }
           }
         },
@@ -4644,7 +4724,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsALBuy",
+      "Name": "MovieWatchProvidersAnswerResultsALBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4677,7 +4757,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAR",
+      "Name": "MovieWatchProvidersAnswerResultsAR",
       "Fields": [
         {
           "Name": "Buy",
@@ -4686,7 +4766,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsARBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsARBuy"
             }
           }
         },
@@ -4697,7 +4777,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsARFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsARFlatrate"
             }
           }
         },
@@ -4715,14 +4795,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsARRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsARRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsARBuy",
+      "Name": "MovieWatchProvidersAnswerResultsARBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4755,7 +4835,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsARFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsARFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4788,7 +4868,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsARRent",
+      "Name": "MovieWatchProvidersAnswerResultsARRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4821,7 +4901,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAT",
+      "Name": "MovieWatchProvidersAnswerResultsAT",
       "Fields": [
         {
           "Name": "Buy",
@@ -4830,7 +4910,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsATBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsATBuy"
             }
           }
         },
@@ -4841,7 +4921,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsATFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsATFlatrate"
             }
           }
         },
@@ -4859,14 +4939,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsATRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsATRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsATBuy",
+      "Name": "MovieWatchProvidersAnswerResultsATBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4899,7 +4979,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsATFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsATFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4932,7 +5012,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsATRent",
+      "Name": "MovieWatchProvidersAnswerResultsATRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -4965,7 +5045,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAU",
+      "Name": "MovieWatchProvidersAnswerResultsAU",
       "Fields": [
         {
           "Name": "Buy",
@@ -4974,7 +5054,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsAUBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsAUBuy"
             }
           }
         },
@@ -4985,7 +5065,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsAUFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsAUFlatrate"
             }
           }
         },
@@ -4999,7 +5079,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAUBuy",
+      "Name": "MovieWatchProvidersAnswerResultsAUBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5032,7 +5112,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsAUFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsAUFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5065,7 +5145,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBA",
+      "Name": "MovieWatchProvidersAnswerResultsBA",
       "Fields": [
         {
           "Name": "Buy",
@@ -5074,7 +5154,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBABuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBABuy"
             }
           }
         },
@@ -5085,7 +5165,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBAFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBAFlatrate"
             }
           }
         },
@@ -5099,7 +5179,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBABuy",
+      "Name": "MovieWatchProvidersAnswerResultsBABuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5132,7 +5212,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBAFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsBAFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5165,7 +5245,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBB",
+      "Name": "MovieWatchProvidersAnswerResultsBB",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -5174,7 +5254,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBBFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBBFlatrate"
             }
           }
         },
@@ -5188,7 +5268,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBBFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsBBFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5221,7 +5301,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBE",
+      "Name": "MovieWatchProvidersAnswerResultsBE",
       "Fields": [
         {
           "Name": "Buy",
@@ -5230,7 +5310,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBEBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBEBuy"
             }
           }
         },
@@ -5241,7 +5321,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBEFlatrate"
             }
           }
         },
@@ -5259,14 +5339,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBERent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBERent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBEBuy",
+      "Name": "MovieWatchProvidersAnswerResultsBEBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5299,7 +5379,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsBEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5332,7 +5412,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBERent",
+      "Name": "MovieWatchProvidersAnswerResultsBERent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5365,7 +5445,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBG",
+      "Name": "MovieWatchProvidersAnswerResultsBG",
       "Fields": [
         {
           "Name": "Buy",
@@ -5374,7 +5454,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBGBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBGBuy"
             }
           }
         },
@@ -5385,7 +5465,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBGFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBGFlatrate"
             }
           }
         },
@@ -5403,14 +5483,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBGRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBGRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBGBuy",
+      "Name": "MovieWatchProvidersAnswerResultsBGBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5443,7 +5523,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBGFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsBGFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5476,7 +5556,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBGRent",
+      "Name": "MovieWatchProvidersAnswerResultsBGRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5509,7 +5589,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBH",
+      "Name": "MovieWatchProvidersAnswerResultsBH",
       "Fields": [
         {
           "Name": "Buy",
@@ -5518,7 +5598,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBHBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBHBuy"
             }
           }
         },
@@ -5532,7 +5612,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBHBuy",
+      "Name": "MovieWatchProvidersAnswerResultsBHBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5565,7 +5645,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBO",
+      "Name": "MovieWatchProvidersAnswerResultsBO",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -5574,7 +5654,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBOFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBOFlatrate"
             }
           }
         },
@@ -5588,7 +5668,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBOFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsBOFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5621,7 +5701,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBR",
+      "Name": "MovieWatchProvidersAnswerResultsBR",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -5630,7 +5710,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBRFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBRFlatrate"
             }
           }
         },
@@ -5644,7 +5724,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBRFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsBRFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5677,7 +5757,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBS",
+      "Name": "MovieWatchProvidersAnswerResultsBS",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -5686,7 +5766,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsBSFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsBSFlatrate"
             }
           }
         },
@@ -5700,7 +5780,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsBSFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsBSFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5733,7 +5813,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCA",
+      "Name": "MovieWatchProvidersAnswerResultsCA",
       "Fields": [
         {
           "Name": "Buy",
@@ -5742,7 +5822,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCABuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCABuy"
             }
           }
         },
@@ -5753,7 +5833,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCAFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCAFlatrate"
             }
           }
         },
@@ -5771,14 +5851,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCARent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCARent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCABuy",
+      "Name": "MovieWatchProvidersAnswerResultsCABuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5811,7 +5891,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCAFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsCAFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5844,7 +5924,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCARent",
+      "Name": "MovieWatchProvidersAnswerResultsCARent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5877,7 +5957,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCH",
+      "Name": "MovieWatchProvidersAnswerResultsCH",
       "Fields": [
         {
           "Name": "Buy",
@@ -5886,7 +5966,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCHBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCHBuy"
             }
           }
         },
@@ -5897,7 +5977,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCHFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCHFlatrate"
             }
           }
         },
@@ -5915,14 +5995,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCHRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCHRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCHBuy",
+      "Name": "MovieWatchProvidersAnswerResultsCHBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5955,7 +6035,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCHFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsCHFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -5988,7 +6068,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCHRent",
+      "Name": "MovieWatchProvidersAnswerResultsCHRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6021,7 +6101,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCL",
+      "Name": "MovieWatchProvidersAnswerResultsCL",
       "Fields": [
         {
           "Name": "Buy",
@@ -6030,7 +6110,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCLBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCLBuy"
             }
           }
         },
@@ -6041,7 +6121,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCLFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCLFlatrate"
             }
           }
         },
@@ -6059,14 +6139,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCLRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCLRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCLBuy",
+      "Name": "MovieWatchProvidersAnswerResultsCLBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6099,7 +6179,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCLFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsCLFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6132,7 +6212,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCLRent",
+      "Name": "MovieWatchProvidersAnswerResultsCLRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6165,7 +6245,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCO",
+      "Name": "MovieWatchProvidersAnswerResultsCO",
       "Fields": [
         {
           "Name": "Buy",
@@ -6174,7 +6254,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCOBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCOBuy"
             }
           }
         },
@@ -6185,7 +6265,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCOFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCOFlatrate"
             }
           }
         },
@@ -6203,14 +6283,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCORent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCORent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCOBuy",
+      "Name": "MovieWatchProvidersAnswerResultsCOBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6243,7 +6323,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCOFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsCOFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6276,7 +6356,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCORent",
+      "Name": "MovieWatchProvidersAnswerResultsCORent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6309,7 +6389,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCR",
+      "Name": "MovieWatchProvidersAnswerResultsCR",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -6318,7 +6398,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCRFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCRFlatrate"
             }
           }
         },
@@ -6332,7 +6412,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCRFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsCRFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6365,7 +6445,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCV",
+      "Name": "MovieWatchProvidersAnswerResultsCV",
       "Fields": [
         {
           "Name": "Buy",
@@ -6374,7 +6454,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCVBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCVBuy"
             }
           }
         },
@@ -6392,14 +6472,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCVRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCVRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCVBuy",
+      "Name": "MovieWatchProvidersAnswerResultsCVBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6432,7 +6512,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCVRent",
+      "Name": "MovieWatchProvidersAnswerResultsCVRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6465,7 +6545,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCZ",
+      "Name": "MovieWatchProvidersAnswerResultsCZ",
       "Fields": [
         {
           "Name": "Buy",
@@ -6474,7 +6554,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCZBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCZBuy"
             }
           }
         },
@@ -6485,7 +6565,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCZFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCZFlatrate"
             }
           }
         },
@@ -6503,14 +6583,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsCZRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsCZRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCZBuy",
+      "Name": "MovieWatchProvidersAnswerResultsCZBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6543,7 +6623,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCZFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsCZFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6576,7 +6656,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsCZRent",
+      "Name": "MovieWatchProvidersAnswerResultsCZRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6609,7 +6689,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDE",
+      "Name": "MovieWatchProvidersAnswerResultsDE",
       "Fields": [
         {
           "Name": "Buy",
@@ -6618,7 +6698,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsDEBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsDEBuy"
             }
           }
         },
@@ -6629,7 +6709,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsDEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsDEFlatrate"
             }
           }
         },
@@ -6647,14 +6727,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsDERent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsDERent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDEBuy",
+      "Name": "MovieWatchProvidersAnswerResultsDEBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6687,7 +6767,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsDEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6720,7 +6800,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDERent",
+      "Name": "MovieWatchProvidersAnswerResultsDERent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6753,7 +6833,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDK",
+      "Name": "MovieWatchProvidersAnswerResultsDK",
       "Fields": [
         {
           "Name": "Buy",
@@ -6762,7 +6842,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsDKBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsDKBuy"
             }
           }
         },
@@ -6773,7 +6853,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsDKFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsDKFlatrate"
             }
           }
         },
@@ -6791,14 +6871,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsDKRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsDKRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDKBuy",
+      "Name": "MovieWatchProvidersAnswerResultsDKBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6831,7 +6911,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDKFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsDKFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6864,7 +6944,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDKRent",
+      "Name": "MovieWatchProvidersAnswerResultsDKRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6897,7 +6977,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDO",
+      "Name": "MovieWatchProvidersAnswerResultsDO",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -6906,7 +6986,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsDOFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsDOFlatrate"
             }
           }
         },
@@ -6920,7 +7000,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsDOFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsDOFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -6953,7 +7033,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsEC",
+      "Name": "MovieWatchProvidersAnswerResultsEC",
       "Fields": [
         {
           "Name": "Buy",
@@ -6962,7 +7042,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsECBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsECBuy"
             }
           }
         },
@@ -6973,7 +7053,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsECFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsECFlatrate"
             }
           }
         },
@@ -6991,14 +7071,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsECRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsECRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsECBuy",
+      "Name": "MovieWatchProvidersAnswerResultsECBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7031,7 +7111,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsECFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsECFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7064,7 +7144,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsECRent",
+      "Name": "MovieWatchProvidersAnswerResultsECRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7097,7 +7177,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsEE",
+      "Name": "MovieWatchProvidersAnswerResultsEE",
       "Fields": [
         {
           "Name": "Buy",
@@ -7106,7 +7186,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsEEBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsEEBuy"
             }
           }
         },
@@ -7117,7 +7197,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsEEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsEEFlatrate"
             }
           }
         },
@@ -7135,14 +7215,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsEERent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsEERent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsEEBuy",
+      "Name": "MovieWatchProvidersAnswerResultsEEBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7175,7 +7255,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsEEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsEEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7208,7 +7288,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsEERent",
+      "Name": "MovieWatchProvidersAnswerResultsEERent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7241,7 +7321,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsEG",
+      "Name": "MovieWatchProvidersAnswerResultsEG",
       "Fields": [
         {
           "Name": "Buy",
@@ -7250,7 +7330,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsEGBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsEGBuy"
             }
           }
         },
@@ -7268,14 +7348,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsEGRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsEGRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsEGBuy",
+      "Name": "MovieWatchProvidersAnswerResultsEGBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7308,7 +7388,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsEGRent",
+      "Name": "MovieWatchProvidersAnswerResultsEGRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7341,7 +7421,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsES",
+      "Name": "MovieWatchProvidersAnswerResultsES",
       "Fields": [
         {
           "Name": "Ads",
@@ -7350,7 +7430,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsESAds"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsESAds"
             }
           }
         },
@@ -7361,7 +7441,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsESBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsESBuy"
             }
           }
         },
@@ -7372,7 +7452,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsESFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsESFlatrate"
             }
           }
         },
@@ -7390,14 +7470,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsESRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsESRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsESAds",
+      "Name": "MovieWatchProvidersAnswerResultsESAds",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7430,7 +7510,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsESBuy",
+      "Name": "MovieWatchProvidersAnswerResultsESBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7463,7 +7543,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsESFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsESFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7496,7 +7576,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsESRent",
+      "Name": "MovieWatchProvidersAnswerResultsESRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7529,7 +7609,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFI",
+      "Name": "MovieWatchProvidersAnswerResultsFI",
       "Fields": [
         {
           "Name": "Buy",
@@ -7538,7 +7618,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsFIBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsFIBuy"
             }
           }
         },
@@ -7549,7 +7629,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsFIFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsFIFlatrate"
             }
           }
         },
@@ -7567,14 +7647,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsFIRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsFIRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFIBuy",
+      "Name": "MovieWatchProvidersAnswerResultsFIBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7607,7 +7687,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFIFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsFIFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7640,7 +7720,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFIRent",
+      "Name": "MovieWatchProvidersAnswerResultsFIRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7673,7 +7753,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFJ",
+      "Name": "MovieWatchProvidersAnswerResultsFJ",
       "Fields": [
         {
           "Name": "Buy",
@@ -7682,7 +7762,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsFJBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsFJBuy"
             }
           }
         },
@@ -7696,7 +7776,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFJBuy",
+      "Name": "MovieWatchProvidersAnswerResultsFJBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7729,7 +7809,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFR",
+      "Name": "MovieWatchProvidersAnswerResultsFR",
       "Fields": [
         {
           "Name": "Buy",
@@ -7738,7 +7818,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsFRBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsFRBuy"
             }
           }
         },
@@ -7749,7 +7829,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsFRFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsFRFlatrate"
             }
           }
         },
@@ -7767,14 +7847,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsFRRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsFRRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFRBuy",
+      "Name": "MovieWatchProvidersAnswerResultsFRBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7807,7 +7887,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFRFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsFRFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7840,7 +7920,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsFRRent",
+      "Name": "MovieWatchProvidersAnswerResultsFRRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7873,7 +7953,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGB",
+      "Name": "MovieWatchProvidersAnswerResultsGB",
       "Fields": [
         {
           "Name": "Buy",
@@ -7882,7 +7962,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGBBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGBBuy"
             }
           }
         },
@@ -7893,7 +7973,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGBFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGBFlatrate"
             }
           }
         },
@@ -7911,14 +7991,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGBRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGBRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGBBuy",
+      "Name": "MovieWatchProvidersAnswerResultsGBBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7951,7 +8031,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGBFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsGBFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -7984,7 +8064,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGBRent",
+      "Name": "MovieWatchProvidersAnswerResultsGBRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8017,7 +8097,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGF",
+      "Name": "MovieWatchProvidersAnswerResultsGF",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -8026,7 +8106,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGFFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGFFlatrate"
             }
           }
         },
@@ -8040,7 +8120,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGFFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsGFFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8073,7 +8153,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGI",
+      "Name": "MovieWatchProvidersAnswerResultsGI",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -8082,7 +8162,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGIFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGIFlatrate"
             }
           }
         },
@@ -8096,7 +8176,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGIFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsGIFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8129,7 +8209,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGR",
+      "Name": "MovieWatchProvidersAnswerResultsGR",
       "Fields": [
         {
           "Name": "Buy",
@@ -8138,7 +8218,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGRBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGRBuy"
             }
           }
         },
@@ -8149,7 +8229,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGRFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGRFlatrate"
             }
           }
         },
@@ -8167,14 +8247,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGRRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGRRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGRBuy",
+      "Name": "MovieWatchProvidersAnswerResultsGRBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8207,7 +8287,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGRFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsGRFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8240,7 +8320,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGRRent",
+      "Name": "MovieWatchProvidersAnswerResultsGRRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8273,7 +8353,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGT",
+      "Name": "MovieWatchProvidersAnswerResultsGT",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -8282,7 +8362,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsGTFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsGTFlatrate"
             }
           }
         },
@@ -8296,7 +8376,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsGTFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsGTFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8329,7 +8409,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHK",
+      "Name": "MovieWatchProvidersAnswerResultsHK",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -8338,7 +8418,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsHKFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsHKFlatrate"
             }
           }
         },
@@ -8352,7 +8432,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHKFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsHKFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8385,7 +8465,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHN",
+      "Name": "MovieWatchProvidersAnswerResultsHN",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -8394,7 +8474,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsHNFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsHNFlatrate"
             }
           }
         },
@@ -8408,7 +8488,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHNFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsHNFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8441,7 +8521,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHR",
+      "Name": "MovieWatchProvidersAnswerResultsHR",
       "Fields": [
         {
           "Name": "Ads",
@@ -8450,7 +8530,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsHRAds"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsHRAds"
             }
           }
         },
@@ -8461,7 +8541,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsHRBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsHRBuy"
             }
           }
         },
@@ -8472,7 +8552,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsHRFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsHRFlatrate"
             }
           }
         },
@@ -8486,7 +8566,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHRAds",
+      "Name": "MovieWatchProvidersAnswerResultsHRAds",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8519,7 +8599,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHRBuy",
+      "Name": "MovieWatchProvidersAnswerResultsHRBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8552,7 +8632,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHRFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsHRFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8585,7 +8665,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHU",
+      "Name": "MovieWatchProvidersAnswerResultsHU",
       "Fields": [
         {
           "Name": "Buy",
@@ -8594,7 +8674,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsHUBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsHUBuy"
             }
           }
         },
@@ -8605,7 +8685,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsHUFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsHUFlatrate"
             }
           }
         },
@@ -8623,14 +8703,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsHURent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsHURent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHUBuy",
+      "Name": "MovieWatchProvidersAnswerResultsHUBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8663,7 +8743,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHUFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsHUFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8696,7 +8776,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsHURent",
+      "Name": "MovieWatchProvidersAnswerResultsHURent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8729,7 +8809,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsID",
+      "Name": "MovieWatchProvidersAnswerResultsID",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -8738,7 +8818,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsIDFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsIDFlatrate"
             }
           }
         },
@@ -8752,7 +8832,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIDFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsIDFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8785,7 +8865,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIE",
+      "Name": "MovieWatchProvidersAnswerResultsIE",
       "Fields": [
         {
           "Name": "Buy",
@@ -8794,7 +8874,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsIEBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsIEBuy"
             }
           }
         },
@@ -8805,7 +8885,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsIEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsIEFlatrate"
             }
           }
         },
@@ -8823,14 +8903,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsIERent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsIERent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIEBuy",
+      "Name": "MovieWatchProvidersAnswerResultsIEBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8863,7 +8943,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsIEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8896,7 +8976,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIERent",
+      "Name": "MovieWatchProvidersAnswerResultsIERent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8929,7 +9009,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIL",
+      "Name": "MovieWatchProvidersAnswerResultsIL",
       "Fields": [
         {
           "Name": "Buy",
@@ -8938,7 +9018,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsILBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsILBuy"
             }
           }
         },
@@ -8949,7 +9029,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsILFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsILFlatrate"
             }
           }
         },
@@ -8963,7 +9043,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsILBuy",
+      "Name": "MovieWatchProvidersAnswerResultsILBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -8996,7 +9076,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsILFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsILFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9029,7 +9109,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIN",
+      "Name": "MovieWatchProvidersAnswerResultsIN",
       "Fields": [
         {
           "Name": "Buy",
@@ -9038,7 +9118,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsINBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsINBuy"
             }
           }
         },
@@ -9049,7 +9129,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsINFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsINFlatrate"
             }
           }
         },
@@ -9067,14 +9147,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsINRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsINRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsINBuy",
+      "Name": "MovieWatchProvidersAnswerResultsINBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9107,7 +9187,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsINFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsINFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9140,7 +9220,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsINRent",
+      "Name": "MovieWatchProvidersAnswerResultsINRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9173,7 +9253,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIQ",
+      "Name": "MovieWatchProvidersAnswerResultsIQ",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -9182,7 +9262,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsIQFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsIQFlatrate"
             }
           }
         },
@@ -9196,7 +9276,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIQFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsIQFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9229,7 +9309,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIS",
+      "Name": "MovieWatchProvidersAnswerResultsIS",
       "Fields": [
         {
           "Name": "Buy",
@@ -9238,7 +9318,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsISBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsISBuy"
             }
           }
         },
@@ -9249,7 +9329,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsISFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsISFlatrate"
             }
           }
         },
@@ -9263,7 +9343,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsISBuy",
+      "Name": "MovieWatchProvidersAnswerResultsISBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9296,7 +9376,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsISFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsISFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9329,7 +9409,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsIT",
+      "Name": "MovieWatchProvidersAnswerResultsIT",
       "Fields": [
         {
           "Name": "Buy",
@@ -9338,7 +9418,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsITBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsITBuy"
             }
           }
         },
@@ -9349,7 +9429,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsITFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsITFlatrate"
             }
           }
         },
@@ -9367,14 +9447,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsITRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsITRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsITBuy",
+      "Name": "MovieWatchProvidersAnswerResultsITBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9407,7 +9487,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsITFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsITFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9440,7 +9520,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsITRent",
+      "Name": "MovieWatchProvidersAnswerResultsITRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9473,7 +9553,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJM",
+      "Name": "MovieWatchProvidersAnswerResultsJM",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -9482,7 +9562,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsJMFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsJMFlatrate"
             }
           }
         },
@@ -9496,7 +9576,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJMFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsJMFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9529,7 +9609,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJO",
+      "Name": "MovieWatchProvidersAnswerResultsJO",
       "Fields": [
         {
           "Name": "Buy",
@@ -9538,7 +9618,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsJOBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsJOBuy"
             }
           }
         },
@@ -9549,7 +9629,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsJOFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsJOFlatrate"
             }
           }
         },
@@ -9563,7 +9643,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJOBuy",
+      "Name": "MovieWatchProvidersAnswerResultsJOBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9596,7 +9676,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJOFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsJOFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9629,7 +9709,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJP",
+      "Name": "MovieWatchProvidersAnswerResultsJP",
       "Fields": [
         {
           "Name": "Buy",
@@ -9638,7 +9718,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsJPBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsJPBuy"
             }
           }
         },
@@ -9649,7 +9729,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsJPFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsJPFlatrate"
             }
           }
         },
@@ -9667,14 +9747,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsJPRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsJPRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJPBuy",
+      "Name": "MovieWatchProvidersAnswerResultsJPBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9707,7 +9787,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJPFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsJPFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9740,7 +9820,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsJPRent",
+      "Name": "MovieWatchProvidersAnswerResultsJPRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9773,7 +9853,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsKR",
+      "Name": "MovieWatchProvidersAnswerResultsKR",
       "Fields": [
         {
           "Name": "Buy",
@@ -9782,7 +9862,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsKRBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsKRBuy"
             }
           }
         },
@@ -9793,7 +9873,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsKRFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsKRFlatrate"
             }
           }
         },
@@ -9807,7 +9887,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsKRBuy",
+      "Name": "MovieWatchProvidersAnswerResultsKRBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9840,7 +9920,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsKRFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsKRFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9873,7 +9953,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsKW",
+      "Name": "MovieWatchProvidersAnswerResultsKW",
       "Fields": [
         {
           "Name": "Buy",
@@ -9882,7 +9962,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsKWBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsKWBuy"
             }
           }
         },
@@ -9893,7 +9973,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsKWFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsKWFlatrate"
             }
           }
         },
@@ -9907,7 +9987,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsKWBuy",
+      "Name": "MovieWatchProvidersAnswerResultsKWBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9940,7 +10020,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsKWFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsKWFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -9973,7 +10053,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLB",
+      "Name": "MovieWatchProvidersAnswerResultsLB",
       "Fields": [
         {
           "Name": "Buy",
@@ -9982,7 +10062,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsLBBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsLBBuy"
             }
           }
         },
@@ -9993,7 +10073,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsLBFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsLBFlatrate"
             }
           }
         },
@@ -10007,7 +10087,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLBBuy",
+      "Name": "MovieWatchProvidersAnswerResultsLBBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10040,7 +10120,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLBFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsLBFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10073,7 +10153,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLI",
+      "Name": "MovieWatchProvidersAnswerResultsLI",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -10082,7 +10162,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsLIFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsLIFlatrate"
             }
           }
         },
@@ -10096,7 +10176,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLIFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsLIFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10129,7 +10209,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLT",
+      "Name": "MovieWatchProvidersAnswerResultsLT",
       "Fields": [
         {
           "Name": "Buy",
@@ -10138,7 +10218,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsLTBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsLTBuy"
             }
           }
         },
@@ -10149,7 +10229,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsLTFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsLTFlatrate"
             }
           }
         },
@@ -10167,14 +10247,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsLTRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsLTRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLTBuy",
+      "Name": "MovieWatchProvidersAnswerResultsLTBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10207,7 +10287,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLTFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsLTFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10240,7 +10320,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLTRent",
+      "Name": "MovieWatchProvidersAnswerResultsLTRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10273,7 +10353,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLV",
+      "Name": "MovieWatchProvidersAnswerResultsLV",
       "Fields": [
         {
           "Name": "Buy",
@@ -10282,7 +10362,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsLVBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsLVBuy"
             }
           }
         },
@@ -10293,7 +10373,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsLVFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsLVFlatrate"
             }
           }
         },
@@ -10307,7 +10387,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLVBuy",
+      "Name": "MovieWatchProvidersAnswerResultsLVBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10340,7 +10420,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsLVFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsLVFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10373,7 +10453,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMD",
+      "Name": "MovieWatchProvidersAnswerResultsMD",
       "Fields": [
         {
           "Name": "Buy",
@@ -10382,7 +10462,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMDBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMDBuy"
             }
           }
         },
@@ -10393,7 +10473,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMDFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMDFlatrate"
             }
           }
         },
@@ -10407,7 +10487,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMDBuy",
+      "Name": "MovieWatchProvidersAnswerResultsMDBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10440,7 +10520,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMDFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsMDFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10473,7 +10553,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMK",
+      "Name": "MovieWatchProvidersAnswerResultsMK",
       "Fields": [
         {
           "Name": "Buy",
@@ -10482,7 +10562,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMKBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMKBuy"
             }
           }
         },
@@ -10493,7 +10573,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMKFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMKFlatrate"
             }
           }
         },
@@ -10507,7 +10587,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMKBuy",
+      "Name": "MovieWatchProvidersAnswerResultsMKBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10540,7 +10620,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMKFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsMKFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10573,7 +10653,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMT",
+      "Name": "MovieWatchProvidersAnswerResultsMT",
       "Fields": [
         {
           "Name": "Buy",
@@ -10582,7 +10662,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMTBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMTBuy"
             }
           }
         },
@@ -10593,7 +10673,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMTFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMTFlatrate"
             }
           }
         },
@@ -10611,14 +10691,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMTRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMTRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMTBuy",
+      "Name": "MovieWatchProvidersAnswerResultsMTBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10651,7 +10731,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMTFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsMTFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10684,7 +10764,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMTRent",
+      "Name": "MovieWatchProvidersAnswerResultsMTRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10717,7 +10797,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMU",
+      "Name": "MovieWatchProvidersAnswerResultsMU",
       "Fields": [
         {
           "Name": "Buy",
@@ -10726,7 +10806,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMUBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMUBuy"
             }
           }
         },
@@ -10744,14 +10824,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMURent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMURent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMUBuy",
+      "Name": "MovieWatchProvidersAnswerResultsMUBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10784,7 +10864,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMURent",
+      "Name": "MovieWatchProvidersAnswerResultsMURent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10817,7 +10897,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMX",
+      "Name": "MovieWatchProvidersAnswerResultsMX",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -10826,7 +10906,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMXFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMXFlatrate"
             }
           }
         },
@@ -10840,7 +10920,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMXFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsMXFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10873,7 +10953,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMY",
+      "Name": "MovieWatchProvidersAnswerResultsMY",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -10882,7 +10962,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMYFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMYFlatrate"
             }
           }
         },
@@ -10896,7 +10976,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMYFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsMYFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10929,7 +11009,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMZ",
+      "Name": "MovieWatchProvidersAnswerResultsMZ",
       "Fields": [
         {
           "Name": "Buy",
@@ -10938,7 +11018,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMZBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMZBuy"
             }
           }
         },
@@ -10956,14 +11036,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsMZRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsMZRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMZBuy",
+      "Name": "MovieWatchProvidersAnswerResultsMZBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -10996,7 +11076,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsMZRent",
+      "Name": "MovieWatchProvidersAnswerResultsMZRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11029,7 +11109,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNL",
+      "Name": "MovieWatchProvidersAnswerResultsNL",
       "Fields": [
         {
           "Name": "Buy",
@@ -11038,7 +11118,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsNLBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsNLBuy"
             }
           }
         },
@@ -11049,7 +11129,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsNLFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsNLFlatrate"
             }
           }
         },
@@ -11067,14 +11147,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsNLRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsNLRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNLBuy",
+      "Name": "MovieWatchProvidersAnswerResultsNLBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11107,7 +11187,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNLFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsNLFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11140,7 +11220,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNLRent",
+      "Name": "MovieWatchProvidersAnswerResultsNLRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11173,7 +11253,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNO",
+      "Name": "MovieWatchProvidersAnswerResultsNO",
       "Fields": [
         {
           "Name": "Buy",
@@ -11182,7 +11262,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsNOBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsNOBuy"
             }
           }
         },
@@ -11193,7 +11273,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsNOFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsNOFlatrate"
             }
           }
         },
@@ -11211,14 +11291,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsNORent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsNORent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNOBuy",
+      "Name": "MovieWatchProvidersAnswerResultsNOBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11251,7 +11331,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNOFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsNOFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11284,7 +11364,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNORent",
+      "Name": "MovieWatchProvidersAnswerResultsNORent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11317,7 +11397,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNZ",
+      "Name": "MovieWatchProvidersAnswerResultsNZ",
       "Fields": [
         {
           "Name": "Buy",
@@ -11326,7 +11406,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsNZBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsNZBuy"
             }
           }
         },
@@ -11337,7 +11417,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsNZFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsNZFlatrate"
             }
           }
         },
@@ -11351,7 +11431,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNZBuy",
+      "Name": "MovieWatchProvidersAnswerResultsNZBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11384,7 +11464,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsNZFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsNZFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11417,7 +11497,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsOM",
+      "Name": "MovieWatchProvidersAnswerResultsOM",
       "Fields": [
         {
           "Name": "Buy",
@@ -11426,7 +11506,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsOMBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsOMBuy"
             }
           }
         },
@@ -11437,7 +11517,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsOMFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsOMFlatrate"
             }
           }
         },
@@ -11455,14 +11535,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsOMRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsOMRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsOMBuy",
+      "Name": "MovieWatchProvidersAnswerResultsOMBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11495,7 +11575,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsOMFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsOMFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11528,7 +11608,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsOMRent",
+      "Name": "MovieWatchProvidersAnswerResultsOMRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11561,7 +11641,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPA",
+      "Name": "MovieWatchProvidersAnswerResultsPA",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -11570,7 +11650,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPAFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPAFlatrate"
             }
           }
         },
@@ -11584,7 +11664,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPAFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsPAFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11617,7 +11697,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPE",
+      "Name": "MovieWatchProvidersAnswerResultsPE",
       "Fields": [
         {
           "Name": "Buy",
@@ -11626,7 +11706,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPEBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPEBuy"
             }
           }
         },
@@ -11637,7 +11717,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPEFlatrate"
             }
           }
         },
@@ -11655,14 +11735,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPERent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPERent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPEBuy",
+      "Name": "MovieWatchProvidersAnswerResultsPEBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11695,7 +11775,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsPEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11728,7 +11808,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPERent",
+      "Name": "MovieWatchProvidersAnswerResultsPERent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11761,7 +11841,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPH",
+      "Name": "MovieWatchProvidersAnswerResultsPH",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -11770,7 +11850,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPHFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPHFlatrate"
             }
           }
         },
@@ -11784,7 +11864,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPHFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsPHFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11817,7 +11897,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPK",
+      "Name": "MovieWatchProvidersAnswerResultsPK",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -11826,7 +11906,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPKFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPKFlatrate"
             }
           }
         },
@@ -11840,7 +11920,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPKFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsPKFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11873,7 +11953,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPL",
+      "Name": "MovieWatchProvidersAnswerResultsPL",
       "Fields": [
         {
           "Name": "Buy",
@@ -11882,7 +11962,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPLBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPLBuy"
             }
           }
         },
@@ -11893,7 +11973,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPLFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPLFlatrate"
             }
           }
         },
@@ -11911,14 +11991,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPLRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPLRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPLBuy",
+      "Name": "MovieWatchProvidersAnswerResultsPLBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11951,7 +12031,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPLFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsPLFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -11984,7 +12064,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPLRent",
+      "Name": "MovieWatchProvidersAnswerResultsPLRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12017,7 +12097,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPS",
+      "Name": "MovieWatchProvidersAnswerResultsPS",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -12026,7 +12106,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPSFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPSFlatrate"
             }
           }
         },
@@ -12040,7 +12120,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPSFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsPSFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12073,7 +12153,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPT",
+      "Name": "MovieWatchProvidersAnswerResultsPT",
       "Fields": [
         {
           "Name": "Buy",
@@ -12082,7 +12162,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPTBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPTBuy"
             }
           }
         },
@@ -12093,7 +12173,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPTFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPTFlatrate"
             }
           }
         },
@@ -12111,14 +12191,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPTRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPTRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPTBuy",
+      "Name": "MovieWatchProvidersAnswerResultsPTBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12151,7 +12231,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPTFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsPTFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12184,7 +12264,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPTRent",
+      "Name": "MovieWatchProvidersAnswerResultsPTRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12217,7 +12297,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPY",
+      "Name": "MovieWatchProvidersAnswerResultsPY",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -12226,7 +12306,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsPYFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsPYFlatrate"
             }
           }
         },
@@ -12240,7 +12320,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsPYFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsPYFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12273,7 +12353,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsQA",
+      "Name": "MovieWatchProvidersAnswerResultsQA",
       "Fields": [
         {
           "Name": "Buy",
@@ -12282,7 +12362,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsQABuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsQABuy"
             }
           }
         },
@@ -12293,7 +12373,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsQAFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsQAFlatrate"
             }
           }
         },
@@ -12307,7 +12387,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsQABuy",
+      "Name": "MovieWatchProvidersAnswerResultsQABuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12340,7 +12420,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsQAFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsQAFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12373,7 +12453,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsRO",
+      "Name": "MovieWatchProvidersAnswerResultsRO",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -12382,7 +12462,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsROFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsROFlatrate"
             }
           }
         },
@@ -12396,7 +12476,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsROFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsROFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12429,7 +12509,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsRS",
+      "Name": "MovieWatchProvidersAnswerResultsRS",
       "Fields": [
         {
           "Name": "Buy",
@@ -12438,7 +12518,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsRSBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsRSBuy"
             }
           }
         },
@@ -12449,7 +12529,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsRSFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsRSFlatrate"
             }
           }
         },
@@ -12463,7 +12543,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsRSBuy",
+      "Name": "MovieWatchProvidersAnswerResultsRSBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12496,7 +12576,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsRSFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsRSFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12529,7 +12609,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsRU",
+      "Name": "MovieWatchProvidersAnswerResultsRU",
       "Fields": [
         {
           "Name": "Buy",
@@ -12538,7 +12618,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsRUBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsRUBuy"
             }
           }
         },
@@ -12549,7 +12629,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsRUFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsRUFlatrate"
             }
           }
         },
@@ -12567,14 +12647,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsRURent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsRURent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsRUBuy",
+      "Name": "MovieWatchProvidersAnswerResultsRUBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12607,7 +12687,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsRUFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsRUFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12640,7 +12720,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsRURent",
+      "Name": "MovieWatchProvidersAnswerResultsRURent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12673,7 +12753,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSA",
+      "Name": "MovieWatchProvidersAnswerResultsSA",
       "Fields": [
         {
           "Name": "Buy",
@@ -12682,7 +12762,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSABuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSABuy"
             }
           }
         },
@@ -12693,7 +12773,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSAFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSAFlatrate"
             }
           }
         },
@@ -12711,14 +12791,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSARent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSARent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSABuy",
+      "Name": "MovieWatchProvidersAnswerResultsSABuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12751,7 +12831,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSAFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsSAFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12784,7 +12864,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSARent",
+      "Name": "MovieWatchProvidersAnswerResultsSARent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12817,7 +12897,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSE",
+      "Name": "MovieWatchProvidersAnswerResultsSE",
       "Fields": [
         {
           "Name": "Buy",
@@ -12826,7 +12906,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSEBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSEBuy"
             }
           }
         },
@@ -12837,7 +12917,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSEFlatrate"
             }
           }
         },
@@ -12855,14 +12935,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSERent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSERent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSEBuy",
+      "Name": "MovieWatchProvidersAnswerResultsSEBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12895,7 +12975,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsSEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12928,7 +13008,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSERent",
+      "Name": "MovieWatchProvidersAnswerResultsSERent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -12961,7 +13041,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSG",
+      "Name": "MovieWatchProvidersAnswerResultsSG",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -12970,7 +13050,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSGFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSGFlatrate"
             }
           }
         },
@@ -12984,7 +13064,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSGFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsSGFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13017,7 +13097,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSI",
+      "Name": "MovieWatchProvidersAnswerResultsSI",
       "Fields": [
         {
           "Name": "Buy",
@@ -13026,7 +13106,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSIBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSIBuy"
             }
           }
         },
@@ -13037,7 +13117,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSIFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSIFlatrate"
             }
           }
         },
@@ -13051,7 +13131,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSIBuy",
+      "Name": "MovieWatchProvidersAnswerResultsSIBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13084,7 +13164,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSIFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsSIFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13117,7 +13197,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSK",
+      "Name": "MovieWatchProvidersAnswerResultsSK",
       "Fields": [
         {
           "Name": "Buy",
@@ -13126,7 +13206,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSKBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSKBuy"
             }
           }
         },
@@ -13137,7 +13217,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSKFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSKFlatrate"
             }
           }
         },
@@ -13155,14 +13235,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSKRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSKRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSKBuy",
+      "Name": "MovieWatchProvidersAnswerResultsSKBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13195,7 +13275,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSKFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsSKFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13228,7 +13308,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSKRent",
+      "Name": "MovieWatchProvidersAnswerResultsSKRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13261,7 +13341,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSM",
+      "Name": "MovieWatchProvidersAnswerResultsSM",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -13270,7 +13350,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSMFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSMFlatrate"
             }
           }
         },
@@ -13284,7 +13364,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSMFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsSMFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13317,7 +13397,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSV",
+      "Name": "MovieWatchProvidersAnswerResultsSV",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -13326,7 +13406,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsSVFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsSVFlatrate"
             }
           }
         },
@@ -13340,7 +13420,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsSVFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsSVFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13373,7 +13453,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTH",
+      "Name": "MovieWatchProvidersAnswerResultsTH",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -13382,7 +13462,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsTHFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsTHFlatrate"
             }
           }
         },
@@ -13396,7 +13476,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTHFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsTHFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13429,7 +13509,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTR",
+      "Name": "MovieWatchProvidersAnswerResultsTR",
       "Fields": [
         {
           "Name": "Buy",
@@ -13438,7 +13518,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsTRBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsTRBuy"
             }
           }
         },
@@ -13449,7 +13529,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsTRFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsTRFlatrate"
             }
           }
         },
@@ -13467,14 +13547,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsTRRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsTRRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTRBuy",
+      "Name": "MovieWatchProvidersAnswerResultsTRBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13507,7 +13587,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTRFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsTRFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13540,7 +13620,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTRRent",
+      "Name": "MovieWatchProvidersAnswerResultsTRRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13573,7 +13653,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTT",
+      "Name": "MovieWatchProvidersAnswerResultsTT",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -13582,7 +13662,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsTTFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsTTFlatrate"
             }
           }
         },
@@ -13596,7 +13676,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTTFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsTTFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13629,7 +13709,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTW",
+      "Name": "MovieWatchProvidersAnswerResultsTW",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -13638,7 +13718,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsTWFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsTWFlatrate"
             }
           }
         },
@@ -13652,7 +13732,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsTWFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsTWFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13685,7 +13765,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUG",
+      "Name": "MovieWatchProvidersAnswerResultsUG",
       "Fields": [
         {
           "Name": "Buy",
@@ -13694,7 +13774,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsUGBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsUGBuy"
             }
           }
         },
@@ -13712,14 +13792,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsUGRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsUGRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUGBuy",
+      "Name": "MovieWatchProvidersAnswerResultsUGBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13752,7 +13832,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUGRent",
+      "Name": "MovieWatchProvidersAnswerResultsUGRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13785,7 +13865,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUS",
+      "Name": "MovieWatchProvidersAnswerResultsUS",
       "Fields": [
         {
           "Name": "Buy",
@@ -13794,7 +13874,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsUSBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsUSBuy"
             }
           }
         },
@@ -13805,7 +13885,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsUSFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsUSFlatrate"
             }
           }
         },
@@ -13823,14 +13903,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsUSRent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsUSRent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUSBuy",
+      "Name": "MovieWatchProvidersAnswerResultsUSBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13863,7 +13943,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUSFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsUSFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13896,7 +13976,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUSRent",
+      "Name": "MovieWatchProvidersAnswerResultsUSRent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13929,7 +14009,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUY",
+      "Name": "MovieWatchProvidersAnswerResultsUY",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -13938,7 +14018,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsUYFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsUYFlatrate"
             }
           }
         },
@@ -13952,7 +14032,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsUYFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsUYFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -13985,7 +14065,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsVE",
+      "Name": "MovieWatchProvidersAnswerResultsVE",
       "Fields": [
         {
           "Name": "Buy",
@@ -13994,7 +14074,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsVEBuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsVEBuy"
             }
           }
         },
@@ -14005,7 +14085,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsVEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsVEFlatrate"
             }
           }
         },
@@ -14023,14 +14103,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsVERent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsVERent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsVEBuy",
+      "Name": "MovieWatchProvidersAnswerResultsVEBuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -14063,7 +14143,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsVEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsVEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -14096,7 +14176,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsVERent",
+      "Name": "MovieWatchProvidersAnswerResultsVERent",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -14129,7 +14209,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsYE",
+      "Name": "MovieWatchProvidersAnswerResultsYE",
       "Fields": [
         {
           "Name": "Flatrate",
@@ -14138,7 +14218,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsYEFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsYEFlatrate"
             }
           }
         },
@@ -14152,7 +14232,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsYEFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsYEFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -14185,7 +14265,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsZA",
+      "Name": "MovieWatchProvidersAnswerResultsZA",
       "Fields": [
         {
           "Name": "Buy",
@@ -14194,7 +14274,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsZABuy"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsZABuy"
             }
           }
         },
@@ -14205,7 +14285,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsZAFlatrate"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsZAFlatrate"
             }
           }
         },
@@ -14223,14 +14303,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "MovieWatchProvidersResponseResultsZARent"
+              "ReferenceName": "MovieWatchProvidersAnswerResultsZARent"
             }
           }
         }
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsZABuy",
+      "Name": "MovieWatchProvidersAnswerResultsZABuy",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -14263,7 +14343,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsZAFlatrate",
+      "Name": "MovieWatchProvidersAnswerResultsZAFlatrate",
       "Fields": [
         {
           "Name": "DisplayPriority",
@@ -14296,7 +14376,7 @@
       ]
     },
     {
-      "Name": "MovieWatchProvidersResponseResultsZARent",
+      "Name": "MovieWatchProvidersAnswerResultsZARent",
       "Fields": [
         {
           "Name": "DisplayPriority",

@@ -1,11 +1,10 @@
-// Package testenv is what the two live suites share that is this
+// Package testenv is what the live suites share that is this
 // application's own: the environment .scripts/testenv.sh hands them, and how
 // the record/replay proxy their media server's provider calls go through is
 // set up. The machinery is go-kt's (test/env and test/replayproxy).
 //
-// The acceptance suite (../../acceptance) drives the tools over MCP and the
-// integration suite (../../integration) drives the generated SDKs; both run
-// against the same containers and cassettes.
+// The tool suite (../../acceptance/tools) drives the tools over MCP and the SDK suites (../../acceptance/emby and jf) drive the generated SDKs; all
+// run against the same kind of container and their own cassettes.
 package testenv
 
 import (

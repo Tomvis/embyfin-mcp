@@ -12,7 +12,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CertificationMovieListResponse"
+          "ReferenceName": "CertificationMovieListAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -29,7 +29,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CertificationsTvListResponse"
+          "ReferenceName": "CertificationsTvListAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -39,20 +39,20 @@
   ],
   "Models": [
     {
-      "Name": "CertificationMovieListResponse",
+      "Name": "CertificationMovieListAnswer",
       "Fields": [
         {
           "Name": "Certifications",
           "JsonName": "certifications",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "CertificationMovieListResponseCertifications"
+            "ReferenceName": "CertificationMovieListAnswerCertifications"
           }
         }
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertifications",
+      "Name": "CertificationMovieListAnswerCertifications",
       "Fields": [
         {
           "Name": "AR",
@@ -61,7 +61,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsAR"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsAR"
             }
           }
         },
@@ -72,7 +72,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsAU"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsAU"
             }
           }
         },
@@ -83,7 +83,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsBG"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsBG"
             }
           }
         },
@@ -94,7 +94,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsBR"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsBR"
             }
           }
         },
@@ -105,7 +105,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsCA"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsCA"
             }
           }
         },
@@ -116,7 +116,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsCAQC"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsCAQC"
             }
           }
         },
@@ -127,7 +127,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsCH"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsCH"
             }
           }
         },
@@ -138,7 +138,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsDE"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsDE"
             }
           }
         },
@@ -149,7 +149,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsDK"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsDK"
             }
           }
         },
@@ -160,7 +160,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsES"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsES"
             }
           }
         },
@@ -171,7 +171,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsFI"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsFI"
             }
           }
         },
@@ -182,7 +182,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsFR"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsFR"
             }
           }
         },
@@ -193,7 +193,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsGB"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsGB"
             }
           }
         },
@@ -204,7 +204,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsGR"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsGR"
             }
           }
         },
@@ -215,7 +215,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsHK"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsHK"
             }
           }
         },
@@ -226,7 +226,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsHU"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsHU"
             }
           }
         },
@@ -237,7 +237,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsID"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsID"
             }
           }
         },
@@ -248,7 +248,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsIE"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsIE"
             }
           }
         },
@@ -259,7 +259,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsIL"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsIL"
             }
           }
         },
@@ -270,7 +270,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsIN"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsIN"
             }
           }
         },
@@ -281,7 +281,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsIT"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsIT"
             }
           }
         },
@@ -292,7 +292,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsJP"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsJP"
             }
           }
         },
@@ -303,7 +303,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsKR"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsKR"
             }
           }
         },
@@ -314,7 +314,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsLT"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsLT"
             }
           }
         },
@@ -325,7 +325,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsLU"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsLU"
             }
           }
         },
@@ -336,7 +336,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsLV"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsLV"
             }
           }
         },
@@ -347,7 +347,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsMO"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsMO"
             }
           }
         },
@@ -358,7 +358,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsMX"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsMX"
             }
           }
         },
@@ -369,7 +369,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsMY"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsMY"
             }
           }
         },
@@ -380,7 +380,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsNL"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsNL"
             }
           }
         },
@@ -391,7 +391,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsNO"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsNO"
             }
           }
         },
@@ -402,7 +402,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsNZ"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsNZ"
             }
           }
         },
@@ -413,7 +413,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsPH"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsPH"
             }
           }
         },
@@ -424,7 +424,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsPR"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsPR"
             }
           }
         },
@@ -435,7 +435,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsPT"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsPT"
             }
           }
         },
@@ -446,7 +446,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsRU"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsRU"
             }
           }
         },
@@ -457,7 +457,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsSE"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsSE"
             }
           }
         },
@@ -468,7 +468,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsSG"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsSG"
             }
           }
         },
@@ -479,7 +479,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsSK"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsSK"
             }
           }
         },
@@ -490,7 +490,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsTH"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsTH"
             }
           }
         },
@@ -501,7 +501,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsTR"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsTR"
             }
           }
         },
@@ -512,7 +512,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsTW"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsTW"
             }
           }
         },
@@ -523,7 +523,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsUS"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsUS"
             }
           }
         },
@@ -534,7 +534,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsVI"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsVI"
             }
           }
         },
@@ -545,14 +545,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationMovieListResponseCertificationsZA"
+              "ReferenceName": "CertificationMovieListAnswerCertificationsZA"
             }
           }
         }
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsAR",
+      "Name": "CertificationMovieListAnswerCertificationsAR",
       "Fields": [
         {
           "Name": "Certification",
@@ -578,7 +578,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsAU",
+      "Name": "CertificationMovieListAnswerCertificationsAU",
       "Fields": [
         {
           "Name": "Certification",
@@ -604,7 +604,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsBG",
+      "Name": "CertificationMovieListAnswerCertificationsBG",
       "Fields": [
         {
           "Name": "Certification",
@@ -630,7 +630,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsBR",
+      "Name": "CertificationMovieListAnswerCertificationsBR",
       "Fields": [
         {
           "Name": "Certification",
@@ -656,7 +656,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsCA",
+      "Name": "CertificationMovieListAnswerCertificationsCA",
       "Fields": [
         {
           "Name": "Certification",
@@ -682,7 +682,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsCAQC",
+      "Name": "CertificationMovieListAnswerCertificationsCAQC",
       "Fields": [
         {
           "Name": "Certification",
@@ -708,7 +708,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsCH",
+      "Name": "CertificationMovieListAnswerCertificationsCH",
       "Fields": [
         {
           "Name": "Certification",
@@ -734,7 +734,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsDE",
+      "Name": "CertificationMovieListAnswerCertificationsDE",
       "Fields": [
         {
           "Name": "Certification",
@@ -760,7 +760,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsDK",
+      "Name": "CertificationMovieListAnswerCertificationsDK",
       "Fields": [
         {
           "Name": "Certification",
@@ -786,7 +786,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsES",
+      "Name": "CertificationMovieListAnswerCertificationsES",
       "Fields": [
         {
           "Name": "Certification",
@@ -812,7 +812,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsFI",
+      "Name": "CertificationMovieListAnswerCertificationsFI",
       "Fields": [
         {
           "Name": "Certification",
@@ -838,7 +838,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsFR",
+      "Name": "CertificationMovieListAnswerCertificationsFR",
       "Fields": [
         {
           "Name": "Certification",
@@ -864,7 +864,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsGB",
+      "Name": "CertificationMovieListAnswerCertificationsGB",
       "Fields": [
         {
           "Name": "Certification",
@@ -890,7 +890,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsGR",
+      "Name": "CertificationMovieListAnswerCertificationsGR",
       "Fields": [
         {
           "Name": "Certification",
@@ -916,7 +916,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsHK",
+      "Name": "CertificationMovieListAnswerCertificationsHK",
       "Fields": [
         {
           "Name": "Certification",
@@ -942,7 +942,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsHU",
+      "Name": "CertificationMovieListAnswerCertificationsHU",
       "Fields": [
         {
           "Name": "Certification",
@@ -968,7 +968,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsID",
+      "Name": "CertificationMovieListAnswerCertificationsID",
       "Fields": [
         {
           "Name": "Certification",
@@ -994,7 +994,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsIE",
+      "Name": "CertificationMovieListAnswerCertificationsIE",
       "Fields": [
         {
           "Name": "Certification",
@@ -1020,7 +1020,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsIL",
+      "Name": "CertificationMovieListAnswerCertificationsIL",
       "Fields": [
         {
           "Name": "Certification",
@@ -1046,7 +1046,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsIN",
+      "Name": "CertificationMovieListAnswerCertificationsIN",
       "Fields": [
         {
           "Name": "Certification",
@@ -1072,7 +1072,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsIT",
+      "Name": "CertificationMovieListAnswerCertificationsIT",
       "Fields": [
         {
           "Name": "Certification",
@@ -1098,7 +1098,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsJP",
+      "Name": "CertificationMovieListAnswerCertificationsJP",
       "Fields": [
         {
           "Name": "Certification",
@@ -1124,7 +1124,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsKR",
+      "Name": "CertificationMovieListAnswerCertificationsKR",
       "Fields": [
         {
           "Name": "Certification",
@@ -1150,7 +1150,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsLT",
+      "Name": "CertificationMovieListAnswerCertificationsLT",
       "Fields": [
         {
           "Name": "Certification",
@@ -1176,7 +1176,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsLU",
+      "Name": "CertificationMovieListAnswerCertificationsLU",
       "Fields": [
         {
           "Name": "Certification",
@@ -1202,7 +1202,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsLV",
+      "Name": "CertificationMovieListAnswerCertificationsLV",
       "Fields": [
         {
           "Name": "Certification",
@@ -1228,7 +1228,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsMO",
+      "Name": "CertificationMovieListAnswerCertificationsMO",
       "Fields": [
         {
           "Name": "Certification",
@@ -1254,7 +1254,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsMX",
+      "Name": "CertificationMovieListAnswerCertificationsMX",
       "Fields": [
         {
           "Name": "Certification",
@@ -1280,7 +1280,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsMY",
+      "Name": "CertificationMovieListAnswerCertificationsMY",
       "Fields": [
         {
           "Name": "Certification",
@@ -1306,7 +1306,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsNL",
+      "Name": "CertificationMovieListAnswerCertificationsNL",
       "Fields": [
         {
           "Name": "Certification",
@@ -1332,7 +1332,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsNO",
+      "Name": "CertificationMovieListAnswerCertificationsNO",
       "Fields": [
         {
           "Name": "Certification",
@@ -1358,7 +1358,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsNZ",
+      "Name": "CertificationMovieListAnswerCertificationsNZ",
       "Fields": [
         {
           "Name": "Certification",
@@ -1384,7 +1384,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsPH",
+      "Name": "CertificationMovieListAnswerCertificationsPH",
       "Fields": [
         {
           "Name": "Certification",
@@ -1410,7 +1410,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsPR",
+      "Name": "CertificationMovieListAnswerCertificationsPR",
       "Fields": [
         {
           "Name": "Certification",
@@ -1436,7 +1436,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsPT",
+      "Name": "CertificationMovieListAnswerCertificationsPT",
       "Fields": [
         {
           "Name": "Certification",
@@ -1462,7 +1462,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsRU",
+      "Name": "CertificationMovieListAnswerCertificationsRU",
       "Fields": [
         {
           "Name": "Certification",
@@ -1488,7 +1488,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsSE",
+      "Name": "CertificationMovieListAnswerCertificationsSE",
       "Fields": [
         {
           "Name": "Certification",
@@ -1514,7 +1514,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsSG",
+      "Name": "CertificationMovieListAnswerCertificationsSG",
       "Fields": [
         {
           "Name": "Certification",
@@ -1540,7 +1540,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsSK",
+      "Name": "CertificationMovieListAnswerCertificationsSK",
       "Fields": [
         {
           "Name": "Certification",
@@ -1566,7 +1566,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsTH",
+      "Name": "CertificationMovieListAnswerCertificationsTH",
       "Fields": [
         {
           "Name": "Certification",
@@ -1592,7 +1592,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsTR",
+      "Name": "CertificationMovieListAnswerCertificationsTR",
       "Fields": [
         {
           "Name": "Certification",
@@ -1618,7 +1618,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsTW",
+      "Name": "CertificationMovieListAnswerCertificationsTW",
       "Fields": [
         {
           "Name": "Certification",
@@ -1644,7 +1644,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsUS",
+      "Name": "CertificationMovieListAnswerCertificationsUS",
       "Fields": [
         {
           "Name": "Certification",
@@ -1670,7 +1670,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsVI",
+      "Name": "CertificationMovieListAnswerCertificationsVI",
       "Fields": [
         {
           "Name": "Certification",
@@ -1696,7 +1696,7 @@
       ]
     },
     {
-      "Name": "CertificationMovieListResponseCertificationsZA",
+      "Name": "CertificationMovieListAnswerCertificationsZA",
       "Fields": [
         {
           "Name": "Certification",
@@ -1722,20 +1722,20 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponse",
+      "Name": "CertificationsTvListAnswer",
       "Fields": [
         {
           "Name": "Certifications",
           "JsonName": "certifications",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "CertificationsTvListResponseCertifications"
+            "ReferenceName": "CertificationsTvListAnswerCertifications"
           }
         }
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertifications",
+      "Name": "CertificationsTvListAnswerCertifications",
       "Fields": [
         {
           "Name": "AR",
@@ -1744,7 +1744,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsAR"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsAR"
             }
           }
         },
@@ -1755,7 +1755,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsAU"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsAU"
             }
           }
         },
@@ -1766,7 +1766,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsBG"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsBG"
             }
           }
         },
@@ -1777,7 +1777,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsBR"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsBR"
             }
           }
         },
@@ -1788,7 +1788,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsCA"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsCA"
             }
           }
         },
@@ -1799,7 +1799,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsCAQC"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsCAQC"
             }
           }
         },
@@ -1810,7 +1810,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsDE"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsDE"
             }
           }
         },
@@ -1821,7 +1821,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsDK"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsDK"
             }
           }
         },
@@ -1832,7 +1832,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsES"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsES"
             }
           }
         },
@@ -1843,7 +1843,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsFI"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsFI"
             }
           }
         },
@@ -1854,7 +1854,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsFR"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsFR"
             }
           }
         },
@@ -1865,7 +1865,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsGB"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsGB"
             }
           }
         },
@@ -1876,7 +1876,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsGR"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsGR"
             }
           }
         },
@@ -1887,7 +1887,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsHU"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsHU"
             }
           }
         },
@@ -1898,7 +1898,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsID"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsID"
             }
           }
         },
@@ -1909,7 +1909,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsIL"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsIL"
             }
           }
         },
@@ -1920,7 +1920,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsIN"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsIN"
             }
           }
         },
@@ -1931,7 +1931,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsIT"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsIT"
             }
           }
         },
@@ -1942,7 +1942,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsKR"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsKR"
             }
           }
         },
@@ -1953,7 +1953,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsLT"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsLT"
             }
           }
         },
@@ -1964,7 +1964,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsMA"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsMA"
             }
           }
         },
@@ -1975,7 +1975,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsMX"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsMX"
             }
           }
         },
@@ -1986,7 +1986,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsMY"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsMY"
             }
           }
         },
@@ -1997,7 +1997,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsNL"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsNL"
             }
           }
         },
@@ -2008,7 +2008,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsNO"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsNO"
             }
           }
         },
@@ -2019,7 +2019,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsNZ"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsNZ"
             }
           }
         },
@@ -2030,7 +2030,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsPH"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsPH"
             }
           }
         },
@@ -2041,7 +2041,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsPL"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsPL"
             }
           }
         },
@@ -2052,7 +2052,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsPR"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsPR"
             }
           }
         },
@@ -2063,7 +2063,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsPT"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsPT"
             }
           }
         },
@@ -2074,7 +2074,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsRU"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsRU"
             }
           }
         },
@@ -2085,7 +2085,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsSE"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsSE"
             }
           }
         },
@@ -2096,7 +2096,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsSG"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsSG"
             }
           }
         },
@@ -2107,7 +2107,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsSK"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsSK"
             }
           }
         },
@@ -2118,7 +2118,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsTH"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsTH"
             }
           }
         },
@@ -2129,7 +2129,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsTR"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsTR"
             }
           }
         },
@@ -2140,7 +2140,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsTW"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsTW"
             }
           }
         },
@@ -2151,7 +2151,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsUS"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsUS"
             }
           }
         },
@@ -2162,7 +2162,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsVI"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsVI"
             }
           }
         },
@@ -2173,14 +2173,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CertificationsTvListResponseCertificationsZA"
+              "ReferenceName": "CertificationsTvListAnswerCertificationsZA"
             }
           }
         }
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsAR",
+      "Name": "CertificationsTvListAnswerCertificationsAR",
       "Fields": [
         {
           "Name": "Certification",
@@ -2206,7 +2206,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsAU",
+      "Name": "CertificationsTvListAnswerCertificationsAU",
       "Fields": [
         {
           "Name": "Certification",
@@ -2232,7 +2232,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsBG",
+      "Name": "CertificationsTvListAnswerCertificationsBG",
       "Fields": [
         {
           "Name": "Certification",
@@ -2258,7 +2258,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsBR",
+      "Name": "CertificationsTvListAnswerCertificationsBR",
       "Fields": [
         {
           "Name": "Certification",
@@ -2284,7 +2284,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsCA",
+      "Name": "CertificationsTvListAnswerCertificationsCA",
       "Fields": [
         {
           "Name": "Certification",
@@ -2310,7 +2310,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsCAQC",
+      "Name": "CertificationsTvListAnswerCertificationsCAQC",
       "Fields": [
         {
           "Name": "Certification",
@@ -2336,7 +2336,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsDE",
+      "Name": "CertificationsTvListAnswerCertificationsDE",
       "Fields": [
         {
           "Name": "Certification",
@@ -2362,7 +2362,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsDK",
+      "Name": "CertificationsTvListAnswerCertificationsDK",
       "Fields": [
         {
           "Name": "Certification",
@@ -2388,7 +2388,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsES",
+      "Name": "CertificationsTvListAnswerCertificationsES",
       "Fields": [
         {
           "Name": "Certification",
@@ -2414,7 +2414,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsFI",
+      "Name": "CertificationsTvListAnswerCertificationsFI",
       "Fields": [
         {
           "Name": "Certification",
@@ -2440,7 +2440,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsFR",
+      "Name": "CertificationsTvListAnswerCertificationsFR",
       "Fields": [
         {
           "Name": "Certification",
@@ -2466,7 +2466,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsGB",
+      "Name": "CertificationsTvListAnswerCertificationsGB",
       "Fields": [
         {
           "Name": "Certification",
@@ -2492,7 +2492,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsGR",
+      "Name": "CertificationsTvListAnswerCertificationsGR",
       "Fields": [
         {
           "Name": "Certification",
@@ -2518,7 +2518,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsHU",
+      "Name": "CertificationsTvListAnswerCertificationsHU",
       "Fields": [
         {
           "Name": "Certification",
@@ -2544,7 +2544,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsID",
+      "Name": "CertificationsTvListAnswerCertificationsID",
       "Fields": [
         {
           "Name": "Certification",
@@ -2570,7 +2570,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsIL",
+      "Name": "CertificationsTvListAnswerCertificationsIL",
       "Fields": [
         {
           "Name": "Certification",
@@ -2596,7 +2596,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsIN",
+      "Name": "CertificationsTvListAnswerCertificationsIN",
       "Fields": [
         {
           "Name": "Certification",
@@ -2622,7 +2622,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsIT",
+      "Name": "CertificationsTvListAnswerCertificationsIT",
       "Fields": [
         {
           "Name": "Certification",
@@ -2648,7 +2648,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsKR",
+      "Name": "CertificationsTvListAnswerCertificationsKR",
       "Fields": [
         {
           "Name": "Certification",
@@ -2674,7 +2674,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsLT",
+      "Name": "CertificationsTvListAnswerCertificationsLT",
       "Fields": [
         {
           "Name": "Certification",
@@ -2700,7 +2700,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsMA",
+      "Name": "CertificationsTvListAnswerCertificationsMA",
       "Fields": [
         {
           "Name": "Certification",
@@ -2726,7 +2726,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsMX",
+      "Name": "CertificationsTvListAnswerCertificationsMX",
       "Fields": [
         {
           "Name": "Certification",
@@ -2752,7 +2752,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsMY",
+      "Name": "CertificationsTvListAnswerCertificationsMY",
       "Fields": [
         {
           "Name": "Certification",
@@ -2778,7 +2778,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsNL",
+      "Name": "CertificationsTvListAnswerCertificationsNL",
       "Fields": [
         {
           "Name": "Certification",
@@ -2804,7 +2804,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsNO",
+      "Name": "CertificationsTvListAnswerCertificationsNO",
       "Fields": [
         {
           "Name": "Certification",
@@ -2830,7 +2830,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsNZ",
+      "Name": "CertificationsTvListAnswerCertificationsNZ",
       "Fields": [
         {
           "Name": "Certification",
@@ -2856,7 +2856,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsPH",
+      "Name": "CertificationsTvListAnswerCertificationsPH",
       "Fields": [
         {
           "Name": "Certification",
@@ -2882,7 +2882,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsPL",
+      "Name": "CertificationsTvListAnswerCertificationsPL",
       "Fields": [
         {
           "Name": "Certification",
@@ -2908,7 +2908,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsPR",
+      "Name": "CertificationsTvListAnswerCertificationsPR",
       "Fields": [
         {
           "Name": "Certification",
@@ -2934,7 +2934,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsPT",
+      "Name": "CertificationsTvListAnswerCertificationsPT",
       "Fields": [
         {
           "Name": "Certification",
@@ -2960,7 +2960,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsRU",
+      "Name": "CertificationsTvListAnswerCertificationsRU",
       "Fields": [
         {
           "Name": "Certification",
@@ -2986,7 +2986,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsSE",
+      "Name": "CertificationsTvListAnswerCertificationsSE",
       "Fields": [
         {
           "Name": "Certification",
@@ -3012,7 +3012,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsSG",
+      "Name": "CertificationsTvListAnswerCertificationsSG",
       "Fields": [
         {
           "Name": "Certification",
@@ -3038,7 +3038,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsSK",
+      "Name": "CertificationsTvListAnswerCertificationsSK",
       "Fields": [
         {
           "Name": "Certification",
@@ -3064,7 +3064,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsTH",
+      "Name": "CertificationsTvListAnswerCertificationsTH",
       "Fields": [
         {
           "Name": "Certification",
@@ -3090,7 +3090,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsTR",
+      "Name": "CertificationsTvListAnswerCertificationsTR",
       "Fields": [
         {
           "Name": "Certification",
@@ -3116,7 +3116,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsTW",
+      "Name": "CertificationsTvListAnswerCertificationsTW",
       "Fields": [
         {
           "Name": "Certification",
@@ -3142,7 +3142,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsUS",
+      "Name": "CertificationsTvListAnswerCertificationsUS",
       "Fields": [
         {
           "Name": "Certification",
@@ -3168,7 +3168,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsVI",
+      "Name": "CertificationsTvListAnswerCertificationsVI",
       "Fields": [
         {
           "Name": "Certification",
@@ -3194,7 +3194,7 @@
       ]
     },
     {
-      "Name": "CertificationsTvListResponseCertificationsZA",
+      "Name": "CertificationsTvListAnswerCertificationsZA",
       "Fields": [
         {
           "Name": "Certification",

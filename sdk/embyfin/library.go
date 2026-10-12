@@ -7,11 +7,9 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/katbyte/go-kt/pointer"
-
 	"github.com/katbyte/embyfin-mcp/lib/mediapath"
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 type VirtualFolder struct {
@@ -91,11 +89,11 @@ func FolderOf(folders []VirtualFolder, path string) *VirtualFolder {
 // not on others.
 func (c *Client) VirtualFolders(ctx context.Context) ([]VirtualFolder, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetLibraryVirtualFoldersQuery(ctx, emby.GetLibraryVirtualFoldersQueryOperationOptions{})
+		res, err := c.emby.LibraryStructure.GetLibraryVirtualFoldersQuery(ctx, emby.GetLibraryVirtualFoldersQueryOptions{})
 		if err != nil {
 			return nil, err
 		}
-		listed := orEmpty(res.Model).Items
+		listed := orEmpty(res.Answer).Items
 		folders := make([]VirtualFolder, 0, len(listed))
 		for i := range listed {
 			folders = append(folders, virtualFolderFromEmby(&listed[i]))
@@ -104,13 +102,13 @@ func (c *Client) VirtualFolders(ctx context.Context) ([]VirtualFolder, error) {
 		return folders, nil
 	}
 
-	res, err := c.jf.GetVirtualFolders(ctx)
+	res, err := c.jf.LibraryStructure.GetVirtualFolders(ctx)
 	if err != nil {
 		return nil, err
 	}
-	folders := make([]VirtualFolder, 0, len(res.Model))
-	for i := range res.Model {
-		folders = append(folders, virtualFolderFromJF(&res.Model[i]))
+	folders := make([]VirtualFolder, 0, len(res.Answer))
+	for i := range res.Answer {
+		folders = append(folders, virtualFolderFromJF(&res.Answer[i]))
 	}
 
 	return folders, nil
@@ -119,20 +117,20 @@ func (c *Client) VirtualFolders(ctx context.Context) ([]VirtualFolder, error) {
 // Persons searches people (actors, directors, ...) known to the library.
 func (c *Client) Persons(ctx context.Context, searchTerm string, limit int) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetPersons(ctx, emby.GetPersonsOperationOptions{SearchTerm: searchTerm, Limit: nz(limit)})
+		res, err := c.emby.Persons.GetPersons(ctx, emby.GetPersonsOptions{SearchTerm: searchTerm, Limit: nz(limit)})
 		if err != nil {
 			return nil, err
 		}
 
-		return itemsFromEmby(orEmpty(res.Model).Items), nil
+		return itemsFromEmby(orEmpty(res.Answer).Items), nil
 	}
 
-	res, err := c.jf.GetPersons(ctx, jf.GetPersonsOperationOptions{SearchTerm: searchTerm, Limit: nz(limit)})
+	res, err := c.jf.Person.GetPersons(ctx, jf.GetPersonsOptions{SearchTerm: searchTerm, Limit: nz(limit)})
 	if err != nil {
 		return nil, err
 	}
 
-	return itemsFromJF(res.Model.Items), nil
+	return itemsFromJF(res.Answer.Items), nil
 }
 
 // LibrarySpec describes a library to create.
@@ -202,7 +200,7 @@ func (c *Client) CreateLibrary(ctx context.Context, spec LibrarySpec) error {
 			options.MetadataSavers = savers(*spec.SaveNfo)
 		}
 
-		_, err := c.emby.PostLibraryVirtualFolders(ctx, emby.LibraryAddVirtualFolder{
+		_, err := c.emby.LibraryStructure.PostLibraryVirtualFolders(ctx, emby.LibraryAddVirtualFolder{
 			Name:           spec.Name,
 			CollectionType: spec.CollectionType,
 			RefreshLibrary: new(spec.Refresh),
@@ -229,7 +227,7 @@ func (c *Client) CreateLibrary(ctx context.Context, spec LibrarySpec) error {
 	if spec.SaveNfo != nil {
 		options.MetadataSavers = savers(*spec.SaveNfo)
 	}
-	query := jf.AddVirtualFolderOperationOptions{
+	query := jf.AddVirtualFolderOptions{
 		Name:           spec.Name,
 		Paths:          spec.Paths,
 		RefreshLibrary: new(false),
@@ -237,7 +235,7 @@ func (c *Client) CreateLibrary(ctx context.Context, spec LibrarySpec) error {
 	if spec.CollectionType != "mixed" {
 		query.CollectionType = jf.CollectionTypeOptions(spec.CollectionType)
 	}
-	if _, err := c.jf.AddVirtualFolder(ctx, jf.AddVirtualFolderDto{LibraryOptions: options}, query); err != nil {
+	if _, err := c.jf.LibraryStructure.AddVirtualFolder(ctx, jf.AddVirtualFolderDto{LibraryOptions: options}, query); err != nil {
 		return err
 	}
 	if !spec.Refresh {
@@ -254,7 +252,7 @@ func (c *Client) CreateLibrary(ctx context.Context, spec LibrarySpec) error {
 // back to back hits; POST /Library/Refresh cancels the running scan and
 // queues one instead, so the change is always seen.
 func (c *Client) jfLibraryScan(ctx context.Context) error {
-	_, err := c.jf.RefreshLibrary(ctx)
+	_, err := c.jf.Library.RefreshLibrary(ctx)
 
 	return err
 }
@@ -263,7 +261,7 @@ func (c *Client) jfLibraryScan(ctx context.Context) error {
 // enables by default, in the shape LibraryOptions.TypeOptions takes. Without
 // LibraryContentType Emby answers for every item type at once.
 func (c *Client) embyDefaultTypeOptions(ctx context.Context, collectionType string) ([]emby.TypeOptions, error) {
-	res, err := c.emby.GetLibrariesAvailableOptions(ctx, emby.GetLibrariesAvailableOptionsOperationOptions{
+	res, err := c.emby.Library.GetLibrariesAvailableOptions(ctx, emby.GetLibrariesAvailableOptionsOptions{
 		LibraryContentType: collectionType,
 		IsNewLibrary:       new(true),
 	})
@@ -274,13 +272,13 @@ func (c *Client) embyDefaultTypeOptions(ctx context.Context, collectionType stri
 	enabled := func(infos []emby.LibraryOptionInfo) []string {
 		names := []string{}
 		for _, f := range infos {
-			if pointer.From(f.DefaultEnabled) {
+			if f.DefaultEnabled {
 				names = append(names, f.Name)
 			}
 		}
 		return names
 	}
-	available := orEmpty(res.Model).TypeOptions
+	available := orEmpty(res.Answer).TypeOptions
 	out := make([]emby.TypeOptions, 0, len(available))
 	for _, t := range available {
 		metadata, images := enabled(t.MetadataFetchers), enabled(t.ImageFetchers)
@@ -301,11 +299,11 @@ func (c *Client) embyDefaultTypeOptions(ctx context.Context, collectionType stri
 // scan.
 func (c *Client) DeleteLibrary(ctx context.Context, folder *VirtualFolder) error {
 	if c.isEmby() {
-		_, err := c.emby.PostLibraryVirtualFoldersDelete(ctx, emby.LibraryRemoveVirtualFolder{Id: folder.ItemID})
+		_, err := c.emby.LibraryStructure.PostLibraryVirtualFoldersDelete(ctx, emby.LibraryRemoveVirtualFolder{Id: folder.ItemID})
 		return err
 	}
 
-	if _, err := c.jf.RemoveVirtualFolder(ctx, jf.RemoveVirtualFolderOperationOptions{Name: folder.Name, RefreshLibrary: new(false)}); err != nil {
+	if _, err := c.jf.LibraryStructure.RemoveVirtualFolder(ctx, jf.RemoveVirtualFolderOptions{Name: folder.Name, RefreshLibrary: new(false)}); err != nil {
 		return err
 	}
 	if err := c.jfLibraryScan(ctx); err != nil {
@@ -323,14 +321,14 @@ func (c *Client) SetLibraryNfo(ctx context.Context, folder *VirtualFolder, on bo
 		return errNoLibraryID
 	}
 	if c.isEmby() {
-		res, err := c.emby.GetLibraryVirtualFoldersQuery(ctx, emby.GetLibraryVirtualFoldersQueryOperationOptions{})
+		res, err := c.emby.LibraryStructure.GetLibraryVirtualFoldersQuery(ctx, emby.GetLibraryVirtualFoldersQueryOptions{})
 		if err != nil {
 			return err
 		}
-		for _, f := range orEmpty(res.Model).Items {
+		for _, f := range orEmpty(res.Answer).Items {
 			if f.ItemId == folder.ItemID && f.LibraryOptions != nil {
 				f.LibraryOptions.MetadataSavers = savers(on)
-				_, err := c.emby.PostLibraryVirtualFoldersLibraryOptions(ctx, emby.LibraryUpdateLibraryOptions{Id: folder.ItemID, LibraryOptions: f.LibraryOptions})
+				_, err := c.emby.LibraryStructure.PostLibraryVirtualFoldersLibraryOptions(ctx, emby.LibraryUpdateLibraryOptions{Id: folder.ItemID, LibraryOptions: f.LibraryOptions})
 
 				return err
 			}
@@ -339,14 +337,14 @@ func (c *Client) SetLibraryNfo(ctx context.Context, folder *VirtualFolder, on bo
 		return fmt.Errorf("the server lists no options for the %s library", folder.Name)
 	}
 
-	res, err := c.jf.GetVirtualFolders(ctx)
+	res, err := c.jf.LibraryStructure.GetVirtualFolders(ctx)
 	if err != nil {
 		return err
 	}
-	for _, f := range res.Model {
+	for _, f := range res.Answer {
 		if f.ItemId == folder.ItemID && f.LibraryOptions != nil {
 			f.LibraryOptions.MetadataSavers = savers(on)
-			_, err := c.jf.UpdateLibraryOptions(ctx, jf.UpdateLibraryOptionsDto{Id: folder.ItemID, LibraryOptions: f.LibraryOptions})
+			_, err := c.jf.LibraryStructure.UpdateLibraryOptions(ctx, jf.UpdateLibraryOptionsDto{Id: folder.ItemID, LibraryOptions: f.LibraryOptions})
 
 			return err
 		}
@@ -363,11 +361,11 @@ var errNoLibraryID = errors.New("the server lists the library without an id; sca
 // RenameLibrary renames a library. Emby takes its id, Jellyfin its name.
 func (c *Client) RenameLibrary(ctx context.Context, folder *VirtualFolder, newName string) error {
 	if c.isEmby() {
-		_, err := c.emby.PostLibraryVirtualFoldersName(ctx, emby.LibraryRenameVirtualFolder{Id: folder.ItemID, NewName: newName})
+		_, err := c.emby.LibraryStructure.PostLibraryVirtualFoldersName(ctx, emby.LibraryRenameVirtualFolder{Id: folder.ItemID, NewName: newName})
 		return err
 	}
 
-	if _, err := c.jf.RenameVirtualFolder(ctx, jf.RenameVirtualFolderOperationOptions{Name: folder.Name, NewName: newName, RefreshLibrary: new(false)}); err != nil {
+	if _, err := c.jf.LibraryStructure.RenameVirtualFolder(ctx, jf.RenameVirtualFolderOptions{Name: folder.Name, NewName: newName, RefreshLibrary: new(false)}); err != nil {
 		return err
 	}
 	// Jellyfin lists a renamed library with no id and none of its options
@@ -404,14 +402,14 @@ const renamePolls = 120
 // so there the change asks for that scan (see jfLibraryScan).
 func (c *Client) AddLibraryPath(ctx context.Context, folder *VirtualFolder, path string) error {
 	if c.isEmby() {
-		_, err := c.emby.PostLibraryVirtualFoldersPaths(ctx, emby.LibraryAddMediaPath{
+		_, err := c.emby.LibraryStructure.PostLibraryVirtualFoldersPaths(ctx, emby.LibraryAddMediaPath{
 			Id: folder.ItemID, PathInfo: &emby.MediaPathInfo{Path: path}, RefreshLibrary: new(false),
 		})
 
 		return err
 	}
 
-	if _, err := c.jf.AddMediaPath(ctx, jf.MediaPathDto{Name: folder.Name, PathInfo: &jf.MediaPathInfo{Path: path}}, jf.AddMediaPathOperationOptions{RefreshLibrary: new(false)}); err != nil {
+	if _, err := c.jf.LibraryStructure.AddMediaPath(ctx, jf.MediaPathDto{Name: folder.Name, PathInfo: &jf.MediaPathInfo{Path: path}}, false); err != nil {
 		return err
 	}
 
@@ -422,11 +420,11 @@ func (c *Client) AddLibraryPath(ctx context.Context, folder *VirtualFolder, path
 // As with AddLibraryPath, Jellyfin's change asks for its library scan.
 func (c *Client) RemoveLibraryPath(ctx context.Context, folder *VirtualFolder, path string) error {
 	if c.isEmby() {
-		_, err := c.emby.PostLibraryVirtualFoldersPathsDelete(ctx, emby.LibraryRemoveMediaPath{Id: folder.ItemID, Path: path, RefreshLibrary: new(false)})
+		_, err := c.emby.LibraryStructure.PostLibraryVirtualFoldersPathsDelete(ctx, emby.LibraryRemoveMediaPath{Id: folder.ItemID, Path: path, RefreshLibrary: new(false)})
 		return err
 	}
 
-	if _, err := c.jf.RemoveMediaPath(ctx, jf.RemoveMediaPathOperationOptions{Name: folder.Name, Path: path, RefreshLibrary: new(false)}); err != nil {
+	if _, err := c.jf.LibraryStructure.RemoveMediaPath(ctx, jf.RemoveMediaPathOptions{Name: folder.Name, Path: path, RefreshLibrary: new(false)}); err != nil {
 		return err
 	}
 
@@ -441,9 +439,9 @@ func (c *Client) PathExists(ctx context.Context, path string) (bool, error) {
 	for _, isFile := range []bool{false, true} {
 		var err error
 		if c.isEmby() {
-			_, err = c.emby.PostEnvironmentValidatePath(ctx, emby.ValidatePath{IsFile: new(isFile)}, emby.PostEnvironmentValidatePathOperationOptions{Path: path})
+			_, err = c.emby.Environment.PostEnvironmentValidatePath(ctx, emby.ValidatePath{IsFile: new(isFile)}, path)
 		} else {
-			_, err = c.jf.ValidatePath(ctx, jf.ValidatePathDto{Path: path, IsFile: new(isFile)})
+			_, err = c.jf.Environment.ValidatePath(ctx, jf.ValidatePathDto{Path: path, IsFile: new(isFile)})
 		}
 		switch {
 		case err == nil:
@@ -465,7 +463,7 @@ func (c *Client) ScanLibrary(ctx context.Context, folder *VirtualFolder) error {
 		return errNoLibraryID
 	}
 	if c.isEmby() {
-		_, err := c.emby.PostItemsByIdRefresh(ctx, folder.ItemID, emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOperationOptions{
+		_, err := c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, folder.ItemID, emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
 			Recursive:           new(true),
 			MetadataRefreshMode: emby.MetadataRefreshModeDefault,
 			ImageRefreshMode:    emby.MetadataRefreshModeDefault,
@@ -474,7 +472,7 @@ func (c *Client) ScanLibrary(ctx context.Context, folder *VirtualFolder) error {
 		return err
 	}
 
-	_, err := c.jf.RefreshItem(ctx, folder.ItemID, jf.RefreshItemOperationOptions{
+	_, err := c.jf.Library.RefreshItem(ctx, folder.ItemID, jf.RefreshItemOptions{
 		MetadataRefreshMode: jf.MetadataRefreshModeDefault,
 		ImageRefreshMode:    jf.MetadataRefreshModeDefault,
 	})
@@ -485,23 +483,23 @@ func (c *Client) ScanLibrary(ctx context.Context, folder *VirtualFolder) error {
 // Person looks a person up by name, exactly as the library spells it.
 func (c *Client) Person(ctx context.Context, name, userID string) (*Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetPersonsByName(ctx, name, emby.GetPersonsByNameOperationOptions{UserId: userID})
+		res, err := c.emby.Persons.GetPersonsByName(ctx, name, userID)
 		if err != nil {
 			return nil, err
 		}
-		if res.Model == nil {
+		if res.Answer == nil {
 			return nil, noResult("no person named %q", name)
 		}
-		it := itemFromEmby(res.Model)
+		it := itemFromEmby(res.Answer)
 
 		return &it, nil
 	}
 
-	res, err := c.jf.GetPerson(ctx, name, jf.GetPersonOperationOptions{UserId: userID})
+	res, err := c.jf.Person.GetPerson(ctx, name, userID)
 	if err != nil {
 		return nil, err
 	}
-	it := itemFromJF(res.Model)
+	it := itemFromJF(res.Answer)
 
 	return &it, nil
 }
@@ -519,15 +517,15 @@ type FolderEntry struct {
 func (c *Client) ListFolder(ctx context.Context, path string) (entries []FolderEntry, found bool, err error) {
 	yes := new(true)
 	if c.isEmby() {
-		res, lerr := c.emby.GetEnvironmentDirectoryContents(ctx, emby.GetEnvironmentDirectoryContentsOperationOptions{Path: path, IncludeFiles: yes, IncludeDirectories: yes})
+		res, lerr := c.emby.Environment.GetEnvironmentDirectoryContents(ctx, emby.GetEnvironmentDirectoryContentsOptions{Path: path, IncludeFiles: yes, IncludeDirectories: yes})
 		err = lerr
-		for _, e := range res.Model {
+		for _, e := range res.Answer {
 			entries = append(entries, FolderEntry{Name: e.Name, Path: e.Path, IsDir: e.Type == emby.IOFileSystemEntryTypeDirectory})
 		}
 	} else {
-		res, lerr := c.jf.GetDirectoryContents(ctx, jf.GetDirectoryContentsOperationOptions{Path: path, IncludeFiles: yes, IncludeDirectories: yes})
+		res, lerr := c.jf.Environment.GetDirectoryContents(ctx, jf.GetDirectoryContentsOptions{Path: path, IncludeFiles: yes, IncludeDirectories: yes})
 		err = lerr
-		for _, e := range res.Model {
+		for _, e := range res.Answer {
 			entries = append(entries, FolderEntry{Name: e.Name, Path: e.Path, IsDir: e.Type == jf.FileSystemEntryTypeDirectory})
 		}
 	}

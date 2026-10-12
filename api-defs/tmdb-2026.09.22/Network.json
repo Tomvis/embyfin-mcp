@@ -21,7 +21,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "AlternativeNamesCopyResponse"
+          "ReferenceName": "AlternativeNamesCopyAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -47,7 +47,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "DetailsCopyResponse"
+          "ReferenceName": "DetailsCopyAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -73,7 +73,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "NetworkDetailsResponse"
+          "ReferenceName": "NetworkDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -83,7 +83,7 @@
   ],
   "Models": [
     {
-      "Name": "AlternativeNamesCopyResponse",
+      "Name": "AlternativeNamesCopyAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -99,14 +99,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "AlternativeNamesCopyResponseLogos"
+              "ReferenceName": "AlternativeNamesCopyAnswerLogos"
             }
           }
         }
       ]
     },
     {
-      "Name": "AlternativeNamesCopyResponseLogos",
+      "Name": "AlternativeNamesCopyAnswerLogos",
       "Fields": [
         {
           "Name": "AspectRatio",
@@ -167,7 +167,7 @@
       ]
     },
     {
-      "Name": "DetailsCopyResponse",
+      "Name": "DetailsCopyAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -183,14 +183,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "DetailsCopyResponseResults"
+              "ReferenceName": "DetailsCopyAnswerResults"
             }
           }
         }
       ]
     },
     {
-      "Name": "DetailsCopyResponseResults",
+      "Name": "DetailsCopyAnswerResults",
       "Fields": [
         {
           "Name": "Name",
@@ -209,7 +209,7 @@
       ]
     },
     {
-      "Name": "NetworkDetailsResponse",
+      "Name": "NetworkDetailsAnswer",
       "Fields": [
         {
           "Name": "Headquarters",

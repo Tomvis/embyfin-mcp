@@ -30,7 +30,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "WatchProviderTvListResponse"
+          "ReferenceName": "WatchProviderTvListAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -57,7 +57,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "WatchProvidersAvailableRegionsResponse"
+          "ReferenceName": "WatchProvidersAvailableRegionsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -92,7 +92,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "WatchProvidersMovieListResponse"
+          "ReferenceName": "WatchProvidersMovieListAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -102,7 +102,7 @@
   ],
   "Models": [
     {
-      "Name": "WatchProviderTvListResponse",
+      "Name": "WatchProviderTvListAnswer",
       "Fields": [
         {
           "Name": "Results",
@@ -111,14 +111,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "WatchProviderTvListResponseResults"
+              "ReferenceName": "WatchProviderTvListAnswerResults"
             }
           }
         }
       ]
     },
     {
-      "Name": "WatchProviderTvListResponseResults",
+      "Name": "WatchProviderTvListAnswerResults",
       "Fields": [
         {
           "Name": "DisplayPriorities",
@@ -161,7 +161,7 @@
       ]
     },
     {
-      "Name": "WatchProvidersAvailableRegionsResponse",
+      "Name": "WatchProvidersAvailableRegionsAnswer",
       "Fields": [
         {
           "Name": "Results",
@@ -170,14 +170,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "WatchProvidersAvailableRegionsResponseResults"
+              "ReferenceName": "WatchProvidersAvailableRegionsAnswerResults"
             }
           }
         }
       ]
     },
     {
-      "Name": "WatchProvidersAvailableRegionsResponseResults",
+      "Name": "WatchProvidersAvailableRegionsAnswerResults",
       "Fields": [
         {
           "Name": "EnglishName",
@@ -203,7 +203,7 @@
       ]
     },
     {
-      "Name": "WatchProvidersMovieListResponse",
+      "Name": "WatchProvidersMovieListAnswer",
       "Fields": [
         {
           "Name": "Results",
@@ -212,14 +212,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "WatchProvidersMovieListResponseResults"
+              "ReferenceName": "WatchProvidersMovieListAnswerResults"
             }
           }
         }
       ]
     },
     {
-      "Name": "WatchProvidersMovieListResponseResults",
+      "Name": "WatchProvidersMovieListAnswerResults",
       "Fields": [
         {
           "Name": "DisplayPriorities",

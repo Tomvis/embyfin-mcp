@@ -75,7 +75,7 @@ jobs:
         if: always()
         run: |
           for b in emby jellyfin; do
-            for s in integration acceptance; do
+            for s in sdk embyfin tools; do
               EMBYFIN_TEST_BACKEND=$b EMBYFIN_TEST_CONTAINER=embyfin-mcp-$s-$b \
                 EMBYFIN_TEST_DATA="$HOME/.cache/embyfin-mcp/testenv/$s-$b" .scripts/testenv.sh down || true
             done

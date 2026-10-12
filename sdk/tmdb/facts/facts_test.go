@@ -1,0 +1,536 @@
+package facts
+
+import (
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"slices"
+	"strconv"
+	"strings"
+	"sync/atomic"
+	"testing"
+	"time"
+)
+
+// rewrite is a transport that sends every request to a local server in place
+// of api.themoviedb.org, keeping the path and query the client built.
+type rewrite struct{ target *url.URL }
+
+func (rw rewrite) RoundTrip(r *http.Request) (*http.Response, error) {
+	clone := r.Clone(r.Context())
+	clone.URL.Scheme, clone.URL.Host = rw.target.Scheme, rw.target.Host
+
+	return http.DefaultTransport.RoundTrip(clone)
+}
+
+// newTMDB serves a canned TMDB behind the rewrite, so the client's real URL
+// building is exercised against a local server.
+func newTMDB(t *testing.T, handle http.HandlerFunc) (facts *Facts, calls *int32) {
+	t.Helper()
+
+	calls = new(int32)
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		atomic.AddInt32(calls, 1)
+		handle(w, r)
+	}))
+	t.Cleanup(srv.Close)
+
+	target, err := url.Parse(srv.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	facts, err = NewFacts("v3-key", rewrite{target})
+	if err != nil {
+		t.Fatal(err)
+	}
+	// tried again as NewFacts does, without the waits
+	facts.api.Client.HTTPClient = &http.Client{Timeout: 5 * time.Second, Transport: retrying{next: rewrite{target}, pauses: make([]time.Duration, len(retryPauses)), attempt: 5 * time.Second}}
+
+	return facts, calls
+}
+
+func TestMovieRuntimeSendsTheKeyAndMemoises(t *testing.T) {
+	t.Parallel()
+
+	c, calls := newTMDB(t, func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/3/movie/348" {
+			http.NotFound(w, r)
+			return
+		}
+		if r.URL.Query().Get("api_key") != "v3-key" {
+			http.Error(w, "no key", http.StatusUnauthorized)
+			return
+		}
+		_, _ = w.Write([]byte(`{"id":348,"runtime":117}`))
+	})
+
+	for range 3 {
+		minutes, err := c.MovieRuntime(t.Context(), "348")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if minutes != 117 {
+			t.Errorf("runtime = %d, want 117", minutes)
+		}
+	}
+	if n := atomic.LoadInt32(calls); n != 1 {
+		t.Errorf("TMDB was asked %d times for the same film, want 1", n)
+	}
+
+	// an unknown film is 0, not an error, and is remembered too
+	if minutes, err := c.MovieRuntime(t.Context(), "999999"); err != nil || minutes != 0 {
+		t.Errorf("unknown film = %d, %v", minutes, err)
+	}
+	if _, err := c.MovieRuntime(t.Context(), "999999"); err != nil {
+		t.Error(err)
+	}
+	if n := atomic.LoadInt32(calls); n != 2 {
+		t.Errorf("TMDB was asked %d times in all, want 2", n)
+	}
+}
+
+// A v4 read access token is a JWT and goes in the Authorization header
+// rather than the query string.
+func TestReadAccessTokenIsABearer(t *testing.T) {
+	t.Parallel()
+
+	var auth, key string
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		auth, key = r.Header.Get("Authorization"), r.URL.Query().Get("api_key")
+		_, _ = w.Write([]byte(`{"runtime":90}`))
+	}))
+	t.Cleanup(srv.Close)
+	target, _ := url.Parse(srv.URL)
+	c, err := NewFacts("eyJhbGciOiJIUzI1NiJ9.token", rewrite{target})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := c.MovieRuntime(t.Context(), "1"); err != nil {
+		t.Fatal(err)
+	}
+	if auth != "Bearer eyJhbGciOiJIUzI1NiJ9.token" || key != "" {
+		t.Errorf("auth = %q, api_key = %q", auth, key)
+	}
+}
+
+func TestErrorsNameTheKey(t *testing.T) {
+	t.Parallel()
+
+	c, _ := newTMDB(t, func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "nope", http.StatusUnauthorized)
+	})
+	if _, err := c.MovieRuntime(t.Context(), "1"); err == nil || !contains(err.Error(), "EMBYFIN_TMDB_TOKEN") {
+		t.Errorf("a 401 should say which key to check: %v", err)
+	}
+
+	c, _ = newTMDB(t, func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "down", http.StatusBadGateway)
+	})
+	if _, err := c.MovieRuntime(t.Context(), "1"); err == nil || !contains(err.Error(), "502") {
+		t.Errorf("a 502 should be reported: %v", err)
+	}
+}
+
+func contains(s, sub string) bool { return strings.Contains(s, sub) }
+
+// tvHandler serves a canned TV series: its season list, and the episodes of
+// each season, as TMDB lays them out.
+func tvHandler(t *testing.T, id string, seasons map[int]int) http.HandlerFunc {
+	t.Helper()
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Get("api_key") != "v3-key" {
+			http.Error(w, "no key", http.StatusUnauthorized)
+			return
+		}
+		switch {
+		case r.URL.Path == "/3/tv/"+id:
+			numbers := make([]int, 0, len(seasons))
+			for n := range seasons {
+				numbers = append(numbers, n)
+			}
+			slices.Sort(numbers)
+			rows := make([]string, 0, len(numbers))
+			for _, n := range numbers {
+				rows = append(rows, fmt.Sprintf(`{"season_number":%d,"episode_count":%d}`, n, seasons[n]))
+			}
+			_, _ = fmt.Fprintf(w, `{"id":%s,"name":"Canned","seasons":[%s]}`, id, strings.Join(rows, ","))
+		case strings.HasPrefix(r.URL.Path, "/3/tv/"+id+"/season/"):
+			n, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/3/tv/"+id+"/season/"))
+			if err != nil {
+				http.NotFound(w, r)
+				return
+			}
+			eps := make([]string, 0, seasons[n])
+			for i := 1; i <= seasons[n]; i++ {
+				eps = append(eps, fmt.Sprintf(`{"season_number":%d,"episode_number":%d,"name":"S%dE%d","air_date":"2022-01-%02d"}`, n, i, n, i, i))
+			}
+			_, _ = fmt.Fprintf(w, `{"season_number":%d,"episodes":[%s]}`, n, strings.Join(eps, ","))
+		default:
+			http.NotFound(w, r)
+		}
+	}
+}
+
+// SeriesEpisodes reads the whole run season by season, leaves the specials
+// out, and asks TMDB once per series however often it is called.
+func TestSeriesEpisodes(t *testing.T) {
+	t.Parallel()
+
+	c, calls := newTMDB(t, tvHandler(t, "95396", map[int]int{0: 2, 1: 3, 2: 2}))
+
+	run, err := c.SeriesEpisodes(t.Context(), "95396")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []Episode{
+		{Season: 1, Episode: 1, Name: "S1E1", AirDate: "2022-01-01"},
+		{Season: 1, Episode: 2, Name: "S1E2", AirDate: "2022-01-02"},
+		{Season: 1, Episode: 3, Name: "S1E3", AirDate: "2022-01-03"},
+		{Season: 2, Episode: 1, Name: "S2E1", AirDate: "2022-01-01"},
+		{Season: 2, Episode: 2, Name: "S2E2", AirDate: "2022-01-02"},
+	}
+	if !slices.Equal(run, want) {
+		t.Errorf("run = %v, want %v", run, want)
+	}
+	// the series plus one read per season, and season 0 never asked for
+	if n := atomic.LoadInt32(calls); n != 3 {
+		t.Errorf("TMDB was asked %d times, want 3 (the series and seasons 1 and 2)", n)
+	}
+
+	if _, err := c.SeriesEpisodes(t.Context(), "95396"); err != nil {
+		t.Fatal(err)
+	}
+	if n := atomic.LoadInt32(calls); n != 3 {
+		t.Errorf("a second read asked TMDB again: %d calls", n)
+	}
+}
+
+// A series TMDB does not know is nothing rather than an error, and is
+// remembered as nothing so a sweep asks once.
+func TestSeriesEpisodesUnknown(t *testing.T) {
+	t.Parallel()
+
+	c, calls := newTMDB(t, tvHandler(t, "95396", map[int]int{1: 1}))
+
+	for range 2 {
+		run, err := c.SeriesEpisodes(t.Context(), "404404")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(run) != 0 {
+			t.Errorf("unknown series = %v", run)
+		}
+	}
+	if n := atomic.LoadInt32(calls); n != 1 {
+		t.Errorf("an unknown series was asked for %d times, want 1", n)
+	}
+}
+
+// SeriesID places a series known by another provider's id, and remembers
+// both an answer and the lack of one.
+func TestSeriesID(t *testing.T) {
+	t.Parallel()
+
+	c, calls := newTMDB(t, func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/3/find/371980" {
+			_, _ = w.Write([]byte(`{"tv_results":[]}`))
+			return
+		}
+		if src := r.URL.Query().Get("external_source"); src != "tvdb_id" {
+			http.Error(w, "external_source = "+src, http.StatusBadRequest)
+			return
+		}
+		_, _ = w.Write([]byte(`{"movie_results":[],"tv_results":[{"id":95396,"name":"Severance"}]}`))
+	})
+
+	for range 2 {
+		id, err := c.SeriesID(t.Context(), "tvdb_id", "371980")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if id != "95396" {
+			t.Errorf("series id = %q, want 95396", id)
+		}
+	}
+	if n := atomic.LoadInt32(calls); n != 1 {
+		t.Errorf("TMDB was asked %d times for the same id, want 1", n)
+	}
+
+	// an id TMDB cannot place is "" rather than an error
+	id, err := c.SeriesID(t.Context(), "imdb_id", "tt0000000")
+	if err != nil || id != "" {
+		t.Errorf("unplaceable id = %q, %v", id, err)
+	}
+}
+
+// A film's facts come in the one request the runtime already makes, so the
+// two share it.
+func TestMovie(t *testing.T) {
+	t.Parallel()
+
+	c, calls := newTMDB(t, func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/3/movie/348" {
+			http.NotFound(w, r)
+			return
+		}
+		_, _ = w.Write([]byte(`{"id":348,"title":"Alien","release_date":"1979-05-25","runtime":117,"imdb_id":"tt0078748"}`))
+	})
+
+	m, err := c.Movie(t.Context(), "348")
+	if err != nil || m.ID != 348 || m.Title != "Alien" || m.Year != 1979 || m.IMDbID != "tt0078748" {
+		t.Fatalf("movie = %+v, %v", m, err)
+	}
+	if minutes, err := c.MovieRuntime(t.Context(), "348"); err != nil || minutes != 117 {
+		t.Errorf("runtime = %d, %v", minutes, err)
+	}
+	if n := atomic.LoadInt32(calls); n != 1 {
+		t.Errorf("TMDB was asked %d times for one film, want 1", n)
+	}
+
+	// an id TMDB does not know is a film with no id, not an error
+	if m, err := c.Movie(t.Context(), "999999"); err != nil || m.ID != 0 || m.Year != 0 {
+		t.Errorf("unknown film = %+v, %v", m, err)
+	}
+}
+
+// An IMDb id can name a film, a series or an episode, and TMDB says which.
+func TestFind(t *testing.T) {
+	t.Parallel()
+
+	c, calls := newTMDB(t, func(w http.ResponseWriter, r *http.Request) {
+		if src := r.URL.Query().Get("external_source"); src != "imdb_id" {
+			http.Error(w, "external_source = "+src, http.StatusBadRequest)
+			return
+		}
+		switch r.URL.Path {
+		case "/3/find/tt9000001":
+			_, _ = w.Write([]byte(`{"movie_results":[{"id":9001,"title":"Zzyzx","release_date":"2001-01-01"}],"tv_results":[],"tv_episode_results":[]}`))
+		case "/3/find/tt9000002":
+			_, _ = w.Write([]byte(`{"movie_results":[],"tv_results":[{"id":9002,"name":"Zzyzx Show","first_air_date":"2014-01-19"}],"tv_episode_results":[]}`))
+		case "/3/find/tt9000003":
+			_, _ = w.Write([]byte(`{"movie_results":[],"tv_results":[],"tv_episode_results":[{"id":99,"name":"Episode 21","show_id":9003,"season_number":1,"episode_number":21}]}`))
+		default:
+			_, _ = w.Write([]byte(`{"movie_results":[],"tv_results":[],"tv_episode_results":[]}`))
+		}
+	})
+	ctx := t.Context()
+
+	if f, err := c.Find(ctx, "imdb_id", "tt9000001"); err != nil || len(f.Movies) != 1 || f.Movies[0].Id != 9001 || len(f.Series) != 0 {
+		t.Errorf("a film = %+v, %v", f, err)
+	}
+	if f, err := c.Find(ctx, "imdb_id", "tt9000002"); err != nil || len(f.Series) != 1 || f.Series[0].Name != "Zzyzx Show" {
+		t.Errorf("a series = %+v, %v", f, err)
+	}
+	if f, err := c.Find(ctx, "imdb_id", "tt9000003"); err != nil || len(f.Episodes) != 1 || f.Episodes[0].ShowId != 9003 || f.Episodes[0].EpisodeNumber != 21 {
+		t.Errorf("an episode = %+v, %v", f, err)
+	}
+	if f, err := c.Find(ctx, "imdb_id", "tt0000000"); err != nil || len(f.Movies)+len(f.Series)+len(f.Episodes) != 0 {
+		t.Errorf("nothing = %+v, %v", f, err)
+	}
+	// SeriesID answers from the same lookup
+	if id, err := c.SeriesID(ctx, "imdb_id", "tt9000002"); err != nil || id != "9002" {
+		t.Errorf("series id = %q, %v", id, err)
+	}
+	if n := atomic.LoadInt32(calls); n != 4 {
+		t.Errorf("TMDB was asked %d times, want once per id", n)
+	}
+}
+
+// A failure TMDB keeps answering (a 502 through every retry, a bad few
+// seconds) is reported and not remembered: the next ask goes to TMDB again
+// and gets the film, which is then remembered like any other.
+func TestMovieDoesNotRememberAFailure(t *testing.T) {
+	t.Parallel()
+
+	var asked atomic.Int32
+	tries := len(retryPauses) + 1
+	c, calls := newTMDB(t, func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/3/movie/1" {
+			http.NotFound(w, r)
+			return
+		}
+		if int(asked.Add(1)) <= tries {
+			http.Error(w, "down", http.StatusBadGateway)
+			return
+		}
+		_, _ = w.Write([]byte(`{"id":1,"title":"Zzyzx","release_date":"2001-01-01","runtime":90}`))
+	})
+
+	if _, err := c.Movie(t.Context(), "1"); err == nil || !contains(err.Error(), "502") {
+		t.Fatalf("the first ask = %v, want the 502 reported", err)
+	}
+	m, err := c.Movie(t.Context(), "1")
+	if err != nil || m.ID != 1 || m.Title != "Zzyzx" || m.Year != 2001 || m.Runtime != 90 {
+		t.Fatalf("the second ask = %+v, %v, want the film", m, err)
+	}
+	if n := int(atomic.LoadInt32(calls)); n != tries+1 {
+		t.Errorf("TMDB was asked %d times, want %d (every try of the failure, and the answer)", n, tries+1)
+	}
+	if minutes, err := c.MovieRuntime(t.Context(), "1"); err != nil || minutes != 90 {
+		t.Errorf("runtime after the answer = %d, %v", minutes, err)
+	}
+	if n := int(atomic.LoadInt32(calls)); n != tries+1 {
+		t.Errorf("the answer was not remembered: %d calls", n)
+	}
+}
+
+// An answer is kept for an hour and no longer: TMDB lists an episode once it
+// is announced, and a session that ran all day was answered from its first
+// read of a series all day. A clock moved past the hour asks again.
+func TestAnswersAreKeptForAnHour(t *testing.T) {
+	t.Parallel()
+
+	c, calls := newTMDB(t, tvHandler(t, "63639", map[int]int{1: 2}))
+	now := time.Date(2026, 9, 25, 12, 0, 0, 0, time.UTC)
+	c.now = func() time.Time { return now }
+
+	ask := func() {
+		t.Helper()
+		if _, err := c.SeriesEpisodes(t.Context(), "63639"); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := c.SeriesID(t.Context(), "tvdb_id", "371980"); err != nil {
+			t.Fatal(err)
+		}
+	}
+	ask()
+	// the series, its one season, and the find
+	if n := atomic.LoadInt32(calls); n != 3 {
+		t.Fatalf("the first ask cost %d requests, want 3", n)
+	}
+	now = now.Add(factsTTL - time.Minute)
+	ask()
+	if n := atomic.LoadInt32(calls); n != 3 {
+		t.Errorf("an answer under an hour old was read again: %d requests", n)
+	}
+	now = now.Add(2 * time.Minute)
+	ask()
+	if n := atomic.LoadInt32(calls); n != 6 {
+		t.Errorf("an answer over an hour old was trusted: %d requests, want 6", n)
+	}
+}
+
+// The specials are season 0, read only when asked for and only when TMDB
+// lists a season 0; the run never holds them.
+func TestSeriesSpecials(t *testing.T) {
+	t.Parallel()
+
+	c, calls := newTMDB(t, tvHandler(t, "95396", map[int]int{0: 2, 1: 1}))
+	specials, err := c.SeriesSpecials(t.Context(), "95396")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(specials) != 2 {
+		t.Fatalf("specials = %v, want the two", specials)
+	}
+	for i, e := range specials {
+		if want := (Episode{Season: 0, Episode: i + 1, Name: fmt.Sprintf("S0E%d", i+1), AirDate: fmt.Sprintf("2022-01-%02d", i+1)}); e != want {
+			t.Errorf("special %d = %v, want %v", i+1, e, want)
+		}
+	}
+	run, err := c.SeriesEpisodes(t.Context(), "95396")
+	if err != nil || len(run) != 1 || run[0].Season != 1 {
+		t.Errorf("run = %v, %v, want season 1 alone", run, err)
+	}
+	// the series, season 1, then season 0; the run after is remembered
+	if n := atomic.LoadInt32(calls); n != 3 {
+		t.Errorf("TMDB was asked %d times, want 3", n)
+	}
+
+	// no season 0 listed: nothing, and no read of it
+	c, calls = newTMDB(t, tvHandler(t, "95396", map[int]int{1: 1}))
+	if specials, err := c.SeriesSpecials(t.Context(), "95396"); err != nil || len(specials) != 0 {
+		t.Errorf("a series without specials = %v, %v", specials, err)
+	}
+	if n := atomic.LoadInt32(calls); n != 2 {
+		t.Errorf("TMDB was asked %d times for a series with no season 0, want 2", n)
+	}
+}
+
+// A date TMDB answers any way but as a day is an error naming what carried
+// it: read as no date, or as the year its first digits make, it would date
+// a film or an episode wrongly without a word.
+func TestDatesThatCannotBeRead(t *testing.T) {
+	t.Parallel()
+
+	for date, want := range map[string]int{"": 0, "1979-05-25": 1979} {
+		if got, err := DateYear("movie 348", date); err != nil || got != want {
+			t.Errorf("DateYear(%q) = %d, %v, want %d", date, got, err, want)
+		}
+	}
+	for _, date := range []string{"1979", "25/05/1979", "soon", "1979-13-01"} {
+		if _, err := DateYear("movie 348", date); err == nil || !strings.Contains(err.Error(), "movie 348") {
+			t.Errorf("DateYear(%q) = %v, want an error naming the film", date, err)
+		}
+	}
+
+	c, _ := newTMDB(t, func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/3/movie/679":
+			_, _ = w.Write([]byte(`{"id":679,"title":"Aliens","release_date":"July 1986"}`))
+		case "/3/tv/1396":
+			_, _ = w.Write([]byte(`{"id":1396,"name":"Breaking Bad","seasons":[{"season_number":1,"episode_count":1}]}`))
+		case "/3/tv/1396/season/1":
+			_, _ = w.Write([]byte(`{"season_number":1,"episodes":[{"season_number":1,"episode_number":1,"name":"Pilot","air_date":"20-01-2008"}]}`))
+		default:
+			http.NotFound(w, r)
+		}
+	})
+	if m, err := c.Movie(t.Context(), "679"); err == nil || !strings.Contains(err.Error(), "movie 679") {
+		t.Errorf("a film dated July 1986 = %+v, %v, want an error", m, err)
+	}
+	if run, err := c.SeriesEpisodes(t.Context(), "1396"); err == nil || !strings.Contains(err.Error(), "season 1 episode 1") {
+		t.Errorf("an episode dated 20-01-2008 = %v, %v, want an error", run, err)
+	}
+}
+
+// The titles TMDB lists and finds are kept an hour, as every other fact is,
+// and Clear forgets them with the rest.
+func TestTitlesAreKeptAnHour(t *testing.T) {
+	t.Parallel()
+
+	now := time.Date(2026, 9, 28, 12, 0, 0, 0, time.UTC)
+	f, calls := newTMDB(t, func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/3/search/movie":
+			_, _ = w.Write([]byte(`{"results":[{"id":1,"title":"Zzyzx","original_title":"Zzyzx","release_date":"1999-01-01"}]}`))
+		case "/3/movie/1/alternative_titles":
+			_, _ = w.Write([]byte(`{"id":1,"titles":[{"iso_3166_1":"DE","title":"Zzyzx Again","type":""}]}`))
+		default:
+			http.NotFound(w, r)
+		}
+	})
+	f.now = func() time.Time { return now }
+	ask := func() {
+		if hits, err := f.Search(t.Context(), "movie", "Zzyzx", 1999); err != nil || len(hits) != 1 || hits[0].Title != "Zzyzx" || hits[0].Year != 1999 {
+			t.Fatalf("search = %v, %v", hits, err)
+		}
+		if alts, err := f.AlternativeTitles(t.Context(), "movie", "1"); err != nil || !slices.Equal(alts, []string{"Zzyzx Again"}) {
+			t.Fatalf("alternative titles = %v, %v", alts, err)
+		}
+	}
+	ask()
+	now = now.Add(59 * time.Minute)
+	ask()
+	if n := atomic.LoadInt32(calls); n != 2 {
+		t.Errorf("after 59 minutes TMDB was asked %d times, want the first 2 only", n)
+	}
+	if !f.Asked("movie", "Zzyzx", 1999) || f.Asked("movie", "Zzyzx", 2000) {
+		t.Error("Asked does not say what was searched for")
+	}
+	now = now.Add(2 * time.Minute)
+	ask()
+	if n := atomic.LoadInt32(calls); n != 4 {
+		t.Errorf("after an hour TMDB was asked %d times in all, want 4: both answers asked again", n)
+	}
+	if n := f.Clear(); n != 2 {
+		t.Errorf("Clear forgot %d answers, want 2", n)
+	}
+	ask()
+	if n := atomic.LoadInt32(calls); n != 6 {
+		t.Errorf("after Clear TMDB was asked %d times in all, want 6", n)
+	}
+}

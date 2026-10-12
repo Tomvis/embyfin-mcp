@@ -4761,7 +4761,8 @@
           "JsonName": "VideoDecoderIsHardware",
           "Type": {
             "Type": "Boolean"
-          }
+          },
+          "KeepsNull": true
         },
         {
           "Name": "VideoDecoderMediaType",
@@ -4789,7 +4790,8 @@
           "JsonName": "VideoEncoderIsHardware",
           "Type": {
             "Type": "Boolean"
-          }
+          },
+          "KeepsNull": true
         },
         {
           "Name": "VideoEncoderMediaType",

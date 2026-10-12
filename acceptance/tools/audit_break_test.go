@@ -1,0 +1,874 @@
+//go:build acceptance
+
+package tools_test
+
+import (
+	"maps"
+	"os"
+	"path/filepath"
+	"slices"
+	"strings"
+	"testing"
+
+	acc "github.com/katbyte/go-kt/mcp/acctest"
+
+	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
+	"github.com/katbyte/go-kt/test/env"
+
+	"github.com/katbyte/embyfin-mcp/lib/testenv"
+)
+
+// Break, audit, fix, audit clean: each test here puts a defect into the
+// fixtures the way a library comes by one, sees the audit find it and
+// audit_all count it, puts it right the way the finding says to, and sees
+// both let go - then leaves the fixtures as it found them.
+
+// A film's or a series' title and year against its path. A title edited
+// away from its folder is a finding and edited back is not; a year a year
+// out is a film released over New Year and two out is a wrong edition; and a
+// collection folder's year above a film's own is not the film's.
+func TestAuditFilePathTitlesAndYears(t *testing.T) {
+	interstellar := findItem(t, "Messy Movies", "Movie", "Interstellar")
+	titles := map[string]any{"library": "Messy Movies", "checks": "title"}
+	before := auditRow(t, "Messy Movies", "audit_file_path")
+
+	// the one title the messy films already get wrong: Stargate's file held
+	// as Stargate: Continuum, a subtitle added to the path's title, which
+	// TMDB says is the film of 1994 - and the runtime is its too
+	stargate := findItem(t, "Messy Movies", "Movie", "Stargate: Continuum")
+	lasting := acc.Rows(t, suite.Call(t, "audit_file_path", titles)["findings"], "findings")
+	if len(lasting) != 1 || acc.Str(lasting[0]["id"]) != stargate ||
+		!slices.Equal(acc.Strs(t, lasting[0]["problems"], "problems"), []string{`title: the path is named "Stargate", the server holds "Stargate: Continuum": the item's title is the path's with "Continuum" added: an edition, a subtitle, or another film - can't tell from the names`}) ||
+		acc.Str(lasting[0]["path_tmdb"]) != "2164 Stargate (1994)" || acc.Str(lasting[0]["item_tmdb"]) != "12914" ||
+		!strings.Contains(acc.Str(lasting[0]["diagnosis"]), "it is matched to another film than the one on disk; the file runs 121 min, and TMDB's 2164 runs 121 and its 12914 98: the file's runtime is the path's film's") {
+		t.Fatalf("the messy films' title rows = %v, want Stargate held as Stargate: Continuum alone", lasting)
+	}
+
+	rename(t, interstellar, "Arrival")
+	out := suite.Call(t, "audit_file_path", titles)
+	var found []map[string]any
+	for _, row := range acc.Rows(t, out["findings"], "findings") {
+		if acc.Str(row["id"]) != stargate {
+			found = append(found, row)
+		}
+	}
+	if len(found) != 1 || acc.Num(t, out["total_findings"], "total_findings") != 2 {
+		t.Fatalf("with Interstellar held as Arrival = %v", found)
+	}
+	f := found[0]
+	// the tools are given a TMDB token here, and TMDB says the folder names
+	// the film the item is matched to: it is the name that is wrong
+	if ps := acc.Strs(t, f["problems"], "problems"); len(ps) != 1 || ps[0] != `title: the path is named "Interstellar", the server holds "Arrival": the path names the item's own title, and the name is none TMDB gives it` ||
+		acc.Str(f["id"]) != interstellar || acc.Str(f["title_in_file"]) != "Interstellar" || acc.Str(f["title_on_server"]) != "Arrival" || acc.Str(f["type"]) != "Movie" ||
+		acc.Str(f["item_tmdb"]) != "157336" || !strings.Contains(acc.Str(f["diagnosis"]), "the path is right and the name is what is wrong") {
+		t.Errorf("the title row = %v", f)
+	}
+	if score := acc.DecimalOr0(f["similarity"]); score >= 0.5 {
+		t.Errorf("similarity of Interstellar and Arrival = %v, want it low", score)
+	}
+	if n := auditRow(t, "Messy Movies", "audit_file_path"); n != before+1 {
+		t.Errorf("audit_all's row = %d with the title wrong, want %d", n, before+1)
+	}
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{interstellar}, "name": "Interstellar"})
+	if n := acc.Num(t, suite.Call(t, "audit_file_path", titles)["total_findings"], "total_findings"); n != 1 {
+		t.Errorf("with the title put back the title check finds %d, want Stargate's alone", n)
+	}
+	if n := auditRow(t, "Messy Movies", "audit_file_path"); n != before {
+		t.Errorf("audit_all's row = %d with the title put back, want %d", n, before)
+	}
+
+	// a year either side of the folder's is a release over New Year, and two
+	// is not
+	years := map[string]any{"library": "Messy Movies", "checks": "year"}
+	suite.PutBack(t, "item_edit", map[string]any{"ids": []any{interstellar}, "year": 2014})
+	for year, flagged := range map[int]bool{2013: false, 2015: false, 2016: true, 2012: true} {
+		suite.Call(t, "item_edit", map[string]any{"ids": []any{interstellar}, "year": year})
+		got := findings(t, suite.Call(t, "audit_file_path", years))
+		want := []string{"Dune", "Stargate: Continuum"}
+		if flagged {
+			want = []string{"Dune", "Interstellar", "Stargate: Continuum"}
+		}
+		if !slices.Equal(got, want) {
+			t.Errorf("with Interstellar's year %d the year check finds %v, want %v", year, got, want)
+		}
+	}
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{interstellar}, "year": 2016})
+	for _, f := range acc.Rows(t, suite.Call(t, "audit_file_path", years)["findings"], "findings") {
+		if acc.Str(f["id"]) == interstellar && !slices.Equal(acc.Strs(t, f["problems"], "problems"), []string{"year: path says 2014, metadata says 2016"}) {
+			t.Errorf("Interstellar's year row = %v", f)
+		}
+	}
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{interstellar}, "year": 2014})
+	if got := findings(t, suite.Call(t, "audit_file_path", years)); !slices.Equal(got, []string{"Dune", "Stargate: Continuum"}) {
+		t.Errorf("with the year put back the year check finds %v", got)
+	}
+
+	// a series is read by its folder the same way
+	andor := findItem(t, "Messy Shows", "Series", "Andor")
+	series := map[string]any{"library": "Messy Shows", "types": "Series"}
+	if n := acc.Num(t, suite.Call(t, "audit_file_path", series)["total_findings"], "total_findings"); n != 0 {
+		t.Fatalf("the messy series' folders already disagree with them: %d", n)
+	}
+	suite.PutBack(t, "item_edit", map[string]any{"ids": []any{andor}, "year": 2022})
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{andor}, "year": 2020})
+	rename(t, andor, "Severance")
+	out = suite.Call(t, "audit_file_path", series)
+	if found := acc.Rows(t, out["findings"], "findings"); len(found) != 1 || acc.Str(found[0]["id"]) != andor ||
+		!slices.Equal(acc.Strs(t, found[0]["problems"], "problems"), []string{
+			`title: the path is named "Andor", the server holds "Severance", and the path's title is none of the titles it goes by: the wrong match, or another series`,
+			"year: path says 2022, metadata says 2020",
+		}) {
+		t.Errorf("Andor held as Severance of 2020 = %v", found)
+	}
+	// one row failing two checks counts under both
+	if byCheck := acc.Object(t, out["by_check"], "by_check"); acc.Num(t, byCheck["title"], "title") != 1 || acc.Num(t, byCheck["year"], "year") != 1 || acc.Num(t, out["total_findings"], "total_findings") != 1 {
+		t.Errorf("by_check = %v of %v rows", byCheck, out["total_findings"])
+	}
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{andor}, "name": "Andor", "year": 2022})
+	if n := acc.Num(t, suite.Call(t, "audit_file_path", series)["total_findings"], "total_findings"); n != 0 {
+		t.Errorf("with Andor put back its folder check finds %d", n)
+	}
+
+	// a film filed inside a collection's folder: the collection's year is
+	// the first film's, and the film's own is the last in the path
+	nfo := []byte("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<movie>\n  <title>Dune</title>\n  <year>2021</year>\n</movie>\n")
+	stage(t, plus(1, 0, 0), map[string][]byte{
+		"messy-movies/Dune Collection (1984)/Dune (2021)/Dune (2021).mp4": fixture(t, "messy-movies/Dune (2021)/Dune (2021).mp4"),
+		"messy-movies/Dune Collection (1984)/Dune (2021)/movie.nfo":       nfo,
+	}, "messy-movies/Dune Collection (1984)")
+	out = suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Movies"})
+	for _, f := range acc.Rows(t, out["findings"], "findings") {
+		if strings.Contains(acc.Str(f["path"]), "Dune Collection") {
+			t.Errorf("the film in a collection's folder was reported: %v", f)
+		}
+	}
+	if n := acc.Num(t, out["total_findings"], "total_findings"); n != 2 || acc.Num(t, out["items_scanned"], "items_scanned") != messyMovies()+1 {
+		t.Errorf("with the collection staged = %d rows of %v, want the messy Dune's year and Stargate's row alone of %d", n, out["items_scanned"], messyMovies()+1)
+	}
+}
+
+// A file renamed to the number the server holds it at: Andor's S01E04 file
+// holds episode 5, and named for 5 the episode row lets go.
+func TestAuditFilePathFixedByARename(t *testing.T) {
+	season := filepath.Join("messy-shows", "Andor (2022)", "Season 01")
+	episodes := map[string]any{"library": "Messy Shows", "checks": "episode"}
+	has := func(file string) bool {
+		for _, f := range acc.Rows(t, suite.Call(t, "audit_file_path", episodes)["findings"], "findings") {
+			if filepath.Base(acc.Str(f["path"])) == file {
+				return true
+			}
+		}
+
+		return false
+	}
+	if !has("Andor S01E04.mp4") {
+		t.Fatal("Andor's S01E04 file is not reported as held at another number")
+	}
+	before := auditRow(t, "Messy Shows", "audit_file_path")
+
+	moved := map[string][]byte{}
+	for _, ext := range []string{".mp4", ".nfo"} {
+		moved[ext] = fixture(t, filepath.Join(season, "Andor S01E04"+ext))
+	}
+	t.Cleanup(func() {
+		for ext, raw := range moved {
+			env.WriteFile(t, filepath.Join(testenv.DataDir(), season, "Andor S01E04"+ext), raw)
+			_ = os.Remove(filepath.Join(testenv.DataDir(), season, "Andor S01E05"+ext))
+		}
+		rescanUntil(t, "Andor's S01E04 file back", func() bool { return has("Andor S01E04.mp4") })
+	})
+	for ext, raw := range moved {
+		env.WriteFile(t, filepath.Join(testenv.DataDir(), season, "Andor S01E05"+ext), raw)
+		if err := os.Remove(filepath.Join(testenv.DataDir(), season, "Andor S01E04"+ext)); err != nil {
+			t.Fatal(err)
+		}
+	}
+	rescanUntil(t, "the renamed file in place", func() bool { return !has("Andor S01E04.mp4") && !has("Andor S01E05.mp4") })
+	if n := auditRow(t, "Messy Shows", "audit_file_path"); n != before-1 {
+		t.Errorf("audit_all's row = %d with the file renamed, want %d", n, before-1)
+	}
+}
+
+// With the TMDB token, a row whose file names an episode title says where
+// TMDB puts that title. Two of the messy Severance's files are named here as
+// a downloader names them: one for its own episode, which the server holds
+// under another title, and one for an episode of another show.
+func TestAuditFilePathAgainstTMDB(t *testing.T) {
+	if testenv.DataDir() == "" {
+		t.Skip("EMBYFIN_TEST_DATA is not set")
+	}
+	needsTMDBRecording(t, "GET api.themoviedb.org/3/tv/95396")
+	season := filepath.Join("messy-shows", "Severance", "Season 01")
+	titles := map[string]any{"library": "Messy Shows", "checks": "title"}
+	byFile := func() map[string]map[string]any {
+		got := map[string]map[string]any{}
+		for _, f := range acc.Rows(t, suite.Call(t, "audit_file_path", titles)["findings"], "findings") {
+			got[filepath.Base(acc.Str(f["path"]))] = f
+		}
+
+		return got
+	}
+	if got := byFile(); len(got) != 0 {
+		t.Fatalf("the messy shows already have title rows: %v", got)
+	}
+	before := auditRow(t, "Messy Shows", "audit_file_path")
+	unnamed := acc.Num(t, suite.Call(t, "audit_file_path", titles)["unnamed"], "unnamed")
+
+	renames := map[string]string{
+		"Severance S01E03": "Severance S01E03 - In Perpetuity",
+		"Severance S01E02": "Severance S01E02 - Kassa",
+	}
+	held := map[string][]byte{}
+	for from := range renames {
+		for _, ext := range []string{".mp4", ".nfo"} {
+			held[from+ext] = fixture(t, filepath.Join(season, from+ext))
+		}
+	}
+	t.Cleanup(func() {
+		for from, to := range renames {
+			for _, ext := range []string{".mp4", ".nfo"} {
+				env.WriteFile(t, filepath.Join(testenv.DataDir(), season, from+ext), held[from+ext])
+				_ = os.Remove(filepath.Join(testenv.DataDir(), season, to+ext))
+			}
+		}
+		rescanUntil(t, "Severance's files named as they were", func() bool { return len(byFile()) == 0 })
+	})
+	for from, to := range renames {
+		for _, ext := range []string{".mp4", ".nfo"} {
+			env.WriteFile(t, filepath.Join(testenv.DataDir(), season, to+ext), held[from+ext])
+			if err := os.Remove(filepath.Join(testenv.DataDir(), season, from+ext)); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	// the third episode's file is named for itself, so the server's title
+	// has to be something else for there to be a row
+	rescanUntil(t, "the renamed files", func() bool { _, ok := byFile()["Severance S01E02 - Kassa.mp4"]; return ok })
+	sev := findItem(t, "Messy Shows", "Series", "Severance")
+	rename(t, episodeID(t, sev, 1, 3), "Hello, Ms. Cobel")
+
+	out := suite.Call(t, "audit_file_path", titles)
+	got := byFile()
+	if len(got) != 2 || acc.Num(t, out["total_findings"], "total_findings") != 2 {
+		t.Fatalf("title rows = %v, want the two renamed files", got)
+	}
+	// named for its own episode: TMDB gives the file's title to the very
+	// number the server holds, so the server's title is the odd one
+	if f := got["Severance S01E03 - In Perpetuity.mp4"]; acc.Str(f["title_in_file"]) != "In Perpetuity" || acc.Str(f["title_on_server"]) != "Hello, Ms. Cobel" ||
+		acc.Str(f["tmdb_episode"]) != "S01E03" || acc.Str(f["diagnosis"]) != "TMDB gives the file's title to this very episode: the server's title is a reworded one, not a different episode" {
+		t.Errorf("the file named for its own episode = %v", f)
+	}
+	// named for another show's episode: TMDB has no episode of that title
+	if f := got["Severance S01E02 - Kassa.mp4"]; acc.Str(f["title_in_file"]) != "Kassa" || acc.Str(f["title_on_server"]) != "Half Loop" ||
+		acc.Str(f["tmdb_episode"]) != "" || acc.Str(f["diagnosis"]) != "no TMDB episode title of this series matches the file's title as written: the file may be another series', named by hand, or titled otherwise than TMDB titles it" {
+		t.Errorf("the file named for another show's episode = %v", f)
+	}
+	// the two files now claim a title, so two fewer claim none
+	if n := acc.Num(t, out["unnamed"], "unnamed"); n != unnamed-2 {
+		t.Errorf("unnamed = %d, want %d", n, unnamed-2)
+	}
+	if n := auditRow(t, "Messy Shows", "audit_file_path"); n != before+2 {
+		t.Errorf("audit_all's row = %d, want %d", n, before+2)
+	}
+}
+
+// A run of episodes the nfo claims and the file name does not: the nfo
+// beside Andor S01E09 ends the run at 10. Jellyfin reads the run from the
+// nfo, so it holds more than the file's name says; Emby takes the file's
+// name, and the two agree.
+func TestAuditFilePathRunInTheNfo(t *testing.T) {
+	nfo := []byte("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<episodedetails>\n  <season>1</season>\n  <episode>9</episode>\n  <episodenumberend>10</episodenumberend>\n</episodedetails>\n")
+	stage(t, plus(0, 0, 1), map[string][]byte{
+		"messy-shows/Andor (2022)/Season 01/Andor S01E09.mp4": fixture(t, "messy-shows/Andor (2022)/Season 01/Andor S01E01.mp4"),
+		"messy-shows/Andor (2022)/Season 01/Andor S01E09.nfo": nfo,
+	})
+	var row map[string]any
+	for _, f := range acc.Rows(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Shows", "checks": "episode"})["findings"], "findings") {
+		if filepath.Base(acc.Str(f["path"])) == "Andor S01E09.mp4" {
+			row = f
+		}
+	}
+	if !isJellyfin() {
+		if row != nil {
+			t.Errorf("Emby takes the run from the file name, so the two agree: %v", row)
+		}
+
+		return
+	}
+	if row == nil || !slices.Equal(acc.Strs(t, row["problems"], "problems"), []string{"episode: the server holds E09-E10, the file claims E09: the metadata says a run the file name does not"}) {
+		t.Errorf("the run the nfo claims = %v", row)
+	}
+}
+
+// Entries sharing an id are copies of one title only where the id means
+// one title. A TMDB or TVDB number is a film's in one list and a series' in
+// another; an episode's ids are shared loosely enough that the series and
+// number go into the key; and a copy matched by one id joins a copy matched
+// by another through a third that holds both.
+func TestAuditDuplicatesJoinOnlyOneTitle(t *testing.T) {
+	groups := func(args map[string]any) []string {
+		all := acc.RowsOfAny(suite.Call(t, "audit_duplicates", args)["groups"])
+		got := make([]string, 0, len(all))
+		for _, g := range all {
+			group := acc.Rows(t, g, "group")
+			members := make([]string, 0, len(group))
+			for _, it := range group {
+				members = append(members, acc.Str(it["type"])+" "+title(acc.Str(it["name"])))
+			}
+			got = append(got, strings.Join(acc.Sorted(members), " + "))
+		}
+
+		return acc.Sorted(got)
+	}
+	base := groups(nil)
+	baseRow := auditRow(t, "", "audit_duplicates")
+	interstellar := findItem(t, "Messy Movies", "Movie", "Interstellar")
+
+	t.Run("a series' numbers on a film", func(t *testing.T) {
+		// Breaking Bad's TMDB and TVDB numbers, which as a film's are some
+		// other film's or none
+		setIDs(t, interstellar, map[string]any{"Tmdb": "1396", "Tvdb": "81189", "Imdb": "tt0816692"})
+		if got := groups(nil); !slices.Equal(got, base) {
+			t.Errorf("with a series' numbers on a film = %v, want %v", got, base)
+		}
+	})
+
+	t.Run("a chain of two ids", func(t *testing.T) {
+		// Interstellar by The Thirteenth Floor's TMDB number, Andor by its
+		// IMDb id, and the clean Thirteenth Floor holding both: one group of
+		// three, though the two ends share nothing
+		andor := findItem(t, "Messy Shows", "Series", "Andor")
+		setIDs(t, interstellar, map[string]any{"Tmdb": "1090"})
+		setIDs(t, andor, map[string]any{"Imdb": "tt0139809"})
+		got := groups(nil)
+		chain := "Movie Interstellar + Movie The Thirteenth Floor + Series Andor"
+		if !slices.Contains(got, chain) || len(got) != len(base)+1 {
+			t.Errorf("groups = %v, want %q beside %v", got, chain, base)
+		}
+		if n := auditRow(t, "", "audit_duplicates"); n != baseRow+1 {
+			t.Errorf("audit_all's row = %d, want %d", n, baseRow+1)
+		}
+	})
+
+	messy := findItem(t, "Messy Shows", "Series", "Severance")
+	clean := findItem(t, "Shows", "Series", "Severance")
+	episodes := map[string]any{"types": "Episode"}
+	if got := groups(episodes); len(got) != 0 {
+		t.Fatalf("episode groups before any are made = %v", got)
+	}
+
+	t.Run("one episode held twice", func(t *testing.T) {
+		// the messy Severance's first episode given the clean one's ids: one
+		// series name, one number, so one episode held twice
+		ids, ok := fullItem(t, episodeID(t, clean, 1, 1))["ProviderIds"].(map[string]any)
+		if !ok || len(ids) == 0 {
+			t.Fatalf("the clean Severance S01E01 holds no ids: %v", ids)
+		}
+		setIDs(t, episodeID(t, messy, 1, 1), ids)
+		if got := groups(episodes); !slices.Equal(got, []string{"Episode Good News About Hell + Episode Good News About Hell"}) {
+			t.Errorf("episode groups = %v, want Severance S01E01 twice", got)
+		}
+		if n := auditRow(t, "", "audit_duplicates"); n != baseRow+1 {
+			t.Errorf("audit_all's row = %d, want %d", n, baseRow+1)
+		}
+	})
+
+	t.Run("one id on different episodes", func(t *testing.T) {
+		// the series' IMDb id copied onto three episodes of two shows, the
+		// way a scraper leaves it: different episodes, so no group
+		for _, id := range []string{episodeID(t, messy, 1, 2), episodeID(t, messy, 1, 3), episodeID(t, findItem(t, "Messy Shows", "Series", "Andor"), 1, 1)} {
+			setIDs(t, id, map[string]any{"Imdb": "tt11280740"})
+		}
+		if got := groups(episodes); len(got) != 0 {
+			t.Errorf("episodes sharing one loose id = %v, want no group", got)
+		}
+		if got := groups(nil); !slices.Equal(got, base) {
+			t.Errorf("every group = %v, want %v", got, base)
+		}
+	})
+}
+
+// One title twice in a season, as the files say it: the messy Severance's
+// first episode renamed for its second, TMDB's 59 and 57 minutes, is a lead
+// whatever the case of the title - within 15% of each other, as a season's
+// episodes run, and nothing in the files to say they are one. Its third
+// renamed for the second instead, cut to five seconds of 57 minutes, is far
+// apart: said, not dropped. And a title in another season is not the same
+// episode.
+func TestAuditDuplicateEpisodesCaseAndLength(t *testing.T) {
+	sev := findItem(t, "Messy Shows", "Series", "Severance")
+	e01, e03 := episodeID(t, sev, 1, 1), episodeID(t, sev, 1, 3)
+	messy := map[string]any{"library": "Messy Shows"}
+	if n := acc.Num(t, suite.Call(t, "audit_duplicate_episodes", messy)["total_findings"], "total_findings"); n != 0 {
+		t.Fatalf("the messy shows already repeat a title: %d", n)
+	}
+	before := auditRow(t, "Messy Shows", "audit_duplicate_episodes")
+	only := func(what string) map[string]any {
+		t.Helper()
+		out := suite.Call(t, "audit_duplicate_episodes", messy)
+		groups := acc.Rows(t, out["groups"], "groups")
+		if len(groups) != 1 || acc.Num(t, out["total_findings"], "total_findings") != 1 {
+			t.Fatalf("with %s = %v", what, groups)
+		}
+		return groups[0]
+	}
+	numbers := func(g map[string]any) []int {
+		rows := acc.Rows(t, g["episodes"], "episodes")
+		out := make([]int, 0, len(rows))
+		for _, e := range rows {
+			out = append(out, acc.Num(t, e["episode"], "episode"))
+		}
+		return out
+	}
+
+	for _, name := range []string{"Half Loop", "HALF LOOP"} {
+		rename(t, e01, name)
+		g := only("S01E01 named " + name)
+		if acc.Str(g["series"]) != "Severance" || acc.Num(t, g["season"], "season") != 1 || acc.Str(g["confidence"]) != "lead" ||
+			g["evidence"] != nil || !slices.Equal(numbers(g), []int{1, 2}) {
+			t.Errorf("with S01E01 named %q the group = %v", name, g)
+		}
+		if n := auditRow(t, "Messy Shows", "audit_duplicate_episodes"); n != before+1 {
+			t.Errorf("audit_all's row = %d, want %d", n, before+1)
+		}
+	}
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{e01}, "name": "Good News About Hell"})
+
+	// a copy cut short, one file holding two, or two episodes - far apart,
+	// and listed
+	rename(t, e03, "Half Loop")
+	if g := only("S01E03 named Half Loop"); acc.Str(g["confidence"]) != "far_apart" || !slices.Equal(numbers(g), []int{2, 3}) || acc.Decimal(t, g["runtime_gap"], "runtime_gap") != 1 {
+		t.Errorf("a title on episodes of 57 minutes and five seconds = %v", g)
+	}
+
+	// Deep Space Nine's third season opener given its first season's title:
+	// another season, another episode
+	ds9 := findItem(t, "Messy Shows", "Series", "Star Trek: Deep Space Nine")
+	rename(t, episodeID(t, ds9, 3, 1), "Emissary")
+	if n := acc.Num(t, suite.Call(t, "audit_duplicate_episodes", messy)["total_findings"], "total_findings"); n != 1 {
+		t.Errorf("a title repeated across seasons was grouped: %d groups", n)
+	}
+
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{e03}, "name": "In Perpetuity"})
+	if n := acc.Num(t, suite.Call(t, "audit_duplicate_episodes", messy)["total_findings"], "total_findings"); n != 0 {
+		t.Errorf("with the title put back %d groups remain", n)
+	}
+	if n := auditRow(t, "Messy Shows", "audit_duplicate_episodes"); n != before {
+		t.Errorf("audit_all's row = %d with the title put back, want %d", n, before)
+	}
+}
+
+// A show's folder renamed by an accent or by punctuation leaves a second
+// series behind, the way the Knight pair's space and case do.
+func TestAuditDuplicateSeriesSpellings(t *testing.T) {
+	before := acc.Num(t, suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})["total_folder_groups"], "total_folder_groups")
+	stage(t, plus(0, 2, 2), map[string][]byte{
+		"messy-shows/Andór (2022)/Season 01/Andor S01E01.mp4":                                            fixture(t, "messy-shows/Andor (2022)/Season 01/Andor S01E01.mp4"),
+		"messy-shows/Star Trek - The Next Generation/Season 01/Star Trek The Next Generation S01E02.mp4": fixture(t, "messy-shows/Star Trek The Next Generation/Season 01/Star Trek The Next Generation S01E01.mp4"),
+	}, "messy-shows/Andór (2022)", "messy-shows/Star Trek - The Next Generation")
+
+	out := suite.Call(t, "audit_duplicates", map[string]any{"library": "Messy Shows"})
+	pairs := map[string][]string{}
+	for _, g := range acc.Rows(t, out["folder_groups"], "folder_groups") {
+		rows := acc.Rows(t, g["series"], "series")
+		folders := make([]string, 0, len(rows))
+		for _, s := range rows {
+			folders = append(folders, acc.Str(s["folder"]))
+		}
+		pairs[acc.Str(g["key"])] = acc.Sorted(folders)
+	}
+	for _, want := range [][]string{
+		{"Andor (2022)", "Andór (2022)"},
+		{"Star Trek - The Next Generation", "Star Trek The Next Generation"},
+	} {
+		found := false
+		for _, pair := range pairs {
+			found = found || slices.Equal(pair, want)
+		}
+		if !found {
+			t.Errorf("no group of %v: %v", want, pairs)
+		}
+	}
+	if n := acc.Num(t, out["total_folder_groups"], "total_folder_groups"); n != before+2 {
+		t.Errorf("folder groups = %d, want the %d there were and the two staged", n, before)
+	}
+}
+
+// Only a length no episode can have is a finding: a one-second special, and
+// a one-second episode among three-minute ones, where their three-minute
+// neighbours and a 200-second file holding two episodes are lengths an
+// episode can have (TMDB's length for each is audit_provider's). The broken
+// duration the fixtures carry, Deep Space Nine's twelve-hour claim, comes
+// first under a limit. Putting a whole copy over the one cut short clears it.
+func TestAuditRuntimeStaged(t *testing.T) {
+	src := "messy-shows/hack Liminality (2002)/Season 01/"
+	long, short := fixture(t, src+"hack Liminality S01E01.mp4"), fixture(t, src+"hack Liminality S01E03.mp4")
+	g := "messy-shows/hack Liminality (2002)/"
+	before := auditRow(t, "Messy Shows", "audit_runtime")
+	stage(t, plus(0, 0, 7), map[string][]byte{
+		g + "Season 00/hack Liminality S00E01.mp4": long,
+		g + "Season 00/hack Liminality S00E02.mp4": long,
+		g + "Season 00/hack Liminality S00E03.mp4": short,
+		// two episodes in one file of 200 seconds
+		g + "Season 01/hack Liminality S01E04E05.mp4": fixture(t, "anime-src/special.mp4"),
+		g + "Season 02/hack Liminality S02E01.mp4":    long,
+		g + "Season 02/hack Liminality S02E02.mp4":    long,
+		g + "Season 02/hack Liminality S02E03.mp4":    short,
+	}, g+"Season 00", g+"Season 02")
+
+	// what the audit says of the staged files, by file
+	staged := func(out map[string]any) map[string]string {
+		got := map[string]string{}
+		for _, f := range acc.Rows(t, out["findings"], "findings") {
+			if file := filepath.Base(acc.Str(f["path"])); strings.Contains(acc.Str(f["path"]), "/hack Liminality (2002)/Season 0") && !strings.HasSuffix(file, "S01E03.mp4") {
+				got[file] = acc.Str(f["detail"])
+			}
+		}
+
+		return got
+	}
+	out := suite.Call(t, "audit_runtime", map[string]any{"library": "Messy Shows", "limit": 1000})
+	cut := "1 s: too short to be the episode, an incomplete, sample or broken file"
+	want := map[string]string{"hack Liminality S00E03.mp4": cut, "hack Liminality S02E03.mp4": cut}
+	if got := staged(out); !maps.Equal(got, want) {
+		t.Errorf("the staged files named = %v, want %v", got, want)
+	}
+	if n := acc.Num(t, out["total_findings"], "total_findings"); n != before+2 {
+		t.Errorf("total_findings = %d, want the %d before and the two staged a second long", n, before)
+	}
+	if n := auditRow(t, "Messy Shows", "audit_runtime"); n != before+2 {
+		t.Errorf("audit_all's row = %d, want %d", n, before+2)
+	}
+	// the broken duration first, and a limit keeps it
+	capped := suite.Call(t, "audit_runtime", map[string]any{"library": "Messy Shows", "limit": 1})
+	if f := acc.Rows(t, capped["findings"], "findings"); len(f) != 1 || filepath.Base(acc.Str(f[0]["path"])) != "Star Trek Deep Space Nine S03E01.mkv" || acc.Str(f[0]["detail"]) != "12 h 0 min: not a runtime, the file's duration metadata is broken" || acc.Num(t, capped["total_findings"], "total_findings") != before+2 {
+		t.Errorf("limit 1 = %v of %v, want the broken duration", f, capped["total_findings"])
+	}
+
+	// the whole episode written over the one cut short
+	env.WriteFile(t, filepath.Join(testenv.DataDir(), g+"Season 02/hack Liminality S02E03.mp4"), long)
+	rescanUntil(t, "the whole copy read", func() bool {
+		_, named := staged(suite.Call(t, "audit_runtime", map[string]any{"library": "Messy Shows", "limit": 1000}))["hack Liminality S02E03.mp4"]
+		return !named
+	})
+	if got := staged(suite.Call(t, "audit_runtime", map[string]any{"library": "Messy Shows", "limit": 1000})); !maps.Equal(got, map[string]string{"hack Liminality S00E03.mp4": cut}) {
+		t.Errorf("after the fix = %v", got)
+	}
+	if n := auditRow(t, "Messy Shows", "audit_runtime"); n != before+1 {
+		t.Errorf("audit_all's row = %d after the fix, want %d", n, before+1)
+	}
+
+	// a file written over after the server first saw it is one the quality
+	// audit cannot vouch for: Emby says when a file was last written, so it
+	// lists both written here, and a limit caps that list; Jellyfin does not
+	// say, and the answer says so instead
+	env.WriteFile(t, filepath.Join(testenv.DataDir(), g+"Season 02/hack Liminality S02E01.mp4"), long)
+	quality := map[string]any{"library": "Messy Shows", "limit": 1}
+	if isJellyfin() {
+		onJellyfin := suite.Call(t, "audit_quality", quality)
+		if acc.Num(t, onJellyfin["total_replaced"], "total_replaced") != 0 || !strings.Contains(acc.Str(onJellyfin["note"]), "Jellyfin does not say when a file was last written") {
+			t.Errorf("Jellyfin's replaced files = %v, note %q", onJellyfin["replaced"], onJellyfin["note"])
+		}
+
+		return
+	}
+	// the note may say how Emby's versions were placed, with the key's
+	// sample agreeing, and nothing else: not the library changing, nor the
+	// key disagreeing with a read
+	rescanUntil(t, "both files written over", func() bool {
+		return acc.Num(t, suite.Call(t, "audit_quality", quality)["total_replaced"], "total_replaced") == 2
+	})
+	out = suite.Call(t, "audit_quality", quality)
+	replaced := acc.Rows(t, out["replaced"], "replaced")
+	if len(replaced) != 1 || !strings.HasSuffix(acc.Str(replaced[0]["path"]), "Season 02/hack Liminality S02E01.mp4") || !strings.Contains(acc.Str(replaced[0]["detail"]), "after the server first saw it") || (acc.Str(out["note"]) != "" && !strings.HasPrefix(acc.Str(out["note"]), "on Emby, of the")) {
+		t.Errorf("limit 1 replaced = %v, note %q, want the first of the two by path and no note but how versions were placed", replaced, out["note"])
+	}
+}
+
+// Two files of one episode are one episode in two versions, where a server
+// shows them that way: both do, for files named alike but for a suffix.
+// Emby stores each file as an item and merges them in what it shows people;
+// Jellyfin stores its merge.
+func TestAuditMultipleVersionsOfAnEpisode(t *testing.T) {
+	g := "messy-shows/hack Liminality (2002)/Season 02/"
+	long := fixture(t, "messy-shows/hack Liminality (2002)/Season 01/hack Liminality S01E01.mp4")
+	stored := 2
+	if versionsMerged() {
+		stored = 1
+	}
+	stage(t, plus(0, 0, stored), map[string][]byte{
+		g + "hack Liminality S02E01.mp4":       long,
+		g + "hack Liminality S02E01 - 90p.mp4": long,
+	}, "messy-shows/hack Liminality (2002)/Season 02")
+
+	// beside the one Emby already shows in two versions: The Wire's second
+	// episode, a copy in each of the show's folders
+	twice := 0
+	if !isJellyfin() {
+		twice = 1
+	}
+	out := suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Shows"})
+	var found []map[string]any
+	for _, f := range acc.Rows(t, out["findings"], "findings") {
+		if strings.Contains(acc.Str(f["path"]), "/hack Liminality (2002)/") {
+			found = append(found, f)
+		}
+	}
+	if len(found) != 1 || acc.Num(t, out["total_findings"], "total_findings") != twice+1 {
+		t.Fatalf("episodes in versions = %v of %v, want the staged one", found, out["total_findings"])
+	}
+	if d := acc.Str(found[0]["detail"]); !strings.HasPrefix(d, "2 versions: ") || !strings.Contains(d, "hack Liminality S02E01 - 90p.mp4") || !strings.Contains(d, "hack Liminality S02E01.mp4") {
+		t.Errorf("detail = %q, want the two files", d)
+	}
+	// films alone find none of it
+	if n := acc.Num(t, suite.Call(t, "audit_multiple_versions", map[string]any{"library": "Messy Shows", "types": "Movie"})["items_scanned"], "items_scanned"); n != 0 {
+		t.Errorf("types Movie swept %d items of a show library", n)
+	}
+	if n := auditRow(t, "Messy Shows", "audit_multiple_versions"); n != twice+1 {
+		t.Errorf("audit_all's row = %d, want %d", n, twice+1)
+	}
+}
+
+// Things shaped like a disc that are not a film's disc: a camcorder's card,
+// which keeps its clips in a BDMV folder of its own under PRIVATE/AVCHD, and
+// a camcorder clip copied out loose, numbered like a stream but .mts. Both
+// servers hold each as an item, and neither is a disc to remux. The card's
+// item is never probed, so it joins the kept Blu-ray among the files the
+// quality audit cannot judge, and a limit caps that list too.
+func TestAuditDiscFoldersLeaveHomeVideoAlone(t *testing.T) {
+	stream := fixture(t, "disc-src/00000.m2ts")
+	before := suite.Call(t, "audit_disc_folders", nil)
+	stage(t, plus(2, 0, 0), map[string][]byte{
+		"messy-movies/Disc Rip (1999)/PRIVATE/AVCHD/BDMV/STREAM/00000.MTS": stream,
+		"messy-movies/Home Video (2010)/00000.mts":                         stream,
+	}, "messy-movies/Disc Rip (1999)", "messy-movies/Home Video (2010)")
+
+	out := suite.Call(t, "audit_disc_folders", nil)
+	folders := acc.Rows(t, out["folders"], "folders")
+	if len(folders) != 1 || acc.Str(folders[0]["folder"]) != "/media/messy-movies/"+messyLooseDVD || acc.Num(t, out["total_findings"], "total_findings") != 1 {
+		t.Errorf("disc folders with home video staged = %v, want the loose DVD alone", folders)
+	}
+	if acc.Num(t, out["items_scanned"], "items_scanned") != acc.Num(t, before["items_scanned"], "items_scanned")+2 {
+		t.Errorf("items_scanned = %v, want the two staged items swept too (%v before)", out["items_scanned"], before["items_scanned"])
+	}
+	if n := auditRow(t, "Messy Movies", "audit_disc_folders"); n != 1 {
+		t.Errorf("audit_all's row = %d, want the loose DVD alone", n)
+	}
+
+	// beside the discs kept whole the server never probed: the Blu-ray, and
+	// on Emby the DVD
+	want := []string{"/media/messy-movies/" + messyKeptBluRay, "/media/messy-movies/Disc Rip (1999)/PRIVATE/AVCHD"}
+	if !isJellyfin() {
+		want = append(want, "/media/messy-movies/"+messyKeptDVD)
+	}
+	quality := suite.Call(t, "audit_quality", map[string]any{"library": "Messy Movies", "limit": 1})
+	unprobed := acc.Rows(t, quality["unprobed"], "unprobed")
+	if len(unprobed) != 1 || acc.Num(t, quality["total_unprobed"], "total_unprobed") != len(want) {
+		t.Errorf("limit 1 unprobed = %v of %v, want one of the %d", unprobed, quality["total_unprobed"], len(want))
+	}
+	all := suite.Call(t, "audit_quality", map[string]any{"library": "Messy Movies"})
+	rows := acc.Rows(t, all["unprobed"], "unprobed")
+	paths := make([]string, 0, len(rows))
+	for _, u := range rows {
+		paths = append(paths, acc.Str(u["path"]))
+	}
+	// by path, so a limit keeps the same one each call
+	if !slices.Equal(paths, want) {
+		t.Errorf("unprobed = %v, want %v", paths, want)
+	}
+}
+
+// Subtitles read off files beside a film: one with no language in its name
+// names none, so a film with it cannot be said to lack English; one named
+// .eng is English, and the film it sits beside can be watched in English.
+func TestAuditLanguageStaged(t *testing.T) {
+	folder := filepath.Join(testenv.DataDir(), "messy-movies", messyDespecialized)
+	restoration := findItem(t, "Messy Movies", "Movie", despecialized)
+	subtitles := func() int {
+		return len(acc.Strs(t, suite.Call(t, "item_get", map[string]any{"id": restoration})["subtitles"], "subtitles"))
+	}
+	line := []byte("1\n00:00:00,000 --> 00:00:00,900\nA line.\n")
+	written := []string{}
+	t.Cleanup(func() {
+		for _, f := range written {
+			_ = os.Remove(f)
+		}
+		rescanUntil(t, "the Despecialized Edition without subtitles", func() bool {
+			out, err := suite.Invoke("item_get", map[string]any{"id": restoration})
+			subs := acc.RowsOfAny(out["subtitles"])
+			return err == nil && len(subs) == 0
+		})
+	})
+	add := func(name string, want int) {
+		t.Helper()
+		path := filepath.Join(folder, name)
+		written = append(written, path)
+		env.WriteFile(t, path, line)
+		rescanUntil(t, name+" read", func() bool {
+			out, err := suite.Invoke("item_get", map[string]any{"id": restoration})
+			subs := acc.RowsOfAny(out["subtitles"])
+			return err == nil && len(subs) == want
+		})
+	}
+	unwatchable := map[string]any{"language": "eng", "find": "unwatchable", "library": "Messy Movies"}
+	start := suite.Call(t, "audit_language", unwatchable)
+	if got := names(t, start["findings"], "findings"); !slices.Equal(got, []string{despecialized}) {
+		t.Fatalf("unwatchable in English = %v, want the Despecialized Edition, its one track German", got)
+	}
+
+	add(messyDespecialized+".srt", 1)
+	out := suite.Call(t, "audit_language", unwatchable)
+	if n := acc.Num(t, out["total_findings"], "total_findings"); n != 0 || acc.Num(t, out["untagged"], "untagged") != acc.Num(t, start["untagged"], "untagged")+1 {
+		t.Errorf("with an untagged subtitle = %v, want the Despecialized Edition counted untagged rather than reported", out)
+	}
+	if got := names(t, suite.Call(t, "audit_language", map[string]any{"language": "eng", "find": "subtitles"})["findings"], "findings"); !slices.Equal(got, []string{"The Thirteenth Floor"}) {
+		t.Errorf("English subtitles with an untagged one staged = %v", got)
+	}
+
+	add(messyDespecialized+".eng.srt", 2)
+	english := map[string]any{"language": "eng", "find": "subtitles"}
+	out = suite.Call(t, "audit_language", english)
+	if got := names(t, out["findings"], "findings"); !slices.Equal(got, []string{despecialized, "The Thirteenth Floor"}) || acc.Num(t, out["total_findings"], "total_findings") != 2 {
+		t.Errorf("English subtitles = %v", got)
+	}
+	for _, f := range acc.Rows(t, out["findings"], "findings") {
+		if title(acc.Str(f["name"])) == despecialized && acc.Str(f["detail"]) != "audio: deu; subtitles: eng, untagged" {
+			t.Errorf("detail = %q", f["detail"])
+		}
+	}
+	// a limit caps the rows, name order keeps the first, and the count is
+	// the whole
+	capped := suite.Call(t, "audit_language", map[string]any{"language": "en", "find": "subtitles", "limit": 1})
+	if got := names(t, capped["findings"], "findings"); !slices.Equal(got, []string{despecialized}) || acc.Num(t, capped["total_findings"], "total_findings") != 2 {
+		t.Errorf("limit 1 = %v of %v", got, capped["total_findings"])
+	}
+	if n := acc.Num(t, suite.Call(t, "audit_language", unwatchable)["total_findings"], "total_findings"); n != 0 {
+		t.Errorf("with English subtitles the Despecialized Edition is still unwatchable in English: %d", n)
+	}
+	if subtitles() != 2 {
+		t.Errorf("item_get's subtitles = %d, want both files", subtitles())
+	}
+}
+
+// A film holding links to its pages and no id is still matched nowhere, and
+// the finding says why it may look matched; identified, it lets go.
+func TestAuditMissingProviderLinksOnly(t *testing.T) {
+	mononoke := findItem(t, "Messy Movies", "Movie", "Princess Mononoke")
+	messy := map[string]any{"library": "Messy Movies"}
+	before := auditRow(t, "Messy Movies", rowProvider)
+	setIDs(t, mononoke, map[string]any{"Official Website": "https://movies.disney.com/princess-mononoke", "Wikipedia": "Princess_Mononoke"})
+	t.Cleanup(func() { updateItem(t, mononoke, map[string]any{"Overview": ""}) })
+
+	detail := ""
+	for _, f := range acc.Rows(t, missing(t, "provider_id", messy)["findings"], "findings") {
+		if acc.Str(f["id"]) == mononoke {
+			detail = acc.Str(f["detail"])
+		}
+	}
+	if detail != "no provider id, only links to its pages" {
+		t.Errorf("a film with links alone = %q", detail)
+	}
+	if n := auditRow(t, "Messy Movies", rowProvider); n != before {
+		t.Errorf("audit_all's row = %d, want %d: links are not a match", n, before)
+	}
+
+	// by either id: without the item Jellyfin's search is answered by OMDb,
+	// whose candidates carry the imdb id alone
+	cands := acc.Rows(t, suite.Call(t, "item_identify", map[string]any{"id": mononoke, "kind": "movie"})["candidates"], "candidates")
+	idx := slices.IndexFunc(cands, func(c map[string]any) bool {
+		ids := mediaacc.ObjectOf(c["metadata_provider_ids"])
+		return acc.Str(ids["tmdb"]) == "128" || acc.Str(ids["imdb"]) == "tt0119698"
+	})
+	if idx < 0 {
+		t.Fatalf("no Princess Mononoke among the candidates: %v", cands)
+	}
+	suite.Call(t, "item_identify_apply", withCandidateIDs(t, map[string]any{"id": mononoke, "kind": "movie", "candidate": idx}))
+	if !acc.Eventually(func() bool {
+		return !slices.Contains(findings(t, missing(t, "provider_id", messy)), "Princess Mononoke")
+	}) {
+		t.Error("identified, Princess Mononoke is still matched nowhere")
+	}
+	if n := auditRow(t, "Messy Movies", rowProvider); n != before-1 {
+		t.Errorf("audit_all's row = %d identified, want %d", n, before-1)
+	}
+}
+
+// One show in two folders a space and a letter's case apart, neither with
+// an id: the messy A Knight of the Seven Kingdoms pair, E01 in one and E02 in
+// the other. With E03 staged beside E01, that folder alone skips E02 - which
+// is the other folder's file, so the show, judged as one, is missing
+// nothing.
+func TestAuditMissingEpisodesJoinsTwinFolders(t *testing.T) {
+	knight := "messy-shows/A Knight of the Seven Kingdoms (2026)/Season 01/"
+	stage(t, plus(0, 0, 1), map[string][]byte{
+		knight + "A Knight of the Seven Kingdoms S01E03.mp4": fixture(t, "messy-shows/Severance/Season 01/Severance S01E03.mp4"),
+	})
+	if got := findings(t, suite.Call(t, "audit_missing_episodes", map[string]any{"library": "Messy Shows"})); !slices.Equal(got, []string{"Andor", "Star Trek The Next Generation", "Star Trek: Deep Space Nine"}) {
+		t.Errorf("with E03 beside E01 = %v, want the Knight's E02 found in its other folder", got)
+	}
+}
+
+// The gaps between the files, and what TMDB's run adds to them: specials
+// are no season to have gaps in, a series is found at TMDB by its TVDB or
+// IMDb id when it holds no TMDB one, and a TMDB id TMDB has nothing for
+// leaves the run unknown rather than complete.
+func TestAuditMissingEpisodesStaged(t *testing.T) {
+	sev := "messy-shows/Severance/Season 00/"
+	one := fixture(t, "messy-shows/Severance/Season 01/Severance S01E01.mp4")
+	stage(t, plus(0, 0, 2), map[string][]byte{
+		sev + "Severance S00E01.mp4": one,
+		sev + "Severance S00E04.mp4": one,
+	}, "messy-shows/Severance/Season 00")
+
+	out := suite.Call(t, "audit_missing_episodes", map[string]any{"library": "Messy Shows"})
+	if got := findings(t, out); !slices.Equal(got, []string{"Andor", "Star Trek The Next Generation", "Star Trek: Deep Space Nine"}) {
+		t.Errorf("with specials 1 and 4 staged = %v, want no gap among them", got)
+	}
+	if n := acc.Num(t, out["items_scanned"], "items_scanned"); n != messyEpisodes()+2 {
+		t.Errorf("scanned %d, want the specials counted too (%d)", n, messyEpisodes()+2)
+	}
+
+	needsTMDBRecording(t, "GET api.themoviedb.org/3/tv/95396")
+	// what TMDB lists past Severance's three files, sixteen aired episodes
+	// of its first two seasons, the first twelve by name; its empty third
+	// season adds nothing, and the specials it skips are no part of a run
+	run := "listed by TMDB without a file: S01E04, S01E05, S01E06, S01E07, S01E08, S01E09, S02E01, S02E02, S02E03, S02E04, S02E05, S02E06 and 4 more"
+	severance := func() (string, string) {
+		out := suite.Call(t, "audit_missing_episodes", map[string]any{"library": "Messy Shows", "provider": true})
+		detail := ""
+		for _, f := range acc.Rows(t, out["findings"], "findings") {
+			if acc.Str(f["name"]) == "Severance" {
+				detail = acc.Str(f["detail"])
+			}
+		}
+		reason := ""
+		for _, u := range acc.Rows(t, out["unknown"], "unknown") {
+			if acc.Str(u["name"]) == "Andor" {
+				reason = acc.Str(u["reason"])
+			}
+		}
+
+		return detail, reason
+	}
+	if d, _ := severance(); d != run {
+		t.Errorf("Severance by its TMDB id = %q, want %q", d, run)
+	}
+	series := findItem(t, "Messy Shows", "Series", "Severance")
+	for _, by := range []struct{ provider, id string }{{"Tvdb", "371980"}, {"Imdb", "tt11280740"}} {
+		t.Run("by "+by.provider, func(t *testing.T) {
+			needsTMDBRecording(t, "GET api.themoviedb.org/3/find/"+by.id+"?external_source="+strings.ToLower(by.provider)+"_id")
+			setIDs(t, series, map[string]any{by.provider: by.id})
+			if d, _ := severance(); d != run {
+				t.Errorf("Severance by its %s id alone = %q, want %q", by.provider, d, run)
+			}
+		})
+	}
+
+	t.Run("a TMDB id with nothing behind it", func(t *testing.T) {
+		needsTMDBRecording(t, "GET api.themoviedb.org/3/tv/99999999")
+		setIDs(t, findItem(t, "Messy Shows", "Series", "Andor"), map[string]any{"Tmdb": "99999999"})
+		if _, reason := severance(); reason != "TMDB lists no episodes for series 99999999, and the server keeps no record of the run." {
+			t.Errorf("Andor with a TMDB id TMDB has nothing for = %q", reason)
+		}
+	})
+}

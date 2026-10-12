@@ -45,12 +45,13 @@ func registerServerTools(r *registry) {
 	// with, so a session can run for hours on a build that predates the fix it
 	// is relying on, and nothing else it can call would say so.
 	type serverInfoOut struct {
-		Backend           string `json:"backend"`
-		ServerName        string `json:"server_name"`
-		ServerVersion     string `json:"server_version"`
-		SDKAPIVersion     string `json:"sdk_api_version"     jsonschema:"the server API version this MCP server's client was generated from; a server ahead of it may answer with fields the client does not read"`
-		OperatingSystem   string `json:"operating_system"`
-		EmbyfinMCPVersion string `json:"embyfin_mcp_version" jsonschema:"the build of this MCP server answering, e.g. v0.1.1+4@g8909c7c: the tag, the commits since it, and the commit"`
+		Backend           string            `json:"backend"`
+		ServerName        string            `json:"server_name"`
+		ServerVersion     string            `json:"server_version"`
+		SDKAPIVersion     string            `json:"sdk_api_version"     jsonschema:"the server API version this MCP server's client was generated from; a server ahead of it may answer with fields the client does not read"`
+		SDKAPIVersions    map[string]string `json:"sdk_api_versions"    jsonschema:"the API version this MCP server's client is built for on each kind of server it can talk to, by backend; sdk_api_version is the one for the server it is connected to"`
+		OperatingSystem   string            `json:"operating_system"`
+		EmbyfinMCPVersion string            `json:"embyfin_mcp_version" jsonschema:"the build of this MCP server answering, e.g. v0.1.1+4@g8909c7c: the tag, the commits since it, and the commit"`
 
 		PendingRestart  bool `json:"pending_restart"            jsonschema:"a change is waiting for the server to be restarted: a plugin installed or updated, a setting only a start reads"`
 		UpdateAvailable bool `json:"update_available"           jsonschema:"the server says a newer version of itself is out"`
@@ -76,6 +77,7 @@ func registerServerTools(r *registry) {
 			ServerName:        info.ServerName,
 			ServerVersion:     info.Version,
 			SDKAPIVersion:     client.APIVersion(),
+			SDKAPIVersions:    map[string]string{string(embyfin.Emby): embyfin.EmbyAPIVersion, string(embyfin.Jellyfin): embyfin.JellyfinAPIVersion},
 			OperatingSystem:   info.OperatingSystem,
 			EmbyfinMCPVersion: version.Version,
 			PendingRestart:    info.HasPendingRestart,

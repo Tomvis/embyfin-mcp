@@ -7,7 +7,7 @@ import (
 
 	"github.com/katbyte/embyfin-mcp/lib/naming"
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
-	"github.com/katbyte/embyfin-mcp/sdk/tmdb"
+	tmdb "github.com/katbyte/embyfin-mcp/sdk/tmdb/facts"
 )
 
 // The title rules, every pair any review has raised, with what each pair

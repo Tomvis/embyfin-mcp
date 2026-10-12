@@ -11,8 +11,8 @@ import (
 
 	apiclient "github.com/katbyte/pandorest/client"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 // CreateCollection makes a new collection (boxset) containing the given items
@@ -28,26 +28,26 @@ func (c *Client) CreateCollection(ctx context.Context, name string, itemIDs []st
 		if len(itemIDs) == 0 {
 			return "", errors.New("emby cannot create an empty collection: pass at least one item")
 		}
-		res, err := c.emby.PostCollections(ctx, emby.PostCollectionsOperationOptions{Name: name, Ids: strings.Join(itemIDs, ",")})
+		res, err := c.emby.Collection.PostCollections(ctx, emby.PostCollectionsOptions{Name: name, Ids: strings.Join(itemIDs, ",")})
 		if apiclient.StatusCode(err) == http.StatusInternalServerError {
 			return "", fmt.Errorf("%w (Emby answers so for the name of a collection deleted while a refresh of it was still queued, until Emby restarts, and for a write that lands while a member is being refreshed; another name works)", err)
 		}
 		if err != nil {
 			return "", err
 		}
-		if res.Model == nil {
+		if res.Answer == nil {
 			return "", fmt.Errorf("the server answered the creation of collection %q with nothing, not its id", name)
 		}
 
-		return res.Model.Id, nil
+		return res.Answer.Id, nil
 	}
 
-	res, err := c.jf.CreateCollection(ctx, jf.CreateCollectionOperationOptions{Name: name, Ids: itemIDs})
+	res, err := c.jf.Collection.CreateCollection(ctx, jf.CreateCollectionOptions{Name: name, Ids: itemIDs})
 	if err != nil {
 		return "", err
 	}
 
-	return res.Model.Id, nil
+	return res.Answer.Id, nil
 }
 
 // AddToCollection adds items to a collection and waits until it holds them.
@@ -134,11 +134,11 @@ func (c *Client) collectionMissing(ctx context.Context, collectionID string, ite
 
 func (c *Client) addMembers(ctx context.Context, collectionID string, itemIDs []string) error {
 	if c.isEmby() {
-		_, err := c.emby.PostCollectionsByIdItems(ctx, collectionID, emby.PostCollectionsByIdItemsOperationOptions{Ids: strings.Join(itemIDs, ",")})
+		_, err := c.emby.Collection.PostCollectionsByIdItems(ctx, collectionID, strings.Join(itemIDs, ","))
 		return err
 	}
 
-	_, err := c.jf.AddToCollection(ctx, collectionID, jf.AddToCollectionOperationOptions{Ids: itemIDs})
+	_, err := c.jf.Collection.AddToCollection(ctx, collectionID, itemIDs)
 
 	return err
 }
@@ -322,11 +322,11 @@ func (c *Client) collectionItemsFlat(ctx context.Context, collectionID, fields s
 
 func (c *Client) removeMembers(ctx context.Context, collectionID string, itemIDs []string) error {
 	if c.isEmby() {
-		_, err := c.emby.DeleteCollectionsByIdItems(ctx, collectionID, emby.DeleteCollectionsByIdItemsOperationOptions{Ids: strings.Join(itemIDs, ",")})
+		_, err := c.emby.Collection.DeleteCollectionsByIdItems(ctx, collectionID, strings.Join(itemIDs, ","))
 		return err
 	}
 
-	_, err := c.jf.RemoveFromCollection(ctx, collectionID, jf.RemoveFromCollectionOperationOptions{Ids: itemIDs})
+	_, err := c.jf.Collection.RemoveFromCollection(ctx, collectionID, itemIDs)
 
 	return err
 }
@@ -473,7 +473,7 @@ func (c *Client) collectionProviderAnswers(ctx context.Context, id string) (time
 	asked, cancel := context.WithTimeout(ctx, providerSlowPolls*c.settle)
 	defer cancel()
 	start := time.Now()
-	_, searchErr := c.jf.GetBoxSetRemoteSearchResults(asked, jf.BoxSetInfoRemoteSearchQuery{SearchInfo: &jf.BoxSetInfo{Name: col.Name}})
+	_, searchErr := c.jf.ItemLookup.GetBoxSetRemoteSearchResults(asked, jf.BoxSetInfoRemoteSearchQuery{SearchInfo: &jf.BoxSetInfo{Name: col.Name}})
 	took := time.Since(start)
 
 	return took, searchErr == nil && took < providerSlowPolls*c.settle, nil

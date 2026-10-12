@@ -3,8 +3,8 @@ package embyfin
 import (
 	"context"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 type ImageInfo struct {
@@ -21,11 +21,11 @@ type ImageInfo struct {
 func (c *Client) Images(ctx context.Context, itemID string) ([]ImageInfo, error) {
 	var images []ImageInfo
 	if c.isEmby() {
-		res, err := c.emby.GetItemsByIdImages(ctx, itemID)
+		res, err := c.emby.Image.GetItemsByIdImages(ctx, itemID)
 		if err != nil {
 			return nil, err
 		}
-		infos := res.Model
+		infos := res.Answer
 		images = make([]ImageInfo, 0, len(infos))
 		for i := range infos {
 			images = append(images, imageInfoFromEmby(&infos[i]))
@@ -34,11 +34,11 @@ func (c *Client) Images(ctx context.Context, itemID string) ([]ImageInfo, error)
 		return images, nil
 	}
 
-	res, err := c.jf.GetItemImageInfos(ctx, itemID)
+	res, err := c.jf.Image.GetItemImageInfos(ctx, itemID)
 	if err != nil {
 		return nil, err
 	}
-	infos := res.Model
+	infos := res.Answer
 	images = make([]ImageInfo, 0, len(infos))
 	for i := range infos {
 		images = append(images, imageInfoFromJF(&infos[i]))
@@ -62,11 +62,11 @@ type RemoteImage struct {
 // Primary (poster), Backdrop, Logo, Thumb.
 func (c *Client) RemoteImages(ctx context.Context, itemID, imageType string, limit int) ([]RemoteImage, int, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetItemsByIdRemoteImages(ctx, itemID, emby.GetItemsByIdRemoteImagesOperationOptions{Type: emby.ImageType(imageType), Limit: nz(limit)})
+		res, err := c.emby.RemoteImage.GetItemsByIdRemoteImages(ctx, itemID, emby.GetItemsByIdRemoteImagesOptions{Type: emby.ImageType(imageType), Limit: nz(limit)})
 		if err != nil {
 			return nil, 0, err
 		}
-		found := orEmpty(res.Model)
+		found := orEmpty(res.Answer)
 		images := make([]RemoteImage, 0, len(found.Images))
 		for i := range found.Images {
 			images = append(images, remoteImageFromEmby(&found.Images[i]))
@@ -75,27 +75,27 @@ func (c *Client) RemoteImages(ctx context.Context, itemID, imageType string, lim
 		return images, found.TotalRecordCount, nil
 	}
 
-	res, err := c.jf.GetRemoteImages(ctx, itemID, jf.GetRemoteImagesOperationOptions{Type: jf.ImageType(imageType), Limit: nz(limit)})
+	res, err := c.jf.RemoteImage.GetRemoteImages(ctx, itemID, jf.GetRemoteImagesOptions{Type: jf.ImageType(imageType), Limit: nz(limit)})
 	if err != nil {
 		return nil, 0, err
 	}
-	images := make([]RemoteImage, 0, len(res.Model.Images))
-	for i := range res.Model.Images {
-		images = append(images, remoteImageFromJF(&res.Model.Images[i]))
+	images := make([]RemoteImage, 0, len(res.Answer.Images))
+	for i := range res.Answer.Images {
+		images = append(images, remoteImageFromJF(&res.Answer.Images[i]))
 	}
 
-	return images, res.Model.TotalRecordCount, nil
+	return images, res.Answer.TotalRecordCount, nil
 }
 
 // DownloadRemoteImage applies a provider image (by its URL from RemoteImages)
 // as the item's image of the given type.
 func (c *Client) DownloadRemoteImage(ctx context.Context, itemID, imageType, imageURL string) error {
 	if c.isEmby() {
-		_, err := c.emby.PostItemsByIdRemoteImagesDownload(ctx, itemID, emby.ImagesBaseDownloadRemoteImage{}, emby.PostItemsByIdRemoteImagesDownloadOperationOptions{Type: emby.ImageType(imageType), ImageUrl: imageURL})
+		_, err := c.emby.RemoteImage.PostItemsByIdRemoteImagesDownload(ctx, itemID, emby.ImagesBaseDownloadRemoteImage{}, emby.PostItemsByIdRemoteImagesDownloadOptions{Type: emby.ImageType(imageType), ImageUrl: imageURL})
 		return err
 	}
 
-	_, err := c.jf.DownloadRemoteImage(ctx, itemID, jf.DownloadRemoteImageOperationOptions{Type: jf.ImageType(imageType), ImageUrl: imageURL})
+	_, err := c.jf.RemoteImage.DownloadRemoteImage(ctx, itemID, jf.DownloadRemoteImageOptions{Type: jf.ImageType(imageType), ImageUrl: imageURL})
 
 	return err
 }

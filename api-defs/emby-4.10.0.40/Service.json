@@ -4,7 +4,7 @@
   "Title": "Emby Server REST API",
   "ApiVersion": "4.10.0.40",
   "Source": "api-defs/emby-openapi-4.10.0.40.json",
-  "Auth": "Emby",
+  "Auth": "credential",
   "Workarounds": [
     "emby-undeclared-responses",
     "emby-undeclared-path-parameters",

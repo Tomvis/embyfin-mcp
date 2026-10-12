@@ -16,7 +16,7 @@ import (
 	"github.com/katbyte/embyfin-mcp/lib/mediapath"
 	"github.com/katbyte/embyfin-mcp/lib/naming"
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
-	"github.com/katbyte/embyfin-mcp/sdk/tmdb"
+	tmdb "github.com/katbyte/embyfin-mcp/sdk/tmdb/facts"
 )
 
 // audit_file_path over episodes: a number the file and the server read

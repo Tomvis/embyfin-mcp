@@ -21,7 +21,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "KeywordDetailsResponse"
+          "ReferenceName": "KeywordDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -73,17 +73,27 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "KeywordMoviesResponse"
+          "ReferenceName": "KeywordMoviesAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "KeywordMoviesAnswerResults"
+        }
+      }
     }
   ],
   "Models": [
     {
-      "Name": "KeywordDetailsResponse",
+      "Name": "KeywordDetailsAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -102,7 +112,7 @@
       ]
     },
     {
-      "Name": "KeywordMoviesResponse",
+      "Name": "KeywordMoviesAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -125,7 +135,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "KeywordMoviesResponseResults"
+              "ReferenceName": "KeywordMoviesAnswerResults"
             }
           }
         },
@@ -146,7 +156,7 @@
       ]
     },
     {
-      "Name": "KeywordMoviesResponseResults",
+      "Name": "KeywordMoviesAnswerResults",
       "Fields": [
         {
           "Name": "Adult",

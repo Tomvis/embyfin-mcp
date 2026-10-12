@@ -47,12 +47,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "GuestSessionRatedMoviesResponse"
+          "ReferenceName": "GuestSessionRatedMoviesAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "GuestSessionRatedMoviesAnswerResults"
+        }
+      }
     },
     {
       "Name": "GuestSessionRatedTv",
@@ -99,12 +109,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "GuestSessionRatedTvResponse"
+          "ReferenceName": "GuestSessionRatedTvAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "GuestSessionRatedTvAnswerResults"
+        }
+      }
     },
     {
       "Name": "GuestSessionRatedTvEpisodes",
@@ -151,17 +171,27 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "GuestSessionRatedTvEpisodesResponse"
+          "ReferenceName": "GuestSessionRatedTvEpisodesAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "GuestSessionRatedTvEpisodesAnswerResults"
+        }
+      }
     }
   ],
   "Models": [
     {
-      "Name": "GuestSessionRatedMoviesResponse",
+      "Name": "GuestSessionRatedMoviesAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -177,7 +207,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "GuestSessionRatedMoviesResponseResults"
+              "ReferenceName": "GuestSessionRatedMoviesAnswerResults"
             }
           }
         },
@@ -198,7 +228,7 @@
       ]
     },
     {
-      "Name": "GuestSessionRatedMoviesResponseResults",
+      "Name": "GuestSessionRatedMoviesAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -311,7 +341,7 @@
       ]
     },
     {
-      "Name": "GuestSessionRatedTvEpisodesResponse",
+      "Name": "GuestSessionRatedTvAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -327,7 +357,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "GuestSessionRatedTvEpisodesResponseResults"
+              "ReferenceName": "GuestSessionRatedTvAnswerResults"
             }
           }
         },
@@ -348,140 +378,7 @@
       ]
     },
     {
-      "Name": "GuestSessionRatedTvEpisodesResponseResults",
-      "Fields": [
-        {
-          "Name": "AirDate",
-          "JsonName": "air_date",
-          "Type": {
-            "Type": "String"
-          }
-        },
-        {
-          "Name": "EpisodeNumber",
-          "JsonName": "episode_number",
-          "Type": {
-            "Type": "Integer"
-          }
-        },
-        {
-          "Name": "Id",
-          "JsonName": "id",
-          "Type": {
-            "Type": "Integer"
-          }
-        },
-        {
-          "Name": "Name",
-          "JsonName": "name",
-          "Type": {
-            "Type": "String"
-          }
-        },
-        {
-          "Name": "Overview",
-          "JsonName": "overview",
-          "Type": {
-            "Type": "String"
-          }
-        },
-        {
-          "Name": "ProductionCode",
-          "JsonName": "production_code",
-          "Type": {
-            "Type": "String"
-          }
-        },
-        {
-          "Name": "Rating",
-          "JsonName": "rating",
-          "Type": {
-            "Type": "Double"
-          }
-        },
-        {
-          "Name": "Runtime",
-          "JsonName": "runtime",
-          "Type": {
-            "Type": "Integer"
-          }
-        },
-        {
-          "Name": "SeasonNumber",
-          "JsonName": "season_number",
-          "Type": {
-            "Type": "Integer"
-          }
-        },
-        {
-          "Name": "ShowId",
-          "JsonName": "show_id",
-          "Type": {
-            "Type": "Integer"
-          }
-        },
-        {
-          "Name": "StillPath",
-          "JsonName": "still_path",
-          "Type": {
-            "Type": "String"
-          }
-        },
-        {
-          "Name": "VoteAverage",
-          "JsonName": "vote_average",
-          "Type": {
-            "Type": "Double"
-          }
-        },
-        {
-          "Name": "VoteCount",
-          "JsonName": "vote_count",
-          "Type": {
-            "Type": "Integer"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "GuestSessionRatedTvResponse",
-      "Fields": [
-        {
-          "Name": "Page",
-          "JsonName": "page",
-          "Type": {
-            "Type": "Integer"
-          }
-        },
-        {
-          "Name": "Results",
-          "JsonName": "results",
-          "Type": {
-            "Type": "List",
-            "NestedItem": {
-              "Type": "Reference",
-              "ReferenceName": "GuestSessionRatedTvResponseResults"
-            }
-          }
-        },
-        {
-          "Name": "TotalPages",
-          "JsonName": "total_pages",
-          "Type": {
-            "Type": "Integer"
-          }
-        },
-        {
-          "Name": "TotalResults",
-          "JsonName": "total_results",
-          "Type": {
-            "Type": "Integer"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "GuestSessionRatedTvResponseResults",
+      "Name": "GuestSessionRatedTvAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -578,6 +475,139 @@
           "JsonName": "rating",
           "Type": {
             "Type": "Double"
+          }
+        },
+        {
+          "Name": "VoteAverage",
+          "JsonName": "vote_average",
+          "Type": {
+            "Type": "Double"
+          }
+        },
+        {
+          "Name": "VoteCount",
+          "JsonName": "vote_count",
+          "Type": {
+            "Type": "Integer"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "GuestSessionRatedTvEpisodesAnswer",
+      "Fields": [
+        {
+          "Name": "Page",
+          "JsonName": "page",
+          "Type": {
+            "Type": "Integer"
+          }
+        },
+        {
+          "Name": "Results",
+          "JsonName": "results",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "GuestSessionRatedTvEpisodesAnswerResults"
+            }
+          }
+        },
+        {
+          "Name": "TotalPages",
+          "JsonName": "total_pages",
+          "Type": {
+            "Type": "Integer"
+          }
+        },
+        {
+          "Name": "TotalResults",
+          "JsonName": "total_results",
+          "Type": {
+            "Type": "Integer"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "GuestSessionRatedTvEpisodesAnswerResults",
+      "Fields": [
+        {
+          "Name": "AirDate",
+          "JsonName": "air_date",
+          "Type": {
+            "Type": "String"
+          }
+        },
+        {
+          "Name": "EpisodeNumber",
+          "JsonName": "episode_number",
+          "Type": {
+            "Type": "Integer"
+          }
+        },
+        {
+          "Name": "Id",
+          "JsonName": "id",
+          "Type": {
+            "Type": "Integer"
+          }
+        },
+        {
+          "Name": "Name",
+          "JsonName": "name",
+          "Type": {
+            "Type": "String"
+          }
+        },
+        {
+          "Name": "Overview",
+          "JsonName": "overview",
+          "Type": {
+            "Type": "String"
+          }
+        },
+        {
+          "Name": "ProductionCode",
+          "JsonName": "production_code",
+          "Type": {
+            "Type": "String"
+          }
+        },
+        {
+          "Name": "Rating",
+          "JsonName": "rating",
+          "Type": {
+            "Type": "Double"
+          }
+        },
+        {
+          "Name": "Runtime",
+          "JsonName": "runtime",
+          "Type": {
+            "Type": "Integer"
+          }
+        },
+        {
+          "Name": "SeasonNumber",
+          "JsonName": "season_number",
+          "Type": {
+            "Type": "Integer"
+          }
+        },
+        {
+          "Name": "ShowId",
+          "JsonName": "show_id",
+          "Type": {
+            "Type": "Integer"
+          }
+        },
+        {
+          "Name": "StillPath",
+          "JsonName": "still_path",
+          "Type": {
+            "Type": "String"
           }
         },
         {

@@ -669,6 +669,10 @@ func TestServerInfoReportsItsOwnBuild(t *testing.T) {
 	if out["server_version"] != "4.10.0.40" || out["server_name"] != "lounge" {
 		t.Errorf("the media server's facts = %v", out)
 	}
+	// the pair of API versions the client is built for, whichever server it is connected to
+	if pair, ok := out["sdk_api_versions"].(map[string]any); !ok || pair["emby"] != embyfin.EmbyAPIVersion || pair["jellyfin"] != embyfin.JellyfinAPIVersion {
+		t.Errorf("sdk_api_versions = %v, want emby %s and jellyfin %s", out["sdk_api_versions"], embyfin.EmbyAPIVersion, embyfin.JellyfinAPIVersion)
+	}
 	// the same string the version command prints and the MCP handshake
 	// carries: stamped at build time, or the module version, or "dev"
 	if got := text(out["embyfin_mcp_version"]); got == "" || got != version.Version {

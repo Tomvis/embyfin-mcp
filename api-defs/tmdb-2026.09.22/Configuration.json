@@ -24,7 +24,7 @@
           "Type": "List",
           "NestedItem": {
             "Type": "Reference",
-            "ReferenceName": "ConfigurationCountriesResponse"
+            "ReferenceName": "ConfigurationCountriesAnswer"
           }
         }
       },
@@ -42,7 +42,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ConfigurationDetailsResponse"
+          "ReferenceName": "ConfigurationDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -61,7 +61,7 @@
           "Type": "List",
           "NestedItem": {
             "Type": "Reference",
-            "ReferenceName": "ConfigurationJobsResponse"
+            "ReferenceName": "ConfigurationJobsAnswer"
           }
         }
       },
@@ -81,7 +81,7 @@
           "Type": "List",
           "NestedItem": {
             "Type": "Reference",
-            "ReferenceName": "ConfigurationLanguagesResponse"
+            "ReferenceName": "ConfigurationLanguagesAnswer"
           }
         }
       },
@@ -120,7 +120,7 @@
           "Type": "List",
           "NestedItem": {
             "Type": "Reference",
-            "ReferenceName": "ConfigurationTimezonesResponse"
+            "ReferenceName": "ConfigurationTimezonesAnswer"
           }
         }
       },
@@ -131,7 +131,7 @@
   ],
   "Models": [
     {
-      "Name": "ConfigurationCountriesResponse",
+      "Name": "ConfigurationCountriesAnswer",
       "Fields": [
         {
           "Name": "EnglishName",
@@ -157,7 +157,7 @@
       ]
     },
     {
-      "Name": "ConfigurationDetailsResponse",
+      "Name": "ConfigurationDetailsAnswer",
       "Fields": [
         {
           "Name": "ChangeKeys",
@@ -174,13 +174,13 @@
           "JsonName": "images",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "ConfigurationDetailsResponseImages"
+            "ReferenceName": "ConfigurationDetailsAnswerImages"
           }
         }
       ]
     },
     {
-      "Name": "ConfigurationDetailsResponseImages",
+      "Name": "ConfigurationDetailsAnswerImages",
       "Fields": [
         {
           "Name": "BackdropSizes",
@@ -249,7 +249,7 @@
       ]
     },
     {
-      "Name": "ConfigurationJobsResponse",
+      "Name": "ConfigurationJobsAnswer",
       "Fields": [
         {
           "Name": "Department",
@@ -271,7 +271,7 @@
       ]
     },
     {
-      "Name": "ConfigurationLanguagesResponse",
+      "Name": "ConfigurationLanguagesAnswer",
       "Fields": [
         {
           "Name": "EnglishName",
@@ -297,7 +297,7 @@
       ]
     },
     {
-      "Name": "ConfigurationTimezonesResponse",
+      "Name": "ConfigurationTimezonesAnswer",
       "Fields": [
         {
           "Name": "Iso31661",

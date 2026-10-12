@@ -6,13 +6,16 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"net/http"
 	"slices"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	apiclient "github.com/katbyte/pandorest/client"
+
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 type MediaStream struct {
@@ -395,7 +398,7 @@ func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields stri
 	if opts.EnableUserData {
 		fields += "," + embyPlayFields
 	}
-	o := emby.GetItemsOperationOptions{
+	o := emby.GetItemsOptions{
 		Recursive:        new(!opts.Direct),
 		Fields:           fields,
 		SearchTerm:       opts.SearchTerm,
@@ -429,17 +432,17 @@ func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields stri
 	// in 10.9 and takes userId as a query parameter instead.
 	var res *emby.QueryResultBaseItemDto
 	if opts.UserID != "" {
-		resp, err := c.emby.GetUsersByUserIdItems(ctx, opts.UserID, embyUserItemsOptions(&o))
+		resp, err := c.emby.Items.GetUsersByUserIdItems(ctx, opts.UserID, embyUserItemsOptions(&o))
 		if err != nil {
 			return nil, 0, err
 		}
-		res = orEmpty(resp.Model)
+		res = orEmpty(resp.Answer)
 	} else {
-		resp, err := c.emby.GetItems(ctx, o)
+		resp, err := c.emby.Items.GetItems(ctx, o)
 		if err != nil {
 			return nil, 0, err
 		}
-		res = orEmpty(resp.Model)
+		res = orEmpty(resp.Answer)
 	}
 
 	return itemsFromEmby(res.Items), res.TotalRecordCount, nil
@@ -448,8 +451,8 @@ func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields stri
 // embyUserItemsOptions copies the item query onto the per-user route's
 // options, which the document declares separately with the same fields
 // (minus UserId, which is the path).
-func embyUserItemsOptions(o *emby.GetItemsOperationOptions) emby.GetUsersByUserIdItemsOperationOptions {
-	return emby.GetUsersByUserIdItemsOperationOptions{
+func embyUserItemsOptions(o *emby.GetItemsOptions) emby.GetUsersByUserIdItemsOptions {
+	return emby.GetUsersByUserIdItemsOptions{
 		Recursive:         o.Recursive,
 		Fields:            o.Fields,
 		SearchTerm:        o.SearchTerm,
@@ -482,7 +485,7 @@ func (c *Client) searchJF(ctx context.Context, opts SearchOptions, fields string
 	if err != nil {
 		return nil, 0, fmt.Errorf("years: %w", err)
 	}
-	o := jf.GetItemsOperationOptions{
+	o := jf.GetItemsOptions{
 		Recursive: new(!opts.Direct),
 		// a film that belongs to a collection is otherwise folded into it on
 		// Jellyfin when no user context says how to display it, and vanishes
@@ -516,12 +519,12 @@ func (c *Client) searchJF(ctx context.Context, opts SearchOptions, fields string
 		o.EnableUserData = new(true)
 	}
 
-	res, err := c.jf.GetItems(ctx, o)
+	res, err := c.jf.Library.GetItems(ctx, o)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	return itemsFromJF(res.Model.Items), res.Model.TotalRecordCount, nil
+	return itemsFromJF(res.Answer.Items), res.Answer.TotalRecordCount, nil
 }
 
 // NoItemError is a lookup of an id the item query lists no item for, told
@@ -537,6 +540,11 @@ func (c *Client) ItemByID(ctx context.Context, id string) (*Item, error) {
 	// library, so the answer has to be the item that was asked for, and the
 	// query is capped so that whole library is never actually pulled
 	items, _, err := c.Search(ctx, SearchOptions{IDs: id, Fields: FieldsDetail, Limit: 2})
+	// an id that is not shaped like Emby's own is no item's: Jellyfin answers such an id with nothing, and Emby with a 500 ("Unrecognized Guid
+	// format", seen on 4.10.1)
+	if err != nil && c.isEmby() && !c.LooksLikeID(id) && apiclient.StatusCode(err) == http.StatusInternalServerError {
+		return nil, &NoItemError{ID: id}
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -564,7 +572,7 @@ const ProviderIDTypes = "Movie,Series"
 // and changed says when the library changed under that read (see ReadAll).
 func (c *Client) ItemsByProviderID(ctx context.Context, provider, id, types string) ([]Item, string, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetItems(ctx, emby.GetItemsOperationOptions{
+		res, err := c.emby.Items.GetItems(ctx, emby.GetItemsOptions{
 			Recursive:           new(true),
 			Fields:              FieldsDefault,
 			IncludeItemTypes:    types,
@@ -574,7 +582,7 @@ func (c *Client) ItemsByProviderID(ctx context.Context, provider, id, types stri
 			return nil, "", err
 		}
 
-		return itemsFromEmby(orEmpty(res.Model).Items), "", nil
+		return itemsFromEmby(orEmpty(res.Answer).Items), "", nil
 	}
 
 	// Jellyfin fallback: page through the films or series and match locally.
@@ -606,7 +614,7 @@ func (c *Client) ItemsByAnyProviderID(ctx context.Context, ids []string) ([]Item
 	if !c.isEmby() {
 		return nil, errors.New("jellyfin cannot find items by several provider ids at once")
 	}
-	res, err := c.emby.GetItems(ctx, emby.GetItemsOperationOptions{
+	res, err := c.emby.Items.GetItems(ctx, emby.GetItemsOptions{
 		Recursive:           new(true),
 		Fields:              FieldsDefault,
 		IncludeItemTypes:    ProviderIDTypes,
@@ -616,7 +624,7 @@ func (c *Client) ItemsByAnyProviderID(ctx context.Context, ids []string) ([]Item
 		return nil, err
 	}
 	var out []Item
-	found := itemsFromEmby(orEmpty(res.Model).Items)
+	found := itemsFromEmby(orEmpty(res.Answer).Items)
 	for i := range found {
 		it := &found[i]
 		for k, v := range it.ProviderIDs {
@@ -634,30 +642,30 @@ func (c *Client) ItemsByAnyProviderID(ctx context.Context, ids []string) ([]Item
 // userID is required: Emby returns HTTP 500 for /Similar without one.
 func (c *Client) Similar(ctx context.Context, id, userID string, limit int) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetItemsByIdSimilar(ctx, id, emby.GetItemsByIdSimilarOperationOptions{UserId: userID, Fields: FieldsDefault, Limit: nz(limit)})
+		res, err := c.emby.Library.GetItemsByIdSimilar(ctx, id, emby.GetItemsByIdSimilarOptions{UserId: userID, Fields: FieldsDefault, Limit: nz(limit)})
 		if err != nil {
 			return nil, err
 		}
 
-		return itemsFromEmby(orEmpty(res.Model).Items), nil
+		return itemsFromEmby(orEmpty(res.Answer).Items), nil
 	}
 
-	res, err := c.jf.GetSimilarItems(ctx, id, jf.GetSimilarItemsOperationOptions{UserId: userID, Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
+	res, err := c.jf.Library.GetSimilarItems(ctx, id, jf.GetSimilarItemsOptions{UserId: userID, Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
 	if err != nil {
 		return nil, err
 	}
 
-	return itemsFromJF(res.Model.Items), nil
+	return itemsFromJF(res.Answer.Items), nil
 }
 
 // InstantMix builds a music mix seeded from a song, album, artist, or genre.
 func (c *Client) InstantMix(ctx context.Context, id string, limit int) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetItemsByIdInstantMix(ctx, id, emby.GetItemsByIdInstantMixOperationOptions{Fields: FieldsDefault, Limit: nz(limit)})
+		res, err := c.emby.InstantMix.GetItemsByIdInstantMix(ctx, id, emby.GetItemsByIdInstantMixOptions{Fields: FieldsDefault, Limit: nz(limit)})
 		if err != nil {
 			return nil, err
 		}
-		items := itemsFromEmby(orEmpty(res.Model).Items)
+		items := itemsFromEmby(orEmpty(res.Answer).Items)
 		if len(items) > 0 {
 			return items, nil
 		}
@@ -683,22 +691,22 @@ func (c *Client) InstantMix(ctx context.Context, id string, limit int) ([]Item, 
 		}
 		mixes := make([][]Item, 0, len(songs))
 		for i := range songs {
-			res, err := c.emby.GetItemsByIdInstantMix(ctx, songs[i].ID, emby.GetItemsByIdInstantMixOperationOptions{Fields: FieldsDefault, Limit: nz(limit)})
+			res, err := c.emby.InstantMix.GetItemsByIdInstantMix(ctx, songs[i].ID, emby.GetItemsByIdInstantMixOptions{Fields: FieldsDefault, Limit: nz(limit)})
 			if err != nil {
 				return nil, err
 			}
-			mixes = append(mixes, itemsFromEmby(orEmpty(res.Model).Items))
+			mixes = append(mixes, itemsFromEmby(orEmpty(res.Answer).Items))
 		}
 
 		return interleave(mixes, limit), nil
 	}
 
-	res, err := c.jf.GetInstantMixFromItem(ctx, id, jf.GetInstantMixFromItemOperationOptions{Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
+	res, err := c.jf.InstantMix.GetInstantMixFromItem(ctx, id, jf.GetInstantMixFromItemOptions{Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
 	if err != nil {
 		return nil, err
 	}
 
-	return itemsFromJF(res.Model.Items), nil
+	return itemsFromJF(res.Answer.Items), nil
 }
 
 // playlistMixSeeds is how many of a playlist's songs its mix is made from on
@@ -754,14 +762,14 @@ func (c *Client) RefreshItem(ctx context.Context, id string, replaceAll bool) (b
 		replace = new(true)
 	}
 	if c.isEmby() {
-		_, err = c.emby.PostItemsByIdRefresh(ctx, id, emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOperationOptions{
+		_, err = c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, id, emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
 			MetadataRefreshMode: emby.MetadataRefreshModeFullRefresh,
 			ImageRefreshMode:    emby.MetadataRefreshModeFullRefresh,
 			ReplaceAllMetadata:  replace,
 			ReplaceAllImages:    replace,
 		})
 	} else {
-		_, err = c.jf.RefreshItem(ctx, id, jf.RefreshItemOperationOptions{
+		_, err = c.jf.Library.RefreshItem(ctx, id, jf.RefreshItemOptions{
 			MetadataRefreshMode: jf.MetadataRefreshModeFullRefresh,
 			ImageRefreshMode:    jf.MetadataRefreshModeFullRefresh,
 			ReplaceAllMetadata:  replace,
@@ -782,11 +790,11 @@ func (c *Client) RefreshItem(ctx context.Context, id string, replaceAll bool) (b
 // DeleteItem permanently removes an item AND its media file from disk.
 func (c *Client) DeleteItem(ctx context.Context, id string) error {
 	if c.isEmby() {
-		_, err := c.emby.DeleteItemsById(ctx, id)
+		_, err := c.emby.Library.DeleteItemsById(ctx, id)
 		return err
 	}
 
-	_, err := c.jf.DeleteItem(ctx, id)
+	_, err := c.jf.Library.DeleteItem(ctx, id)
 
 	return err
 }
@@ -801,11 +809,11 @@ func (c *Client) DeleteItems(ctx context.Context, ids []string) error {
 		return nil
 	}
 	if c.isEmby() {
-		_, err := c.emby.DeleteItems(ctx, emby.DeleteItemsOperationOptions{Ids: strings.Join(ids, ",")})
+		_, err := c.emby.Library.DeleteItems(ctx, strings.Join(ids, ","))
 		return err
 	}
 
-	_, err := c.jf.DeleteItems(ctx, jf.DeleteItemsOperationOptions{Ids: ids})
+	_, err := c.jf.Library.DeleteItems(ctx, ids...)
 
 	return err
 }
@@ -815,23 +823,23 @@ func (c *Client) DeleteItems(ctx context.Context, ids []string) error {
 // only when asked for them: embyPlayFields).
 func (c *Client) UserItem(ctx context.Context, userID, itemID string) (*Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetUsersByUserIdItemsById(ctx, userID, itemID)
+		res, err := c.emby.UserLibrary.GetUsersByUserIdItemsById(ctx, userID, itemID)
 		if err != nil {
 			return nil, err
 		}
-		if res.Model == nil {
+		if res.Answer == nil {
 			return nil, noResult("no item with id %s", itemID)
 		}
-		it := itemFromEmby(res.Model)
+		it := itemFromEmby(res.Answer)
 
 		return &it, nil
 	}
 
-	res, err := c.jf.GetItem(ctx, itemID, jf.GetItemOperationOptions{UserId: userID})
+	res, err := c.jf.Library.GetItem(ctx, itemID, userID)
 	if err != nil {
 		return nil, err
 	}
-	it := itemFromJF(res.Model)
+	it := itemFromJF(res.Answer)
 
 	return &it, nil
 }
@@ -843,24 +851,24 @@ func (c *Client) UserItem(ctx context.Context, userID, itemID string) (*Item, er
 // post leaves out).
 func (c *Client) FullItem(ctx context.Context, userID, itemID string) (map[string]any, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetUsersByUserIdItemsById(ctx, userID, itemID)
+		res, err := c.emby.UserLibrary.GetUsersByUserIdItemsById(ctx, userID, itemID)
 		if err != nil {
 			return nil, err
 		}
 		// a nil model would make a nil map, which an edit then writes to
-		if res.Model == nil {
+		if res.Answer == nil {
 			return nil, noResult("no item with id %s", itemID)
 		}
 
-		return toMap(res.Model)
+		return toMap(res.Answer)
 	}
 
-	res, err := c.jf.GetItem(ctx, itemID, jf.GetItemOperationOptions{UserId: userID})
+	res, err := c.jf.Library.GetItem(ctx, itemID, userID)
 	if err != nil {
 		return nil, err
 	}
 
-	return toMap(res.Model)
+	return toMap(res.Answer)
 }
 
 // UpdateItem posts a full item DTO back to the server, replacing its
@@ -873,7 +881,7 @@ func (c *Client) UpdateItem(ctx context.Context, itemID string, full map[string]
 		if err := fromMap(full, &dto); err != nil {
 			return err
 		}
-		_, err := c.emby.PostItemsByItemId(ctx, itemID, dto)
+		_, err := c.emby.ItemUpdate.PostItemsByItemId(ctx, itemID, dto)
 
 		return err
 	}
@@ -882,7 +890,7 @@ func (c *Client) UpdateItem(ctx context.Context, itemID string, full map[string]
 	if err := fromMap(full, &dto); err != nil {
 		return err
 	}
-	_, err := c.jf.UpdateItem(ctx, itemID, dto)
+	_, err := c.jf.ItemUpdate.UpdateItem(ctx, itemID, dto)
 
 	return err
 }

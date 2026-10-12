@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -260,7 +260,7 @@ func (c *Client) RegeneratePreview(ctx context.Context, itemID string, patience 
 	if err != nil {
 		return Preview{}, false, err
 	}
-	if _, err := c.emby.PostItemsByIdRefresh(ctx, itemID, emby.BaseRefreshRequest{ReplaceThumbnailImages: new(true)}, emby.PostItemsByIdRefreshOperationOptions{
+	if _, err := c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, itemID, emby.BaseRefreshRequest{ReplaceThumbnailImages: new(true)}, emby.PostItemsByIdRefreshOptions{
 		MetadataRefreshMode: emby.MetadataRefreshModeFullRefresh,
 		ImageRefreshMode:    emby.MetadataRefreshModeValidationOnly,
 		ReplaceAllMetadata:  new(false),

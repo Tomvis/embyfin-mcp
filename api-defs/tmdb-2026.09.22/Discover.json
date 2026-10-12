@@ -332,12 +332,22 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "DiscoverMovieResponse"
+          "ReferenceName": "DiscoverMovieAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "DiscoverMovieAnswerResults"
+        }
+      }
     },
     {
       "Name": "DiscoverTv",
@@ -623,17 +633,27 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "DiscoverTvResponse"
+          "ReferenceName": "DiscoverTvAnswer"
         }
       },
       "ExpectedStatusCodes": [
         200
-      ]
+      ],
+      "Pageable": {
+        "StartIndexOption": "Page",
+        "ByPage": true,
+        "ItemsField": "Results",
+        "TotalField": "TotalResults",
+        "ItemType": {
+          "Type": "Reference",
+          "ReferenceName": "DiscoverTvAnswerResults"
+        }
+      }
     }
   ],
   "Models": [
     {
-      "Name": "DiscoverMovieResponse",
+      "Name": "DiscoverMovieAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -649,7 +669,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "DiscoverMovieResponseResults"
+              "ReferenceName": "DiscoverMovieAnswerResults"
             }
           }
         },
@@ -670,7 +690,7 @@
       ]
     },
     {
-      "Name": "DiscoverMovieResponseResults",
+      "Name": "DiscoverMovieAnswerResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -776,7 +796,7 @@
       ]
     },
     {
-      "Name": "DiscoverTvResponse",
+      "Name": "DiscoverTvAnswer",
       "Fields": [
         {
           "Name": "Page",
@@ -792,7 +812,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "DiscoverTvResponseResults"
+              "ReferenceName": "DiscoverTvAnswerResults"
             }
           }
         },
@@ -813,7 +833,7 @@
       ]
     },
     {
-      "Name": "DiscoverTvResponseResults",
+      "Name": "DiscoverTvAnswerResults",
       "Fields": [
         {
           "Name": "BackdropPath",

@@ -12,7 +12,7 @@ import (
 
 	"github.com/katbyte/embyfin-mcp/lib/naming"
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
-	"github.com/katbyte/embyfin-mcp/sdk/tmdb"
+	tmdb "github.com/katbyte/embyfin-mcp/sdk/tmdb/facts"
 	apiclient "github.com/katbyte/pandorest/client"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )

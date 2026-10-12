@@ -21,7 +21,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "ReviewDetailsResponse"
+          "ReferenceName": "ReviewDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -31,7 +31,7 @@
   ],
   "Models": [
     {
-      "Name": "ReviewDetailsResponse",
+      "Name": "ReviewDetailsAnswer",
       "Fields": [
         {
           "Name": "Author",
@@ -45,7 +45,7 @@
           "JsonName": "author_details",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "ReviewDetailsResponseAuthorDetails"
+            "ReferenceName": "ReviewDetailsAnswerAuthorDetails"
           }
         },
         {
@@ -114,7 +114,7 @@
       ]
     },
     {
-      "Name": "ReviewDetailsResponseAuthorDetails",
+      "Name": "ReviewDetailsAnswerAuthorDetails",
       "Fields": [
         {
           "Name": "AvatarPath",

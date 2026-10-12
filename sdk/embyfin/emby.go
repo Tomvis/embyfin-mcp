@@ -8,7 +8,7 @@ import (
 
 	"github.com/katbyte/go-kt/pointer"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 )
 
 // Emby DTOs to neutral types, one function per DTO. Nothing here talks to the
@@ -226,14 +226,14 @@ func sessionFromEmby(d *emby.SessionSessionInfo) Session {
 	}
 	if d.PlayState != nil {
 		s.PlayState = PlayState{
-			PositionTicks: d.PlayState.PositionTicks, IsPaused: pointer.From(d.PlayState.IsPaused),
+			PositionTicks: d.PlayState.PositionTicks, IsPaused: d.PlayState.IsPaused,
 			PlayMethod: string(d.PlayState.PlayMethod), MediaSourceID: d.PlayState.MediaSourceId,
 		}
 	}
 	if t := d.TranscodingInfo; t != nil {
 		s.Transcoding = &Transcoding{
 			Container: t.Container, VideoCodec: t.VideoCodec, AudioCodec: t.AudioCodec,
-			VideoDirect: pointer.From(t.IsVideoDirect), AudioDirect: pointer.From(t.IsAudioDirect),
+			VideoDirect: t.IsVideoDirect, AudioDirect: t.IsAudioDirect,
 			Bitrate: t.Bitrate, Width: t.Width, Height: t.Height, AudioChannels: t.AudioChannels,
 			Framerate: float64(t.Framerate), Completion: t.CompletionPercentage,
 			VideoDecoder: t.VideoDecoder, VideoEncoder: t.VideoEncoder,
@@ -251,7 +251,7 @@ func sessionFromEmby(d *emby.SessionSessionInfo) Session {
 func taskFromEmby(d *emby.TaskInfo) Task {
 	t := Task{
 		ID: d.Id, Key: d.Key, Name: d.Name, Category: d.Category, Description: d.Description, State: string(d.State),
-		Progress: d.CurrentProgressPercentage, Hidden: d.IsHidden != nil && *d.IsHidden,
+		Progress: d.CurrentProgressPercentage, Hidden: d.IsHidden,
 	}
 	for i := range d.Triggers {
 		tr := &d.Triggers[i]
@@ -291,8 +291,8 @@ func logFileFromEmby(d *emby.LogFile) LogFile {
 func systemInfoFromEmby(d *emby.SystemInfo) *SystemInfo {
 	return &SystemInfo{
 		ServerName: d.ServerName, Version: d.Version, ID: d.Id, OperatingSystem: d.OperatingSystem,
-		HasPendingRestart: pointer.From(d.HasPendingRestart), HasUpdateAvailable: pointer.From(d.HasUpdateAvailable),
-		IsShuttingDown: pointer.From(d.IsShuttingDown), CanSelfRestart: pointer.From(d.CanSelfRestart),
+		HasPendingRestart: d.HasPendingRestart, HasUpdateAvailable: d.HasUpdateAvailable,
+		IsShuttingDown: d.IsShuttingDown, CanSelfRestart: d.CanSelfRestart,
 		Paths: systemPaths(d.ProgramDataPath, d.LogPath, d.CachePath, d.InternalMetadataPath, d.TranscodingTempPath),
 	}
 }

@@ -132,13 +132,13 @@ func sleep(ctx context.Context, d time.Duration) error {
 func (c *Client) serverTime(ctx context.Context) (time.Time, error) {
 	var resp *http.Response
 	if c.isEmby() {
-		res, err := c.emby.GetSystemInfoPublic(ctx)
+		res, err := c.emby.System.GetSystemInfoPublic(ctx)
 		if err != nil {
 			return time.Time{}, err
 		}
 		resp = res.HttpResponse
 	} else {
-		res, err := c.jf.GetPublicSystemInfo(ctx)
+		res, err := c.jf.System.GetPublicSystemInfo(ctx)
 		if err != nil {
 			return time.Time{}, err
 		}

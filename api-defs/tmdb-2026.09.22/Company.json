@@ -21,7 +21,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CompanyAlternativeNamesResponse"
+          "ReferenceName": "CompanyAlternativeNamesAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -47,7 +47,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CompanyDetailsResponse"
+          "ReferenceName": "CompanyDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -73,7 +73,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CompanyImagesResponse"
+          "ReferenceName": "CompanyImagesAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -83,7 +83,7 @@
   ],
   "Models": [
     {
-      "Name": "CompanyAlternativeNamesResponse",
+      "Name": "CompanyAlternativeNamesAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -99,14 +99,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CompanyAlternativeNamesResponseResults"
+              "ReferenceName": "CompanyAlternativeNamesAnswerResults"
             }
           }
         }
       ]
     },
     {
-      "Name": "CompanyAlternativeNamesResponseResults",
+      "Name": "CompanyAlternativeNamesAnswerResults",
       "Fields": [
         {
           "Name": "Name",
@@ -125,7 +125,7 @@
       ]
     },
     {
-      "Name": "CompanyDetailsResponse",
+      "Name": "CompanyDetailsAnswer",
       "Fields": [
         {
           "Name": "Description",
@@ -181,13 +181,13 @@
           "JsonName": "parent_company",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "CompanyDetailsResponseParentCompany"
+            "ReferenceName": "CompanyDetailsAnswerParentCompany"
           }
         }
       ]
     },
     {
-      "Name": "CompanyDetailsResponseParentCompany",
+      "Name": "CompanyDetailsAnswerParentCompany",
       "Fields": [
         {
           "Name": "Id",
@@ -220,7 +220,7 @@
       ]
     },
     {
-      "Name": "CompanyImagesResponse",
+      "Name": "CompanyImagesAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -236,14 +236,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CompanyImagesResponseLogos"
+              "ReferenceName": "CompanyImagesAnswerLogos"
             }
           }
         }
       ]
     },
     {
-      "Name": "CompanyImagesResponseLogos",
+      "Name": "CompanyImagesAnswerLogos",
       "Fields": [
         {
           "Name": "AspectRatio",

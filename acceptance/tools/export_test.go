@@ -1,0 +1,172 @@
+//go:build acceptance
+
+package tools_test
+
+import (
+	"bytes"
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"reflect"
+	"slices"
+	"strings"
+	"testing"
+	"time"
+
+	acc "github.com/katbyte/go-kt/mcp/acctest"
+)
+
+// jsonLines reads a file of one JSON object per line.
+func jsonLines(t *testing.T, path string) []map[string]any {
+	t.Helper()
+
+	raw, err := os.ReadFile(path) //nolint:gosec // a path the test chose
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out []map[string]any
+	for line := range strings.SplitSeq(strings.TrimRight(string(raw), "\n"), "\n") {
+		if line == "" {
+			continue
+		}
+		var row map[string]any
+		if err := json.Unmarshal([]byte(line), &row); err != nil {
+			t.Fatalf("%s: a line that is not JSON: %v: %s", path, err, line)
+		}
+		out = append(out, row)
+	}
+
+	return out
+}
+
+// library_export writes what library_episodes and library_items answer, one
+// row a line and field for field, into a file of the caller's choosing and
+// nothing to the server. It will not write over a file, and saved_since
+// narrows it to what the server saved since.
+func TestLibraryExport(t *testing.T) {
+	dir := t.TempDir()
+
+	// the episodes of Shows, each line the row library_episodes answers
+	path := filepath.Join(dir, "shows.jsonl")
+	out := suite.Call(t, "library_export", map[string]any{"path": path, "library": "Shows"})
+	paged := map[string]map[string]any{}
+	for _, row := range acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"library": "Shows", "limit": 1000})["episodes"], "episodes") {
+		paged[acc.Str(row["id"])] = row
+	}
+	lines := jsonLines(t, path)
+	st, err := os.Stat(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n := acc.Num(t, out["rows"], "rows"); n != len(paged) || n != len(lines) || n != showEpisodes() || acc.Str(out["shape"]) != "episode row" || acc.Num(t, out["bytes"], "bytes") != int(st.Size()) {
+		t.Errorf("library_export = %v, for %d lines of %d bytes and %d library_episodes rows, want Shows' %d", out, len(lines), st.Size(), len(paged), showEpisodes())
+	}
+	for _, line := range lines {
+		if want := paged[acc.Str(line["id"])]; !reflect.DeepEqual(line, want) {
+			t.Errorf("the line for %v differs from its library_episodes row:\nline %v\nrow  %v", line["id"], line, want)
+		}
+	}
+
+	// with_file decides whether an item with no file behind it is written.
+	// Emby gives a music album no path, so only with_file false writes its
+	// albums; Jellyfin's albums are their folders, written either way
+	exportAlbums := func(name string, withFile any) int {
+		args := map[string]any{"path": filepath.Join(dir, name), "library": "Music", "types": "MusicAlbum"}
+		if withFile != nil {
+			args["with_file"] = withFile
+		}
+		return acc.Num(t, suite.Call(t, "library_export", args)["rows"], "rows")
+	}
+	if n := exportAlbums("albums-all.jsonl", false); n != musicAlbums() {
+		t.Errorf("with_file false wrote %d albums, want the %d", n, musicAlbums())
+	}
+	want := 0
+	if isJellyfin() {
+		want = musicAlbums()
+	}
+	if n := exportAlbums("albums-held.jsonl", nil); n != want {
+		t.Errorf("with_file left to its default wrote %d albums, want %d", n, want)
+	}
+
+	// the films, each line the summary library_items answers
+	films := filepath.Join(dir, "movies.jsonl")
+	out = suite.Call(t, "library_export", map[string]any{"path": films, "library": "Movies", "types": "Movie"})
+	listed := map[string]map[string]any{}
+	for _, row := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Movies", "types": "Movie", "limit": 50})["items"], "items") {
+		listed[acc.Str(row["id"])] = row
+	}
+	lines = jsonLines(t, films)
+	if n := acc.Num(t, out["rows"], "rows"); n != len(movies) || len(lines) != len(movies) || len(listed) != len(movies) || acc.Str(out["shape"]) != "item summary" {
+		t.Errorf("library_export types Movie = %v with %d lines, want the %d films", out, len(lines), len(movies))
+	}
+	for _, line := range lines {
+		want := listed[acc.Str(line["id"])]
+		for _, field := range []string{"name", "type", "year", "path", "metadata_provider_ids", "width", "height", "video_codec", "container", "size", "runtime_s", "audio"} {
+			if !reflect.DeepEqual(line[field], want[field]) {
+				t.Errorf("%v's %s is %v in the file and %v in library_items", line["name"], field, line[field], want[field])
+			}
+		}
+	}
+
+	// only the facts asked for, beside what names the episode
+	narrow := filepath.Join(dir, "narrow.jsonl")
+	suite.Call(t, "library_export", map[string]any{"path": narrow, "library": "Shows", "fields": []any{"height", "path"}})
+	for _, line := range jsonLines(t, narrow) {
+		if acc.Num(t, line["height"], "height") != 720 || acc.Str(line["path"]) == "" || acc.Str(line["id"]) == "" || acc.Str(line["series"]) == "" {
+			t.Errorf("a narrowed line lacks what it asked for or what names it: %v", line)
+		}
+		for _, gone := range []string{"width", "size", "audio", "video_codec", "frame_rate"} {
+			if line[gone] != nil {
+				t.Errorf("a narrowed line carries %s: %v", gone, line)
+			}
+		}
+	}
+
+	// a path something is already at is refused, and left as it was
+	before, err := os.ReadFile(path) //nolint:gosec // a path the test chose
+	if err != nil {
+		t.Fatal(err)
+	}
+	if msg := suite.CallErr(t, "library_export", map[string]any{"path": path, "library": "Shows"}); !strings.Contains(msg, "exists") {
+		t.Errorf("writing over the file = %q", msg)
+	}
+	if after, _ := os.ReadFile(path); !bytes.Equal(before, after) { //nolint:gosec // same
+		t.Error("the refused export changed the file")
+	}
+
+	// the one episode saved since an edit is the one line
+	series := findItem(t, "Shows", "Series", "Breaking Bad")
+	pilot := acc.Str(acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"series_id": series, "season": 1})["episodes"], "episodes")[0]["id"])
+	start := time.Now().Add(-2 * time.Second).UTC().Format(time.RFC3339)
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{pilot}, "add_tags": []any{"zzyzx-export"}})
+	t.Cleanup(func() {
+		suite.Undo(t, "item_edit", map[string]any{"ids": []any{pilot}, "remove_tags": []any{"zzyzx-export"}})
+	})
+	since := filepath.Join(dir, "since.jsonl")
+	out = suite.Call(t, "library_export", map[string]any{"path": since, "library": "Shows", "saved_since": start})
+	exported := jsonLines(t, since)
+	ids := make([]string, 0, len(exported))
+	for _, line := range exported {
+		ids = append(ids, acc.Str(line["id"]))
+	}
+	if acc.Num(t, out["rows"], "rows") != 1 || !slices.Equal(ids, []string{pilot}) {
+		t.Errorf("saved since the edit = %v (%v rows), want the edited pilot %s alone", ids, out["rows"], pilot)
+	}
+	// and library_episodes and library_items narrow the same way
+	episodeRows := acc.Rows(t, suite.Call(t, "library_episodes", map[string]any{"library": "Shows", "saved_since": start})["episodes"], "episodes")
+	eps := make([]string, 0, len(episodeRows))
+	for _, row := range episodeRows {
+		eps = append(eps, acc.Str(row["id"]))
+	}
+	if !slices.Equal(eps, []string{pilot}) {
+		t.Errorf("library_episodes saved since the edit = %v, want %s", eps, pilot)
+	}
+	itemRows := acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Shows", "types": "Episode", "saved_since": start})["items"], "items")
+	items := make([]string, 0, len(itemRows))
+	for _, row := range itemRows {
+		items = append(items, acc.Str(row["id"]))
+	}
+	if !slices.Equal(items, []string{pilot}) {
+		t.Errorf("library_items saved since the edit = %v, want %s", items, pilot)
+	}
+}

@@ -7,7 +7,7 @@ The vendored OpenAPI documents, the definitions imported from them, and what eac
 The two backends and TMDB publish OpenAPI documents, vendored at the top of
 `api-defs/` as `<server>-openapi-<version>.json`, the reference for
 `sdk/emby`, `sdk/jf` and `sdk/tmdb` - and, unlike Audiobookshelf's, they are
-build inputs. `sdk/pandorest` (see its [README](../sdk/pandorest/README.md)),
+build inputs. `sdk/main.go` (see [sdk/README.md](../sdk/README.md)),
 with [pandorest](https://github.com/katbyte/pandorest),
 imports each into checked-in definitions under `api-defs/<server>-<version>/` beside it,
 fixing the document's known bugs with named workarounds on the way, and
@@ -37,13 +37,13 @@ package records the document version it was built from in its `APIVersion` const
 and `server_info` reports it beside the server's own.
 
 The specs are documentation of intent, not of behaviour: the live suites
-(`integration/`, `acceptance/`) are what prove the shapes against a real
+(everything under `acceptance/`) are what prove the shapes against a real
 server, and the quirks they found are recorded below.
 
 ## Where the specs are wrong
 
 These are shape bugs, fixed in the generated clients by the importer's
-workarounds (`sdk/pandorest/workarounds`, listed in each
+workarounds (`sdk/<server>/workarounds`, listed in each
 `api-defs/<server>-<version>/Service.json`). Each checks its bug is still in the
 document and fails the import once it is not.
 
@@ -63,7 +63,7 @@ document and fails the import once it is not.
   - Array query parameters declare one key per value; the server reads one
     comma-separated value.
   - `/openapi.json` and its siblings declare a JSON string and answer the document; `/LiveTv/Recordings/Folders` declares an array and answers a `QueryResult`.
-  - `/Environment/ParentPath` declares a JSON string and answers the bare path (`/media`, not `"/media"`), labelled JSON all the same. It is read as text whatever it is called, and the method's `Model` is the path; `/System/Ping`, which declares nothing, is read the same way.
+  - `/Environment/ParentPath` declares a JSON string and answers the bare path (`/media`, not `"/media"`), labelled JSON all the same. It is read as text whatever it is called, and the method's `Answer` is the path; `/System/Ping`, which declares nothing, is read the same way.
   - `/Encoding/CodecInformation/Video` declares its bit rates and resolution
     rates as objects and answers display text (`"781 Mbit/s"`); an option
     editor's `PropertyCondition.Value` declares an object and answers a
@@ -259,7 +259,7 @@ repeated keys), Emby's comma-separated.
     then lost. The first playlist created on a server makes Emby create its
     playlists folder, which queues such a scan by itself. The neutral client
     checks an add stayed (looking again a moment later) and sends what went
-    missing once more; the integration test waits the scan out. A playlist or
+    missing once more; the acceptance test waits the scan out. A playlist or
     collection write that lands while a refresh rewrites one of its members
     fails with a 500 (a FOREIGN KEY constraint) rather than waiting.
   - Emby sends an item's tags only in `TagItems` (`Tags` is always null).
@@ -296,7 +296,7 @@ repeated keys), Emby's comma-separated.
   - Timestamps are RFC 3339 with seven fractional digits, sometimes with no
     zone (Emby); the generated clients keep them as strings. Runtime is
     `RunTimeTicks` in 100 ns units.
-- Every GET in each document is called against a real server by the read sweep (`integration/sweep_test.go`), which also fails an answer with nothing in it and one whose model drops an object whole. Each GET that does not answer with something is classified in `emby_sweep_test.go` / `jf_sweep_test.go`: the feature needs something the container lacks (a tuner, a DLNA client, a transcoding session), an API key is not the user the route needs, or what it reads is not there on a fresh server. A classified GET that starts answering fails the sweep, the way a stale workaround fails the import.
+- Every GET in each document is called against a real server by the read sweep (`lib/sdkacc`, run from `acceptance/emby` and `acceptance/jf`), which also fails an answer with nothing in it and one whose model drops an object whole. Each GET that does not answer with something is classified in `emby_sweep_test.go` / `jf_sweep_test.go`: the feature needs something the container lacks (a tuner, a DLNA client, a transcoding session), an API key is not the user the route needs, or what it reads is not there on a fresh server. A classified GET that starts answering fails the sweep, the way a stale workaround fails the import.
   `TotalRecordCount` is 0 on Emby's device and API key lists whatever they
   hold, which is why the generated `Complete` pagers stop on a short page as
   well as on the total.
@@ -312,4 +312,3 @@ repeated keys), Emby's comma-separated.
   calls (see go-kt's `test/replayproxy`). A call that times out makes Emby refuse
   later calls to that host (`Cancelling connection ... due to a previous
   timeout`), so a replay miss can fail tests that come after it. The refusal that follows a fetch that failed as the container started, before the suite's proxy was listening (the package catalogue's), passes after about half a minute.
-

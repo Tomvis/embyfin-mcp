@@ -1,0 +1,282 @@
+//go:build acceptance
+
+package tools_test
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"slices"
+	"strings"
+	"testing"
+	"time"
+
+	acc "github.com/katbyte/go-kt/mcp/acctest"
+
+	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
+
+	"github.com/katbyte/embyfin-mcp/lib/testenv"
+)
+
+// Journeys against work that is still going on: a bulk edit that stops at a
+// bad id, fixes made while a scan runs, and an edit made while the server's
+// own refresh of the item is still to come.
+
+// heldPaths is the path of every film a library holds, for a message.
+func heldPaths(t *testing.T, library string) []string {
+	t.Helper()
+
+	rows := acc.RowsOf(suite.Call(t, "library_items", map[string]any{"library": library, "types": "Movie", "limit": 200})["items"])
+	out := make([]string, 0, len(rows))
+	for _, it := range rows {
+		out = append(out, acc.Str(it["path"]))
+	}
+
+	return out
+}
+
+// missingID is an id shaped like the server's own that names no item.
+func missingID() string {
+	if isJellyfin() {
+		return "0123456789abcdef0123456789abcdef"
+	}
+
+	return "999999999"
+}
+
+// A bulk edit that stops part way: the items before the bad id are changed,
+// the ones after it are not, and the error names the ones done - the answer
+// that would have listed them is lost with the error - and says the same call
+// finishes it. Run again without the bad id it finishes the rest and changes
+// the done ones no further: the tag is on each once.
+func TestABulkEditStoppedPartWay(t *testing.T) {
+	arrival := findItem(t, "Movies", "Movie", "Arrival")
+	dune := findItem(t, "Movies", "Movie", "Dune")
+	for _, id := range []string{arrival, dune} {
+		keepFiles(t, itemFolder(t, id))
+	}
+	suite.PutBack(t, "item_edit", map[string]any{"ids": []any{arrival, dune}, "remove_tags": []any{"zzyzx-bulk"}})
+	tagged := func(id string) int {
+		n := 0
+		for _, tag := range acc.Strs(t, suite.Call(t, "item_get", map[string]any{"id": id})["tags"], "tags") {
+			if tag == "zzyzx-bulk" {
+				n++
+			}
+		}
+		return n
+	}
+
+	bad := missingID()
+	msg := suite.CallErr(t, "item_edit", map[string]any{"ids": []any{arrival, bad, dune}, "add_tags": []any{"zzyzx-bulk"}})
+	if !strings.Contains(msg, bad+": ") || !strings.Contains(msg, "1 of the 3 items were already changed: Arrival ("+arrival+")") || !strings.Contains(msg, "run the same call again to finish") {
+		t.Errorf("the edit stopped at the bad id with: %s", msg)
+	}
+	if a, d := tagged(arrival), tagged(dune); a != 1 || d != 0 {
+		t.Fatalf("after the stopped edit Arrival carries the tag %d times and Dune %d, want 1 and 0", a, d)
+	}
+
+	for range 2 {
+		out := suite.Call(t, "item_edit", map[string]any{"ids": []any{arrival, dune}, "add_tags": []any{"zzyzx-bulk"}})
+		if acc.Num(t, out["updated"], "updated") != 2 || !slices.Equal(names(t, out["items"], "items"), []string{"Arrival", "Dune"}) {
+			t.Errorf("the edit again = %v", out)
+		}
+		if a, d := tagged(arrival), tagged(dune); a != 1 || d != 1 {
+			t.Errorf("after the edit again Arrival carries the tag %d times and Dune %d, want once each", a, d)
+		}
+	}
+}
+
+// Fixes made while a scan runs stand once it has finished: an edit, a match
+// set by hand in a library with its fetchers off, a user's watch state, and
+// a copy deleted - which the scan, having listed the folder before the delete,
+// does not bring back.
+func TestFixingWhileAScanRuns(t *testing.T) {
+	arrival := findItem(t, "Messy Movies", "Movie", "Arrival")
+	mononoke := findItem(t, "Messy Movies", "Movie", "Princess Mononoke")
+	blade := findItem(t, "Movies", "Movie", "Blade Runner")
+	for _, id := range []string{arrival, mononoke} {
+		keepFiles(t, itemFolder(t, id))
+		restoreLater(t, id)
+	}
+	unmarkLater(t, "alice", blade)
+	suite.Call(t, "item_set_state", map[string]any{"id": blade, "user": "alice", "watched": false, "favourite": false})
+
+	// a copy to delete, staged and scanned in first
+	have := typeCount(t, "Messy Movies", "Movie")
+	const name = "The Thirteenth Floor (1999)"
+	copied := filepath.Join(testenv.DataDir(), "messy-movies", name)
+	copyFixture(t, filepath.Join(testenv.DataDir(), "movies", name), copied)
+	t.Cleanup(func() {
+		if err := os.RemoveAll(copied); err != nil {
+			t.Error(err)
+		}
+		if err := scanUntil("Messy Movies", have); err != nil {
+			t.Errorf("%v: it holds %v", err, heldPaths(t, "Messy Movies"))
+		}
+	})
+	if err := scanUntil("Messy Movies", have+1); err != nil {
+		t.Fatal(err)
+	}
+	var staged string
+	for _, it := range acc.Rows(t, suite.Call(t, "library_items", map[string]any{"library": "Messy Movies", "query": "Thirteenth", "limit": 50})["items"], "items") {
+		if strings.Contains(acc.Str(it["path"]), "/messy-movies/"+name+"/") {
+			staged = acc.Str(it["id"])
+		}
+	}
+	if staged == "" {
+		t.Fatal("the copy was not scanned in")
+	}
+	idx := candidateFor(t, map[string]any{"id": mononoke, "kind": "movie"}, "128", "tt0119698")
+
+	slowScan(t)
+	if out := suite.Call(t, "library_scan", nil); !acc.BoolOf(out["started"]) {
+		t.Fatalf("library_scan = %v", out)
+	}
+	const overview = "Zzyzx: fixed while a scan ran."
+	suite.Call(t, "item_edit", map[string]any{"ids": []any{arrival}, "overview": overview})
+	if out := suite.Call(t, "item_identify_apply", withCandidateIDs(t, map[string]any{"id": mononoke, "kind": "movie", "candidate": idx})); !strings.Contains(acc.Str(out["note"]), "metadata fetchers off") {
+		t.Errorf("item_identify_apply = %v", out)
+	}
+	// on Jellyfin the scan can undo the change within the second the tool
+	// reads it back (seen on 12.1: the favourite), and the tool then says so
+	// as an error naming the field and the scan; on Emby it must hold
+	markArgs := map[string]any{"id": blade, "user": "alice", "watched": true, "favourite": true}
+	var marked map[string]any
+	var markErr error
+	if isJellyfin() {
+		marked, markErr = suite.Invoke("item_set_state", markArgs)
+	} else {
+		marked = suite.Call(t, "item_set_state", markArgs)
+	}
+	deleted := suite.Call(t, "item_delete", map[string]any{"id": staged, "confirm": true})
+	if idle, err := suite.ScanIdle(); err != nil || idle {
+		t.Fatalf("the scan had finished before the last fix (%v): the fixes raced nothing", err)
+	}
+	if err := suite.WaitForScan(); err != nil {
+		t.Fatal(err)
+	}
+	// the delete says what the scan it raced may do, and so does the change
+	// of alice's state, which a scan saving the item can undo
+	if note := acc.Str(deleted["note"]); !strings.Contains(note, "was running: it can list this item again") || !strings.Contains(note, "until a later scan lets it go") || !strings.Contains(note, "if it stays listed, delete it again") {
+		t.Errorf("item_delete during a scan: note = %q, want it to say a scan was running", note)
+	}
+	switch msg := fmt.Sprint(markErr); {
+	case markErr != nil && (!strings.Contains(msg, "favourite reads false, not true: the server did not keep it") || !strings.Contains(msg, "was running, and saving the item can undo a change")):
+		t.Errorf("item_set_state during a scan failed without naming the favourite and the scan: %v", markErr)
+	case markErr == nil && !strings.Contains(acc.Str(marked["note"]), "was running: it may overwrite this change once it finishes; check it afterwards"):
+		t.Errorf("item_set_state during a scan: note = %q, want it to say a scan was running", marked["note"])
+	}
+
+	// Jellyfin's scan, having read the copy's folder before the delete,
+	// can list the copy again when it finishes (seen on a CI runner, not on
+	// every run): the files stay gone and the server lets it go later - at
+	// the next scan as a rule, and otherwise within a minute or so of more
+	// scans - which the delete's note says. Everywhere else the copy must
+	// be gone, and on Jellyfin in the end.
+	racedBack := func() bool {
+		_, err := suite.Invoke("item_get", map[string]any{"id": staged})
+		return err == nil
+	}
+	stand := func(when string, last bool) {
+		t.Helper()
+		if got := acc.Str(suite.Call(t, "item_get", map[string]any{"id": arrival})["overview"]); got != overview {
+			t.Errorf("%s the messy Arrival's overview is %q", when, got)
+		}
+		if ids := mediaacc.ObjectOf(suite.Call(t, "item_get", map[string]any{"id": mononoke})["metadata_provider_ids"]); acc.Str(ids["tmdb"]) != "128" && acc.Str(ids["imdb"]) != "tt0119698" {
+			t.Errorf("%s the messy Princess Mononoke holds %v, want its own tmdb or imdb id", when, ids)
+		}
+		// a scan saving the item can undo a change made while it ran (seen
+		// on Jellyfin 12.1: the favourite came back unset); that is allowed
+		// there only when the change's answer said so - as an error naming
+		// the favourite, which must then read unset, or read back as kept
+		// with a note that a scan was running
+		w, f := stateOf(t, blade, "alice")
+		switch {
+		case markErr != nil:
+			if f {
+				t.Errorf("%s Blade Runner for alice reads favourite, where item_set_state's error said the server did not keep it", when)
+			}
+		case !w || !f:
+			if isJellyfin() && strings.Contains(acc.Str(marked["note"]), "was running: it may overwrite this change") {
+				t.Logf("%s Blade Runner for alice: watched %v favourite %v - the scan undid the change its answer read back as kept, and said a scan could", when, w, f)
+			} else {
+				t.Errorf("%s Blade Runner for alice: watched %v favourite %v", when, w, f)
+			}
+		}
+		if _, err := os.Stat(copied); !os.IsNotExist(err) {
+			t.Errorf("%s the deleted copy's folder is on disk: %v", when, err)
+		}
+		if !last && isJellyfin() && racedBack() {
+			t.Logf("%s Jellyfin lists the deleted copy again, its files gone, as the delete's note says it may", when)
+			return
+		}
+		if racedBack() {
+			t.Errorf("%s the deleted copy is back", when)
+		}
+		if held := heldPaths(t, "Messy Movies"); slices.ContainsFunc(held, func(p string) bool { return strings.Contains(p, "/messy-movies/"+name+"/") }) {
+			t.Errorf("%s the library holds the deleted copy again: %v", when, held)
+		}
+	}
+	stand("once the scan finished", false)
+	// and the next two scans, the first to start after the delete, which
+	// the fixes must stand through
+	for n := 1; n <= 2; n++ {
+		suite.Call(t, "library_scan", nil)
+		if err := suite.WaitForExpectedScan(isJellyfin()); err != nil {
+			t.Fatal(err)
+		}
+		stand(fmt.Sprintf("after scan %d", n), false)
+	}
+	// Jellyfin has kept the copy through the first of them (twice in a few
+	// dozen runs, with the copy a film of 100 minutes), through the second
+	// (once, on 12.2), and through twelve run one after another in forty
+	// seconds (once, on 12.2): it is not the number of scans that lets the
+	// copy go. Each time it went a little later, with scans still being
+	// asked for, which is what the delete's note says and what is waited
+	// for here
+	if racedBack() {
+		began := time.Now()
+		if err := suite.ScanUntilTrue("", func() bool { return !racedBack() }); err != nil {
+			t.Fatalf("the deleted copy is still listed %s after two scans, with scans asked for throughout: %v", time.Since(began).Round(time.Second), err)
+		}
+		t.Logf("Jellyfin let the deleted copy go %s after the second scan", time.Since(began).Round(time.Second))
+	}
+	stand("after the last scan", true)
+}
+
+// An edit made straight after item_refresh answers stays. It did not:
+// item_refresh answered once the server had queued the refresh, and a
+// replace_all refresh that ran after the edit put the providers' metadata
+// back over it, in about half of tries on Emby 4.10 and Jellyfin 12.1 with
+// nothing between the calls. item_refresh now waits for the refresh to save
+// the item, and says it saw it land.
+func TestAnEditRightAfterARefreshStays(t *testing.T) {
+	id := findItem(t, "Movies", "Movie", "Princess Mononoke")
+	keepFiles(t, itemFolder(t, id))
+	restoreLater(t, id)
+	settled := func() {
+		t.Helper()
+		last, same := itemEtag(t, id), 0
+		if !acc.EventuallyWithin(time.Minute, func() bool {
+			if now := itemEtag(t, id); now != last {
+				last, same = now, 0
+			} else {
+				same++
+			}
+			return same >= 6
+		}) {
+			t.Fatal("the film never settled after the refresh")
+		}
+	}
+	for i := range 6 {
+		tag := fmt.Sprintf("zzyzx-after-refresh-%d", i)
+		if out := suite.Call(t, "item_refresh", map[string]any{"id": id, "replace_all": true}); !acc.BoolOf(out["landed"]) {
+			t.Errorf("try %d: item_refresh = %v, want the refresh seen to land", i, out)
+		}
+		suite.Call(t, "item_edit", map[string]any{"ids": []any{id}, "add_tags": []any{tag}})
+		settled()
+		if tags := acc.Strs(t, suite.Call(t, "item_get", map[string]any{"id": id})["tags"], "tags"); !slices.Contains(tags, tag) {
+			t.Errorf("try %d: the edit made after item_refresh answered was undone by the refresh: tags %v", i, tags)
+		}
+	}
+}

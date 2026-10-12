@@ -22,7 +22,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "GenreMovieListResponse"
+          "ReferenceName": "GenreMovieListAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -49,7 +49,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "GenreTvListResponse"
+          "ReferenceName": "GenreTvListAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -59,7 +59,7 @@
   ],
   "Models": [
     {
-      "Name": "GenreMovieListResponse",
+      "Name": "GenreMovieListAnswer",
       "Fields": [
         {
           "Name": "Genres",
@@ -68,14 +68,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "GenreMovieListResponseGenres"
+              "ReferenceName": "GenreMovieListAnswerGenres"
             }
           }
         }
       ]
     },
     {
-      "Name": "GenreMovieListResponseGenres",
+      "Name": "GenreMovieListAnswerGenres",
       "Fields": [
         {
           "Name": "Id",
@@ -94,7 +94,7 @@
       ]
     },
     {
-      "Name": "GenreTvListResponse",
+      "Name": "GenreTvListAnswer",
       "Fields": [
         {
           "Name": "Genres",
@@ -103,14 +103,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "GenreTvListResponseGenres"
+              "ReferenceName": "GenreTvListAnswerGenres"
             }
           }
         }
       ]
     },
     {
-      "Name": "GenreTvListResponseGenres",
+      "Name": "GenreTvListAnswerGenres",
       "Fields": [
         {
           "Name": "Id",

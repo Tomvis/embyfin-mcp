@@ -2304,3 +2304,20 @@ func TestJourneyFindings(t *testing.T) {
 		t.Errorf("a removal the server lost was not sent again: %d removals", removals)
 	}
 }
+
+// An id that is not shaped like Emby's own gets a 500 from the real server (seen on 4.10.1), and is no item's: the answer is the same "no item"
+// Jellyfin gives. A 500 for an id of the right shape is still the server failing.
+func TestItemByIDOfAnIDEmbyCannotRead(t *testing.T) {
+	t.Parallel()
+
+	c, _ := newFake(t, Emby, map[string]route{
+		"GET /Items": answer(http.StatusInternalServerError, "Unrecognized Guid format."),
+	})
+	var none *NoItemError
+	if got, err := c.ItemByID(t.Context(), "no-such-id"); !errors.As(err, &none) || none.ID != "no-such-id" {
+		t.Errorf("ItemByID of an id of the wrong shape = %+v, %v; want no item", got, err)
+	}
+	if got, err := c.ItemByID(t.Context(), "42"); err == nil || errors.As(err, &none) {
+		t.Errorf("ItemByID of an id of the right shape the server failed on = %+v, %v; want the failure", got, err)
+	}
+}

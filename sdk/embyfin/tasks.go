@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 type TaskResult struct {
@@ -143,25 +143,25 @@ func (t *Task) Running() bool {
 
 func (c *Client) Tasks(ctx context.Context) ([]Task, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetScheduledTasks(ctx, emby.GetScheduledTasksOperationOptions{})
+		res, err := c.emby.ScheduledTask.GetScheduledTasks(ctx, emby.GetScheduledTasksOptions{})
 		if err != nil {
 			return nil, err
 		}
-		tasks := make([]Task, 0, len(res.Model))
-		for i := range res.Model {
-			tasks = append(tasks, taskFromEmby(&res.Model[i]))
+		tasks := make([]Task, 0, len(res.Answer))
+		for i := range res.Answer {
+			tasks = append(tasks, taskFromEmby(&res.Answer[i]))
 		}
 
 		return tasks, nil
 	}
 
-	res, err := c.jf.GetTasks(ctx, jf.GetTasksOperationOptions{})
+	res, err := c.jf.ScheduledTask.GetTasks(ctx, jf.GetTasksOptions{})
 	if err != nil {
 		return nil, err
 	}
-	tasks := make([]Task, 0, len(res.Model))
-	for i := range res.Model {
-		tasks = append(tasks, taskFromJF(&res.Model[i]))
+	tasks := make([]Task, 0, len(res.Answer))
+	for i := range res.Answer {
+		tasks = append(tasks, taskFromJF(&res.Answer[i]))
 	}
 
 	return tasks, nil
@@ -218,22 +218,22 @@ func (c *Client) librariesRefreshing(ctx context.Context) ([]string, error) {
 		}
 	}
 	if c.isEmby() {
-		res, err := c.emby.GetLibraryVirtualFoldersQuery(ctx, emby.GetLibraryVirtualFoldersQueryOperationOptions{})
+		res, err := c.emby.LibraryStructure.GetLibraryVirtualFoldersQuery(ctx, emby.GetLibraryVirtualFoldersQueryOptions{})
 		if err != nil {
 			return nil, err
 		}
-		for _, f := range orEmpty(res.Model).Items {
+		for _, f := range orEmpty(res.Answer).Items {
 			busy(f.Name, f.RefreshStatus, f.RefreshProgress)
 		}
 
 		return names, nil
 	}
 
-	res, err := c.jf.GetVirtualFolders(ctx)
+	res, err := c.jf.LibraryStructure.GetVirtualFolders(ctx)
 	if err != nil {
 		return nil, err
 	}
-	for _, f := range res.Model {
+	for _, f := range res.Answer {
 		busy(f.Name, f.RefreshStatus, f.RefreshProgress)
 	}
 
@@ -278,9 +278,9 @@ func (c *Client) FindTask(ctx context.Context, nameOrID string) (*Task, error) {
 func (c *Client) StartTask(ctx context.Context, task *Task) error {
 	var err error
 	if c.isEmby() {
-		_, err = c.emby.PostScheduledTasksRunningById(ctx, task.ID)
+		_, err = c.emby.ScheduledTask.PostScheduledTasksRunningById(ctx, task.ID)
 	} else {
-		_, err = c.jf.StartTask(ctx, task.ID)
+		_, err = c.jf.ScheduledTask.StartTask(ctx, task.ID)
 	}
 
 	return err
@@ -292,9 +292,9 @@ func (c *Client) StartTask(ctx context.Context, task *Task) error {
 func (c *Client) StopTask(ctx context.Context, task *Task) error {
 	var err error
 	if c.isEmby() {
-		_, err = c.emby.DeleteScheduledTasksRunningById(ctx, task.ID)
+		_, err = c.emby.ScheduledTask.DeleteScheduledTasksRunningById(ctx, task.ID)
 	} else {
-		_, err = c.jf.StopTask(ctx, task.ID)
+		_, err = c.jf.ScheduledTask.StopTask(ctx, task.ID)
 	}
 
 	return err
@@ -312,7 +312,7 @@ func (c *Client) SetTaskTriggers(ctx context.Context, task *Task, triggers []Tas
 				TimeOfDayTicks: int64(t.TimeOfDay / tick), IntervalTicks: int64(t.Interval / tick), MaxRuntimeTicks: int64(t.MaxRuntime / tick),
 			})
 		}
-		_, err := c.emby.PostScheduledTasksByIdTriggers(ctx, task.ID, in)
+		_, err := c.emby.ScheduledTask.PostScheduledTasksByIdTriggers(ctx, task.ID, in)
 
 		return err
 	}
@@ -326,7 +326,7 @@ func (c *Client) SetTaskTriggers(ctx context.Context, task *Task, triggers []Tas
 			TimeOfDayTicks: int64(t.TimeOfDay / tick), IntervalTicks: int64(t.Interval / tick), MaxRuntimeTicks: int64(t.MaxRuntime / tick),
 		})
 	}
-	_, err := c.jf.UpdateTask(ctx, task.ID, in)
+	_, err := c.jf.ScheduledTask.UpdateTask(ctx, task.ID, in)
 
 	return err
 }
@@ -407,11 +407,11 @@ func ParseTaskTrigger(s string) (TaskTrigger, error) {
 // RefreshLibrary triggers a scan of all libraries.
 func (c *Client) RefreshLibrary(ctx context.Context) error {
 	if c.isEmby() {
-		_, err := c.emby.PostLibraryRefresh(ctx)
+		_, err := c.emby.Library.PostLibraryRefresh(ctx)
 		return err
 	}
 
-	_, err := c.jf.RefreshLibrary(ctx)
+	_, err := c.jf.Library.RefreshLibrary(ctx)
 
 	return err
 }

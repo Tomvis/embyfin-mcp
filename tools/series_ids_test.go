@@ -107,24 +107,34 @@ func TestOtherTitle(t *testing.T) {
 // A show given by a name that matches none is read as an id too, for a show
 // the index has not caught up with. The server failing that read is said
 // beside the name that matched nothing, where it used to be dropped; the
-// server refusing the name as an id (a 4xx) is no failure, only no show.
+// server refusing the name as an id (a 4xx) is no failure, only no show, and
+// neither is Emby's 500 for a name that is not shaped like one of its ids,
+// which is how the real server answers every such name.
 func TestSeriesNameThatIsNoIDSaysAFailedRead(t *testing.T) {
 	t.Parallel()
 
-	for status, said := range map[int]bool{http.StatusInternalServerError: true, http.StatusBadRequest: false} {
+	for _, c := range []struct {
+		series string
+		status int
+		said   bool
+	}{
+		{"4242", http.StatusInternalServerError, true},
+		{"4242", http.StatusBadRequest, false},
+		{"Zzyzx Nowhere", http.StatusInternalServerError, false},
+	} {
 		f, _ := zzyzxServer(t)
 		f.mux.HandleFunc("GET /Items", func(w http.ResponseWriter, r *http.Request) {
 			if param(r.URL.Query(), "Ids") != "" {
-				http.Error(w, "the id read broke", status)
+				http.Error(w, "the id read broke", c.status)
 
 				return
 			}
 			writeJSON(t, w, page(map[string]any{"Id": "sev", "Name": "Severance", "Type": "Series", "ProductionYear": 2022, "Path": "/zz/shows/Severance"}))
 		})
 		cs := session(t, f, Options{})
-		msg := mustRefuse(t, cs, "library_episodes", map[string]any{"series": "Zzyzx Nowhere"})
-		if strings.Contains(msg, "reading it as an id failed") != said || strings.Contains(msg, "the id read broke") != said {
-			t.Errorf("HTTP %d on the id read: %q, want the failure said: %v", status, msg, said)
+		msg := mustRefuse(t, cs, "library_episodes", map[string]any{"series": c.series})
+		if strings.Contains(msg, "reading it as an id failed") != c.said || strings.Contains(msg, "the id read broke") != c.said {
+			t.Errorf("HTTP %d on the id read of %q: %q, want the failure said: %v", c.status, c.series, msg, c.said)
 		}
 	}
 }

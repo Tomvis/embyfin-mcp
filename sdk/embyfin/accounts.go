@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/go-kt/lock"
 	apiclient "github.com/katbyte/pandorest/client"
 )
@@ -46,31 +46,31 @@ func (c *Client) CreateUser(ctx context.Context, name, password string) (*User, 
 	var id string
 	var left Leftover
 	if c.isEmby() {
-		res, err := c.emby.PostUsersNew(ctx, emby.CreateUserByName{Name: name})
+		res, err := c.emby.User.PostUsersNew(ctx, emby.CreateUserByName{Name: name})
 		if err != nil {
 			return nil, left, err
 		}
-		if res.Model == nil || res.Model.Id == "" {
+		if res.Answer == nil || res.Answer.Id == "" {
 			return nil, left, errors.New("the server answered the new account without an id")
 		}
-		id = res.Model.Id
+		id = res.Answer.Id
 
 		if err := c.SetUserPassword(ctx, id, password); err != nil {
-			if _, gone := c.emby.DeleteUsersById(ctx, id); gone != nil {
+			if _, gone := c.emby.User.DeleteUsersById(ctx, id); gone != nil {
 				return nil, left, fmt.Errorf("the account %s was made (id %s) and its password could not be set: %w. Removing it again failed too (%w), so it is still there WITH NO PASSWORD: delete it, or set one", name, id, err, gone)
 			}
 
 			return nil, left, fmt.Errorf("the account %s was made, its password could not be set, and so it was removed again: %w", name, err)
 		}
 	} else {
-		res, err := c.jf.CreateUserByName(ctx, jf.CreateUserByName{Name: name, Password: password})
+		res, err := c.jf.User.CreateUserByName(ctx, jf.CreateUserByName{Name: name, Password: password})
 		if err != nil {
 			return nil, left, err
 		}
-		if res.Model == nil || res.Model.Id == "" {
+		if res.Answer == nil || res.Answer.Id == "" {
 			return nil, left, errors.New("the server answered the new account without an id")
 		}
-		id = res.Model.Id
+		id = res.Answer.Id
 		left = c.clearLeftover(ctx, id)
 	}
 
@@ -161,7 +161,7 @@ func (c *Client) clearState(ctx context.Context, userID string, it *Item) error 
 		}
 	}
 	if d.Rated {
-		if _, err := c.jf.DeleteUserItemRating(ctx, it.ID, jf.DeleteUserItemRatingOperationOptions{UserId: userID}); err != nil {
+		if _, err := c.jf.UserData.DeleteUserItemRating(ctx, it.ID, userID); err != nil {
 			return err
 		}
 	}
@@ -175,12 +175,12 @@ func (c *Client) SetUserPassword(ctx context.Context, userID, password string) e
 		return ErrNoPassword
 	}
 	if c.isEmby() {
-		_, err := c.emby.PostUsersByIdPassword(ctx, userID, emby.UpdateUserPassword{NewPw: password})
+		_, err := c.emby.User.PostUsersByIdPassword(ctx, userID, emby.UpdateUserPassword{NewPw: password})
 
 		return err
 	}
 
-	_, err := c.jf.UpdateUserPassword(ctx, jf.UpdateUserPassword{NewPw: password}, jf.UpdateUserPasswordOperationOptions{UserId: userID})
+	_, err := c.jf.User.UpdateUserPassword(ctx, jf.UpdateUserPassword{NewPw: password}, userID)
 
 	return err
 }
@@ -194,12 +194,12 @@ var ErrUserPlaying = errors.New("the whole Jellyfin server exits when an account
 func (c *Client) DeleteUser(ctx context.Context, userID string) error {
 	var err error
 	if c.isEmby() {
-		_, err = c.emby.DeleteUsersById(ctx, userID)
+		_, err = c.emby.User.DeleteUsersById(ctx, userID)
 	} else {
 		if err := c.jellyfinMayDelete(ctx, userID); err != nil {
 			return err
 		}
-		_, err = c.jf.DeleteUser(ctx, userID)
+		_, err = c.jf.User.DeleteUser(ctx, userID)
 	}
 	if err != nil {
 		return err

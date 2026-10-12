@@ -31,7 +31,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CreditDetailsResponse"
+          "ReferenceName": "CreditDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -41,7 +41,7 @@
   ],
   "Models": [
     {
-      "Name": "CreditDetailsResponse",
+      "Name": "CreditDetailsAnswer",
       "Fields": [
         {
           "Name": "CreditType",
@@ -76,7 +76,7 @@
           "JsonName": "media",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "CreditDetailsResponseMedia"
+            "ReferenceName": "CreditDetailsAnswerMedia"
           }
         },
         {
@@ -91,13 +91,13 @@
           "JsonName": "person",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "CreditDetailsResponsePerson"
+            "ReferenceName": "CreditDetailsAnswerPerson"
           }
         }
       ]
     },
     {
-      "Name": "CreditDetailsResponseMedia",
+      "Name": "CreditDetailsAnswerMedia",
       "Fields": [
         {
           "Name": "Adult",
@@ -127,7 +127,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CreditDetailsResponseMediaEpisodes"
+              "ReferenceName": "CreditDetailsAnswerMediaEpisodes"
             }
           }
         },
@@ -221,7 +221,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CreditDetailsResponseMediaSeasons"
+              "ReferenceName": "CreditDetailsAnswerMediaSeasons"
             }
           }
         },
@@ -242,7 +242,7 @@
       ]
     },
     {
-      "Name": "CreditDetailsResponseMediaEpisodes",
+      "Name": "CreditDetailsAnswerMediaEpisodes",
       "Fields": [
         {
           "Name": "AirDate",
@@ -338,7 +338,7 @@
       ]
     },
     {
-      "Name": "CreditDetailsResponseMediaSeasons",
+      "Name": "CreditDetailsAnswerMediaSeasons",
       "Fields": [
         {
           "Name": "AirDate",
@@ -399,7 +399,7 @@
       ]
     },
     {
-      "Name": "CreditDetailsResponsePerson",
+      "Name": "CreditDetailsAnswerPerson",
       "Fields": [
         {
           "Name": "Adult",

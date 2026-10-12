@@ -21,7 +21,7 @@ import (
 
 	"github.com/katbyte/embyfin-mcp/lib/naming"
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
-	"github.com/katbyte/embyfin-mcp/sdk/tmdb"
+	tmdb "github.com/katbyte/embyfin-mcp/sdk/tmdb/facts"
 )
 
 // ids names the members of each group, for a test to compare.
@@ -851,7 +851,7 @@ func TestATranslatedTitleIsTheFilm(t *testing.T) {
 func recorded(t *testing.T, key string) string {
 	t.Helper()
 
-	raw, err := os.ReadFile(filepath.Join("..", "acceptance", "testdata", "cassettes", "jellyfin", "api.themoviedb.org.json"))
+	raw, err := os.ReadFile(filepath.Join("..", "acceptance", "tools", "testdata", "cassettes", "jellyfin", "api.themoviedb.org.json"))
 	if err != nil {
 		t.Fatal(err)
 	}

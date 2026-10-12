@@ -40,7 +40,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "FindByIdResponse"
+          "ReferenceName": "FindByIdAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -50,7 +50,7 @@
   ],
   "Models": [
     {
-      "Name": "FindByIdResponse",
+      "Name": "FindByIdAnswer",
       "Fields": [
         {
           "Name": "MovieResults",
@@ -59,7 +59,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "FindByIdResponseMovieResults"
+              "ReferenceName": "FindByIdAnswerMovieResults"
             }
           }
         },
@@ -70,7 +70,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "FindByIdResponsePersonResults"
+              "ReferenceName": "FindByIdAnswerPersonResults"
             }
           }
         },
@@ -81,7 +81,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "FindByIdResponseTvEpisodeResults"
+              "ReferenceName": "FindByIdAnswerTvEpisodeResults"
             }
           }
         },
@@ -92,7 +92,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "FindByIdResponseTvResults"
+              "ReferenceName": "FindByIdAnswerTvResults"
             }
           }
         },
@@ -103,14 +103,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "FindByIdResponseTvSeasonResults"
+              "ReferenceName": "FindByIdAnswerTvSeasonResults"
             }
           }
         }
       ]
     },
     {
-      "Name": "FindByIdResponseMovieResults",
+      "Name": "FindByIdAnswerMovieResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -223,7 +223,7 @@
       ]
     },
     {
-      "Name": "FindByIdResponsePersonResults",
+      "Name": "FindByIdAnswerPersonResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -253,7 +253,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "FindByIdResponsePersonResultsKnownFor"
+              "ReferenceName": "FindByIdAnswerPersonResultsKnownFor"
             }
           }
         },
@@ -295,7 +295,7 @@
       ]
     },
     {
-      "Name": "FindByIdResponsePersonResultsKnownFor",
+      "Name": "FindByIdAnswerPersonResultsKnownFor",
       "Fields": [
         {
           "Name": "Adult",
@@ -408,7 +408,7 @@
       ]
     },
     {
-      "Name": "FindByIdResponseTvEpisodeResults",
+      "Name": "FindByIdAnswerTvEpisodeResults",
       "Fields": [
         {
           "Name": "AirDate",
@@ -504,7 +504,7 @@
       ]
     },
     {
-      "Name": "FindByIdResponseTvResults",
+      "Name": "FindByIdAnswerTvResults",
       "Fields": [
         {
           "Name": "Adult",
@@ -613,7 +613,7 @@
       ]
     },
     {
-      "Name": "FindByIdResponseTvSeasonResults",
+      "Name": "FindByIdAnswerTvSeasonResults",
       "Fields": [
         {
           "Name": "AirDate",

@@ -4,7 +4,7 @@
 // deleted. They are here and not there because they call this application's
 // own tools.
 //
-// The suite under ../../acceptance is what it was written for; nothing here
+// The suite under ../../acceptance/tools is what it was written for; nothing here
 // knows its fixtures.
 package acceptance
 
@@ -43,4 +43,13 @@ func (s *Suite) UndoIfThere(t *testing.T, id, tool string, args map[string]any) 
 		return
 	}
 	s.Undo(t, tool, args)
+}
+
+// ObjectOf is a decoded object as it is, nil for a field that is no object.
+func ObjectOf(v any) map[string]any {
+	if object, ok := v.(map[string]any); ok {
+		return object
+	}
+
+	return nil
 }

@@ -2,9 +2,24 @@
 
 ## Unreleased
 
+### Breaking
+
+- the three SDKs moved into folders named for the version of the document they were generated from: `sdk/emby/4.10.0.40`, `sdk/jf/12.1.0` and `sdk/tmdb/2026.09.22`, so an import path says exactly which API it is for. Under each, `client` has `New`, the package named for the service (`emby`, `jf`, `tmdb`) holds every type, and each group of operations is a package of its own and a field on the client: `c.GetItems(...)` is `c.Items.GetItems(...)` on Emby and `c.Library.GetItems(...)` on Jellyfin
+- an operation's options type is `<Name>Options`, where it was `<Name>OperationOptions`
+- what a call answered is `res.Answer`, where it was `res.Model`, and the type of `res` is `<Name>Response`, where it was `<Name>OperationResponse`
+- the types the TMDB SDK makes up for an answer TMDB's document does not name end in `Answer`, where they ended in `Response`: `tmdb.FindByIdAnswerMovieResults`
+- a true or false in a record the servers only ever answer is a plain `bool`, where it was a pointer: `info.HasPendingRestart`. A record a request sends keeps its pointers, so a value never set is still never sent, and three answers keep theirs because "not said" means something: Emby's `TranscodingInfo.VideoDecoderIsHardware` and `VideoEncoderIsHardware`, and Jellyfin's `PluginInfo.CanUninstall`
+- an operation with exactly one option takes it as a plain argument in place of the struct: `c.Library.DeleteItems(ctx, ids)`. An optional one can be left out, and a `false` or `0` that is given is sent; a paged list and an operation with two or more options keep the struct
+- the hand-written TMDB code, `Facts` and the retrying transport, moved from `sdk/tmdb` to `sdk/tmdb/facts`; TMDB's `New`, `Client` and `DefaultBaseURL` are in the versioned folder
+
 ### Changed
 
+- built on pandorest 0.8.0: an error from any of the three SDKs never repeats the API key or token it was given
+- `sdk/embyfin` names the two API versions it is built on, `EmbyAPIVersion` and `JellyfinAPIVersion`, and `server_info` reports both as `sdk_api_versions`, beside the one for the connected server
+- a call none of whose options is required can leave the options out: `c.Sessions.GetSessions(ctx)`
+- the generator's settings moved out of `sdk/pandorest`: the program is `sdk/main.go` (`go run ./sdk`), the list of services is `sdk/zservices`, and each service's workarounds sit beside its SDK in `sdk/<service>/workarounds`
 - `scripts/` is `.scripts/`
+- every test that runs against a real server is under `acceptance/`: `integration/` is now `acceptance/emby`, `acceptance/jf` and `acceptance/tmdb`, and the tool suite is `acceptance/tools`; the make targets are `testacc-sdk-<server>` and `testacc-tools-<server>`, and the build tag is `acceptance`
 
 ### Added
 
@@ -13,9 +28,11 @@
 - on Jellyfin `user_create` clears the new account of the watched marks, favourites, ratings and resume points of an account deleted before it, which Jellyfin 12.2 lists it with until the server is restarted, and says when there were any
 - one acceptance journey per server that goes from nothing to audited to fixed and back: it makes an account and a library, fixes every finding `audit_all` reports with the tools, makes a collection and a playlist, and removes all of it again, leaving the server holding what it held before
 - 92 tools: 62 read, 24 write, 6 delete
+- `acceptance/embyfin`: live tests of the hand-written `sdk/embyfin` layer by itself, each written once and run against both servers (`make testacc-embyfin`)
 
 ### Fixed
 
+- an item asked for by an id of the wrong shape (a name, say) is answered "no item with id ..." on Emby too, where it was Emby's own HTTP 500; found by the new `acceptance/embyfin` suite
 - `user_get` leaves `has_password` out on Jellyfin, which says true for every account, one that logs in with no password included
 
 ## 0.7.0 (2026-10-10)

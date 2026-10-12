@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
-	"github.com/katbyte/embyfin-mcp/sdk/tmdb"
+	tmdb "github.com/katbyte/embyfin-mcp/sdk/tmdb/facts"
 )
 
 // What a film's path names, against every title the item goes by. A folder

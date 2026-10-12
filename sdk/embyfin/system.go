@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/katbyte/embyfin-mcp/lib/serverlog"
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 type SystemInfo struct {
@@ -100,23 +100,23 @@ func (c *Client) readStartup(ctx context.Context, name string, format serverlog.
 
 func (c *Client) SystemInfo(ctx context.Context) (*SystemInfo, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetSystemInfo(ctx)
+		res, err := c.emby.System.GetSystemInfo(ctx)
 		if err != nil {
 			return nil, err
 		}
-		if res.Model == nil {
+		if res.Answer == nil {
 			return nil, errors.New("the server answered with no system information")
 		}
 
-		return systemInfoFromEmby(res.Model), nil
+		return systemInfoFromEmby(res.Answer), nil
 	}
 
-	res, err := c.jf.GetSystemInfo(ctx)
+	res, err := c.jf.System.GetSystemInfo(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return systemInfoFromJF(res.Model), nil
+	return systemInfoFromJF(res.Answer), nil
 }
 
 type ItemCounts struct {
@@ -132,24 +132,24 @@ type ItemCounts struct {
 
 func (c *Client) Counts(ctx context.Context) (*ItemCounts, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetItemsCounts(ctx, emby.GetItemsCountsOperationOptions{})
+		res, err := c.emby.Library.GetItemsCounts(ctx, emby.GetItemsCountsOptions{})
 		if err != nil {
 			return nil, err
 		}
 		// no counts is not zero of everything
-		if res.Model == nil {
+		if res.Answer == nil {
 			return nil, errors.New("the server answered with no item counts")
 		}
 
-		return countsFromEmby(res.Model), nil
+		return countsFromEmby(res.Answer), nil
 	}
 
-	res, err := c.jf.GetItemCounts(ctx, jf.GetItemCountsOperationOptions{})
+	res, err := c.jf.Library.GetItemCounts(ctx, jf.GetItemCountsOptions{})
 	if err != nil {
 		return nil, err
 	}
 
-	return countsFromJF(res.Model), nil
+	return countsFromJF(res.Answer), nil
 }
 
 type ActivityEntry struct {
@@ -173,11 +173,11 @@ func (c *Client) ActivityLog(ctx context.Context, minDate time.Time, limit, offs
 	}
 
 	if c.isEmby() {
-		res, err := c.emby.GetSystemActivityLogEntries(ctx, emby.GetSystemActivityLogEntriesOperationOptions{MinDate: since, Limit: nz(limit), StartIndex: nz(offset)})
+		res, err := c.emby.ActivityLog.GetSystemActivityLogEntries(ctx, emby.GetSystemActivityLogEntriesOptions{MinDate: since, Limit: nz(limit), StartIndex: nz(offset)})
 		if err != nil {
 			return nil, 0, err
 		}
-		page := orEmpty(res.Model)
+		page := orEmpty(res.Answer)
 		entries := make([]ActivityEntry, 0, len(page.Items))
 		for i := range page.Items {
 			entries = append(entries, activityFromEmby(&page.Items[i]))
@@ -186,16 +186,16 @@ func (c *Client) ActivityLog(ctx context.Context, minDate time.Time, limit, offs
 		return entries, page.TotalRecordCount, nil
 	}
 
-	res, err := c.jf.GetLogEntries(ctx, jf.GetLogEntriesOperationOptions{MinDate: since, Limit: nz(limit), StartIndex: nz(offset)})
+	res, err := c.jf.System.GetLogEntries(ctx, jf.GetLogEntriesOptions{MinDate: since, Limit: nz(limit), StartIndex: nz(offset)})
 	if err != nil {
 		return nil, 0, err
 	}
-	entries := make([]ActivityEntry, 0, len(res.Model.Items))
-	for i := range res.Model.Items {
-		entries = append(entries, activityFromJF(&res.Model.Items[i]))
+	entries := make([]ActivityEntry, 0, len(res.Answer.Items))
+	for i := range res.Answer.Items {
+		entries = append(entries, activityFromJF(&res.Answer.Items[i]))
 	}
 
-	return entries, res.Model.TotalRecordCount, nil
+	return entries, res.Answer.TotalRecordCount, nil
 }
 
 type Device struct {
@@ -209,11 +209,11 @@ type Device struct {
 
 func (c *Client) Devices(ctx context.Context) ([]Device, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetDevices(ctx, emby.GetDevicesOperationOptions{})
+		res, err := c.emby.Device.GetDevices(ctx)
 		if err != nil {
 			return nil, err
 		}
-		listed := orEmpty(res.Model).Items
+		listed := orEmpty(res.Answer).Items
 		devices := make([]Device, 0, len(listed))
 		for i := range listed {
 			devices = append(devices, deviceFromEmby(&listed[i]))
@@ -222,13 +222,13 @@ func (c *Client) Devices(ctx context.Context) ([]Device, error) {
 		return devices, nil
 	}
 
-	res, err := c.jf.GetDevices(ctx, jf.GetDevicesOperationOptions{})
+	res, err := c.jf.Device.GetDevices(ctx)
 	if err != nil {
 		return nil, err
 	}
-	devices := make([]Device, 0, len(res.Model.Items))
-	for i := range res.Model.Items {
-		devices = append(devices, deviceFromJF(&res.Model.Items[i]))
+	devices := make([]Device, 0, len(res.Answer.Items))
+	for i := range res.Answer.Items {
+		devices = append(devices, deviceFromJF(&res.Answer.Items[i]))
 	}
 
 	return devices, nil
@@ -252,25 +252,25 @@ type Plugin struct {
 // Plugins lists what is installed into the server.
 func (c *Client) Plugins(ctx context.Context) ([]Plugin, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetPlugins(ctx)
+		res, err := c.emby.Plugin.GetPlugins(ctx)
 		if err != nil {
 			return nil, err
 		}
-		plugins := make([]Plugin, 0, len(res.Model))
-		for i := range res.Model {
-			d := &res.Model[i]
+		plugins := make([]Plugin, 0, len(res.Answer))
+		for i := range res.Answer {
+			d := &res.Answer[i]
 			plugins = append(plugins, Plugin{ID: d.Id, Name: d.Name, Version: d.Version, Description: d.Description})
 		}
 
 		return plugins, nil
 	}
-	res, err := c.jf.GetPlugins(ctx)
+	res, err := c.jf.Plugin.GetPlugins(ctx)
 	if err != nil {
 		return nil, err
 	}
-	plugins := make([]Plugin, 0, len(res.Model))
-	for i := range res.Model {
-		d := &res.Model[i]
+	plugins := make([]Plugin, 0, len(res.Answer))
+	for i := range res.Answer {
+		d := &res.Answer[i]
 		plugins = append(plugins, Plugin{ID: d.Id, Name: d.Name, Version: d.Version, Description: d.Description, Status: string(d.Status), Bundled: d.CanUninstall != nil && !*d.CanUninstall})
 	}
 
@@ -299,11 +299,11 @@ func (f *LogFile) ServerOwn() bool {
 
 func (c *Client) LogFiles(ctx context.Context) ([]LogFile, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetSystemLogsQuery(ctx, emby.GetSystemLogsQueryOperationOptions{})
+		res, err := c.emby.System.GetSystemLogsQuery(ctx, emby.GetSystemLogsQueryOptions{})
 		if err != nil {
 			return nil, err
 		}
-		listed := orEmpty(res.Model).Items
+		listed := orEmpty(res.Answer).Items
 		files := make([]LogFile, 0, len(listed))
 		for i := range listed {
 			files = append(files, logFileFromEmby(&listed[i]))
@@ -312,13 +312,13 @@ func (c *Client) LogFiles(ctx context.Context) ([]LogFile, error) {
 		return files, nil
 	}
 
-	res, err := c.jf.GetServerLogs(ctx)
+	res, err := c.jf.System.GetServerLogs(ctx)
 	if err != nil {
 		return nil, err
 	}
-	files := make([]LogFile, 0, len(res.Model))
-	for i := range res.Model {
-		files = append(files, logFileFromJF(&res.Model[i]))
+	files := make([]LogFile, 0, len(res.Answer))
+	for i := range res.Answer {
+		files = append(files, logFileFromJF(&res.Answer[i]))
 	}
 
 	return files, nil
@@ -334,18 +334,18 @@ func (c *Client) LogFiles(ctx context.Context) ([]LogFile, error) {
 // marks no screen shows. Jellyfin has the one form, as on disk.
 func (c *Client) LogStream(ctx context.Context, name string, raw bool) (io.ReadCloser, error) {
 	if c.isEmby() {
-		var opts emby.GetSystemLogsByNameOperationOptions
+		var sanitize []bool
 		if raw {
-			opts.Sanitize = new(false)
+			sanitize = []bool{false}
 		}
-		res, err := c.emby.GetSystemLogsByName(ctx, name, opts)
+		res, err := c.emby.System.GetSystemLogsByName(ctx, name, sanitize...)
 		if err != nil {
 			return nil, err
 		}
 
 		return res.HttpResponse.Body, nil
 	}
-	res, err := c.jf.GetLogFile(ctx, jf.GetLogFileOperationOptions{Name: name})
+	res, err := c.jf.System.GetLogFile(ctx, name)
 	if err != nil {
 		return nil, err
 	}

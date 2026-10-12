@@ -31,7 +31,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CollectionDetailsResponse"
+          "ReferenceName": "CollectionDetailsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -76,7 +76,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CollectionImagesResponse"
+          "ReferenceName": "CollectionImagesAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -102,7 +102,7 @@
         "ContentType": "application/json",
         "Type": {
           "Type": "Reference",
-          "ReferenceName": "CollectionTranslationsResponse"
+          "ReferenceName": "CollectionTranslationsAnswer"
         }
       },
       "ExpectedStatusCodes": [
@@ -112,7 +112,7 @@
   ],
   "Models": [
     {
-      "Name": "CollectionDetailsResponse",
+      "Name": "CollectionDetailsAnswer",
       "Fields": [
         {
           "Name": "BackdropPath",
@@ -163,7 +163,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CollectionDetailsResponseParts"
+              "ReferenceName": "CollectionDetailsAnswerParts"
             }
           }
         },
@@ -177,7 +177,7 @@
       ]
     },
     {
-      "Name": "CollectionDetailsResponseParts",
+      "Name": "CollectionDetailsAnswerParts",
       "Fields": [
         {
           "Name": "Adult",
@@ -290,7 +290,7 @@
       ]
     },
     {
-      "Name": "CollectionImagesResponse",
+      "Name": "CollectionImagesAnswer",
       "Fields": [
         {
           "Name": "Backdrops",
@@ -299,7 +299,7 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CollectionImagesResponseBackdrops"
+              "ReferenceName": "CollectionImagesAnswerBackdrops"
             }
           }
         },
@@ -317,14 +317,14 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CollectionImagesResponsePosters"
+              "ReferenceName": "CollectionImagesAnswerPosters"
             }
           }
         }
       ]
     },
     {
-      "Name": "CollectionImagesResponseBackdrops",
+      "Name": "CollectionImagesAnswerBackdrops",
       "Fields": [
         {
           "Name": "AspectRatio",
@@ -378,7 +378,7 @@
       ]
     },
     {
-      "Name": "CollectionImagesResponsePosters",
+      "Name": "CollectionImagesAnswerPosters",
       "Fields": [
         {
           "Name": "AspectRatio",
@@ -432,7 +432,7 @@
       ]
     },
     {
-      "Name": "CollectionTranslationsResponse",
+      "Name": "CollectionTranslationsAnswer",
       "Fields": [
         {
           "Name": "Id",
@@ -448,21 +448,21 @@
             "Type": "List",
             "NestedItem": {
               "Type": "Reference",
-              "ReferenceName": "CollectionTranslationsResponseTranslations"
+              "ReferenceName": "CollectionTranslationsAnswerTranslations"
             }
           }
         }
       ]
     },
     {
-      "Name": "CollectionTranslationsResponseTranslations",
+      "Name": "CollectionTranslationsAnswerTranslations",
       "Fields": [
         {
           "Name": "Data",
           "JsonName": "data",
           "Type": {
             "Type": "Reference",
-            "ReferenceName": "CollectionTranslationsResponseTranslationsData"
+            "ReferenceName": "CollectionTranslationsAnswerTranslationsData"
           }
         },
         {
@@ -496,7 +496,7 @@
       ]
     },
     {
-      "Name": "CollectionTranslationsResponseTranslationsData",
+      "Name": "CollectionTranslationsAnswerTranslationsData",
       "Fields": [
         {
           "Name": "Homepage",

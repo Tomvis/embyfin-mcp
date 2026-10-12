@@ -15,7 +15,7 @@
 // The typed clients are generated (make generate) and must not be edited by
 // hand. Where a document is wrong about its server's shape (a parameter it
 // leaves out, a field it lacks) the fix is a workaround in
-// sdk/pandorest/workarounds, so the generated clients carry it; what
+// sdk/emby/workarounds or sdk/jf/workarounds, so the generated clients carry it; what
 // stays here is behaviour no document can express, next to a comment saying
 // which server it is for and the live test that found it.
 package embyfin
@@ -29,8 +29,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	embyclient "github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/client"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	jfclient "github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/client"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/go-kt/chttp"
 	apiclient "github.com/katbyte/pandorest/client"
 )
@@ -47,8 +49,8 @@ const (
 type Client struct {
 	backend Backend
 	baseURL string
-	emby    *emby.Client
-	jf      *jf.Client
+	emby    *embyclient.Client
+	jf      *jfclient.Client
 	// settle is how long to wait between checks that a change the server
 	// applies in the background has landed
 	settle time.Duration
@@ -84,9 +86,9 @@ func New(backend Backend, baseURL, token string, opts ...apiclient.Option) (*Cli
 	// this layer's rule for sending a read again, which a caller's own option replaces
 	opts = append([]apiclient.Option{apiclient.WithRetry(readRetry)}, opts...)
 	if backend == Emby {
-		c.emby, err = emby.New(baseURL, token, opts...)
+		c.emby, err = embyclient.New(baseURL, token, opts...)
 	} else {
-		c.jf, err = jf.New(baseURL, token, opts...)
+		c.jf, err = jfclient.New(baseURL, token, opts...)
 	}
 	if err != nil {
 		return nil, err
@@ -97,14 +99,21 @@ func New(backend Backend, baseURL, token string, opts ...apiclient.Option) (*Cli
 
 func (c *Client) Backend() Backend { return c.backend }
 
+// EmbyAPIVersion and JellyfinAPIVersion are the versions of the two servers' API documents this package is built on, so whoever uses it can say exactly
+// which pair it is for. They follow the SDKs imported above, and change only when one of those does.
+const (
+	EmbyAPIVersion     = emby.APIVersion
+	JellyfinAPIVersion = jf.APIVersion
+)
+
 // APIVersion is the version of the server's API document the SDK in use was
 // generated from, which is not always the server's own version.
 func (c *Client) APIVersion() string {
 	if c.isEmby() {
-		return emby.APIVersion
+		return EmbyAPIVersion
 	}
 
-	return jf.APIVersion
+	return JellyfinAPIVersion
 }
 
 // BaseURL is the server address the client was created with, without a

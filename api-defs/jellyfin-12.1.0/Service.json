@@ -4,7 +4,7 @@
   "Title": "Jellyfin API",
   "ApiVersion": "12.1.0",
   "Source": "api-defs/jellyfin-openapi-12.1.0.json",
-  "Auth": "Jellyfin",
+  "Auth": "credential",
   "Workarounds": [
     "jellyfin-create-playlist-query",
     "jellyfin-plugin-configuration"

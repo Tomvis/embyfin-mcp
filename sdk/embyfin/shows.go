@@ -3,28 +3,28 @@ package embyfin
 import (
 	"context"
 
-	"github.com/katbyte/embyfin-mcp/sdk/emby"
-	"github.com/katbyte/embyfin-mcp/sdk/jf"
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
 
 // Seasons lists a series' seasons. userID is optional but lets the server
 // include watch state.
 func (c *Client) Seasons(ctx context.Context, seriesID, userID string) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetShowsByIdSeasons(ctx, seriesID, emby.GetShowsByIdSeasonsOperationOptions{UserId: userID, Fields: FieldsDefault})
+		res, err := c.emby.TvShows.GetShowsByIdSeasons(ctx, seriesID, emby.GetShowsByIdSeasonsOptions{UserId: userID, Fields: FieldsDefault})
 		if err != nil {
 			return nil, err
 		}
 
-		return itemsFromEmby(orEmpty(res.Model).Items), nil
+		return itemsFromEmby(orEmpty(res.Answer).Items), nil
 	}
 
-	res, err := c.jf.GetSeasons(ctx, seriesID, jf.GetSeasonsOperationOptions{UserId: userID, Fields: list[jf.ItemFields](FieldsDefault)})
+	res, err := c.jf.Show.GetSeasons(ctx, seriesID, jf.GetSeasonsOptions{UserId: userID, Fields: list[jf.ItemFields](FieldsDefault)})
 	if err != nil {
 		return nil, err
 	}
 
-	return itemsFromJF(res.Model.Items), nil
+	return itemsFromJF(res.Answer.Items), nil
 }
 
 // EpisodeOptions scopes an episode query. The zero value asks for every
@@ -54,7 +54,7 @@ func (o EpisodeOptions) fields() string {
 // Episodes lists a series' episodes, scoped by opts.
 func (c *Client) Episodes(ctx context.Context, seriesID string, opts EpisodeOptions) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.GetShowsByIdEpisodes(ctx, seriesID, emby.GetShowsByIdEpisodesOperationOptions{
+		res, err := c.emby.TvShows.GetShowsByIdEpisodes(ctx, seriesID, emby.GetShowsByIdEpisodesOptions{
 			UserId: opts.UserID, Fields: opts.fields(), SeasonId: opts.SeasonID, Season: opts.Season,
 			Limit: nz(opts.Limit), StartIndex: nz(opts.StartIndex),
 		})
@@ -62,14 +62,14 @@ func (c *Client) Episodes(ctx context.Context, seriesID string, opts EpisodeOpti
 			return nil, err
 		}
 
-		return itemsFromEmby(orEmpty(res.Model).Items), nil
+		return itemsFromEmby(orEmpty(res.Answer).Items), nil
 	}
 
 	var isMissing *bool
 	if opts.Missing {
 		isMissing = new(true)
 	}
-	res, err := c.jf.GetEpisodes(ctx, seriesID, jf.GetEpisodesOperationOptions{
+	res, err := c.jf.Show.GetEpisodes(ctx, seriesID, jf.GetEpisodesOptions{
 		UserId: opts.UserID, Fields: list[jf.ItemFields](opts.fields()), SeasonId: opts.SeasonID, Season: opts.Season,
 		IsMissing: isMissing, Limit: nz(opts.Limit), StartIndex: nz(opts.StartIndex),
 	})
@@ -77,7 +77,7 @@ func (c *Client) Episodes(ctx context.Context, seriesID string, opts EpisodeOpti
 		return nil, err
 	}
 
-	return itemsFromJF(res.Model.Items), nil
+	return itemsFromJF(res.Answer.Items), nil
 }
 
 // EpisodesAndRecords lists a series' episodes, including the records the
