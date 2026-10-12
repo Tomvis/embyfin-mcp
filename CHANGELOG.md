@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- `scripts/` is `.scripts/`
+
 ### Added
 
 - `user_create`, `user_edit` and `user_delete`, in the `admin` toolset: make an ordinary account, give it a new password, say which libraries it sees, and remove it. An account always gets a password, since both servers let one without be logged into by its name alone, and the password is blanked in the log of write calls. `user_delete` is a delete tool, wants `confirm`, and never removes the last administrator

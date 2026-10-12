@@ -109,7 +109,7 @@ pandorest-generate: ## Generate sdk/emby, sdk/jf and sdk/tmdb from api-defs/<ser
 	go run ./sdk/pandorest generate
 
 spec-refresh: ## Pull the latest server images, vendor each server's current OpenAPI document and TMDB's as of today under its version, regenerate, and print the API diff
-	@scripts/spec-refresh.sh
+	@.scripts/spec-refresh.sh
 
 pandorest-diff: ## Report what the vendored specs change against their checked-in definitions
 	@go run ./sdk/pandorest diff -quiet
@@ -146,7 +146,7 @@ yamllint: $(YAMLLINT) ## Check YAML files with yamllint (config in .yamllint.yml
 
 shellcheck: $(SHELLCHECK) ## Check shell scripts with shellcheck
 	@echo "==> Checking shell scripts with shellcheck..."
-	@$(SHELLCHECK) scripts/*.sh
+	@$(SHELLCHECK) .scripts/*.sh
 
 zizmor: $(ZIZMOR) ## Audit GitHub workflows for security issues with zizmor
 	@echo "==> Auditing workflows with zizmor..."
@@ -216,10 +216,10 @@ define live
 			EMBYFIN_TEST_DATA=$${HOME}/.cache/embyfin-mcp/testenv/$(1)-$(2) $(3); \
 		[ "$(1)" = "integration" ] && export EMBYFIN_TEST_PORT=$$(( $$( [ $(2) = emby ] && echo 18097 || echo 18096 ) + 100 )) EMBYFIN_TEST_PROXY_PORT=18180 || true; \
 		beside=$$( [ $(2) = emby ] && echo jellyfin || echo emby ); \
-		scripts/testenv.sh up | grep '^export' > "$$env"; \
-		trap 'st=$$?; [ $$st -eq 0 ] || scripts/testenv.sh logs || true; \
-			scripts/testenv.sh down; [ "$(1)" != "acceptance" ] || EMBYFIN_TEST_BACKEND='"$$beside"' scripts/testenv.sh beside-down; rm -f '"$$env"'; exit $$st' EXIT; \
-		[ "$(1)" != "acceptance" ] || EMBYFIN_TEST_BACKEND=$$beside scripts/testenv.sh beside | grep '^export' >> "$$env"; \
+		.scripts/testenv.sh up | grep '^export' > "$$env"; \
+		trap 'st=$$?; [ $$st -eq 0 ] || .scripts/testenv.sh logs || true; \
+			.scripts/testenv.sh down; [ "$(1)" != "acceptance" ] || EMBYFIN_TEST_BACKEND='"$$beside"' .scripts/testenv.sh beside-down; rm -f '"$$env"'; exit $$st' EXIT; \
+		[ "$(1)" != "acceptance" ] || EMBYFIN_TEST_BACKEND=$$beside .scripts/testenv.sh beside | grep '^export' >> "$$env"; \
 		. ./"$$env"; \
 		go test -tags integration -count=1 ./$(1)/... -timeout ${TEST_TIMEOUT} -v $(4)
 endef
@@ -311,10 +311,10 @@ record-check-%:
 	$(call live,acceptance,$*,EMBYFIN_TEST_VERIFY=1)
 
 testenv-up: ## Start and seed a throwaway media server (EMBYFIN_TEST_BACKEND=emby|jellyfin)
-	@scripts/testenv.sh up
+	@.scripts/testenv.sh up
 
 testenv-down: ## Remove the throwaway media server (EMBYFIN_TEST_BACKEND=emby|jellyfin)
-	@scripts/testenv.sh down
+	@.scripts/testenv.sh down
 
 check-all: build test testacc lint actionlint yamllint shellcheck depscheck gencheck apicheck ## Run build + tests (incl. live) + all linters + depscheck
 

@@ -4,7 +4,7 @@ package acceptance
 
 // Two servers at once. An instance of embyfin-mcp serves one server, and a
 // second server is served by a second instance given a settings file of its
-// own (--config, or EMBYFIN_CONFIG). scripts/testenv.sh starts a server of
+// own (--config, or EMBYFIN_CONFIG). .scripts/testenv.sh starts a server of
 // the other kind, with nothing in it, beside this suite's own, and this runs
 // the built binary against the pair.
 
@@ -70,7 +70,7 @@ func TestTwoInstancesServeTwoServers(t *testing.T) {
 	own := aServer{os.Getenv("EMBYFIN_BACKEND"), os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN")}
 	beside := aServer{os.Getenv("EMBYFIN_TEST_BESIDE_BACKEND"), os.Getenv("EMBYFIN_TEST_BESIDE_SERVER"), os.Getenv("EMBYFIN_TEST_BESIDE_TOKEN")}
 	if beside.backend == "" || beside.address == "" || beside.token == "" {
-		t.Skip("EMBYFIN_TEST_BESIDE_BACKEND, EMBYFIN_TEST_BESIDE_SERVER and EMBYFIN_TEST_BESIDE_TOKEN are not set: scripts/testenv.sh beside starts the second server, as make testacc-acceptance does")
+		t.Skip("EMBYFIN_TEST_BESIDE_BACKEND, EMBYFIN_TEST_BESIDE_SERVER and EMBYFIN_TEST_BESIDE_TOKEN are not set: .scripts/testenv.sh beside starts the second server, as make testacc-acceptance does")
 	}
 	if beside.backend == own.backend || beside.address == own.address {
 		t.Fatalf("the second server is %s at %s and the first %s at %s: want one of each kind, at two addresses", beside.backend, beside.address, own.backend, own.address)

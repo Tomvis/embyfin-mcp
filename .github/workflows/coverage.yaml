@@ -11,7 +11,7 @@ on:
       - 'go.sum'
       - 'vendor/**'
       - 'makefile'
-      - 'scripts/testenv.sh'
+      - '.scripts/testenv.sh'
       - '.github/workflows/coverage.yaml'
   workflow_dispatch:
 
@@ -69,7 +69,7 @@ jobs:
           # the checkout persists no credentials, so the push is given the
           # job's own token (the job asks for contents: write above)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash ./scripts/publish-coverage-badge.sh
+        run: bash ./.scripts/publish-coverage-badge.sh
 
       - name: Tear down
         if: always()
@@ -77,7 +77,7 @@ jobs:
           for b in emby jellyfin; do
             for s in integration acceptance; do
               EMBYFIN_TEST_BACKEND=$b EMBYFIN_TEST_CONTAINER=embyfin-mcp-$s-$b \
-                EMBYFIN_TEST_DATA="$HOME/.cache/embyfin-mcp/testenv/$s-$b" scripts/testenv.sh down || true
+                EMBYFIN_TEST_DATA="$HOME/.cache/embyfin-mcp/testenv/$s-$b" .scripts/testenv.sh down || true
             done
-            EMBYFIN_TEST_BACKEND=$b scripts/testenv.sh beside-down || true
+            EMBYFIN_TEST_BACKEND=$b .scripts/testenv.sh beside-down || true
           done

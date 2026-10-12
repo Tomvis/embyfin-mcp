@@ -8,7 +8,7 @@
 # document and definitions are removed (git holds them).
 #
 #   make spec-refresh                 # every service
-#   scripts/spec-refresh.sh jellyfin  # one
+#   .scripts/spec-refresh.sh jellyfin  # one
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -24,17 +24,17 @@ current() { go run ./sdk/pandorest resolve -service "$1" 2>/dev/null | cut -f2-;
 # fetch_server BACKEND PORT PATH - the document a freshly started server serves
 fetch_server() {
   local backend=$1 port=$2 path=$3 env="$tmp/$1.env"
-  docker pull "$(EMBYFIN_TEST_BACKEND="$backend" ./scripts/testenv.sh image)" >/dev/null
+  docker pull "$(EMBYFIN_TEST_BACKEND="$backend" ./.scripts/testenv.sh image)" >/dev/null
   EMBYFIN_TEST_BACKEND="$backend" EMBYFIN_TEST_CONTAINER="embyfin-mcp-spec-$backend" \
     EMBYFIN_TEST_PORT="$port" EMBYFIN_TEST_DATA="${HOME}/.cache/embyfin-mcp/testenv/spec-$backend" \
-    ./scripts/testenv.sh up | grep '^export' > "$env"
+    ./.scripts/testenv.sh up | grep '^export' > "$env"
   # shellcheck disable=SC1090
   . "$env"
   # Emby writes the container's host name and port into servers, which is
   # no part of the API and would make every fetch a change
   curl -sf -H "X-Emby-Token: ${EMBYFIN_TOKEN}" "${EMBYFIN_SERVER}${path}" | jq 'del(.servers)' > "$tmp/$backend.json"
   EMBYFIN_TEST_BACKEND="$backend" EMBYFIN_TEST_CONTAINER="embyfin-mcp-spec-$backend" \
-    EMBYFIN_TEST_DATA="${HOME}/.cache/embyfin-mcp/testenv/spec-$backend" ./scripts/testenv.sh down >/dev/null 2>&1 || true
+    EMBYFIN_TEST_DATA="${HOME}/.cache/embyfin-mcp/testenv/spec-$backend" ./.scripts/testenv.sh down >/dev/null 2>&1 || true
 }
 
 refreshed=()

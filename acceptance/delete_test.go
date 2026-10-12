@@ -164,7 +164,7 @@ func TestItemDelete(t *testing.T) {
 }
 
 // movieNfo is a movie.nfo naming a film and, when given, its ids: the shape
-// scripts/testenv.sh writes.
+// .scripts/testenv.sh writes.
 func movieNfo(title string, year int, tmdb, imdb string) []byte {
 	var b strings.Builder
 	fmt.Fprintf(&b, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<movie>\n  <title>%s</title>\n  <year>%d</year>\n", title, year)

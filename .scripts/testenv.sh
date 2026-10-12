@@ -4,11 +4,11 @@
 # videos for it, complete its setup wizard, mint an API key, and print the
 # environment the live test suites need.
 #
-#   eval "$(EMBYFIN_TEST_BACKEND=jellyfin scripts/testenv.sh up)"   # start, export EMBYFIN_*
-#   EMBYFIN_TEST_BACKEND=jellyfin scripts/testenv.sh down            # stop and remove everything
-#   scripts/testenv.sh fixtures                                      # write the media tree only
-#   EMBYFIN_TEST_BACKEND=emby scripts/testenv.sh beside              # a second, empty server; prints EMBYFIN_TEST_BESIDE_*
-#   EMBYFIN_TEST_BACKEND=emby scripts/testenv.sh beside-down         # remove it
+#   eval "$(EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh up)"   # start, export EMBYFIN_*
+#   EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh down            # stop and remove everything
+#   .scripts/testenv.sh fixtures                                      # write the media tree only
+#   EMBYFIN_TEST_BACKEND=emby .scripts/testenv.sh beside              # a second, empty server; prints EMBYFIN_TEST_BESIDE_*
+#   EMBYFIN_TEST_BACKEND=emby .scripts/testenv.sh beside-down         # remove it
 #
 # This script only does what embyfin-mcp cannot: run the container, get through
 # the first-run wizard, create the users, mint the API key, and lay the media
@@ -1100,7 +1100,7 @@ up() {
   fi
   [ -n "$u2" ] && [ "$u2" != "null" ] || { echo "could not create ${USER2}" >&2; exit 1; }
 
-  # consumed with eval "$(scripts/testenv.sh up)"
+  # consumed with eval "$(.scripts/testenv.sh up)"
   echo "export EMBYFIN_BACKEND='${BACKEND}'"
   echo "export EMBYFIN_SERVER='${URL}'"
   echo "export EMBYFIN_TOKEN='${key}'"

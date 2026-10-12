@@ -23,9 +23,9 @@
 //	make testacc-integration-jellyfin        # one backend
 //	make test-tmdb                           # the TMDB sweep alone, no container
 //
-//	eval "$(EMBYFIN_TEST_BACKEND=jellyfin scripts/testenv.sh up)"  # or drive it by hand
+//	eval "$(EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh up)"  # or drive it by hand
 //	go test -tags integration ./integration/...
-//	EMBYFIN_TEST_BACKEND=jellyfin scripts/testenv.sh down
+//	EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh down
 package integration
 
 import (

@@ -405,7 +405,7 @@ make record-check   # check the cassettes still match, without rewriting them
 vanished fields, changed types - and ignores values, so it goes red when a provider changes its
 contract rather than when a poster changes.
 
-Fixtures are generated, never committed: `scripts/testenv.sh` writes videos with
+Fixtures are generated, never committed: `.scripts/testenv.sh` writes videos with
 `ffmpeg` - every film and episode runs TMDB's length for it, a still frame joined end to end so it costs a few megabytes - under `~/.cache/embyfin-mcp` (`EMBYFIN_TEST_DATA` to move them - not `$TMPDIR`, which
 Docker Desktop does not share), each with a Kodi-style `.nfo` carrying the real film's ids,
 completes the server's setup wizard, mints an API key and a second user, and prints the
@@ -420,7 +420,7 @@ test against them. A fifth library holds music - four artists, five albums, twen
 tracks tagged with the real MusicBrainz ids, art beside and inside them - so the mixes have
 something to work with and the audits can be pointed at albums; it too keeps the providers
 off, and it carries a rip with no art and a genre spelled two ways.
-`scripts/testenv.sh fixtures` writes just the media tree if you want to look at the layout.
+`.scripts/testenv.sh fixtures` writes just the media tree if you want to look at the layout.
 Requires docker, ffmpeg, jq and openssl; the suites skip when `EMBYFIN_SERVER` and
 `EMBYFIN_TOKEN` are unset, so they never fail for want of a daemon.
 

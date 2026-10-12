@@ -47,7 +47,7 @@ func messyHoldings(t *testing.T) holdings {
 	}
 }
 
-// fixture reads a file scripts/testenv.sh laid out, by its path under the
+// fixture reads a file .scripts/testenv.sh laid out, by its path under the
 // media tree. It is often a test's first step, so it skips as call does
 // when there is no container to lay anything out for.
 func fixture(t *testing.T, rel string) []byte {

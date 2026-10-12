@@ -167,7 +167,7 @@ func TestItemArtwork(t *testing.T) {
 	// (Emby takes poster.jpg off the disk for the provider's image:
 	// TestThePosterBesideAFilm), so it is laid out again first: every
 	// fixture poster is the one test pattern
-	// (scripts/testenv.sh), and the messy copy's is never replaced.
+	// (.scripts/testenv.sh), and the messy copy's is never replaced.
 	poster := filepath.Join(testenv.DataDir(), "movies", "Blade Runner (1982)", "poster.jpg")
 	fixturePoster := fixture(t, "messy-movies/Blade Runner (1982)/poster.jpg")
 	putBack := func() {

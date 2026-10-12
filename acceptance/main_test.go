@@ -12,9 +12,9 @@
 //	make testacc                                        # both backends, containers started and torn down
 //	make testacc-acceptance-jellyfin                    # one backend
 //
-//	eval "$(EMBYFIN_TEST_BACKEND=jellyfin scripts/testenv.sh up)"  # or drive it by hand
+//	eval "$(EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh up)"  # or drive it by hand
 //	go test -tags integration ./acceptance/...
-//	EMBYFIN_TEST_BACKEND=jellyfin scripts/testenv.sh down
+//	EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh down
 package acceptance
 
 import (

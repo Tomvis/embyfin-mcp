@@ -19,7 +19,7 @@ import (
 // short, which the server cannot read, and a show's folder copied under its
 // name with the year added. And the one audit held to the clean fixtures.
 
-// fixtureVideo reads one of the files scripts/testenv.sh made.
+// fixtureVideo reads one of the files .scripts/testenv.sh made.
 func fixtureVideo(t *testing.T, parts ...string) []byte {
 	t.Helper()
 

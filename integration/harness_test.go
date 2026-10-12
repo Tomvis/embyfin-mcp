@@ -1,6 +1,6 @@
 //go:build integration
 
-// The harness: scripts/testenv.sh brings the container up and exports
+// The harness: .scripts/testenv.sh brings the container up and exports
 // EMBYFIN_BACKEND, EMBYFIN_SERVER, EMBYFIN_TOKEN and EMBYFIN_TEST_*; runSuite
 // builds the SDK client for that backend, starts the provider proxy the
 // container's HTTPS_PROXY points at, runs the suite, and removes the
@@ -59,7 +59,7 @@ const scanPatience = 6 * time.Minute
 const editPatience = 30 * time.Second
 
 // libraryFixture is one of the libraries the suite creates. The folders are
-// the container-side paths scripts/testenv.sh lays out.
+// the container-side paths .scripts/testenv.sh lays out.
 type libraryFixture struct {
 	Name, CollectionType, Folder string
 	// Providers leaves the server's internet fetchers on, so the scan fills
@@ -343,7 +343,7 @@ func skipUnlessEmby(t *testing.T) context.Context {
 	t.Helper()
 
 	if embyc == nil {
-		t.Skip("not an Emby run; run: eval \"$(EMBYFIN_TEST_BACKEND=emby scripts/testenv.sh up)\"")
+		t.Skip("not an Emby run; run: eval \"$(EMBYFIN_TEST_BACKEND=emby .scripts/testenv.sh up)\"")
 	}
 
 	return t.Context()
@@ -354,7 +354,7 @@ func skipUnlessJellyfin(t *testing.T) context.Context {
 	t.Helper()
 
 	if jfc == nil {
-		t.Skip("not a Jellyfin run; run: eval \"$(EMBYFIN_TEST_BACKEND=jellyfin scripts/testenv.sh up)\"")
+		t.Skip("not a Jellyfin run; run: eval \"$(EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh up)\"")
 	}
 
 	return t.Context()

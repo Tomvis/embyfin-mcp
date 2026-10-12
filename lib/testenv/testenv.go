@@ -1,5 +1,5 @@
 // Package testenv is what the two live suites share that is this
-// application's own: the environment scripts/testenv.sh hands them, and how
+// application's own: the environment .scripts/testenv.sh hands them, and how
 // the record/replay proxy their media server's provider calls go through is
 // set up. The machinery is go-kt's (test/env and test/replayproxy).
 //
@@ -16,7 +16,7 @@ import (
 	"github.com/katbyte/go-kt/test/replayproxy"
 )
 
-// embyfin is the environment scripts/testenv.sh writes, every variable of
+// embyfin is the environment .scripts/testenv.sh writes, every variable of
 // which begins EMBYFIN_.
 var embyfin = env.New("EMBYFIN")
 
@@ -59,7 +59,7 @@ func CassetteDir(backend string) string {
 type Proxy = env.Proxy
 
 // StartProxy brings up the record/replay proxy the container's HTTPS_PROXY
-// already points at, signing with the CA scripts/testenv.sh minted and
+// already points at, signing with the CA .scripts/testenv.sh minted and
 // mounted into the container, with its cassettes under cassetteDir, and
 // proves the container can reach it, saying on stderr what the container
 // sees of the network.

@@ -1,6 +1,6 @@
 //go:build integration
 
-// The harness: scripts/testenv.sh brings the container up and exports
+// The harness: .scripts/testenv.sh brings the container up and exports
 // EMBYFIN_BACKEND, EMBYFIN_SERVER, EMBYFIN_TOKEN and EMBYFIN_TEST_*, and
 // everything here drives it through the MCP tools rather than the HTTP API,
 // so building the fixtures is itself a test of library_create, library_scan,
@@ -48,7 +48,7 @@ type libraryFixture struct {
 }
 
 // libraries are created by library_create and filled by library_scan. The
-// folders are the container-side paths scripts/testenv.sh lays out.
+// folders are the container-side paths .scripts/testenv.sh lays out.
 var libraries = []libraryFixture{
 	{Name: "Movies", Type: "movies", Folder: "/media/movies", Providers: true, Items: func() int { return len(movies) }},
 	{Name: "Shows", Type: "tvshows", Folder: "/media/shows", Providers: true, Items: func() int { return len(shows) }, Episodes: showEpisodes},
@@ -76,7 +76,7 @@ func messyMovies() int {
 // Deep Space Nine, Andor, the A Knight of the Seven Kingdoms pair,
 // .hack//Liminality, .hack//SIGN, The Wire split across two folders, the
 // Asterix & Obelix series holding a film's ids and Red Dwarf from its third
-// season, holding thirty episode files between them (scripts/testenv.sh
+// season, holding thirty episode files between them (.scripts/testenv.sh
 // says what is wrong with each).
 const (
 	messySeries       = 12
@@ -206,7 +206,7 @@ var albums = []albumFixture{
 	{"SirensCeol", "Afterworld", 2016, "Electronica", []string{"Welcome to the Afterworld", "The Future We Built", "Afterworld", "A Grand Illusion"}, true, "621dac65-5eac-4ad3-a630-05f282bbe4e2", "00cc6656-b7c3-4c33-8df3-5909e46979b2"},
 }
 
-// The tags' defects beyond each album's own (scripts/testenv.sh): Polygon's
+// The tags' defects beyond each album's own (.scripts/testenv.sh): Polygon's
 // album artist is Various Artists over Battle Tapes' tracks, Have a Cigar's
 // artist is spelled The Pink Floyd, and Welcome to the Machine's album is
 // spelled Wish You Where Here. The Dark Side of the Moon is two discs.
@@ -300,7 +300,7 @@ var (
 	backend embyfin.Backend
 	// suite drives the tools through session; until start connects it, every
 	// call skips
-	suite = mediaacc.New("EMBYFIN_BACKEND, EMBYFIN_SERVER and EMBYFIN_TOKEN are not set; run: eval \"$(EMBYFIN_TEST_BACKEND=jellyfin scripts/testenv.sh up)\"")
+	suite = mediaacc.New("EMBYFIN_BACKEND, EMBYFIN_SERVER and EMBYFIN_TOKEN are not set; run: eval \"$(EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh up)\"")
 )
 
 // scanPatience is how long a wait on a library scan is given.
