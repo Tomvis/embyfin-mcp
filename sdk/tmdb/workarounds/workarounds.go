@@ -24,4 +24,6 @@ var All = []pandorest.Workaround{
 	tmdbChangeValues{},
 	tmdbDisplayPriorities{},
 	tmdbCollectionParts{},
+	tmdbDays,
+	tmdbDateTimes,
 }

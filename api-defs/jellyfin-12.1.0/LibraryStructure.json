@@ -831,7 +831,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -870,7 +871,8 @@
           "JsonName": "PrimaryImageItemId",
           "Description": "Gets or sets the primary image item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },

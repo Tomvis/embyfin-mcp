@@ -15,8 +15,8 @@ func TestOperationGetVideosByIdAdditionalParts(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetVideosByIdAdditionalParts(t.Context(), "p/id", emby.GetVideosByIdAdditionalPartsOptions{
-		UserId:           "v-UserId",
+	result, err := c.GetVideosByIdAdditionalParts(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdAdditionalPartsOptions{
+		UserId:           emby.UserID("v-UserId"),
 		Fields:           "v-Fields",
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
@@ -28,7 +28,7 @@ func TestOperationGetVideosByIdAdditionalParts(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2Fid/AdditionalParts")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-id/AdditionalParts")
 	expectQuery(t, r, "UserId", "v-UserId")
 	expectQuery(t, r, "Fields", "v-Fields")
 	expectQuery(t, r, "EnableImages", "true")
@@ -50,8 +50,8 @@ func TestOperationGetVideosByIdAdditionalParts(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.GetVideosByIdAdditionalParts(t.Context(), "p/id", emby.GetVideosByIdAdditionalPartsOptions{
-		UserId:           "v-UserId",
+	result, err = c.GetVideosByIdAdditionalParts(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdAdditionalPartsOptions{
+		UserId:           emby.UserID("v-UserId"),
 		Fields:           "v-Fields",
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
@@ -70,8 +70,8 @@ func TestOperationGetVideosByIdAdditionalParts(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetVideosByIdAdditionalParts(t.Context(), "p/id", emby.GetVideosByIdAdditionalPartsOptions{
-		UserId:           "v-UserId",
+	result, err = c.GetVideosByIdAdditionalParts(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdAdditionalPartsOptions{
+		UserId:           emby.UserID("v-UserId"),
 		Fields:           "v-Fields",
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
@@ -84,8 +84,8 @@ func TestOperationGetVideosByIdAdditionalParts(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetVideosByIdAdditionalParts(t.Context(), "p/id", emby.GetVideosByIdAdditionalPartsOptions{
-		UserId:           "v-UserId",
+	result, err = c.GetVideosByIdAdditionalParts(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdAdditionalPartsOptions{
+		UserId:           emby.UserID("v-UserId"),
 		Fields:           "v-Fields",
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
@@ -98,10 +98,10 @@ func TestOperationGetVideosByIdAdditionalParts(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.GetVideosByIdAdditionalParts(t.Context(), "p/id"); err != nil {
+	if _, err = c.GetVideosByIdAdditionalParts(t.Context(), emby.ItemID("v-id")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetVideosByIdAdditionalParts(t.Context(), "p/id", emby.GetVideosByIdAdditionalPartsOptions{}, emby.GetVideosByIdAdditionalPartsOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetVideosByIdAdditionalParts(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdAdditionalPartsOptions{}, emby.GetVideosByIdAdditionalPartsOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

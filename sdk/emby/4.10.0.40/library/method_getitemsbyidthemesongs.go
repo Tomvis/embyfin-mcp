@@ -14,7 +14,7 @@ import (
 )
 
 // GetItemsByIdThemeSongs calls GET /Items/{Id}/ThemeSongs. Gets theme songs for an item.
-func (c Client) GetItemsByIdThemeSongs(ctx context.Context, id string, options ...emby.GetItemsByIdThemeSongsOptions) (result emby.GetItemsByIdThemeSongsResponse, err error) {
+func (c Client) GetItemsByIdThemeSongs(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeSongsOptions) (result emby.GetItemsByIdThemeSongsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdThemeSongs takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetItemsByIdThemeSongs(ctx context.Context, id string, options .
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemsByIdThemeSongs",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/ThemeSongs", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/ThemeSongs", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetItemsByIdThemeSongs(ctx context.Context, id string, options .
 // GetItemsByIdThemeSongsComplete calls GetItemsByIdThemeSongs page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetItemsByIdThemeSongsComplete(ctx context.Context, id string, options ...emby.GetItemsByIdThemeSongsOptions) (result emby.GetItemsByIdThemeSongsCompleteResult, err error) {
+func (c Client) GetItemsByIdThemeSongsComplete(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeSongsOptions) (result emby.GetItemsByIdThemeSongsCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdThemeSongsComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetItemsByIdThemeSongsComplete(ctx context.Context, id string, o
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetItemsByIdThemeSongsComplete asks for them.
-func (c Client) GetItemsByIdThemeSongsEach(ctx context.Context, id string, options ...emby.GetItemsByIdThemeSongsOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetItemsByIdThemeSongsEach(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeSongsOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

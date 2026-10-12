@@ -40,7 +40,7 @@ func (r GetNextUpResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetNextUpOptions holds the query and header parameters of GetNextUp.
 type GetNextUpOptions struct {
 	// The user id of the user to get the next up episodes for.
-	UserId string
+	UserId UserID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -52,10 +52,10 @@ type GetNextUpOptions struct {
 	Fields []ItemFields
 
 	// Optional. Filter by series id.
-	SeriesId string
+	SeriesId ItemID
 
 	// Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Include image information in output.
 	EnableImages *bool
@@ -70,7 +70,7 @@ type GetNextUpOptions struct {
 	EnableUserData *bool
 
 	// Optional. Starting date of shows to show in Next Up section.
-	NextUpDateCutoff string
+	NextUpDateCutoff Time
 
 	// Whether to enable the total records count. Defaults to true.
 	EnableTotalRecordCount *bool
@@ -92,7 +92,7 @@ func (o GetNextUpOptions) ToHeaders() *client.Headers {
 func (o GetNextUpOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))
@@ -104,10 +104,10 @@ func (o GetNextUpOptions) ToQuery() *client.QueryParams {
 		out.Append("fields", string(v))
 	}
 	if o.SeriesId != "" {
-		out.Append("seriesId", o.SeriesId)
+		out.Append("seriesId", string(o.SeriesId))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	if o.EnableImages != nil {
 		out.Append("enableImages", strconv.FormatBool(*o.EnableImages))
@@ -121,8 +121,8 @@ func (o GetNextUpOptions) ToQuery() *client.QueryParams {
 	if o.EnableUserData != nil {
 		out.Append("enableUserData", strconv.FormatBool(*o.EnableUserData))
 	}
-	if o.NextUpDateCutoff != "" {
-		out.Append("nextUpDateCutoff", o.NextUpDateCutoff)
+	if !o.NextUpDateCutoff.IsZero() {
+		out.Append("nextUpDateCutoff", o.NextUpDateCutoff.As(sendDateAs("GetNextUp", "nextUpDateCutoff")))
 	}
 	if o.EnableTotalRecordCount != nil {
 		out.Append("enableTotalRecordCount", strconv.FormatBool(*o.EnableTotalRecordCount))

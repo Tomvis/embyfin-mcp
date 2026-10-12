@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdRemoteImagesProviders calls GET /Items/{Id}/RemoteImages/Providers. Gets available remote image providers for an item.
-func (c Client) GetItemsByIdRemoteImagesProviders(ctx context.Context, id string) (result emby.GetItemsByIdRemoteImagesProvidersResponse, err error) {
+func (c Client) GetItemsByIdRemoteImagesProviders(ctx context.Context, id emby.ItemID) (result emby.GetItemsByIdRemoteImagesProvidersResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) GetItemsByIdRemoteImagesProviders(ctx context.Context, id string
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetItemsByIdRemoteImagesProviders",
-		Path:       fmt.Sprintf("/Items/%s/RemoteImages/Providers", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/RemoteImages/Providers", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

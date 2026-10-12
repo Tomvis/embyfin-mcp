@@ -16,7 +16,7 @@ type RemoveItemFromPlaylistResponse struct {
 // RemoveItemFromPlaylistOptions holds the query and header parameters of RemoveItemFromPlaylist.
 type RemoveItemFromPlaylistOptions struct {
 	// The item ids, comma delimited.
-	EntryIds []string
+	EntryIds []PlaylistItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -29,7 +29,7 @@ func (o RemoveItemFromPlaylistOptions) ToHeaders() *client.Headers {
 func (o RemoveItemFromPlaylistOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	for _, v := range o.EntryIds {
-		out.Append("entryIds", v)
+		out.Append("entryIds", string(v))
 	}
 	return &out
 }

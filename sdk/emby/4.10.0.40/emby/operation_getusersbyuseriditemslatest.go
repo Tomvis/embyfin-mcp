@@ -25,7 +25,7 @@ type GetUsersByUserIdItemsLatestOptions struct {
 	Limit *int
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, SortName, Studios, Taglines
 	Fields string
@@ -56,6 +56,21 @@ type GetUsersByUserIdItemsLatestOptions struct {
 
 	// Optional, include user data
 	EnableUserData *bool
+
+	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, SortName, Studios, Taglines
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	FieldsList []string
+
+	// Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	IncludeItemTypesList []string
+
+	// Optional filter by MediaType. Allows multiple, comma delimited.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	MediaTypesList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -71,7 +86,7 @@ func (o GetUsersByUserIdItemsLatestOptions) ToQuery() *client.QueryParams {
 		out.Append("Limit", strconv.Itoa(*o.Limit))
 	}
 	if o.ParentId != "" {
-		out.Append("ParentId", o.ParentId)
+		out.Append("ParentId", string(o.ParentId))
 	}
 	if o.Fields != "" {
 		out.Append("Fields", o.Fields)
@@ -102,6 +117,15 @@ func (o GetUsersByUserIdItemsLatestOptions) ToQuery() *client.QueryParams {
 	}
 	if o.EnableUserData != nil {
 		out.Append("EnableUserData", strconv.FormatBool(*o.EnableUserData))
+	}
+	if len(o.FieldsList) > 0 {
+		out.Append("Fields", client.CSV(o.FieldsList))
+	}
+	if len(o.IncludeItemTypesList) > 0 {
+		out.Append("IncludeItemTypes", client.CSV(o.IncludeItemTypesList))
+	}
+	if len(o.MediaTypesList) > 0 {
+		out.Append("MediaTypes", client.CSV(o.MediaTypesList))
 	}
 	return &out
 }

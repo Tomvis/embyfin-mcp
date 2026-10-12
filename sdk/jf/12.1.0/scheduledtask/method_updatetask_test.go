@@ -15,12 +15,12 @@ func TestOperationUpdateTask(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.UpdateTask(t.Context(), "p/taskId", []jf.TaskTriggerInfo{})
+	result, err := c.UpdateTask(t.Context(), jf.TaskID("v-taskId"), []jf.TaskTriggerInfo{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/ScheduledTasks/p%2FtaskId/Triggers")
+	expectRequest(t, r, http.MethodPost, "/ScheduledTasks/v-taskId/Triggers")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -33,7 +33,7 @@ func TestOperationUpdateTask(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.UpdateTask(t.Context(), "p/taskId", []jf.TaskTriggerInfo{})
+	result, err = c.UpdateTask(t.Context(), jf.TaskID("v-taskId"), []jf.TaskTriggerInfo{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

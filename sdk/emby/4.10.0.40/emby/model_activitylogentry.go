@@ -4,15 +4,15 @@ package emby
 
 // ActivityLogEntry is the "ActivityLogEntry" schema.
 type ActivityLogEntry struct {
-	Date                string             `json:"Date,omitempty"`
+	Date                Time               `json:"Date,omitzero"`
 	Id                  int64              `json:"Id,omitempty"`
-	ItemId              string             `json:"ItemId,omitempty"`
+	ItemId              ItemID             `json:"ItemId,omitempty"`
 	Name                string             `json:"Name,omitempty"`
 	Overview            string             `json:"Overview,omitempty"`
 	Severity            LoggingLogSeverity `json:"Severity,omitempty"`
 	ShortOverview       string             `json:"ShortOverview,omitempty"`
 	Type                string             `json:"Type,omitempty"`
-	UserId              string             `json:"UserId,omitempty"`
+	UserId              UserID             `json:"UserId,omitempty"`
 	UserPrimaryImageTag string             `json:"UserPrimaryImageTag,omitempty"`
 }
 

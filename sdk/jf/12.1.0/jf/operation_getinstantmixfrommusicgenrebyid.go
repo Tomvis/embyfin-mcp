@@ -43,7 +43,7 @@ type GetInstantMixFromMusicGenreByIdOptions struct {
 	Id string
 
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 
 	// Optional. The maximum number of records to return.
 	Limit *int
@@ -77,7 +77,7 @@ func (o GetInstantMixFromMusicGenreByIdOptions) ToQuery() *client.QueryParams {
 		out.Append("id", o.Id)
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Limit != nil {
 		out.Append("limit", strconv.Itoa(*o.Limit))

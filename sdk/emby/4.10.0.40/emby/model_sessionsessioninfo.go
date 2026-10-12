@@ -11,15 +11,15 @@ type SessionSessionInfo struct {
 	DeviceId              string            `json:"DeviceId,omitempty"`
 	DeviceName            string            `json:"DeviceName,omitempty"`
 	DeviceType            string            `json:"DeviceType,omitempty"`
-	Id                    string            `json:"Id,omitempty"`
+	Id                    SessionID         `json:"Id,omitempty"`
 	InternalDeviceId      int64             `json:"InternalDeviceId,omitempty"`
-	LastActivityDate      string            `json:"LastActivityDate,omitempty"`
+	LastActivityDate      Time              `json:"LastActivityDate,omitzero"`
 	NowPlayingItem        *BaseItemDto      `json:"NowPlayingItem,omitempty"`
 	PartyId               string            `json:"PartyId,omitempty"`
 	PlayState             *PlayerStateInfo  `json:"PlayState,omitempty"`
 	PlayableMediaTypes    []string          `json:"PlayableMediaTypes,omitzero"`
 	PlaylistIndex         int               `json:"PlaylistIndex,omitempty"`
-	PlaylistItemId        string            `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId        PlaylistItemID    `json:"PlaylistItemId,omitempty"`
 	PlaylistLength        int               `json:"PlaylistLength,omitempty"`
 	Protocol              string            `json:"Protocol,omitempty"`
 	RemoteEndPoint        string            `json:"RemoteEndPoint,omitempty"`
@@ -27,7 +27,7 @@ type SessionSessionInfo struct {
 	SupportedCommands     []string          `json:"SupportedCommands,omitzero"`
 	SupportsRemoteControl bool              `json:"SupportsRemoteControl"`
 	TranscodingInfo       *TranscodingInfo  `json:"TranscodingInfo,omitempty"`
-	UserId                string            `json:"UserId,omitempty"`
+	UserId                UserID            `json:"UserId,omitempty"`
 	UserName              string            `json:"UserName,omitempty"`
 	UserPrimaryImageTag   string            `json:"UserPrimaryImageTag,omitempty"`
 }

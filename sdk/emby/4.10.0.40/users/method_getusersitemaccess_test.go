@@ -23,7 +23,7 @@ func TestOperationGetUsersItemAccess(t *testing.T) {
 		Limit:                   new(7),
 		NameStartsWithOrGreater: "v-NameStartsWithOrGreater",
 		SortOrder:               "v-SortOrder",
-		ItemId:                  "v-ItemId",
+		ItemId:                  emby.ItemID("v-ItemId"),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -60,7 +60,7 @@ func TestOperationGetUsersItemAccess(t *testing.T) {
 		Limit:                   new(7),
 		NameStartsWithOrGreater: "v-NameStartsWithOrGreater",
 		SortOrder:               "v-SortOrder",
-		ItemId:                  "v-ItemId",
+		ItemId:                  emby.ItemID("v-ItemId"),
 	})
 	if err != nil || result.Answer != nil || result.Answered() {
 		t.Errorf("a 204 = %v, answer %v, answered %t", err, result.Answer, result.Answered())
@@ -81,7 +81,7 @@ func TestOperationGetUsersItemAccess(t *testing.T) {
 		Limit:                   new(7),
 		NameStartsWithOrGreater: "v-NameStartsWithOrGreater",
 		SortOrder:               "v-SortOrder",
-		ItemId:                  "v-ItemId",
+		ItemId:                  emby.ItemID("v-ItemId"),
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -96,7 +96,7 @@ func TestOperationGetUsersItemAccess(t *testing.T) {
 		Limit:                   new(7),
 		NameStartsWithOrGreater: "v-NameStartsWithOrGreater",
 		SortOrder:               "v-SortOrder",
-		ItemId:                  "v-ItemId",
+		ItemId:                  emby.ItemID("v-ItemId"),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

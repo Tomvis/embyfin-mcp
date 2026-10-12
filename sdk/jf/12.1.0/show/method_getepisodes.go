@@ -14,7 +14,7 @@ import (
 )
 
 // GetEpisodes calls GET /Shows/{seriesId}/Episodes. Gets episodes for a tv season.
-func (c Client) GetEpisodes(ctx context.Context, seriesId string, options ...jf.GetEpisodesOptions) (result jf.GetEpisodesResponse, err error) {
+func (c Client) GetEpisodes(ctx context.Context, seriesId jf.ItemID, options ...jf.GetEpisodesOptions) (result jf.GetEpisodesResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetEpisodes takes one options struct at most, not %d", len(options))
 		return
@@ -32,7 +32,7 @@ func (c Client) GetEpisodes(ctx context.Context, seriesId string, options ...jf.
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetEpisodes",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Shows/%s/Episodes", url.PathEscape(seriesId)),
+		Path:          fmt.Sprintf("/Shows/%s/Episodes", url.PathEscape(string(seriesId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -62,7 +62,7 @@ func (c Client) GetEpisodes(ctx context.Context, seriesId string, options ...jf.
 // GetEpisodesComplete calls GetEpisodes page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetEpisodesComplete(ctx context.Context, seriesId string, options ...jf.GetEpisodesOptions) (result jf.GetEpisodesCompleteResult, err error) {
+func (c Client) GetEpisodesComplete(ctx context.Context, seriesId jf.ItemID, options ...jf.GetEpisodesOptions) (result jf.GetEpisodesCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetEpisodesComplete takes one options struct at most, not %d", len(options))
 		return
@@ -116,7 +116,7 @@ func (c Client) GetEpisodesComplete(ctx context.Context, seriesId string, option
 //	}
 //
 // An error is the last pair handed out, with a zero jf.BaseItemDto. The pages are asked for as GetEpisodesComplete asks for them.
-func (c Client) GetEpisodesEach(ctx context.Context, seriesId string, options ...jf.GetEpisodesOptions) iter.Seq2[jf.BaseItemDto, error] {
+func (c Client) GetEpisodesEach(ctx context.Context, seriesId jf.ItemID, options ...jf.GetEpisodesOptions) iter.Seq2[jf.BaseItemDto, error] {
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {

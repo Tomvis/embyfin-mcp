@@ -10,7 +10,7 @@ type PlayQueueUpdate struct {
 	IsPlaying bool `json:"IsPlaying"`
 
 	// Gets the UTC time of the last change to the playing queue.
-	LastUpdate string `json:"LastUpdate,omitempty"`
+	LastUpdate Time `json:"LastUpdate,omitzero"`
 
 	// Gets the playing item index in the playlist.
 	PlayingItemIndex int `json:"PlayingItemIndex,omitempty"`

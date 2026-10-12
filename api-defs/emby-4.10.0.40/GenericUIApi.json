@@ -131,7 +131,8 @@
           "Name": "ItemId",
           "JsonName": "ItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {

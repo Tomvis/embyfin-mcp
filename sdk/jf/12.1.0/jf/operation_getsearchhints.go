@@ -46,7 +46,7 @@ type GetSearchHintsOptions struct {
 	Limit *int
 
 	// Optional. Supply a user id to search within a user's library or omit to search all.
-	UserId string
+	UserId UserID
 
 	// The search term to filter on.
 	SearchTerm string
@@ -61,7 +61,7 @@ type GetSearchHintsOptions struct {
 	MediaTypes []MediaType
 
 	// If specified, only children of the parent are returned.
-	ParentId string
+	ParentId ItemID
 
 	// Optional filter for movies.
 	IsMovie *bool
@@ -110,7 +110,7 @@ func (o GetSearchHintsOptions) ToQuery() *client.QueryParams {
 		out.Append("limit", strconv.Itoa(*o.Limit))
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.SearchTerm != "" {
 		out.Append("searchTerm", o.SearchTerm)
@@ -125,7 +125,7 @@ func (o GetSearchHintsOptions) ToQuery() *client.QueryParams {
 		out.Append("mediaTypes", string(v))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	if o.IsMovie != nil {
 		out.Append("isMovie", strconv.FormatBool(*o.IsMovie))

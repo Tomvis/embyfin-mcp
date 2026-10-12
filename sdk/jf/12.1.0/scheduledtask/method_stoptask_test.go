@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,20 +14,20 @@ func TestOperationStopTask(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.StopTask(t.Context(), "p/taskId")
+	result, err := c.StopTask(t.Context(), jf.TaskID("v-taskId"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodDelete, "/ScheduledTasks/Running/p%2FtaskId")
+	expectRequest(t, r, http.MethodDelete, "/ScheduledTasks/Running/v-taskId")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.StopTask(t.Context(), "p/taskId")
+	result, err = c.StopTask(t.Context(), jf.TaskID("v-taskId"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

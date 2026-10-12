@@ -12,7 +12,7 @@ import (
 )
 
 // UpdateUser calls POST /Users. Updates a user.
-func (c Client) UpdateUser(ctx context.Context, input jf.UserDto, userId ...string) (result jf.UpdateUserResponse, err error) {
+func (c Client) UpdateUser(ctx context.Context, input jf.UserDto, userId ...jf.UserID) (result jf.UpdateUserResponse, err error) {
 	var option jf.UpdateUserOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("UpdateUser takes one userId at most, not %d", len(userId))

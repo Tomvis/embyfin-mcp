@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByUserIdTypedSettingsByKey calls GET /Users/{UserId}/TypedSettings/{Key}. Gets a typed user setting.
-func (c Client) GetUsersByUserIdTypedSettingsByKey(ctx context.Context, userId string, key string) (result emby.GetUsersByUserIdTypedSettingsByKeyResponse, err error) {
+func (c Client) GetUsersByUserIdTypedSettingsByKey(ctx context.Context, userId emby.UserID, key string) (result emby.GetUsersByUserIdTypedSettingsByKeyResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) GetUsersByUserIdTypedSettingsByKey(ctx context.Context, userId s
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetUsersByUserIdTypedSettingsByKey",
-		Path:       fmt.Sprintf("/Users/%s/TypedSettings/%s", url.PathEscape(userId), url.PathEscape(key)),
+		Path:       fmt.Sprintf("/Users/%s/TypedSettings/%s", url.PathEscape(string(userId)), url.PathEscape(key)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

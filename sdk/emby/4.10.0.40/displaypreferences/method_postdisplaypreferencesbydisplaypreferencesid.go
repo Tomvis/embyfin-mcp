@@ -13,7 +13,7 @@ import (
 )
 
 // PostDisplayPreferencesByDisplayPreferencesId calls POST /DisplayPreferences/{DisplayPreferencesId}. Updates a user's display preferences for an item.
-func (c Client) PostDisplayPreferencesByDisplayPreferencesId(ctx context.Context, displayPreferencesId string, input emby.DisplayPreferences, userId string) (result emby.PostDisplayPreferencesByDisplayPreferencesIdResponse, err error) {
+func (c Client) PostDisplayPreferencesByDisplayPreferencesId(ctx context.Context, displayPreferencesId string, input emby.DisplayPreferences, userId emby.UserID) (result emby.PostDisplayPreferencesByDisplayPreferencesIdResponse, err error) {
 	var option emby.PostDisplayPreferencesByDisplayPreferencesIdOptions
 	option.UserId = userId
 

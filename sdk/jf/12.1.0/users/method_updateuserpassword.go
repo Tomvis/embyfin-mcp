@@ -12,7 +12,7 @@ import (
 )
 
 // UpdateUserPassword calls POST /Users/Password. Updates a user's password.
-func (c Client) UpdateUserPassword(ctx context.Context, input jf.UpdateUserPassword, userId ...string) (result jf.UpdateUserPasswordResponse, err error) {
+func (c Client) UpdateUserPassword(ctx context.Context, input jf.UpdateUserPassword, userId ...jf.UserID) (result jf.UpdateUserPasswordResponse, err error) {
 	var option jf.UpdateUserPasswordOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("UpdateUserPassword takes one userId at most, not %d", len(userId))

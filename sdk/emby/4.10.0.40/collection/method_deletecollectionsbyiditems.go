@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteCollectionsByIdItems calls DELETE /Collections/{Id}/Items. Removes items from a collection.
-func (c Client) DeleteCollectionsByIdItems(ctx context.Context, id string, ids string) (result emby.DeleteCollectionsByIdItemsResponse, err error) {
+func (c Client) DeleteCollectionsByIdItems(ctx context.Context, id emby.ItemID, ids []emby.ItemID) (result emby.DeleteCollectionsByIdItemsResponse, err error) {
 	var option emby.DeleteCollectionsByIdItemsOptions
 	option.Ids = ids
 
@@ -25,7 +25,7 @@ func (c Client) DeleteCollectionsByIdItems(ctx context.Context, id string, ids s
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "DeleteCollectionsByIdItems",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

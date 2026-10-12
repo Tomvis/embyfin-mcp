@@ -63,8 +63,8 @@ func TestEmbyReadSweep(t *testing.T) {
 		t.Fatalf("%s lists no subtitle stream: %+v", sdkacc.ThirteenthFloor, subtitled.MediaSources[0].MediaStreams)
 	}
 	subtitle := map[string]string{
-		"Id":            subtitled.Id,
-		"MediaSourceId": subtitled.MediaSources[0].Id,
+		"Id":            string(subtitled.Id),
+		"MediaSourceId": string(subtitled.MediaSources[0].Id),
 		"Index":         strconv.Itoa(subtitled.MediaSources[0].MediaStreams[srt].Index),
 		"Format":        "srt",
 	}
@@ -81,7 +81,7 @@ func TestEmbyReadSweep(t *testing.T) {
 	// a playlist to read
 	var playlist string
 	if err := embyRetry500(func() error {
-		res, err := embyc.Playlist.PostPlaylists(ctx, emby.PostPlaylistsOptions{Name: "SDK Sweep", Ids: movie.Id, MediaType: "Video", UserId: adminID})
+		res, err := embyc.Playlist.PostPlaylists(ctx, emby.PostPlaylistsOptions{Name: "SDK Sweep", Ids: []emby.ItemID{movie.Id}, MediaType: "Video", UserId: adminID})
 		if err == nil {
 			playlist = res.Answer.Id
 		}
@@ -90,14 +90,14 @@ func TestEmbyReadSweep(t *testing.T) {
 		t.Fatal(err)
 	}
 	sdkacc.RemoveLater(t, "deleting the playlist", func() error {
-		_, err := embyc.Library.DeleteItemsById(context.WithoutCancel(ctx), playlist)
+		_, err := embyc.Library.DeleteItemsById(context.WithoutCancel(ctx), emby.ItemID(playlist))
 		return err
 	})
 
 	// and a collection
 	var collection string
 	if err := embyRetry500(func() error {
-		res, err := embyc.Collection.PostCollections(ctx, emby.PostCollectionsOptions{Name: "SDK Sweep", Ids: movie.Id})
+		res, err := embyc.Collection.PostCollections(ctx, emby.PostCollectionsOptions{Name: "SDK Sweep", Ids: []emby.ItemID{movie.Id}})
 		if err == nil && res.Answer != nil {
 			collection = res.Answer.Id
 		}
@@ -106,7 +106,7 @@ func TestEmbyReadSweep(t *testing.T) {
 		t.Fatalf("PostCollections = %q, %v", collection, err)
 	}
 	sdkacc.RemoveLater(t, "deleting the collection", func() error {
-		_, err := embyc.Library.DeleteItemsById(context.WithoutCancel(ctx), collection)
+		_, err := embyc.Library.DeleteItemsById(context.WithoutCancel(ctx), emby.ItemID(collection))
 		return err
 	})
 	sections := sdkacc.Must(embyc.Content.GetUsersByUserIdHomeSections(ctx, adminID)).Answer
@@ -116,30 +116,30 @@ func TestEmbyReadSweep(t *testing.T) {
 
 	fixtures := sweep.Fixtures{
 		Path: map[string]string{
-			"Id":                    movie.Id,
-			"ItemId":                movie.Id,
-			"UserId":                adminID,
-			"Users/Id":              adminID,
-			"Sessions/Id":           sessions[0].Id,
-			"ScheduledTasks/Id":     embyScanTask(ctx, t).Id,
+			"Id":                    string(movie.Id),
+			"ItemId":                string(movie.Id),
+			"UserId":                string(adminID),
+			"Users/Id":              string(adminID),
+			"Sessions/Id":           string(sessions[0].Id),
+			"ScheduledTasks/Id":     string(embyScanTask(ctx, t).Id),
 			"Plugins/Id":            plugins[0].Id,
 			"Playlists/Id":          playlist,
 			"Collections/Id":        collection,
 			"Sections/SectionId":    sections[0].Id,
 			"Logs/Name":             logs[0].Name,
 			"StreamFileName":        "stream.mp4",
-			"Shows/Id":              series.Id,
+			"Shows/Id":              string(series.Id),
 			"DisplayPreferences/Id": "usersettings",
 			"Configuration/Key":     "encoding",
 			"Persons/Name":          director.Name,
-			"Persons/Id":            director.Id,
+			"Persons/Id":            string(director.Id),
 			"Genres/Name":           "Science Fiction",
-			"Albums/Id":             album.Id,
-			"Artists/Id":            musicArtists[0].Id,
+			"Albums/Id":             string(album.Id),
+			"Artists/Id":            string(musicArtists[0].Id),
 			"Artists/Name":          musicArtists[0].Name,
 			"MusicGenres/Name":      musicGenres[0].Name,
-			"Songs/Id":              song.Id,
-			"Audio/Id":              song.Id,
+			"Songs/Id":              string(song.Id),
+			"Audio/Id":              string(song.Id),
 			"Studios/Name":          studios[0].Name,
 			"Type":                  "Primary",
 			"Index":                 "0",
@@ -150,12 +150,12 @@ func TestEmbyReadSweep(t *testing.T) {
 			"PercentPlayed":         "0",
 			"UnplayedCount":         "0",
 			"Container":             "mp4",
-			"MediaSourceId":         item.MediaSources[0].Id,
+			"MediaSourceId":         string(item.MediaSources[0].Id),
 			"Language":              "eng",
 			"StartPositionTicks":    "0",
 		},
 		Options: map[string]string{
-			"UserId":                 adminID,
+			"UserId":                 string(adminID),
 			"Name":                   logs[0].Name,
 			"Client":                 "emby",
 			"Path":                   "/media",
@@ -169,8 +169,8 @@ func TestEmbyReadSweep(t *testing.T) {
 			"Size":                   "1024",
 			"SubtitleSegmentLength":  "30",
 			"ManifestSubtitles":      "vtt",
-			"MediaSourceId":          item.MediaSources[0].Id,
-			"Ids":                    movie.Id,
+			"MediaSourceId":          string(item.MediaSources[0].Id),
+			"Ids":                    string(movie.Id),
 			"CodecId":                "V-E-libx264",
 			"ParameterContext":       "Playback",
 			"TargetId":               "originalmediafolder",
@@ -185,8 +185,8 @@ func TestEmbyReadSweep(t *testing.T) {
 	cases["GetShowsByIdSimilar"] = sweep.Case{Options: map[string]any{"UserId": adminID}, Empty: "Emby finds no show like another among the fixtures, two of which are dramas"}
 	// an album is like another by its artist's other album, and a mix is
 	// made from music
-	cases["GetAlbumsByIdSimilar"] = sweep.Case{Path: map[string]string{"Id": embyAlbum(t, musicID, sdkacc.DarkSide).Id}, Options: map[string]any{"UserId": adminID}}
-	cases["GetItemsByIdInstantMix"] = sweep.Case{Path: map[string]string{"Id": album.Id}}
+	cases["GetAlbumsByIdSimilar"] = sweep.Case{Path: map[string]string{"Id": string(embyAlbum(t, musicID, sdkacc.DarkSide).Id)}, Options: map[string]any{"UserId": adminID}}
+	cases["GetItemsByIdInstantMix"] = sweep.Case{Path: map[string]string{"Id": string(album.Id)}}
 	// the by-name lists answer for a library read recursively: without one
 	// they list the names empty ({} for each), and /Trailers lists the
 	// user's libraries rather than nothing

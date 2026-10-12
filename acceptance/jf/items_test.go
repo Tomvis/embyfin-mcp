@@ -35,7 +35,7 @@ func TestJFItemsQuery(t *testing.T) {
 	byTitle := map[string]jf.BaseItemDto{}
 	for _, it := range all.Items {
 		byTitle[it.Name] = it
-		if it.Id == "" || it.Type != jf.BaseItemKindMovie || it.Path == "" || it.Overview == "" || it.DateCreated == "" || it.ServerId == "" {
+		if it.Id == "" || it.Type != jf.BaseItemKindMovie || it.Path == "" || it.Overview == "" || it.DateCreated.IsZero() || it.ServerId == "" {
 			t.Errorf("%s did not decode: %+v", it.Name, it)
 		}
 		if it.MediaType != jf.MediaTypeVideo || it.LocationType != jf.LocationTypeFileSystem {
@@ -76,7 +76,7 @@ func TestJFItemsQuery(t *testing.T) {
 		}
 	})
 	t.Run("Ids", func(t *testing.T) {
-		res := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{Ids: []string{byTitle[sdkacc.Alien].Id, byTitle[sdkacc.Aliens].Id}})).Answer
+		res := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{Ids: []jf.ItemID{byTitle[sdkacc.Alien].Id, byTitle[sdkacc.Aliens].Id}})).Answer
 		if len(res.Items) != 2 {
 			t.Errorf("Ids found %d, want 2", len(res.Items))
 		}
@@ -115,7 +115,7 @@ func TestJFItemsQuery(t *testing.T) {
 		if people.Items[i].Id == "" || people.Items[i].Type != jf.BaseItemKindPerson {
 			t.Errorf("person did not decode: %+v", people.Items[i])
 		}
-		res := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{ParentId: moviesID, Recursive: new(true), PersonIds: []string{people.Items[i].Id}})).Answer
+		res := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{ParentId: moviesID, Recursive: new(true), PersonIds: []jf.ItemID{people.Items[i].Id}})).Answer
 		if res.TotalRecordCount != 2 {
 			t.Errorf("PersonIds=%s found %d, want Alien and Blade Runner", sdkacc.RidleyScott, res.TotalRecordCount)
 		}
@@ -252,14 +252,14 @@ func TestJFItem(t *testing.T) {
 		}
 		want := map[string]bool{}
 		for _, s := range genre.Items {
-			want[s.Id] = true
+			want[string(s.Id)] = true
 		}
 		got := map[string]bool{}
 		for _, it := range mix.Items {
-			if it.Type != jf.BaseItemKindAudio || !want[it.Id] {
+			if it.Type != jf.BaseItemKindAudio || !want[string(it.Id)] {
 				t.Errorf("the mix from %s holds %s (%s), which is not a %s song", sdkacc.DarkSide, it.Name, it.Type, sdkacc.ProgressiveRock)
 			}
-			got[it.Id] = true
+			got[string(it.Id)] = true
 		}
 		if len(got) != len(want) {
 			t.Errorf("the mix from %s holds %d of the %d %s songs", sdkacc.DarkSide, len(got), len(want), sdkacc.ProgressiveRock)
@@ -388,7 +388,7 @@ func TestJFCatalogue(t *testing.T) {
 	// fixtures' in the music one (whatever else the server holds, so the
 	// counts do not depend on what ran before). Jellyfin documents no music
 	// genre listing: /Genres of a music library lists its music genres.
-	for _, lib := range []string{moviesID, jfLibrary(t, sdkacc.SDKMusic)} {
+	for _, lib := range []jf.ItemID{moviesID, jfLibrary(t, sdkacc.SDKMusic)} {
 		wantArtists, wantAlbumArtists, wantGenres := []string{}, []string{}, []string{}
 		if lib != moviesID {
 			// the tracks' artists, The Pink Floyd among them (one track's

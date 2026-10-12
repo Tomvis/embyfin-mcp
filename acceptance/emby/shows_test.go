@@ -80,7 +80,7 @@ func TestEmbyShows(t *testing.T) {
 		if _, err := embyc.Playstate.PostUsersByUserIdPlayedItemsById(ctx, adminID, first); err != nil {
 			t.Fatal(err)
 		}
-		sdkacc.UndoLater(t, "unmarking "+first+" played", func() error {
+		sdkacc.UndoLater(t, "unmarking "+string(first)+" played", func() error {
 			_, err := embyc.Playstate.DeleteUsersByUserIdPlayedItemsById(context.WithoutCancel(ctx), adminID, first)
 			return err
 		})

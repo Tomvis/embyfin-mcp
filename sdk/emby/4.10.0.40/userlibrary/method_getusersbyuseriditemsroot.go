@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByUserIdItemsRoot calls GET /Users/{UserId}/Items/Root. Gets the root folder from a user's library.
-func (c Client) GetUsersByUserIdItemsRoot(ctx context.Context, userId string) (result emby.GetUsersByUserIdItemsRootResponse, err error) {
+func (c Client) GetUsersByUserIdItemsRoot(ctx context.Context, userId emby.UserID) (result emby.GetUsersByUserIdItemsRootResponse, err error) {
 	result.BaseItemDto = &emby.BaseItemDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetUsersByUserIdItemsRoot(ctx context.Context, userId string) (r
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetUsersByUserIdItemsRoot",
-		Path:       fmt.Sprintf("/Users/%s/Items/Root", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s/Items/Root", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

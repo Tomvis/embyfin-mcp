@@ -13,7 +13,7 @@ import (
 )
 
 // PostPlaylistsByIdItemsDelete calls POST /Playlists/{Id}/Items/Delete. Removes items from a playlist.
-func (c Client) PostPlaylistsByIdItemsDelete(ctx context.Context, id string, entryIds string) (result emby.PostPlaylistsByIdItemsDeleteResponse, err error) {
+func (c Client) PostPlaylistsByIdItemsDelete(ctx context.Context, id emby.ItemID, entryIds []emby.PlaylistItemID) (result emby.PostPlaylistsByIdItemsDeleteResponse, err error) {
 	var option emby.PostPlaylistsByIdItemsDeleteOptions
 	option.EntryIds = entryIds
 
@@ -25,7 +25,7 @@ func (c Client) PostPlaylistsByIdItemsDelete(ctx context.Context, id string, ent
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostPlaylistsByIdItemsDelete",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Playlists/%s/Items/Delete", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Playlists/%s/Items/Delete", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

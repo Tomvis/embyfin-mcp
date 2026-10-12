@@ -13,7 +13,7 @@ import (
 )
 
 // GetLocalTrailers calls GET /Items/{itemId}/LocalTrailers. Gets local trailers for an item.
-func (c Client) GetLocalTrailers(ctx context.Context, itemId string, userId ...string) (result jf.GetLocalTrailersResponse, err error) {
+func (c Client) GetLocalTrailers(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetLocalTrailersResponse, err error) {
 	var option jf.GetLocalTrailersOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetLocalTrailers takes one userId at most, not %d", len(userId))
@@ -30,7 +30,7 @@ func (c Client) GetLocalTrailers(ctx context.Context, itemId string, userId ...s
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetLocalTrailers",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/LocalTrailers", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/LocalTrailers", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

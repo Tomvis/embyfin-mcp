@@ -13,7 +13,7 @@ import (
 )
 
 // UpdateItemUserData calls POST /UserItems/{itemId}/UserData. Update Item User Data.
-func (c Client) UpdateItemUserData(ctx context.Context, itemId string, input jf.UpdateUserItemDataDto, userId ...string) (result jf.UpdateItemUserDataResponse, err error) {
+func (c Client) UpdateItemUserData(ctx context.Context, itemId jf.ItemID, input jf.UpdateUserItemDataDto, userId ...jf.UserID) (result jf.UpdateItemUserDataResponse, err error) {
 	var option jf.UpdateItemUserDataOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("UpdateItemUserData takes one userId at most, not %d", len(userId))
@@ -32,7 +32,7 @@ func (c Client) UpdateItemUserData(ctx context.Context, itemId string, input jf.
 		HTTPMethod:    http.MethodPost,
 		Operation:     "UpdateItemUserData",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/UserItems/%s/UserData", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/UserItems/%s/UserData", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

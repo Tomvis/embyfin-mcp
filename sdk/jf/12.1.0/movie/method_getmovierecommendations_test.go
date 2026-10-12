@@ -15,8 +15,8 @@ func TestOperationGetMovieRecommendations(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "[{}]")
 	result, err := c.GetMovieRecommendations(t.Context(), jf.GetMovieRecommendationsOptions{
-		UserId:        "v-UserId",
-		ParentId:      "v-ParentId",
+		UserId:        jf.UserID("v-UserId"),
+		ParentId:      jf.ItemID("v-ParentId"),
 		Fields:        []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		CategoryLimit: new(7),
 		ItemLimit:     new(7),
@@ -42,8 +42,8 @@ func TestOperationGetMovieRecommendations(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetMovieRecommendations(t.Context(), jf.GetMovieRecommendationsOptions{
-		UserId:        "v-UserId",
-		ParentId:      "v-ParentId",
+		UserId:        jf.UserID("v-UserId"),
+		ParentId:      jf.ItemID("v-ParentId"),
 		Fields:        []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		CategoryLimit: new(7),
 		ItemLimit:     new(7),
@@ -55,8 +55,8 @@ func TestOperationGetMovieRecommendations(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetMovieRecommendations(t.Context(), jf.GetMovieRecommendationsOptions{
-		UserId:        "v-UserId",
-		ParentId:      "v-ParentId",
+		UserId:        jf.UserID("v-UserId"),
+		ParentId:      jf.ItemID("v-ParentId"),
 		Fields:        []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		CategoryLimit: new(7),
 		ItemLimit:     new(7),

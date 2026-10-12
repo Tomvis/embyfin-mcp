@@ -260,7 +260,7 @@ func (c *Client) RegeneratePreview(ctx context.Context, itemID string, patience 
 	if err != nil {
 		return Preview{}, false, err
 	}
-	if _, err := c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, itemID, emby.BaseRefreshRequest{ReplaceThumbnailImages: new(true)}, emby.PostItemsByIdRefreshOptions{
+	if _, err := c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, emby.ItemID(itemID), emby.BaseRefreshRequest{ReplaceThumbnailImages: new(true)}, emby.PostItemsByIdRefreshOptions{
 		MetadataRefreshMode: emby.MetadataRefreshModeFullRefresh,
 		ImageRefreshMode:    emby.MetadataRefreshModeValidationOnly,
 		ReplaceAllMetadata:  new(false),

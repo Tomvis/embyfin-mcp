@@ -14,11 +14,11 @@ func TestOperationPlay(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.Play(t.Context(), "p/sessionId", jf.PlayOptions{
+	result, err := c.Play(t.Context(), jf.SessionID("v-sessionId"), jf.PlayOptions{
 		PlayCommand:         jf.PlayCommandPlayNow,
-		ItemIds:             []string{"a", "b"},
+		ItemIds:             []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		StartPositionTicks:  new(int64(7)),
-		MediaSourceId:       "v-MediaSourceId",
+		MediaSourceId:       jf.MediaSourceID("v-MediaSourceId"),
 		AudioStreamIndex:    new(7),
 		SubtitleStreamIndex: new(7),
 		StartIndex:          new(7),
@@ -28,7 +28,7 @@ func TestOperationPlay(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Sessions/p%2FsessionId/Playing")
+	expectRequest(t, r, http.MethodPost, "/Sessions/v-sessionId/Playing")
 	expectQuery(t, r, "playCommand", "PlayNow")
 	expectQuery(t, r, "itemIds", "a", "b")
 	expectQuery(t, r, "startPositionTicks", "7")
@@ -42,11 +42,11 @@ func TestOperationPlay(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.Play(t.Context(), "p/sessionId", jf.PlayOptions{
+	result, err = c.Play(t.Context(), jf.SessionID("v-sessionId"), jf.PlayOptions{
 		PlayCommand:         jf.PlayCommandPlayNow,
-		ItemIds:             []string{"a", "b"},
+		ItemIds:             []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		StartPositionTicks:  new(int64(7)),
-		MediaSourceId:       "v-MediaSourceId",
+		MediaSourceId:       jf.MediaSourceID("v-MediaSourceId"),
 		AudioStreamIndex:    new(7),
 		SubtitleStreamIndex: new(7),
 		StartIndex:          new(7),

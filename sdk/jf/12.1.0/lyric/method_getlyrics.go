@@ -13,7 +13,7 @@ import (
 )
 
 // GetLyrics calls GET /Audio/{itemId}/Lyrics. Gets an item's lyrics.
-func (c Client) GetLyrics(ctx context.Context, itemId string) (result jf.GetLyricsResponse, err error) {
+func (c Client) GetLyrics(ctx context.Context, itemId jf.ItemID) (result jf.GetLyricsResponse, err error) {
 	result.LyricDto = &jf.LyricDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetLyrics(ctx context.Context, itemId string) (result jf.GetLyri
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetLyrics",
-		Path:       fmt.Sprintf("/Audio/%s/Lyrics", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Audio/%s/Lyrics", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

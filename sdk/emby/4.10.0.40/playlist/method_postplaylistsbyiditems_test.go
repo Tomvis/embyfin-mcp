@@ -15,18 +15,18 @@ func TestOperationPostPlaylistsByIdItems(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.PostPlaylistsByIdItems(t.Context(), "p/id", emby.PostPlaylistsByIdItemsOptions{
-		UserId: "v-UserId",
-		Ids:    "v-Ids",
+	result, err := c.PostPlaylistsByIdItems(t.Context(), emby.ItemID("v-id"), emby.PostPlaylistsByIdItemsOptions{
+		UserId: emby.UserID("v-UserId"),
+		Ids:    []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Playlists/p%2Fid/Items")
+	expectRequest(t, r, http.MethodPost, "/Playlists/v-id/Items")
 	expectQuery(t, r, "UserId", "v-UserId")
-	expectQuery(t, r, "Ids", "v-Ids")
+	expectQuery(t, r, "Ids", "a,b")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
@@ -42,9 +42,9 @@ func TestOperationPostPlaylistsByIdItems(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.PostPlaylistsByIdItems(t.Context(), "p/id", emby.PostPlaylistsByIdItemsOptions{
-		UserId: "v-UserId",
-		Ids:    "v-Ids",
+	result, err = c.PostPlaylistsByIdItems(t.Context(), emby.ItemID("v-id"), emby.PostPlaylistsByIdItemsOptions{
+		UserId: emby.UserID("v-UserId"),
+		Ids:    []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 	})
 	if err != nil || result.Answer != nil || result.Answered() {
 		t.Errorf("a 204 = %v, answer %v, answered %t", err, result.Answer, result.Answered())
@@ -58,9 +58,9 @@ func TestOperationPostPlaylistsByIdItems(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.PostPlaylistsByIdItems(t.Context(), "p/id", emby.PostPlaylistsByIdItemsOptions{
-		UserId: "v-UserId",
-		Ids:    "v-Ids",
+	result, err = c.PostPlaylistsByIdItems(t.Context(), emby.ItemID("v-id"), emby.PostPlaylistsByIdItemsOptions{
+		UserId: emby.UserID("v-UserId"),
+		Ids:    []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -68,9 +68,9 @@ func TestOperationPostPlaylistsByIdItems(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostPlaylistsByIdItems(t.Context(), "p/id", emby.PostPlaylistsByIdItemsOptions{
-		UserId: "v-UserId",
-		Ids:    "v-Ids",
+	result, err = c.PostPlaylistsByIdItems(t.Context(), emby.ItemID("v-id"), emby.PostPlaylistsByIdItemsOptions{
+		UserId: emby.UserID("v-UserId"),
+		Ids:    []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

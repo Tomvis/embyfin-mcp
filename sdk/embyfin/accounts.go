@@ -53,10 +53,10 @@ func (c *Client) CreateUser(ctx context.Context, name, password string) (*User, 
 		if res.Answer == nil || res.Answer.Id == "" {
 			return nil, left, errors.New("the server answered the new account without an id")
 		}
-		id = res.Answer.Id
+		id = string(res.Answer.Id)
 
 		if err := c.SetUserPassword(ctx, id, password); err != nil {
-			if _, gone := c.emby.User.DeleteUsersById(ctx, id); gone != nil {
+			if _, gone := c.emby.User.DeleteUsersById(ctx, emby.UserID(id)); gone != nil {
 				return nil, left, fmt.Errorf("the account %s was made (id %s) and its password could not be set: %w. Removing it again failed too (%w), so it is still there WITH NO PASSWORD: delete it, or set one", name, id, err, gone)
 			}
 
@@ -70,7 +70,7 @@ func (c *Client) CreateUser(ctx context.Context, name, password string) (*User, 
 		if res.Answer == nil || res.Answer.Id == "" {
 			return nil, left, errors.New("the server answered the new account without an id")
 		}
-		id = res.Answer.Id
+		id = string(res.Answer.Id)
 		left = c.clearLeftover(ctx, id)
 	}
 
@@ -161,7 +161,7 @@ func (c *Client) clearState(ctx context.Context, userID string, it *Item) error 
 		}
 	}
 	if d.Rated {
-		if _, err := c.jf.UserData.DeleteUserItemRating(ctx, it.ID, userID); err != nil {
+		if _, err := c.jf.UserData.DeleteUserItemRating(ctx, jf.ItemID(it.ID), jf.UserID(userID)); err != nil {
 			return err
 		}
 	}
@@ -175,12 +175,12 @@ func (c *Client) SetUserPassword(ctx context.Context, userID, password string) e
 		return ErrNoPassword
 	}
 	if c.isEmby() {
-		_, err := c.emby.User.PostUsersByIdPassword(ctx, userID, emby.UpdateUserPassword{NewPw: password})
+		_, err := c.emby.User.PostUsersByIdPassword(ctx, emby.UserID(userID), emby.UpdateUserPassword{NewPw: password})
 
 		return err
 	}
 
-	_, err := c.jf.User.UpdateUserPassword(ctx, jf.UpdateUserPassword{NewPw: password}, userID)
+	_, err := c.jf.User.UpdateUserPassword(ctx, jf.UpdateUserPassword{NewPw: password}, jf.UserID(userID))
 
 	return err
 }
@@ -194,12 +194,12 @@ var ErrUserPlaying = errors.New("the whole Jellyfin server exits when an account
 func (c *Client) DeleteUser(ctx context.Context, userID string) error {
 	var err error
 	if c.isEmby() {
-		_, err = c.emby.User.DeleteUsersById(ctx, userID)
+		_, err = c.emby.User.DeleteUsersById(ctx, emby.UserID(userID))
 	} else {
 		if err := c.jellyfinMayDelete(ctx, userID); err != nil {
 			return err
 		}
-		_, err = c.jf.User.DeleteUser(ctx, userID)
+		_, err = c.jf.User.DeleteUser(ctx, jf.UserID(userID))
 	}
 	if err != nil {
 		return err

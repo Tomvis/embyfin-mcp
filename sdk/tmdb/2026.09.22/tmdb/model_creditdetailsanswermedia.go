@@ -8,7 +8,7 @@ type CreditDetailsAnswerMedia struct {
 	BackdropPath     string                             `json:"backdrop_path,omitempty"`
 	Character        string                             `json:"character,omitempty"`
 	Episodes         []CreditDetailsAnswerMediaEpisodes `json:"episodes,omitzero"`
-	FirstAirDate     string                             `json:"first_air_date,omitempty"`
+	FirstAirDate     Day                                `json:"first_air_date,omitzero"`
 	GenreIds         []int                              `json:"genre_ids,omitzero"`
 	Id               int                                `json:"id,omitempty"`
 	MediaType        string                             `json:"media_type,omitempty"`

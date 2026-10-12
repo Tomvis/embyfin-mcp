@@ -5,6 +5,6 @@ package emby
 // GeneralCommand is the "GeneralCommand" schema.
 type GeneralCommand struct {
 	Arguments         map[string]string `json:"Arguments,omitzero"`
-	ControllingUserId string            `json:"ControllingUserId,omitempty"`
+	ControllingUserId UserID            `json:"ControllingUserId,omitempty"`
 	Name              string            `json:"Name,omitempty"`
 }

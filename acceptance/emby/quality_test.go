@@ -149,8 +149,8 @@ func TestEmbyMediaStreams(t *testing.T) {
 			t.Errorf("the two files are %s (%s) and %s (%s), want two films named %s", hd.Name, hd.Id, uhd.Name, uhd.Id, sdkacc.BladeRunner)
 		}
 		// and folds them into one in a user's read of either, a source each
-		for _, id := range []string{hd.Id, uhd.Id} {
-			user := sdkacc.Must(embyc.UserLibrary.GetUsersByUserIdItemsById(ctx, adminID, id)).Answer
+		for _, id := range []string{string(hd.Id), string(uhd.Id)} {
+			user := sdkacc.Must(embyc.UserLibrary.GetUsersByUserIdItemsById(ctx, adminID, emby.ItemID(id))).Answer
 			var heights []int
 			for i := range user.MediaSources {
 				for j := range user.MediaSources[i].MediaStreams {

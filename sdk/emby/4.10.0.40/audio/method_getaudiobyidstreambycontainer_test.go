@@ -16,7 +16,7 @@ func TestOperationGetAudioByIdStreamByContainer(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "audio/mpeg", "file bytes")
-	result, err := c.GetAudioByIdStreamByContainer(t.Context(), "p/id", "p/container", emby.GetAudioByIdStreamByContainerOptions{
+	result, err := c.GetAudioByIdStreamByContainer(t.Context(), emby.ItemID("v-id"), "p/container", emby.GetAudioByIdStreamByContainerOptions{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		AudioCodec:           "v-AudioCodec",
@@ -45,7 +45,7 @@ func TestOperationGetAudioByIdStreamByContainer(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Audio/p%2Fid/stream.p%2Fcontainer")
+	expectRequest(t, r, http.MethodGet, "/Audio/v-id/stream.p%2Fcontainer")
 	expectQuery(t, r, "DeviceProfileId", "v-DeviceProfileId")
 	expectQuery(t, r, "DeviceId", "v-DeviceId")
 	expectQuery(t, r, "AudioCodec", "v-AudioCodec")
@@ -81,7 +81,7 @@ func TestOperationGetAudioByIdStreamByContainer(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "audio/mpeg", "file bytes")
-	result, err = c.GetAudioByIdStreamByContainer(t.Context(), "p/id", "p/container", emby.GetAudioByIdStreamByContainerOptions{
+	result, err = c.GetAudioByIdStreamByContainer(t.Context(), emby.ItemID("v-id"), "p/container", emby.GetAudioByIdStreamByContainerOptions{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		AudioCodec:           "v-AudioCodec",
@@ -112,7 +112,7 @@ func TestOperationGetAudioByIdStreamByContainer(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "audio/mpeg", "file bytes")
-	result, err = c.GetAudioByIdStreamByContainer(t.Context(), "p/id", "p/container", emby.GetAudioByIdStreamByContainerOptions{
+	result, err = c.GetAudioByIdStreamByContainer(t.Context(), emby.ItemID("v-id"), "p/container", emby.GetAudioByIdStreamByContainerOptions{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		AudioCodec:           "v-AudioCodec",
@@ -155,7 +155,7 @@ func TestOperationGetAudioByIdStreamByContainer(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetAudioByIdStreamByContainer(t.Context(), "p/id", "p/container", emby.GetAudioByIdStreamByContainerOptions{
+	result, err = c.GetAudioByIdStreamByContainer(t.Context(), emby.ItemID("v-id"), "p/container", emby.GetAudioByIdStreamByContainerOptions{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		AudioCodec:           "v-AudioCodec",
@@ -185,10 +185,10 @@ func TestOperationGetAudioByIdStreamByContainer(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "audio/mpeg", "file bytes")
-	if _, err = c.GetAudioByIdStreamByContainer(t.Context(), "p/id", "p/container"); err != nil {
+	if _, err = c.GetAudioByIdStreamByContainer(t.Context(), emby.ItemID("v-id"), "p/container"); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetAudioByIdStreamByContainer(t.Context(), "p/id", "p/container", emby.GetAudioByIdStreamByContainerOptions{}, emby.GetAudioByIdStreamByContainerOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetAudioByIdStreamByContainer(t.Context(), emby.ItemID("v-id"), "p/container", emby.GetAudioByIdStreamByContainerOptions{}, emby.GetAudioByIdStreamByContainerOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

@@ -14,7 +14,7 @@ import (
 )
 
 // GetMoviesByIdSimilar calls GET /Movies/{Id}/Similar. Finds movies and trailers similar to a given movie.
-func (c Client) GetMoviesByIdSimilar(ctx context.Context, id string, options ...emby.GetMoviesByIdSimilarOptions) (result emby.GetMoviesByIdSimilarResponse, err error) {
+func (c Client) GetMoviesByIdSimilar(ctx context.Context, id emby.ItemID, options ...emby.GetMoviesByIdSimilarOptions) (result emby.GetMoviesByIdSimilarResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetMoviesByIdSimilar takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetMoviesByIdSimilar(ctx context.Context, id string, options ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetMoviesByIdSimilar",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Movies/%s/Similar", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Movies/%s/Similar", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetMoviesByIdSimilar(ctx context.Context, id string, options ...
 // GetMoviesByIdSimilarComplete calls GetMoviesByIdSimilar page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetMoviesByIdSimilarComplete(ctx context.Context, id string, options ...emby.GetMoviesByIdSimilarOptions) (result emby.GetMoviesByIdSimilarCompleteResult, err error) {
+func (c Client) GetMoviesByIdSimilarComplete(ctx context.Context, id emby.ItemID, options ...emby.GetMoviesByIdSimilarOptions) (result emby.GetMoviesByIdSimilarCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetMoviesByIdSimilarComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetMoviesByIdSimilarComplete(ctx context.Context, id string, opt
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetMoviesByIdSimilarComplete asks for them.
-func (c Client) GetMoviesByIdSimilarEach(ctx context.Context, id string, options ...emby.GetMoviesByIdSimilarOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetMoviesByIdSimilarEach(ctx context.Context, id emby.ItemID, options ...emby.GetMoviesByIdSimilarOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

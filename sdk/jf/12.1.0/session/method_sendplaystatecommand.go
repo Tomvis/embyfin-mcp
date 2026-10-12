@@ -13,7 +13,7 @@ import (
 )
 
 // SendPlaystateCommand calls POST /Sessions/{sessionId}/Playing/{command}. Issues a playstate command to a client.
-func (c Client) SendPlaystateCommand(ctx context.Context, sessionId string, command jf.PlaystateCommand, options ...jf.SendPlaystateCommandOptions) (result jf.SendPlaystateCommandResponse, err error) {
+func (c Client) SendPlaystateCommand(ctx context.Context, sessionId jf.SessionID, command jf.PlaystateCommand, options ...jf.SendPlaystateCommandOptions) (result jf.SendPlaystateCommandResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("SendPlaystateCommand takes one options struct at most, not %d", len(options))
 		return
@@ -30,7 +30,7 @@ func (c Client) SendPlaystateCommand(ctx context.Context, sessionId string, comm
 		HTTPMethod:    http.MethodPost,
 		Operation:     "SendPlaystateCommand",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Sessions/%s/Playing/%s", url.PathEscape(sessionId), url.PathEscape(string(command))),
+		Path:          fmt.Sprintf("/Sessions/%s/Playing/%s", url.PathEscape(string(sessionId)), url.PathEscape(string(command))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

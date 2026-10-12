@@ -13,7 +13,7 @@ import (
 )
 
 // GetTrickplayTileImage calls GET /Videos/{itemId}/Trickplay/{width}/{index}.jpg. Gets a trickplay tile image.
-func (c Client) GetTrickplayTileImage(ctx context.Context, itemId string, width int, index int, mediaSourceId ...string) (result jf.GetTrickplayTileImageResponse, err error) {
+func (c Client) GetTrickplayTileImage(ctx context.Context, itemId jf.ItemID, width int, index int, mediaSourceId ...jf.MediaSourceID) (result jf.GetTrickplayTileImageResponse, err error) {
 	var option jf.GetTrickplayTileImageOptions
 	if len(mediaSourceId) > 1 {
 		err = fmt.Errorf("GetTrickplayTileImage takes one mediaSourceId at most, not %d", len(mediaSourceId))
@@ -31,7 +31,7 @@ func (c Client) GetTrickplayTileImage(ctx context.Context, itemId string, width 
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetTrickplayTileImage",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/Trickplay/%d/%d.jpg", url.PathEscape(itemId), width, index),
+		Path:           fmt.Sprintf("/Videos/%s/Trickplay/%d/%d.jpg", url.PathEscape(string(itemId)), width, index),
 		StreamResponse: true,
 	}
 

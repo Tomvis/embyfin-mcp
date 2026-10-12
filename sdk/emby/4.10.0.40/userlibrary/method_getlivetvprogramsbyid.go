@@ -13,7 +13,7 @@ import (
 )
 
 // GetLiveTvProgramsById calls GET /LiveTv/Programs/{Id}. Gets a live tv program.
-func (c Client) GetLiveTvProgramsById(ctx context.Context, id string) (result emby.GetLiveTvProgramsByIdResponse, err error) {
+func (c Client) GetLiveTvProgramsById(ctx context.Context, id emby.ItemID) (result emby.GetLiveTvProgramsByIdResponse, err error) {
 	result.BaseItemDto = &emby.BaseItemDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetLiveTvProgramsById(ctx context.Context, id string) (result em
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetLiveTvProgramsById",
-		Path:       fmt.Sprintf("/LiveTv/Programs/%s", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/LiveTv/Programs/%s", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

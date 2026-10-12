@@ -13,7 +13,7 @@ import (
 )
 
 // PostSessionsByIdSystemByCommand calls POST /Sessions/{Id}/System/{Command}. Issues a system command to a client.
-func (c Client) PostSessionsByIdSystemByCommand(ctx context.Context, id string, command string) (result emby.PostSessionsByIdSystemByCommandResponse, err error) {
+func (c Client) PostSessionsByIdSystemByCommand(ctx context.Context, id emby.SessionID, command string) (result emby.PostSessionsByIdSystemByCommandResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostSessionsByIdSystemByCommand(ctx context.Context, id string, 
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostSessionsByIdSystemByCommand",
-		Path:       fmt.Sprintf("/Sessions/%s/System/%s", url.PathEscape(id), url.PathEscape(command)),
+		Path:       fmt.Sprintf("/Sessions/%s/System/%s", url.PathEscape(string(id)), url.PathEscape(command)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

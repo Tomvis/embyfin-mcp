@@ -13,7 +13,7 @@ import (
 )
 
 // GetAttachment calls GET /Videos/{videoId}/{mediaSourceId}/Attachments/{index}. Get video attachment.
-func (c Client) GetAttachment(ctx context.Context, videoId string, mediaSourceId string, index int) (result jf.GetAttachmentResponse, err error) {
+func (c Client) GetAttachment(ctx context.Context, videoId jf.ItemID, mediaSourceId jf.MediaSourceID, index int) (result jf.GetAttachmentResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/octet-stream",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetAttachment(ctx context.Context, videoId string, mediaSourceId
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetAttachment",
-		Path:           fmt.Sprintf("/Videos/%s/%s/Attachments/%d", url.PathEscape(videoId), url.PathEscape(mediaSourceId), index),
+		Path:           fmt.Sprintf("/Videos/%s/%s/Attachments/%d", url.PathEscape(string(videoId)), url.PathEscape(string(mediaSourceId)), index),
 		StreamResponse: true,
 	}
 

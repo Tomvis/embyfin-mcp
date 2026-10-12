@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdCopyData calls POST /Users/{UserId}/CopyData. Copies data from one user to another.
-func (c Client) PostUsersByUserIdCopyData(ctx context.Context, userId string, input emby.CopyData) (result emby.PostUsersByUserIdCopyDataResponse, err error) {
+func (c Client) PostUsersByUserIdCopyData(ctx context.Context, userId emby.UserID, input emby.CopyData) (result emby.PostUsersByUserIdCopyDataResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdCopyData(ctx context.Context, userId string, in
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdCopyData",
-		Path:       fmt.Sprintf("/Users/%s/CopyData", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s/CopyData", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

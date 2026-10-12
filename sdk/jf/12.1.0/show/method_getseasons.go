@@ -13,7 +13,7 @@ import (
 )
 
 // GetSeasons calls GET /Shows/{seriesId}/Seasons. Gets seasons for a tv series.
-func (c Client) GetSeasons(ctx context.Context, seriesId string, options ...jf.GetSeasonsOptions) (result jf.GetSeasonsResponse, err error) {
+func (c Client) GetSeasons(ctx context.Context, seriesId jf.ItemID, options ...jf.GetSeasonsOptions) (result jf.GetSeasonsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetSeasons takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetSeasons(ctx context.Context, seriesId string, options ...jf.G
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetSeasons",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Shows/%s/Seasons", url.PathEscape(seriesId)),
+		Path:          fmt.Sprintf("/Shows/%s/Seasons", url.PathEscape(string(seriesId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

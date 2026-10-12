@@ -13,7 +13,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -106,7 +107,8 @@
           "In": "Query",
           "Description": "The media version id, if playing an alternate version.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -479,7 +481,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -570,7 +573,8 @@
           "In": "Query",
           "Description": "The media version id, if playing an alternate version.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -943,7 +947,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -966,7 +971,8 @@
           "In": "Query",
           "Description": "The media version id, if playing an alternate version.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -984,7 +990,8 @@
           "In": "Query",
           "Description": "Optional. The user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {

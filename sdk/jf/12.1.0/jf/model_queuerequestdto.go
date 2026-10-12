@@ -7,7 +7,7 @@ package jf
 // Class QueueRequestDto.
 type QueueRequestDto struct {
 	// Gets or sets the items to enqueue.
-	ItemIds []string `json:"ItemIds,omitzero"`
+	ItemIds []ItemID `json:"ItemIds,omitzero"`
 
 	// Enum GroupQueueMode.
 	Mode GroupQueueMode `json:"Mode,omitempty"`

@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat calls GET /Videos/{Id}/{MediaSourceId}/Subtitles/{Index}/{StartPositionTicks}/Stream.{Format}. Gets subtitles in a specified format.
-func (c Client) GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(ctx context.Context, id string, mediaSourceId string, index int, startPositionTicks int64, format string, options ...emby.GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions) (result emby.GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatResponse, err error) {
+func (c Client) GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(ctx context.Context, id emby.ItemID, mediaSourceId emby.MediaSourceID, index int, startPositionTicks int64, format string, options ...emby.GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions) (result emby.GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicks
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/%d/Stream.%s", url.PathEscape(id), url.PathEscape(mediaSourceId), index, startPositionTicks, url.PathEscape(format)),
+		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/%d/Stream.%s", url.PathEscape(string(id)), url.PathEscape(string(mediaSourceId)), index, startPositionTicks, url.PathEscape(format)),
 		StreamResponse: true,
 	}
 

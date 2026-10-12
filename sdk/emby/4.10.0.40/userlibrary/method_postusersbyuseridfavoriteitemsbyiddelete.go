@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdFavoriteItemsByIdDelete calls POST /Users/{UserId}/FavoriteItems/{Id}/Delete. Unmarks an item as a favorite.
-func (c Client) PostUsersByUserIdFavoriteItemsByIdDelete(ctx context.Context, userId string, id string) (result emby.PostUsersByUserIdFavoriteItemsByIdDeleteResponse, err error) {
+func (c Client) PostUsersByUserIdFavoriteItemsByIdDelete(ctx context.Context, userId emby.UserID, id emby.ItemID) (result emby.PostUsersByUserIdFavoriteItemsByIdDeleteResponse, err error) {
 	result.UserItemDataDto = &emby.UserItemDataDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdFavoriteItemsByIdDelete(ctx context.Context, us
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdFavoriteItemsByIdDelete",
-		Path:       fmt.Sprintf("/Users/%s/FavoriteItems/%s/Delete", url.PathEscape(userId), url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/FavoriteItems/%s/Delete", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -49,7 +49,7 @@ type PlaybackInfoDto struct {
 	MaxStreamingBitrate int `json:"MaxStreamingBitrate,omitempty"`
 
 	// Gets or sets the media source id.
-	MediaSourceId string `json:"MediaSourceId,omitempty"`
+	MediaSourceId MediaSourceID `json:"MediaSourceId,omitempty"`
 
 	// Gets or sets the start time in ticks.
 	StartTimeTicks int64 `json:"StartTimeTicks,omitempty"`
@@ -58,5 +58,5 @@ type PlaybackInfoDto struct {
 	SubtitleStreamIndex int `json:"SubtitleStreamIndex,omitempty"`
 
 	// Gets or sets the playback userId.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 }

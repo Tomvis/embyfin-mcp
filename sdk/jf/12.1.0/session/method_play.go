@@ -13,7 +13,7 @@ import (
 )
 
 // Play calls POST /Sessions/{sessionId}/Playing. Instructs a session to play an item.
-func (c Client) Play(ctx context.Context, sessionId string, options jf.PlayOptions) (result jf.PlayResponse, err error) {
+func (c Client) Play(ctx context.Context, sessionId jf.SessionID, options jf.PlayOptions) (result jf.PlayResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
@@ -21,7 +21,7 @@ func (c Client) Play(ctx context.Context, sessionId string, options jf.PlayOptio
 		HTTPMethod:    http.MethodPost,
 		Operation:     "Play",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Sessions/%s/Playing", url.PathEscape(sessionId)),
+		Path:          fmt.Sprintf("/Sessions/%s/Playing", url.PathEscape(string(sessionId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

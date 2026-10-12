@@ -40,7 +40,7 @@ func (r GetInstantMixFromArtistsResponse) Record() (BaseItemDtoQueryResult, erro
 // GetInstantMixFromArtistsOptions holds the query and header parameters of GetInstantMixFromArtists.
 type GetInstantMixFromArtistsOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 
 	// Optional. The maximum number of records to return.
 	Limit *int
@@ -71,7 +71,7 @@ func (o GetInstantMixFromArtistsOptions) ToHeaders() *client.Headers {
 func (o GetInstantMixFromArtistsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Limit != nil {
 		out.Append("limit", strconv.Itoa(*o.Limit))

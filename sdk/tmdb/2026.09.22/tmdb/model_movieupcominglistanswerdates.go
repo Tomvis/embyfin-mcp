@@ -4,6 +4,6 @@ package tmdb
 
 // MovieUpcomingListAnswerDates is an object the document declares inline.
 type MovieUpcomingListAnswerDates struct {
-	Maximum string `json:"maximum,omitempty"`
-	Minimum string `json:"minimum,omitempty"`
+	Maximum Day `json:"maximum,omitzero"`
+	Minimum Day `json:"minimum,omitzero"`
 }

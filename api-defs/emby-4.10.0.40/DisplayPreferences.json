@@ -25,7 +25,8 @@
           "Description": "User Id",
           "Required": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -62,7 +63,8 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -103,7 +105,8 @@
           "Description": "User Id",
           "Required": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -130,7 +133,8 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -159,7 +163,8 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],

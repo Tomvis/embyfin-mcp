@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdLiveM3u8 calls GET /Videos/{Id}/live.m3u8. Requires authentication as user.
-func (c Client) GetVideosByIdLiveM3u8(ctx context.Context, id string, options emby.GetVideosByIdLiveM3u8Options) (result emby.GetVideosByIdLiveM3u8Response, err error) {
+func (c Client) GetVideosByIdLiveM3u8(ctx context.Context, id emby.ItemID, options emby.GetVideosByIdLiveM3u8Options) (result emby.GetVideosByIdLiveM3u8Response, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/x-mpegURL",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetVideosByIdLiveM3u8(ctx context.Context, id string, options em
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdLiveM3u8",
 		OptionsObject:  options,
-		Path:           fmt.Sprintf("/Videos/%s/live.m3u8", url.PathEscape(id)),
+		Path:           fmt.Sprintf("/Videos/%s/live.m3u8", url.PathEscape(string(id))),
 		StreamResponse: true,
 	}
 

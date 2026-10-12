@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteUsersByIdRecentlySearched calls DELETE /Users/{Id}/RecentlySearched. Clears recently searched.
-func (c Client) DeleteUsersByIdRecentlySearched(ctx context.Context, id string) (result emby.DeleteUsersByIdRecentlySearchedResponse, err error) {
+func (c Client) DeleteUsersByIdRecentlySearched(ctx context.Context, id emby.UserID) (result emby.DeleteUsersByIdRecentlySearchedResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) DeleteUsersByIdRecentlySearched(ctx context.Context, id string) 
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteUsersByIdRecentlySearched",
-		Path:       fmt.Sprintf("/Users/%s/RecentlySearched", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/RecentlySearched", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -35,4 +35,6 @@ var All = []pandorest.Workaround{
 	embyPropertyConditionValue{},
 	embyUndeclaredQuery{},
 	embyToneMapOptions{},
+	embySavedSinceText{},
+	embyJoinedLists,
 }

@@ -13,14 +13,10 @@ import (
 )
 
 // PostSyncByTargetIdItemsDelete calls POST /Sync/{TargetId}/Items/Delete. Cancels items from a sync target.
-func (c Client) PostSyncByTargetIdItemsDelete(ctx context.Context, targetId string, itemIds ...string) (result emby.PostSyncByTargetIdItemsDeleteResponse, err error) {
+func (c Client) PostSyncByTargetIdItemsDelete(ctx context.Context, targetId string, itemIds ...emby.ItemID) (result emby.PostSyncByTargetIdItemsDeleteResponse, err error) {
 	var option emby.PostSyncByTargetIdItemsDeleteOptions
-	if len(itemIds) > 1 {
-		err = fmt.Errorf("PostSyncByTargetIdItemsDelete takes one itemIds at most, not %d", len(itemIds))
-		return
-	}
-	if len(itemIds) == 1 {
-		option.ItemIds = itemIds[0]
+	if len(itemIds) > 0 {
+		option.ItemIds = itemIds
 	}
 
 	opts := client.RequestOptions{

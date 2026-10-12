@@ -46,10 +46,10 @@ type GetLogEntriesOptions struct {
 	Limit *int
 
 	// The minimum date.
-	MinDate string
+	MinDate Time
 
 	// The maximum date.
-	MaxDate string
+	MaxDate Time
 
 	// Filter log entries if it has user id, or not.
 	HasUserId *bool
@@ -67,7 +67,7 @@ type GetLogEntriesOptions struct {
 	Type string
 
 	// Filter by item id.
-	ItemId string
+	ItemId ItemID
 
 	// Filter by username.
 	Username string
@@ -97,11 +97,11 @@ func (o GetLogEntriesOptions) ToQuery() *client.QueryParams {
 	if o.Limit != nil {
 		out.Append("limit", strconv.Itoa(*o.Limit))
 	}
-	if o.MinDate != "" {
-		out.Append("minDate", o.MinDate)
+	if !o.MinDate.IsZero() {
+		out.Append("minDate", o.MinDate.As(sendDateAs("GetLogEntries", "minDate")))
 	}
-	if o.MaxDate != "" {
-		out.Append("maxDate", o.MaxDate)
+	if !o.MaxDate.IsZero() {
+		out.Append("maxDate", o.MaxDate.As(sendDateAs("GetLogEntries", "maxDate")))
 	}
 	if o.HasUserId != nil {
 		out.Append("hasUserId", strconv.FormatBool(*o.HasUserId))
@@ -119,7 +119,7 @@ func (o GetLogEntriesOptions) ToQuery() *client.QueryParams {
 		out.Append("type", o.Type)
 	}
 	if o.ItemId != "" {
-		out.Append("itemId", o.ItemId)
+		out.Append("itemId", string(o.ItemId))
 	}
 	if o.Username != "" {
 		out.Append("username", o.Username)

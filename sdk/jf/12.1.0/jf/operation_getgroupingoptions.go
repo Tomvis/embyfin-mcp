@@ -21,7 +21,7 @@ func (r GetGroupingOptionsResponse) Answered() bool { return r.Answer != nil }
 // GetGroupingOptionsOptions holds the query and header parameters of GetGroupingOptions.
 type GetGroupingOptionsOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -34,7 +34,7 @@ func (o GetGroupingOptionsOptions) ToHeaders() *client.Headers {
 func (o GetGroupingOptionsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

@@ -171,13 +171,13 @@ func (c *Client) remoteSearchJF(ctx context.Context, kind, itemID, name string, 
 	if kind == "Movie" {
 		var res jf.GetMovieRemoteSearchResultsResponse
 		res, err = c.jf.ItemLookup.GetMovieRemoteSearchResults(ctx, jf.MovieInfoRemoteSearchQuery{
-			ItemId: itemID, SearchInfo: &jf.MovieInfo{Name: name, Year: year, ProviderIds: ids},
+			ItemId: jf.ItemID(itemID), SearchInfo: &jf.MovieInfo{Name: name, Year: year, ProviderIds: ids},
 		})
 		results = res.Answer
 	} else {
 		var res jf.GetSeriesRemoteSearchResultsResponse
 		res, err = c.jf.ItemLookup.GetSeriesRemoteSearchResults(ctx, jf.SeriesInfoRemoteSearchQuery{
-			ItemId: itemID, SearchInfo: &jf.SeriesInfo{Name: name, Year: year, ProviderIds: ids},
+			ItemId: jf.ItemID(itemID), SearchInfo: &jf.SeriesInfo{Name: name, Year: year, ProviderIds: ids},
 		})
 		results = res.Answer
 	}
@@ -219,9 +219,9 @@ func (c *Client) ApplyRemoteSearchResult(ctx context.Context, itemID string, res
 		replace = []bool{true}
 	}
 	if c.isEmby() {
-		_, err = c.emby.ItemLookup.PostItemsRemoteSearchApplyById(ctx, itemID, remoteSearchResultToEmby(&result), replace...)
+		_, err = c.emby.ItemLookup.PostItemsRemoteSearchApplyById(ctx, emby.ItemID(itemID), remoteSearchResultToEmby(&result), replace...)
 	} else {
-		_, err = c.jf.ItemLookup.ApplySearchCriteria(ctx, itemID, remoteSearchResultToJF(&result), replace...)
+		_, err = c.jf.ItemLookup.ApplySearchCriteria(ctx, jf.ItemID(itemID), remoteSearchResultToJF(&result), replace...)
 	}
 	if err != nil {
 		return nil, err

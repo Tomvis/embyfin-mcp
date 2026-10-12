@@ -14,20 +14,20 @@ func TestOperationSendGeneralCommand(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.SendGeneralCommand(t.Context(), "p/sessionId", jf.GeneralCommandTypeMoveUp)
+	result, err := c.SendGeneralCommand(t.Context(), jf.SessionID("v-sessionId"), jf.GeneralCommandTypeMoveUp)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Sessions/p%2FsessionId/Command/MoveUp")
+	expectRequest(t, r, http.MethodPost, "/Sessions/v-sessionId/Command/MoveUp")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.SendGeneralCommand(t.Context(), "p/sessionId", jf.GeneralCommandTypeMoveUp)
+	result, err = c.SendGeneralCommand(t.Context(), jf.SessionID("v-sessionId"), jf.GeneralCommandTypeMoveUp)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

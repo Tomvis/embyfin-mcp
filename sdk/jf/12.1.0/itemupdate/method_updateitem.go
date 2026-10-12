@@ -13,7 +13,7 @@ import (
 )
 
 // UpdateItem calls POST /Items/{itemId}. Updates an item.
-func (c Client) UpdateItem(ctx context.Context, itemId string, input jf.BaseItemDto) (result jf.UpdateItemResponse, err error) {
+func (c Client) UpdateItem(ctx context.Context, itemId jf.ItemID, input jf.BaseItemDto) (result jf.UpdateItemResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) UpdateItem(ctx context.Context, itemId string, input jf.BaseItem
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "UpdateItem",
-		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

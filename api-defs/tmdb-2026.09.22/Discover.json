@@ -90,7 +90,7 @@
           "Field": "PrimaryReleaseDateGte",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -98,7 +98,7 @@
           "Field": "PrimaryReleaseDateLte",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -114,7 +114,7 @@
           "Field": "ReleaseDateGte",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -122,7 +122,7 @@
           "Field": "ReleaseDateLte",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -361,7 +361,7 @@
           "Field": "AirDateGte",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -369,7 +369,7 @@
           "Field": "AirDateLte",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -385,7 +385,7 @@
           "Field": "FirstAirDateGte",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -393,7 +393,7 @@
           "Field": "FirstAirDateLte",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -762,7 +762,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -846,7 +846,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {

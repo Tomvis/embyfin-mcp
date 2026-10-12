@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByIdImagesByTypeByIndex calls GET /Users/{Id}/Images/{Type}/{Index}. Requires authentication as user.
-func (c Client) GetUsersByIdImagesByTypeByIndex(ctx context.Context, id string, typeParam emby.ImageType, index int, options ...emby.GetUsersByIdImagesByTypeByIndexOptions) (result emby.GetUsersByIdImagesByTypeByIndexResponse, err error) {
+func (c Client) GetUsersByIdImagesByTypeByIndex(ctx context.Context, id emby.UserID, typeParam emby.ImageType, index int, options ...emby.GetUsersByIdImagesByTypeByIndexOptions) (result emby.GetUsersByIdImagesByTypeByIndexResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByIdImagesByTypeByIndex takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetUsersByIdImagesByTypeByIndex(ctx context.Context, id string, 
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetUsersByIdImagesByTypeByIndex",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Users/%s/Images/%s/%d", url.PathEscape(id), url.PathEscape(string(typeParam)), index),
+		Path:           fmt.Sprintf("/Users/%s/Images/%s/%d", url.PathEscape(string(id)), url.PathEscape(string(typeParam)), index),
 		StreamResponse: true,
 	}
 

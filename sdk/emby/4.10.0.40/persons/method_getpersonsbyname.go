@@ -13,7 +13,7 @@ import (
 )
 
 // GetPersonsByName calls GET /Persons/{Name}. Gets a person, by name.
-func (c Client) GetPersonsByName(ctx context.Context, name string, userId ...string) (result emby.GetPersonsByNameResponse, err error) {
+func (c Client) GetPersonsByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetPersonsByNameResponse, err error) {
 	var option emby.GetPersonsByNameOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetPersonsByName takes one userId at most, not %d", len(userId))

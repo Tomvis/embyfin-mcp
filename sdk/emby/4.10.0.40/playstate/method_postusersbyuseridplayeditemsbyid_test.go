@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -14,13 +15,13 @@ func TestOperationPostUsersByUserIdPlayedItemsById(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.PostUsersByUserIdPlayedItemsById(t.Context(), "p/userId", "p/id", "v-DatePlayed")
+	result, err := c.PostUsersByUserIdPlayedItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), "v-DatePlayed")
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Users/p%2FuserId/PlayedItems/p%2Fid")
+	expectRequest(t, r, http.MethodPost, "/Users/v-userId/PlayedItems/v-id")
 	expectQuery(t, r, "DatePlayed", "v-DatePlayed")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -37,7 +38,7 @@ func TestOperationPostUsersByUserIdPlayedItemsById(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), "p/userId", "p/id", "v-DatePlayed")
+	result, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), "v-DatePlayed")
 	if err != nil || result.Answer != nil || result.Answered() {
 		t.Errorf("a 204 = %v, answer %v, answered %t", err, result.Answer, result.Answered())
 	}
@@ -50,28 +51,28 @@ func TestOperationPostUsersByUserIdPlayedItemsById(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), "p/userId", "p/id", "v-DatePlayed")
+	result, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), "v-DatePlayed")
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), "p/userId", "p/id", "v-DatePlayed")
+	result, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), "v-DatePlayed")
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}
 
 	// the option may be left out, and then nothing is sent for it
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), "p/userId", "p/id"); err != nil {
+	if _, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
 	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("DatePlayed") != "" {
 		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("DatePlayed"))
 	}
 	// two values are refused before any request
-	if _, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), "p/userId", "p/id", "v-DatePlayed", "v-DatePlayed"); err == nil || len(s.requests) != 1 {
+	if _, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), "v-DatePlayed", "v-DatePlayed"); err == nil || len(s.requests) != 1 {
 		t.Errorf("two values = %v, %d requests", err, len(s.requests))
 	}
 }

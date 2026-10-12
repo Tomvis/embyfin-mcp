@@ -484,7 +484,8 @@
           "Name": "ItemId",
           "JsonName": "ItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -516,7 +517,8 @@
           "Name": "PrimaryImageItemId",
           "JsonName": "PrimaryImageItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {

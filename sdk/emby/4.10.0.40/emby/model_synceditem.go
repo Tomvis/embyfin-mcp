@@ -8,9 +8,9 @@ type SyncedItem struct {
 	Item               *BaseItemDto   `json:"Item,omitempty"`
 	OriginalFileName   string         `json:"OriginalFileName,omitempty"`
 	ServerId           string         `json:"ServerId,omitempty"`
-	SyncJobDateCreated string         `json:"SyncJobDateCreated,omitempty"`
+	SyncJobDateCreated Time           `json:"SyncJobDateCreated,omitzero"`
 	SyncJobId          int64          `json:"SyncJobId,omitempty"`
 	SyncJobItemId      int64          `json:"SyncJobItemId,omitempty"`
 	SyncJobName        string         `json:"SyncJobName,omitempty"`
-	UserId             string         `json:"UserId,omitempty"`
+	UserId             UserID         `json:"UserId,omitempty"`
 }

@@ -16,7 +16,7 @@ func TestOperationGetItemCounts(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetItemCounts(t.Context(), jf.GetItemCountsOptions{
-		UserId:     "v-UserId",
+		UserId:     jf.UserID("v-UserId"),
 		IsFavorite: new(true),
 	})
 	if err != nil {
@@ -43,7 +43,7 @@ func TestOperationGetItemCounts(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetItemCounts(t.Context(), jf.GetItemCountsOptions{
-		UserId:     "v-UserId",
+		UserId:     jf.UserID("v-UserId"),
 		IsFavorite: new(true),
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
@@ -53,7 +53,7 @@ func TestOperationGetItemCounts(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetItemCounts(t.Context(), jf.GetItemCountsOptions{
-		UserId:     "v-UserId",
+		UserId:     jf.UserID("v-UserId"),
 		IsFavorite: new(true),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {

@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -17,11 +18,11 @@ func TestOperationDiscoverTv(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.DiscoverTv(t.Context(), tmdb.DiscoverTvOptions{
-		AirDateGte:                 "v-AirDateGte",
-		AirDateLte:                 "v-AirDateLte",
+		AirDateGte:                 tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		AirDateLte:                 tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		FirstAirDateYear:           new(7),
-		FirstAirDateGte:            "v-FirstAirDateGte",
-		FirstAirDateLte:            "v-FirstAirDateLte",
+		FirstAirDateGte:            tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		FirstAirDateLte:            tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		IncludeAdult:               new(true),
 		IncludeNullFirstAirDates:   new(true),
 		Language:                   "v-Language",
@@ -57,11 +58,11 @@ func TestOperationDiscoverTv(t *testing.T) {
 	r, body := s.only(t)
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/3/discover/tv")
-	expectQuery(t, r, "air_date.gte", "v-AirDateGte")
-	expectQuery(t, r, "air_date.lte", "v-AirDateLte")
+	expectQuery(t, r, "air_date.gte", "2024-03-04")
+	expectQuery(t, r, "air_date.lte", "2024-03-04")
 	expectQuery(t, r, "first_air_date_year", "7")
-	expectQuery(t, r, "first_air_date.gte", "v-FirstAirDateGte")
-	expectQuery(t, r, "first_air_date.lte", "v-FirstAirDateLte")
+	expectQuery(t, r, "first_air_date.gte", "2024-03-04")
+	expectQuery(t, r, "first_air_date.lte", "2024-03-04")
 	expectQuery(t, r, "include_adult", "true")
 	expectQuery(t, r, "include_null_first_air_dates", "true")
 	expectQuery(t, r, "language", "v-Language")
@@ -106,11 +107,11 @@ func TestOperationDiscoverTv(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.DiscoverTv(t.Context(), tmdb.DiscoverTvOptions{
-		AirDateGte:                 "v-AirDateGte",
-		AirDateLte:                 "v-AirDateLte",
+		AirDateGte:                 tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		AirDateLte:                 tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		FirstAirDateYear:           new(7),
-		FirstAirDateGte:            "v-FirstAirDateGte",
-		FirstAirDateLte:            "v-FirstAirDateLte",
+		FirstAirDateGte:            tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		FirstAirDateLte:            tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		IncludeAdult:               new(true),
 		IncludeNullFirstAirDates:   new(true),
 		Language:                   "v-Language",
@@ -147,11 +148,11 @@ func TestOperationDiscoverTv(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.DiscoverTv(t.Context(), tmdb.DiscoverTvOptions{
-		AirDateGte:                 "v-AirDateGte",
-		AirDateLte:                 "v-AirDateLte",
+		AirDateGte:                 tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		AirDateLte:                 tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		FirstAirDateYear:           new(7),
-		FirstAirDateGte:            "v-FirstAirDateGte",
-		FirstAirDateLte:            "v-FirstAirDateLte",
+		FirstAirDateGte:            tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		FirstAirDateLte:            tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		IncludeAdult:               new(true),
 		IncludeNullFirstAirDates:   new(true),
 		Language:                   "v-Language",

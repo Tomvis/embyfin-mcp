@@ -6,7 +6,7 @@ package emby
 type LiveTvSeriesTimerInfo struct {
 	ChannelIds                       []string            `json:"ChannelIds,omitzero"`
 	Days                             []DayOfWeek         `json:"Days,omitzero"`
-	EndDate                          string              `json:"EndDate,omitempty"`
+	EndDate                          Time                `json:"EndDate,omitzero"`
 	Id                               string              `json:"Id,omitempty"`
 	IsPostPaddingRequired            *bool               `json:"IsPostPaddingRequired,omitempty"`
 	IsPrePaddingRequired             *bool               `json:"IsPrePaddingRequired,omitempty"`
@@ -25,10 +25,10 @@ type LiveTvSeriesTimerInfo struct {
 	ProviderIds                      map[string]string   `json:"ProviderIds,omitzero"`
 	RecordAnyTime                    *bool               `json:"RecordAnyTime,omitempty"`
 	RecordNewOnly                    *bool               `json:"RecordNewOnly,omitempty"`
-	SeriesId                         string              `json:"SeriesId,omitempty"`
+	SeriesId                         ItemID              `json:"SeriesId,omitempty"`
 	ServiceName                      string              `json:"ServiceName,omitempty"`
 	SkipEpisodesInLibrary            *bool               `json:"SkipEpisodesInLibrary,omitempty"`
-	StartDate                        string              `json:"StartDate,omitempty"`
+	StartDate                        Time                `json:"StartDate,omitzero"`
 	TimerType                        LiveTvTimerType     `json:"TimerType,omitempty"`
 }
 

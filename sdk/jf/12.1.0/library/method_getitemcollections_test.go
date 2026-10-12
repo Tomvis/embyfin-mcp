@@ -16,8 +16,8 @@ func TestOperationGetItemCollections(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetItemCollections(t.Context(), "p/itemId", jf.GetItemCollectionsOptions{
-		UserId:     "v-UserId",
+	result, err := c.GetItemCollections(t.Context(), jf.ItemID("v-itemId"), jf.GetItemCollectionsOptions{
+		UserId:     jf.UserID("v-UserId"),
 		StartIndex: new(7),
 		Limit:      new(7),
 		Fields:     []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
@@ -27,7 +27,7 @@ func TestOperationGetItemCollections(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2FitemId/Collections")
+	expectRequest(t, r, http.MethodGet, "/Items/v-itemId/Collections")
 	expectQuery(t, r, "userId", "v-UserId")
 	expectQuery(t, r, "startIndex", "7")
 	expectQuery(t, r, "limit", "7")
@@ -47,8 +47,8 @@ func TestOperationGetItemCollections(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetItemCollections(t.Context(), "p/itemId", jf.GetItemCollectionsOptions{
-		UserId:     "v-UserId",
+	result, err = c.GetItemCollections(t.Context(), jf.ItemID("v-itemId"), jf.GetItemCollectionsOptions{
+		UserId:     jf.UserID("v-UserId"),
 		StartIndex: new(7),
 		Limit:      new(7),
 		Fields:     []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
@@ -59,8 +59,8 @@ func TestOperationGetItemCollections(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetItemCollections(t.Context(), "p/itemId", jf.GetItemCollectionsOptions{
-		UserId:     "v-UserId",
+	result, err = c.GetItemCollections(t.Context(), jf.ItemID("v-itemId"), jf.GetItemCollectionsOptions{
+		UserId:     jf.UserID("v-UserId"),
 		StartIndex: new(7),
 		Limit:      new(7),
 		Fields:     []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
@@ -71,10 +71,10 @@ func TestOperationGetItemCollections(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.GetItemCollections(t.Context(), "p/itemId"); err != nil {
+	if _, err = c.GetItemCollections(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetItemCollections(t.Context(), "p/itemId", jf.GetItemCollectionsOptions{}, jf.GetItemCollectionsOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetItemCollections(t.Context(), jf.ItemID("v-itemId"), jf.GetItemCollectionsOptions{}, jf.GetItemCollectionsOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }
@@ -99,7 +99,7 @@ func TestOperationGetItemCollectionsComplete(t *testing.T) {
 			t.Parallel()
 
 			c, starts := pagedServer(t, "startIndex", "{}", tc.total, tc.pages)
-			result, err := c.GetItemCollectionsComplete(t.Context(), "p/itemId", tc.options)
+			result, err := c.GetItemCollectionsComplete(t.Context(), jf.ItemID("v-itemId"), tc.options)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -115,7 +115,7 @@ func TestOperationGetItemCollectionsEach(t *testing.T) {
 
 	c, starts := pagedServer(t, "startIndex", "{}", 0, 2)
 	n := 0
-	for _, err := range c.GetItemCollectionsEach(t.Context(), "p/itemId", jf.GetItemCollectionsOptions{Limit: new(1)}) {
+	for _, err := range c.GetItemCollectionsEach(t.Context(), jf.ItemID("v-itemId"), jf.GetItemCollectionsOptions{Limit: new(1)}) {
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -127,7 +127,7 @@ func TestOperationGetItemCollectionsEach(t *testing.T) {
 
 	// stopping after the first result asks for no page more
 	c, starts = pagedServer(t, "startIndex", "{}", 0, 2)
-	for range c.GetItemCollectionsEach(t.Context(), "p/itemId", jf.GetItemCollectionsOptions{Limit: new(1)}) {
+	for range c.GetItemCollectionsEach(t.Context(), jf.ItemID("v-itemId"), jf.GetItemCollectionsOptions{Limit: new(1)}) {
 		break
 	}
 	if len(*starts) != 1 {

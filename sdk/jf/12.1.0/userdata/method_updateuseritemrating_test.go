@@ -15,8 +15,8 @@ func TestOperationUpdateUserItemRating(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.UpdateUserItemRating(t.Context(), "p/itemId", jf.UpdateUserItemRatingOptions{
-		UserId: "v-UserId",
+	result, err := c.UpdateUserItemRating(t.Context(), jf.ItemID("v-itemId"), jf.UpdateUserItemRatingOptions{
+		UserId: jf.UserID("v-UserId"),
 		Likes:  new(true),
 	})
 	if err != nil {
@@ -24,7 +24,7 @@ func TestOperationUpdateUserItemRating(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/UserItems/p%2FitemId/Rating")
+	expectRequest(t, r, http.MethodPost, "/UserItems/v-itemId/Rating")
 	expectQuery(t, r, "userId", "v-UserId")
 	expectQuery(t, r, "likes", "true")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
@@ -42,8 +42,8 @@ func TestOperationUpdateUserItemRating(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.UpdateUserItemRating(t.Context(), "p/itemId", jf.UpdateUserItemRatingOptions{
-		UserId: "v-UserId",
+	result, err = c.UpdateUserItemRating(t.Context(), jf.ItemID("v-itemId"), jf.UpdateUserItemRatingOptions{
+		UserId: jf.UserID("v-UserId"),
 		Likes:  new(true),
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
@@ -52,8 +52,8 @@ func TestOperationUpdateUserItemRating(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.UpdateUserItemRating(t.Context(), "p/itemId", jf.UpdateUserItemRatingOptions{
-		UserId: "v-UserId",
+	result, err = c.UpdateUserItemRating(t.Context(), jf.ItemID("v-itemId"), jf.UpdateUserItemRatingOptions{
+		UserId: jf.UserID("v-UserId"),
 		Likes:  new(true),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
@@ -62,10 +62,10 @@ func TestOperationUpdateUserItemRating(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.UpdateUserItemRating(t.Context(), "p/itemId"); err != nil {
+	if _, err = c.UpdateUserItemRating(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.UpdateUserItemRating(t.Context(), "p/itemId", jf.UpdateUserItemRatingOptions{}, jf.UpdateUserItemRatingOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.UpdateUserItemRating(t.Context(), jf.ItemID("v-itemId"), jf.UpdateUserItemRatingOptions{}, jf.UpdateUserItemRatingOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

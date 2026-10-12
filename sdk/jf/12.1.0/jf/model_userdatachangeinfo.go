@@ -10,5 +10,5 @@ type UserDataChangeInfo struct {
 	UserDataList []UserItemDataDto `json:"UserDataList,omitzero"`
 
 	// Gets or sets the user id.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 }

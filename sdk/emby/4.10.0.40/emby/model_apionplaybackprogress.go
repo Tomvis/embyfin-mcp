@@ -8,6 +8,6 @@ type ApiOnPlaybackProgress struct {
 	PlaylistIndex     int            `json:"PlaylistIndex,omitempty"`
 	PlaylistLength    int            `json:"PlaylistLength,omitempty"`
 	Shuffle           *bool          `json:"Shuffle,omitempty"`
-	SleepTimerEndTime string         `json:"SleepTimerEndTime,omitempty"`
+	SleepTimerEndTime Time           `json:"SleepTimerEndTime,omitzero"`
 	SleepTimerMode    SleepTimerMode `json:"SleepTimerMode,omitempty"`
 }

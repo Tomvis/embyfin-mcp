@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdIndexBif calls GET /Videos/{Id}/index.bif. Requires authentication as user.
-func (c Client) GetVideosByIdIndexBif(ctx context.Context, id string, width int) (result emby.GetVideosByIdIndexBifResponse, err error) {
+func (c Client) GetVideosByIdIndexBif(ctx context.Context, id emby.ItemID, width int) (result emby.GetVideosByIdIndexBifResponse, err error) {
 	var option emby.GetVideosByIdIndexBifOptions
 	option.Width = &width
 
@@ -25,7 +25,7 @@ func (c Client) GetVideosByIdIndexBif(ctx context.Context, id string, width int)
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdIndexBif",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/index.bif", url.PathEscape(id)),
+		Path:           fmt.Sprintf("/Videos/%s/index.bif", url.PathEscape(string(id))),
 		StreamResponse: true,
 	}
 

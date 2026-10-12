@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByIdPolicy calls POST /Users/{Id}/Policy. Updates a user policy.
-func (c Client) PostUsersByIdPolicy(ctx context.Context, id string, input emby.UserPolicy) (result emby.PostUsersByIdPolicyResponse, err error) {
+func (c Client) PostUsersByIdPolicy(ctx context.Context, id emby.UserID, input emby.UserPolicy) (result emby.PostUsersByIdPolicyResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByIdPolicy(ctx context.Context, id string, input emby.U
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByIdPolicy",
-		Path:       fmt.Sprintf("/Users/%s/Policy", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Policy", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

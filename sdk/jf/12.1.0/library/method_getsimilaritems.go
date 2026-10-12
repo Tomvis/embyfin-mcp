@@ -13,7 +13,7 @@ import (
 )
 
 // GetSimilarItems calls GET /Items/{itemId}/Similar. Gets similar items.
-func (c Client) GetSimilarItems(ctx context.Context, itemId string, options ...jf.GetSimilarItemsOptions) (result jf.GetSimilarItemsResponse, err error) {
+func (c Client) GetSimilarItems(ctx context.Context, itemId jf.ItemID, options ...jf.GetSimilarItemsOptions) (result jf.GetSimilarItemsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetSimilarItems takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetSimilarItems(ctx context.Context, itemId string, options ...j
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetSimilarItems",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Similar", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/Similar", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

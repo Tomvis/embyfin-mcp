@@ -39,7 +39,7 @@ func (r GetPersonResponse) Record() (BaseItemDto, error) {
 // GetPersonOptions holds the query and header parameters of GetPerson.
 type GetPersonOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetPersonOptions) ToHeaders() *client.Headers {
 func (o GetPersonOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

@@ -18,7 +18,7 @@ func TestOperationGetLiveTvChannels(t *testing.T) {
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetLiveTvChannels(t.Context(), jf.GetLiveTvChannelsOptions{
 		Type:                  jf.ChannelTypeTV,
-		UserId:                "v-UserId",
+		UserId:                jf.UserID("v-UserId"),
 		StartIndex:            new(7),
 		IsMovie:               new(true),
 		IsSeries:              new(true),
@@ -83,7 +83,7 @@ func TestOperationGetLiveTvChannels(t *testing.T) {
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetLiveTvChannels(t.Context(), jf.GetLiveTvChannelsOptions{
 		Type:                  jf.ChannelTypeTV,
-		UserId:                "v-UserId",
+		UserId:                jf.UserID("v-UserId"),
 		StartIndex:            new(7),
 		IsMovie:               new(true),
 		IsSeries:              new(true),
@@ -112,7 +112,7 @@ func TestOperationGetLiveTvChannels(t *testing.T) {
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetLiveTvChannels(t.Context(), jf.GetLiveTvChannelsOptions{
 		Type:                  jf.ChannelTypeTV,
-		UserId:                "v-UserId",
+		UserId:                jf.UserID("v-UserId"),
 		StartIndex:            new(7),
 		IsMovie:               new(true),
 		IsSeries:              new(true),

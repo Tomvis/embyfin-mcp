@@ -39,7 +39,7 @@ func (r MarkFavoriteItemResponse) Record() (UserItemDataDto, error) {
 // MarkFavoriteItemOptions holds the query and header parameters of MarkFavoriteItem.
 type MarkFavoriteItemOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o MarkFavoriteItemOptions) ToHeaders() *client.Headers {
 func (o MarkFavoriteItemOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

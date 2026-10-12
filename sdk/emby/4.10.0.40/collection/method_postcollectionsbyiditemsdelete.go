@@ -13,7 +13,7 @@ import (
 )
 
 // PostCollectionsByIdItemsDelete calls POST /Collections/{Id}/Items/Delete. Removes items from a collection.
-func (c Client) PostCollectionsByIdItemsDelete(ctx context.Context, id string, ids string) (result emby.PostCollectionsByIdItemsDeleteResponse, err error) {
+func (c Client) PostCollectionsByIdItemsDelete(ctx context.Context, id emby.ItemID, ids []emby.ItemID) (result emby.PostCollectionsByIdItemsDeleteResponse, err error) {
 	var option emby.PostCollectionsByIdItemsDeleteOptions
 	option.Ids = ids
 
@@ -25,7 +25,7 @@ func (c Client) PostCollectionsByIdItemsDelete(ctx context.Context, id string, i
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostCollectionsByIdItemsDelete",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Collections/%s/Items/Delete", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Collections/%s/Items/Delete", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

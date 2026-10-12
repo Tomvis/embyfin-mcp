@@ -13,7 +13,7 @@ import (
 )
 
 // GetAncestors calls GET /Items/{itemId}/Ancestors. Gets all parents of an item.
-func (c Client) GetAncestors(ctx context.Context, itemId string, userId ...string) (result jf.GetAncestorsResponse, err error) {
+func (c Client) GetAncestors(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetAncestorsResponse, err error) {
 	var option jf.GetAncestorsOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetAncestors takes one userId at most, not %d", len(userId))
@@ -30,7 +30,7 @@ func (c Client) GetAncestors(ctx context.Context, itemId string, userId ...strin
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetAncestors",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Ancestors", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/Ancestors", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

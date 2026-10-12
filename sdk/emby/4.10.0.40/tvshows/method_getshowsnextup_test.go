@@ -17,12 +17,12 @@ func TestOperationGetShowsNextUp(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetShowsNextUp(t.Context(), emby.GetShowsNextUpOptions{
-		UserId:           "v-UserId",
+		UserId:           emby.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           "v-Fields",
-		SeriesId:         "v-SeriesId",
-		ParentId:         "v-ParentId",
+		SeriesId:         emby.ItemID("v-SeriesId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: "v-EnableImageTypes",
@@ -62,12 +62,12 @@ func TestOperationGetShowsNextUp(t *testing.T) {
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
 	result, err = c.GetShowsNextUp(t.Context(), emby.GetShowsNextUpOptions{
-		UserId:           "v-UserId",
+		UserId:           emby.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           "v-Fields",
-		SeriesId:         "v-SeriesId",
-		ParentId:         "v-ParentId",
+		SeriesId:         emby.ItemID("v-SeriesId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: "v-EnableImageTypes",
@@ -87,12 +87,12 @@ func TestOperationGetShowsNextUp(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetShowsNextUp(t.Context(), emby.GetShowsNextUpOptions{
-		UserId:           "v-UserId",
+		UserId:           emby.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           "v-Fields",
-		SeriesId:         "v-SeriesId",
-		ParentId:         "v-ParentId",
+		SeriesId:         emby.ItemID("v-SeriesId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: "v-EnableImageTypes",
@@ -106,12 +106,12 @@ func TestOperationGetShowsNextUp(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetShowsNextUp(t.Context(), emby.GetShowsNextUpOptions{
-		UserId:           "v-UserId",
+		UserId:           emby.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           "v-Fields",
-		SeriesId:         "v-SeriesId",
-		ParentId:         "v-ParentId",
+		SeriesId:         emby.ItemID("v-SeriesId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: "v-EnableImageTypes",

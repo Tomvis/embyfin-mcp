@@ -7,7 +7,7 @@ package jf
 // Class SessionUserInfo.
 type SessionUserInfo struct {
 	// Gets or sets the user identifier.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 
 	// Gets or sets the name of the user.
 	UserName string `json:"UserName,omitempty"`

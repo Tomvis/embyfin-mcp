@@ -12,7 +12,7 @@ import (
 )
 
 // GetGroupingOptions calls GET /UserViews/GroupingOptions. Get user view grouping options.
-func (c Client) GetGroupingOptions(ctx context.Context, userId ...string) (result jf.GetGroupingOptionsResponse, err error) {
+func (c Client) GetGroupingOptions(ctx context.Context, userId ...jf.UserID) (result jf.GetGroupingOptionsResponse, err error) {
 	var option jf.GetGroupingOptionsOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetGroupingOptions takes one userId at most, not %d", len(userId))

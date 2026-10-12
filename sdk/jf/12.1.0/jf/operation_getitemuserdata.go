@@ -39,7 +39,7 @@ func (r GetItemUserDataResponse) Record() (UserItemDataDto, error) {
 // GetItemUserDataOptions holds the query and header parameters of GetItemUserData.
 type GetItemUserDataOptions struct {
 	// The user id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetItemUserDataOptions) ToHeaders() *client.Headers {
 func (o GetItemUserDataOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // UploadSubtitle calls POST /Videos/{itemId}/Subtitles. Upload an external subtitle file.
-func (c Client) UploadSubtitle(ctx context.Context, itemId string, input jf.UploadSubtitleDto) (result jf.UploadSubtitleResponse, err error) {
+func (c Client) UploadSubtitle(ctx context.Context, itemId jf.ItemID, input jf.UploadSubtitleDto) (result jf.UploadSubtitleResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) UploadSubtitle(ctx context.Context, itemId string, input jf.Uplo
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "UploadSubtitle",
-		Path:       fmt.Sprintf("/Videos/%s/Subtitles", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Videos/%s/Subtitles", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

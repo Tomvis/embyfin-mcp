@@ -76,17 +76,23 @@ func TestJFReadSweep(t *testing.T) {
 	}
 
 	// a playlist to read, and one of music for the mix made from a playlist
-	created := sdkacc.Must(jfc.Playlist.CreatePlaylist(ctx, jf.CreatePlaylistDto{Name: "SDK Sweep", Ids: []string{movie.Id}, MediaType: jf.MediaTypeVideo, UserId: adminID})).Answer
-	sdkacc.RemoveLater(t, "deleting the playlist", func() error { _, err := jfc.Library.DeleteItem(context.WithoutCancel(ctx), created.Id); return err })
-	music := sdkacc.Must(jfc.Playlist.CreatePlaylist(ctx, jf.CreatePlaylistDto{Name: "SDK Sweep Music", Ids: []string{song.Id}, MediaType: jf.MediaTypeAudio, UserId: adminID})).Answer
-	sdkacc.RemoveLater(t, "deleting the music playlist", func() error { _, err := jfc.Library.DeleteItem(context.WithoutCancel(ctx), music.Id); return err })
+	created := sdkacc.Must(jfc.Playlist.CreatePlaylist(ctx, jf.CreatePlaylistDto{Name: "SDK Sweep", Ids: []jf.ItemID{movie.Id}, MediaType: jf.MediaTypeVideo, UserId: adminID})).Answer
+	sdkacc.RemoveLater(t, "deleting the playlist", func() error {
+		_, err := jfc.Library.DeleteItem(context.WithoutCancel(ctx), jf.ItemID(created.Id))
+		return err
+	})
+	music := sdkacc.Must(jfc.Playlist.CreatePlaylist(ctx, jf.CreatePlaylistDto{Name: "SDK Sweep Music", Ids: []jf.ItemID{song.Id}, MediaType: jf.MediaTypeAudio, UserId: adminID})).Answer
+	sdkacc.RemoveLater(t, "deleting the music playlist", func() error {
+		_, err := jfc.Library.DeleteItem(context.WithoutCancel(ctx), jf.ItemID(music.Id))
+		return err
+	})
 	// and a collection holding the film, once its member has landed (a scan's
 	// refresh can write over it; see TestJFCollections)
 	jfScanIdle(ctx, t)
-	collection := sdkacc.Must(jfc.Collection.CreateCollection(ctx, jf.CreateCollectionOptions{Name: "SDK Sweep", Ids: []string{movie.Id}})).Answer.Id
+	collection := sdkacc.Must(jfc.Collection.CreateCollection(ctx, jf.CreateCollectionOptions{Name: "SDK Sweep", Ids: []jf.ItemID{movie.Id}})).Answer.Id
 	t.Cleanup(func() { jfDeleteCollection(context.WithoutCancel(ctx), t, collection) })
 	if !sdkacc.Poll(sdkacc.EditPatience, func() bool {
-		res := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{ParentId: collection, UserId: adminID})).Answer
+		res := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{ParentId: jf.ItemID(collection), UserId: adminID})).Answer
 		return len(res.Items) == 1 && res.Items[0].Id == movie.Id
 	}) {
 		t.Fatalf("the sweep's collection never held %s", sdkacc.Alien)
@@ -94,12 +100,12 @@ func TestJFReadSweep(t *testing.T) {
 
 	fixtures := sweep.Fixtures{
 		Path: map[string]string{
-			"itemId":               movie.Id,
-			"userId":               adminID,
-			"seriesId":             series.Id,
+			"itemId":               string(movie.Id),
+			"userId":               string(adminID),
+			"seriesId":             string(series.Id),
 			"playlistId":           created.Id,
 			"Playlists/itemId":     created.Id,
-			"taskId":               jfScanTask(ctx, t).Id,
+			"taskId":               string(jfScanTask(ctx, t).Id),
 			"pluginId":             plugins[0].Id,
 			"version":              plugins[0].Version,
 			"displayPreferencesId": "usersettings",
@@ -108,13 +114,13 @@ func TestJFReadSweep(t *testing.T) {
 			"Genres/genreName":     "Science Fiction",
 			"Genres/name":          "Science Fiction",
 			"Studios/name":         studios[0].Name,
-			"Albums/itemId":        album.Id,
-			"Artists/itemId":       musicArtists[0].Id,
+			"Albums/itemId":        string(album.Id),
+			"Artists/itemId":       string(musicArtists[0].Id),
 			"Artists/name":         musicArtists[0].Name,
-			"Songs/itemId":         song.Id,
+			"Songs/itemId":         string(song.Id),
 			// the track with the .lrc beside it, so the lyric read has
 			// something to answer with
-			"Audio/itemId":          jfSong(t, musicID, sdkacc.LyricTrack).Id,
+			"Audio/itemId":          string(jfSong(t, musicID, sdkacc.LyricTrack).Id),
 			"MusicGenres/genreName": musicGenre.Name,
 			"MusicGenres/name":      musicGenre.Name,
 			"year":                  "1982",
@@ -127,7 +133,7 @@ func TestJFReadSweep(t *testing.T) {
 			"percentPlayed":         "0",
 			"unplayedCount":         "0",
 			"container":             "mp4",
-			"mediaSourceId":         item.MediaSources[0].Id,
+			"mediaSourceId":         string(item.MediaSources[0].Id),
 			"language":              "eng",
 		},
 		Options: map[string]string{
@@ -136,11 +142,11 @@ func TestJFReadSweep(t *testing.T) {
 			"path":          "/media",
 			"searchTerm":    sdkacc.Alien,
 			"id":            devices[0].Id,
-			"mediaSourceId": item.MediaSources[0].Id,
+			"mediaSourceId": string(item.MediaSources[0].Id),
 		},
 		// an API key acts as no user, and Jellyfin answers 400 to a
 		// user-scoped read that does not name one
-		Always: map[string]string{"userId": adminID},
+		Always: map[string]string{"userId": string(adminID)},
 	}
 
 	cases := maps.Clone(jfSweepCases)
@@ -153,15 +159,15 @@ func TestJFReadSweep(t *testing.T) {
 	cases["GetInstantMixFromMusicGenreById"] = sweep.Case{Options: map[string]any{"Id": musicGenre.Id}}
 	// a mix is made from music, and an album is like another by its
 	// artist's other album
-	cases["GetInstantMixFromItem"] = sweep.Case{Path: map[string]string{"itemId": album.Id}}
+	cases["GetInstantMixFromItem"] = sweep.Case{Path: map[string]string{"itemId": string(album.Id)}}
 	cases["GetInstantMixFromPlaylist"] = sweep.Case{Path: map[string]string{"itemId": music.Id}}
-	cases["GetSimilarAlbums"] = sweep.Case{Path: map[string]string{"itemId": jfAlbum(t, musicID, sdkacc.DarkSide).Id}}
+	cases["GetSimilarAlbums"] = sweep.Case{Path: map[string]string{"itemId": string(jfAlbum(t, musicID, sdkacc.DarkSide).Id)}}
 	// the subtitle routes read the film with one
-	subtitle := map[string]string{"routeItemId": subtitled.Id, "routeMediaSourceId": subtitled.MediaSources[0].Id, "routeIndex": srtIndex, "routeFormat": "srt", "routeStartPositionTicks": "0"}
+	subtitle := map[string]string{"routeItemId": string(subtitled.Id), "routeMediaSourceId": string(subtitled.MediaSources[0].Id), "routeIndex": srtIndex, "routeFormat": "srt", "routeStartPositionTicks": "0"}
 	cases["GetSubtitle"] = sweep.Case{Path: subtitle}
 	cases["GetSubtitleWithTicks"] = sweep.Case{Path: subtitle}
 	cases["GetSubtitlePlaylist"] = sweep.Case{
-		Path:    map[string]string{"itemId": subtitled.Id, "mediaSourceId": subtitled.MediaSources[0].Id, "index": srtIndex},
+		Path:    map[string]string{"itemId": string(subtitled.Id), "mediaSourceId": string(subtitled.MediaSources[0].Id), "index": srtIndex},
 		Options: map[string]any{"SegmentLength": 30},
 	}
 	// a package from the catalogue, and the TMDb plugin's settings (the

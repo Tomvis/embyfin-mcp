@@ -17,7 +17,7 @@ type PostUsersByUserIdPlayingItemsByIdDeleteResponse struct {
 // PostUsersByUserIdPlayingItemsByIdDeleteOptions holds the query and header parameters of PostUsersByUserIdPlayingItemsByIdDelete.
 type PostUsersByUserIdPlayingItemsByIdDeleteOptions struct {
 	// The id of the MediaSource
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// The next media type that will play
 	NextMediaType string
@@ -38,7 +38,7 @@ func (o PostUsersByUserIdPlayingItemsByIdDeleteOptions) ToHeaders() *client.Head
 func (o PostUsersByUserIdPlayingItemsByIdDeleteOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.MediaSourceId != "" {
-		out.Append("MediaSourceId", o.MediaSourceId)
+		out.Append("MediaSourceId", string(o.MediaSourceId))
 	}
 	if o.NextMediaType != "" {
 		out.Append("NextMediaType", o.NextMediaType)

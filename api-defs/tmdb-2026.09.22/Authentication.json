@@ -158,7 +158,7 @@
           "Name": "ExpiresAt",
           "JsonName": "expires_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -184,7 +184,7 @@
           "Name": "ExpiresAt",
           "JsonName": "expires_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -229,7 +229,7 @@
           "Name": "ExpiresAt",
           "JsonName": "expires_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

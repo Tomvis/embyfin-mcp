@@ -13,7 +13,7 @@ import (
 )
 
 // GetThemeMedia calls GET /Items/{itemId}/ThemeMedia. Get theme songs and videos for an item.
-func (c Client) GetThemeMedia(ctx context.Context, itemId string, options ...jf.GetThemeMediaOptions) (result jf.GetThemeMediaResponse, err error) {
+func (c Client) GetThemeMedia(ctx context.Context, itemId jf.ItemID, options ...jf.GetThemeMediaOptions) (result jf.GetThemeMediaResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetThemeMedia takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetThemeMedia(ctx context.Context, itemId string, options ...jf.
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetThemeMedia",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/ThemeMedia", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/ThemeMedia", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

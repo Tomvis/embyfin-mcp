@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByUserIdItemsById calls GET /Users/{UserId}/Items/{Id}. Gets an item from a user's library.
-func (c Client) GetUsersByUserIdItemsById(ctx context.Context, userId string, id string) (result emby.GetUsersByUserIdItemsByIdResponse, err error) {
+func (c Client) GetUsersByUserIdItemsById(ctx context.Context, userId emby.UserID, id emby.ItemID) (result emby.GetUsersByUserIdItemsByIdResponse, err error) {
 	result.BaseItemDto = &emby.BaseItemDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetUsersByUserIdItemsById(ctx context.Context, userId string, id
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetUsersByUserIdItemsById",
-		Path:       fmt.Sprintf("/Users/%s/Items/%s", url.PathEscape(userId), url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Items/%s", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

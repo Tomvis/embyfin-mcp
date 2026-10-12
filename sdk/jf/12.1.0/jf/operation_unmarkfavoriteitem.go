@@ -39,7 +39,7 @@ func (r UnmarkFavoriteItemResponse) Record() (UserItemDataDto, error) {
 // UnmarkFavoriteItemOptions holds the query and header parameters of UnmarkFavoriteItem.
 type UnmarkFavoriteItemOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o UnmarkFavoriteItemOptions) ToHeaders() *client.Headers {
 func (o UnmarkFavoriteItemOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

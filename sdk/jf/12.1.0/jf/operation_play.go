@@ -20,13 +20,13 @@ type PlayOptions struct {
 	PlayCommand PlayCommand
 
 	// The ids of the items to play, comma delimited.
-	ItemIds []string
+	ItemIds []ItemID
 
 	// The starting position of the first item.
 	StartPositionTicks *int64
 
 	// Optional. The media source id.
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// Optional. The index of the audio stream to play.
 	AudioStreamIndex *int
@@ -51,13 +51,13 @@ func (o PlayOptions) ToQuery() *client.QueryParams {
 		out.Append("playCommand", string(o.PlayCommand))
 	}
 	for _, v := range o.ItemIds {
-		out.Append("itemIds", v)
+		out.Append("itemIds", string(v))
 	}
 	if o.StartPositionTicks != nil {
 		out.Append("startPositionTicks", strconv.FormatInt(*o.StartPositionTicks, 10))
 	}
 	if o.MediaSourceId != "" {
-		out.Append("mediaSourceId", o.MediaSourceId)
+		out.Append("mediaSourceId", string(o.MediaSourceId))
 	}
 	if o.AudioStreamIndex != nil {
 		out.Append("audioStreamIndex", strconv.Itoa(*o.AudioStreamIndex))

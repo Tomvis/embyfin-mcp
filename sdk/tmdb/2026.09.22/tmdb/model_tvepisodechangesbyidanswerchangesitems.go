@@ -6,6 +6,6 @@ package tmdb
 type TvEpisodeChangesByIdAnswerChangesItems struct {
 	Action string `json:"action,omitempty"`
 	Id     string `json:"id,omitempty"`
-	Time   string `json:"time,omitempty"`
+	Time   Time   `json:"time,omitzero"`
 	Value  any    `json:"value,omitempty"`
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // MarkUnplayedItem calls DELETE /UserPlayedItems/{itemId}. Marks an item as unplayed for user.
-func (c Client) MarkUnplayedItem(ctx context.Context, itemId string, userId ...string) (result jf.MarkUnplayedItemResponse, err error) {
+func (c Client) MarkUnplayedItem(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.MarkUnplayedItemResponse, err error) {
 	var option jf.MarkUnplayedItemOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("MarkUnplayedItem takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) MarkUnplayedItem(ctx context.Context, itemId string, userId ...s
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "MarkUnplayedItem",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/UserPlayedItems/%s", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/UserPlayedItems/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

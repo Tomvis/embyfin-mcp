@@ -22,13 +22,13 @@ type UserDto struct {
 	HasPassword *bool `json:"HasPassword,omitempty"`
 
 	// Gets or sets the id.
-	Id string `json:"Id,omitempty"`
+	Id UserID `json:"Id,omitempty"`
 
 	// Gets or sets the last activity date.
-	LastActivityDate string `json:"LastActivityDate,omitempty"`
+	LastActivityDate Time `json:"LastActivityDate,omitzero"`
 
 	// Gets or sets the last login date.
-	LastLoginDate string `json:"LastLoginDate,omitempty"`
+	LastLoginDate Time `json:"LastLoginDate,omitzero"`
 
 	// Gets or sets the name.
 	Name string `json:"Name,omitempty"`
@@ -54,4 +54,4 @@ type UserDto struct {
 func (m UserDto) GetName() string { return m.Name }
 
 // GetId is the record's Id, for code that handles records of several types alike.
-func (m UserDto) GetId() string { return m.Id }
+func (m UserDto) GetId() UserID { return m.Id }

@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdImages calls GET /Items/{Id}/Images. Gets information about an item's images.
-func (c Client) GetItemsByIdImages(ctx context.Context, id string) (result emby.GetItemsByIdImagesResponse, err error) {
+func (c Client) GetItemsByIdImages(ctx context.Context, id emby.ItemID) (result emby.GetItemsByIdImagesResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) GetItemsByIdImages(ctx context.Context, id string) (result emby.
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetItemsByIdImages",
-		Path:       fmt.Sprintf("/Items/%s/Images", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/Images", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

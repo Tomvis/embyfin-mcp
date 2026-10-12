@@ -21,7 +21,7 @@ func (r GetSpecialFeaturesResponse) Answered() bool { return r.Answer != nil }
 // GetSpecialFeaturesOptions holds the query and header parameters of GetSpecialFeatures.
 type GetSpecialFeaturesOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -34,7 +34,7 @@ func (o GetSpecialFeaturesOptions) ToHeaders() *client.Headers {
 func (o GetSpecialFeaturesOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

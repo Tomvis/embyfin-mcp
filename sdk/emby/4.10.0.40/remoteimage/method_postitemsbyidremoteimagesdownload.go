@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdRemoteImagesDownload calls POST /Items/{Id}/RemoteImages/Download. Downloads a remote image for an item.
-func (c Client) PostItemsByIdRemoteImagesDownload(ctx context.Context, id string, input emby.ImagesBaseDownloadRemoteImage, options emby.PostItemsByIdRemoteImagesDownloadOptions) (result emby.PostItemsByIdRemoteImagesDownloadResponse, err error) {
+func (c Client) PostItemsByIdRemoteImagesDownload(ctx context.Context, id emby.ItemID, input emby.ImagesBaseDownloadRemoteImage, options emby.PostItemsByIdRemoteImagesDownloadOptions) (result emby.PostItemsByIdRemoteImagesDownloadResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -23,7 +23,7 @@ func (c Client) PostItemsByIdRemoteImagesDownload(ctx context.Context, id string
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostItemsByIdRemoteImagesDownload",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Items/%s/RemoteImages/Download", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/RemoteImages/Download", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

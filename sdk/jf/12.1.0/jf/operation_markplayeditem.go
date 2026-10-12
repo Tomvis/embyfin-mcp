@@ -39,10 +39,10 @@ func (r MarkPlayedItemResponse) Record() (UserItemDataDto, error) {
 // MarkPlayedItemOptions holds the query and header parameters of MarkPlayedItem.
 type MarkPlayedItemOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Optional. The date the item was played.
-	DatePlayed string
+	DatePlayed Time
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -55,10 +55,10 @@ func (o MarkPlayedItemOptions) ToHeaders() *client.Headers {
 func (o MarkPlayedItemOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
-	if o.DatePlayed != "" {
-		out.Append("datePlayed", o.DatePlayed)
+	if !o.DatePlayed.IsZero() {
+		out.Append("datePlayed", o.DatePlayed.As(sendDateAs("MarkPlayedItem", "datePlayed")))
 	}
 	return &out
 }

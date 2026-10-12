@@ -4,8 +4,8 @@ package emby
 
 // LogFile is the "LogFile" schema.
 type LogFile struct {
-	DateCreated  string `json:"DateCreated,omitempty"`
-	DateModified string `json:"DateModified,omitempty"`
+	DateCreated  Time   `json:"DateCreated,omitzero"`
+	DateModified Time   `json:"DateModified,omitzero"`
 	Name         string `json:"Name,omitempty"`
 	Size         int64  `json:"Size,omitempty"`
 }

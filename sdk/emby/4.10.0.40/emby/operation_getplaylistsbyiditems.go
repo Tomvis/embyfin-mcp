@@ -40,7 +40,7 @@ func (r GetPlaylistsByIdItemsResponse) Record() (QueryResultBaseItemDto, error) 
 // GetPlaylistsByIdItemsOptions holds the query and header parameters of GetPlaylistsByIdItems.
 type GetPlaylistsByIdItemsOptions struct {
 	// User Id
-	UserId string
+	UserId UserID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -62,6 +62,11 @@ type GetPlaylistsByIdItemsOptions struct {
 
 	// Optional. The image types to include in the output.
 	EnableImageTypes string
+
+	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	FieldsList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -74,7 +79,7 @@ func (o GetPlaylistsByIdItemsOptions) ToHeaders() *client.Headers {
 func (o GetPlaylistsByIdItemsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("StartIndex", strconv.Itoa(*o.StartIndex))
@@ -96,6 +101,9 @@ func (o GetPlaylistsByIdItemsOptions) ToQuery() *client.QueryParams {
 	}
 	if o.EnableImageTypes != "" {
 		out.Append("EnableImageTypes", o.EnableImageTypes)
+	}
+	if len(o.FieldsList) > 0 {
+		out.Append("Fields", client.CSV(o.FieldsList))
 	}
 	return &out
 }

@@ -4,9 +4,9 @@ package emby
 
 // PlayRequest is the "PlayRequest" schema.
 type PlayRequest struct {
-	AudioStreamIndex    int    `json:"AudioStreamIndex,omitempty"`
-	ControllingUserId   string `json:"ControllingUserId,omitempty"`
-	MediaSourceId       string `json:"MediaSourceId,omitempty"`
-	StartIndex          int    `json:"StartIndex,omitempty"`
-	SubtitleStreamIndex int    `json:"SubtitleStreamIndex,omitempty"`
+	AudioStreamIndex    int           `json:"AudioStreamIndex,omitempty"`
+	ControllingUserId   UserID        `json:"ControllingUserId,omitempty"`
+	MediaSourceId       MediaSourceID `json:"MediaSourceId,omitempty"`
+	StartIndex          int           `json:"StartIndex,omitempty"`
+	SubtitleStreamIndex int           `json:"SubtitleStreamIndex,omitempty"`
 }

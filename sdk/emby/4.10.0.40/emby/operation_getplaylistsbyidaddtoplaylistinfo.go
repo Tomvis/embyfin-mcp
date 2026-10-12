@@ -39,10 +39,10 @@ func (r GetPlaylistsByIdAddToPlaylistInfoResponse) Record() (PlaylistsAddToPlayl
 // GetPlaylistsByIdAddToPlaylistInfoOptions holds the query and header parameters of GetPlaylistsByIdAddToPlaylistInfo.
 type GetPlaylistsByIdAddToPlaylistInfoOptions struct {
 	// User Id
-	UserId string
+	UserId UserID
 
 	// Item id, comma delimited
-	Ids string
+	Ids []ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -55,10 +55,10 @@ func (o GetPlaylistsByIdAddToPlaylistInfoOptions) ToHeaders() *client.Headers {
 func (o GetPlaylistsByIdAddToPlaylistInfoOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
-	if o.Ids != "" {
-		out.Append("Ids", o.Ids)
+	if len(o.Ids) > 0 {
+		out.Append("Ids", client.Joined(o.Ids))
 	}
 	return &out
 }

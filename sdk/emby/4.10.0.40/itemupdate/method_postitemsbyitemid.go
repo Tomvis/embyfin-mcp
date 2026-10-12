@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByItemId calls POST /Items/{ItemId}. Updates an item.
-func (c Client) PostItemsByItemId(ctx context.Context, itemId string, input emby.BaseItemDto) (result emby.PostItemsByItemIdResponse, err error) {
+func (c Client) PostItemsByItemId(ctx context.Context, itemId emby.ItemID, input emby.BaseItemDto) (result emby.PostItemsByItemIdResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostItemsByItemId(ctx context.Context, itemId string, input emby
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostItemsByItemId",
-		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

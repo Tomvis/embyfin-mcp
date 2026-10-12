@@ -16,7 +16,7 @@ func TestOperationGetUsersByIdImagesByTypeByIndex(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "image/png", "file bytes")
-	result, err := c.GetUsersByIdImagesByTypeByIndex(t.Context(), "p/id", emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{
+	result, err := c.GetUsersByIdImagesByTypeByIndex(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{
 		MaxWidth:             new(7),
 		MaxHeight:            new(7),
 		Width:                new(7),
@@ -36,7 +36,7 @@ func TestOperationGetUsersByIdImagesByTypeByIndex(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Users/p%2Fid/Images/Primary/7")
+	expectRequest(t, r, http.MethodGet, "/Users/v-id/Images/Primary/7")
 	expectQuery(t, r, "MaxWidth", "7")
 	expectQuery(t, r, "MaxHeight", "7")
 	expectQuery(t, r, "Width", "7")
@@ -63,7 +63,7 @@ func TestOperationGetUsersByIdImagesByTypeByIndex(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
-	result, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), "p/id", emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{
+	result, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{
 		MaxWidth:             new(7),
 		MaxHeight:            new(7),
 		Width:                new(7),
@@ -85,7 +85,7 @@ func TestOperationGetUsersByIdImagesByTypeByIndex(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
-	result, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), "p/id", emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{
+	result, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{
 		MaxWidth:             new(7),
 		MaxHeight:            new(7),
 		Width:                new(7),
@@ -119,7 +119,7 @@ func TestOperationGetUsersByIdImagesByTypeByIndex(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), "p/id", emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{
+	result, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{
 		MaxWidth:             new(7),
 		MaxHeight:            new(7),
 		Width:                new(7),
@@ -140,10 +140,10 @@ func TestOperationGetUsersByIdImagesByTypeByIndex(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "image/png", "file bytes")
-	if _, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), "p/id", emby.ImageTypePrimary, 7); err != nil {
+	if _, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, 7); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), "p/id", emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{}, emby.GetUsersByIdImagesByTypeByIndexOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetUsersByIdImagesByTypeByIndex(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, 7, emby.GetUsersByIdImagesByTypeByIndexOptions{}, emby.GetUsersByIdImagesByTypeByIndexOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

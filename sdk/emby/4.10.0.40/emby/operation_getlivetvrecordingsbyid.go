@@ -39,7 +39,7 @@ func (r GetLiveTvRecordingsByIdResponse) Record() (BaseItemDto, error) {
 // GetLiveTvRecordingsByIdOptions holds the query and header parameters of GetLiveTvRecordingsById.
 type GetLiveTvRecordingsByIdOptions struct {
 	// Optional attach user data.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetLiveTvRecordingsByIdOptions) ToHeaders() *client.Headers {
 func (o GetLiveTvRecordingsByIdOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

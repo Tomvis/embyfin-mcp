@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
@@ -19,7 +20,7 @@ func TestOperationGetSystemActivityLogEntries(t *testing.T) {
 	result, err := c.GetSystemActivityLogEntries(t.Context(), emby.GetSystemActivityLogEntriesOptions{
 		StartIndex: new(7),
 		Limit:      new(7),
-		MinDate:    "v-MinDate",
+		MinDate:    emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -29,7 +30,7 @@ func TestOperationGetSystemActivityLogEntries(t *testing.T) {
 	expectRequest(t, r, http.MethodGet, "/System/ActivityLog/Entries")
 	expectQuery(t, r, "StartIndex", "7")
 	expectQuery(t, r, "Limit", "7")
-	expectQuery(t, r, "MinDate", "v-MinDate")
+	expectQuery(t, r, "MinDate", "2024-03-04T05:06:07.0000000Z")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
@@ -48,7 +49,7 @@ func TestOperationGetSystemActivityLogEntries(t *testing.T) {
 	result, err = c.GetSystemActivityLogEntries(t.Context(), emby.GetSystemActivityLogEntriesOptions{
 		StartIndex: new(7),
 		Limit:      new(7),
-		MinDate:    "v-MinDate",
+		MinDate:    emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if err != nil || result.Answer != nil || result.Answered() {
 		t.Errorf("a 204 = %v, answer %v, answered %t", err, result.Answer, result.Answered())
@@ -65,7 +66,7 @@ func TestOperationGetSystemActivityLogEntries(t *testing.T) {
 	result, err = c.GetSystemActivityLogEntries(t.Context(), emby.GetSystemActivityLogEntriesOptions{
 		StartIndex: new(7),
 		Limit:      new(7),
-		MinDate:    "v-MinDate",
+		MinDate:    emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -76,7 +77,7 @@ func TestOperationGetSystemActivityLogEntries(t *testing.T) {
 	result, err = c.GetSystemActivityLogEntries(t.Context(), emby.GetSystemActivityLogEntriesOptions{
 		StartIndex: new(7),
 		Limit:      new(7),
-		MinDate:    "v-MinDate",
+		MinDate:    emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

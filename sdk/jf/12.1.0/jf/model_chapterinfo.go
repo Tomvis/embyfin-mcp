@@ -6,7 +6,7 @@ package jf
 //
 // Class ChapterInfo.
 type ChapterInfo struct {
-	ImageDateModified string `json:"ImageDateModified,omitempty"`
+	ImageDateModified Time `json:"ImageDateModified,omitzero"`
 
 	// Gets or sets the image path.
 	ImagePath string `json:"ImagePath,omitempty"`

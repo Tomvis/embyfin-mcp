@@ -16,7 +16,7 @@ import (
 // PostUsersByUserIdTypedSettingsByKey calls POST /Users/{UserId}/TypedSettings/{Key}. Updates a typed user setting.
 //
 // input is sent as contentType, or as application/octet-stream when that is empty.
-func (c Client) PostUsersByUserIdTypedSettingsByKey(ctx context.Context, userId string, key string, input io.Reader, contentType string) (result emby.PostUsersByUserIdTypedSettingsByKeyResponse, err error) {
+func (c Client) PostUsersByUserIdTypedSettingsByKey(ctx context.Context, userId emby.UserID, key string, input io.Reader, contentType string) (result emby.PostUsersByUserIdTypedSettingsByKeyResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/octet-stream",
 		ExpectedStatusCodes: []int{
@@ -25,7 +25,7 @@ func (c Client) PostUsersByUserIdTypedSettingsByKey(ctx context.Context, userId 
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdTypedSettingsByKey",
-		Path:       fmt.Sprintf("/Users/%s/TypedSettings/%s", url.PathEscape(userId), url.PathEscape(key)),
+		Path:       fmt.Sprintf("/Users/%s/TypedSettings/%s", url.PathEscape(string(userId)), url.PathEscape(key)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

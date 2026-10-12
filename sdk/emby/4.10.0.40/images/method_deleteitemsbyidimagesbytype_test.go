@@ -14,13 +14,13 @@ func TestOperationDeleteItemsByIdImagesByType(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.DeleteItemsByIdImagesByType(t.Context(), "p/id", emby.ImageTypePrimary, 7)
+	result, err := c.DeleteItemsByIdImagesByType(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodDelete, "/Items/p%2Fid/Images/Primary")
+	expectRequest(t, r, http.MethodDelete, "/Items/v-id/Images/Primary")
 	expectQuery(t, r, "Index", "7")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -28,21 +28,21 @@ func TestOperationDeleteItemsByIdImagesByType(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.DeleteItemsByIdImagesByType(t.Context(), "p/id", emby.ImageTypePrimary, 7)
+	result, err = c.DeleteItemsByIdImagesByType(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}
 
 	// the option may be left out, and then nothing is sent for it
 	c, s = newOperationServer(t, 200, "", "")
-	if _, err = c.DeleteItemsByIdImagesByType(t.Context(), "p/id", emby.ImageTypePrimary); err != nil {
+	if _, err = c.DeleteItemsByIdImagesByType(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
 	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Index") != "" {
 		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Index"))
 	}
 	// two values are refused before any request
-	if _, err = c.DeleteItemsByIdImagesByType(t.Context(), "p/id", emby.ImageTypePrimary, 7, 7); err == nil || len(s.requests) != 1 {
+	if _, err = c.DeleteItemsByIdImagesByType(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, 7); err == nil || len(s.requests) != 1 {
 		t.Errorf("two values = %v, %d requests", err, len(s.requests))
 	}
 }

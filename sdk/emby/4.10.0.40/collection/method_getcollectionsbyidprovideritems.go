@@ -13,7 +13,7 @@ import (
 )
 
 // GetCollectionsByIdProviderItems calls GET /Collections/{Id}/ProviderItems. Gets a list of missing items.
-func (c Client) GetCollectionsByIdProviderItems(ctx context.Context, id string, options ...emby.GetCollectionsByIdProviderItemsOptions) (result emby.GetCollectionsByIdProviderItemsResponse, err error) {
+func (c Client) GetCollectionsByIdProviderItems(ctx context.Context, id emby.ItemID, options ...emby.GetCollectionsByIdProviderItemsOptions) (result emby.GetCollectionsByIdProviderItemsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetCollectionsByIdProviderItems takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetCollectionsByIdProviderItems(ctx context.Context, id string, 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetCollectionsByIdProviderItems",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Collections/%s/ProviderItems", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Collections/%s/ProviderItems", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

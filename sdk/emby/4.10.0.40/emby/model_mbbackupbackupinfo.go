@@ -5,7 +5,7 @@ package emby
 // MBBackupBackupInfo is the "MBBackup.BackupInfo" schema.
 type MBBackupBackupInfo struct {
 	CanRestore    bool         `json:"CanRestore"`
-	DateCreated   string       `json:"DateCreated,omitempty"`
+	DateCreated   Time         `json:"DateCreated,omitzero"`
 	IsFullBackup  bool         `json:"IsFullBackup"`
 	Name          string       `json:"Name,omitempty"`
 	PluginVersion string       `json:"PluginVersion,omitempty"`

@@ -16,12 +16,12 @@ func TestOperationPostItemsByIdPlaybackInfo(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.PostItemsByIdPlaybackInfo(t.Context(), "p/id", emby.PlaybackInfoRequest{})
+	result, err := c.PostItemsByIdPlaybackInfo(t.Context(), emby.ItemID("v-id"), emby.PlaybackInfoRequest{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Items/p%2Fid/PlaybackInfo")
+	expectRequest(t, r, http.MethodPost, "/Items/v-id/PlaybackInfo")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -46,7 +46,7 @@ func TestOperationPostItemsByIdPlaybackInfo(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.PostItemsByIdPlaybackInfo(t.Context(), "p/id", emby.PlaybackInfoRequest{})
+	result, err = c.PostItemsByIdPlaybackInfo(t.Context(), emby.ItemID("v-id"), emby.PlaybackInfoRequest{})
 	if err != nil || result.Answer != nil || result.Answered() {
 		t.Errorf("a 204 = %v, answer %v, answered %t", err, result.Answer, result.Answered())
 	}
@@ -59,14 +59,14 @@ func TestOperationPostItemsByIdPlaybackInfo(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.PostItemsByIdPlaybackInfo(t.Context(), "p/id", emby.PlaybackInfoRequest{})
+	result, err = c.PostItemsByIdPlaybackInfo(t.Context(), emby.ItemID("v-id"), emby.PlaybackInfoRequest{})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostItemsByIdPlaybackInfo(t.Context(), "p/id", emby.PlaybackInfoRequest{})
+	result, err = c.PostItemsByIdPlaybackInfo(t.Context(), emby.ItemID("v-id"), emby.PlaybackInfoRequest{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

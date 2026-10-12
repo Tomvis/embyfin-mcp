@@ -5,6 +5,6 @@ package emby
 // CopyData is the "CopyData" schema.
 type CopyData struct {
 	CopyOptions []string `json:"CopyOptions,omitzero"`
-	ToUserIds   []string `json:"ToUserIds,omitzero"`
-	UserId      string   `json:"UserId,omitempty"`
+	ToUserIds   []UserID `json:"ToUserIds,omitzero"`
+	UserId      UserID   `json:"UserId,omitempty"`
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,21 +14,21 @@ func TestOperationDeleteCollectionsByIdItems(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.DeleteCollectionsByIdItems(t.Context(), "p/id", "v-Ids")
+	result, err := c.DeleteCollectionsByIdItems(t.Context(), emby.ItemID("v-id"), []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodDelete, "/Collections/p%2Fid/Items")
-	expectQuery(t, r, "Ids", "v-Ids")
+	expectRequest(t, r, http.MethodDelete, "/Collections/v-id/Items")
+	expectQuery(t, r, "Ids", "a,b")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.DeleteCollectionsByIdItems(t.Context(), "p/id", "v-Ids")
+	result, err = c.DeleteCollectionsByIdItems(t.Context(), emby.ItemID("v-id"), []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

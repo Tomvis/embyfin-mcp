@@ -82,13 +82,13 @@ type GetUniversalAudioStreamOptions struct {
 	Container []string
 
 	// The media version id, if playing an alternate version.
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// The device id of the client requesting. Used to stop encoding processes when needed.
 	DeviceId string
 
 	// Optional. The user id.
-	UserId string
+	UserId UserID
 
 	// Optional. The audio codec to transcode to.
 	AudioCodec string
@@ -143,13 +143,13 @@ func (o GetUniversalAudioStreamOptions) ToQuery() *client.QueryParams {
 		out.Append("container", v)
 	}
 	if o.MediaSourceId != "" {
-		out.Append("mediaSourceId", o.MediaSourceId)
+		out.Append("mediaSourceId", string(o.MediaSourceId))
 	}
 	if o.DeviceId != "" {
 		out.Append("deviceId", o.DeviceId)
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.AudioCodec != "" {
 		out.Append("audioCodec", o.AudioCodec)

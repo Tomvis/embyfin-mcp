@@ -13,7 +13,7 @@ import (
 )
 
 // GetPerson calls GET /Persons/{name}. Get person by name.
-func (c Client) GetPerson(ctx context.Context, name string, userId ...string) (result jf.GetPersonResponse, err error) {
+func (c Client) GetPerson(ctx context.Context, name string, userId ...jf.UserID) (result jf.GetPersonResponse, err error) {
 	var option jf.GetPersonOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetPerson takes one userId at most, not %d", len(userId))

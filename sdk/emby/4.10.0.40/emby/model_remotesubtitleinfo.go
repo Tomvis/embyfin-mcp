@@ -7,7 +7,7 @@ type RemoteSubtitleInfo struct {
 	Author            string  `json:"Author,omitempty"`
 	Comment           string  `json:"Comment,omitempty"`
 	CommunityRating   float32 `json:"CommunityRating,omitempty"`
-	DateCreated       string  `json:"DateCreated,omitempty"`
+	DateCreated       Time    `json:"DateCreated,omitzero"`
 	DownloadCount     int     `json:"DownloadCount,omitempty"`
 	Format            string  `json:"Format,omitempty"`
 	Id                string  `json:"Id,omitempty"`

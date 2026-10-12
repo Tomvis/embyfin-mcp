@@ -14,7 +14,7 @@ func TestOperationGetUsersByUserIdItemsByIdLocalTrailers(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "[{}]")
-	result, err := c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), "p/userId", "p/id", emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{
+	result, err := c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{
 		Fields:           "v-Fields",
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
@@ -26,7 +26,7 @@ func TestOperationGetUsersByUserIdItemsByIdLocalTrailers(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Users/p%2FuserId/Items/p%2Fid/LocalTrailers")
+	expectRequest(t, r, http.MethodGet, "/Users/v-userId/Items/v-id/LocalTrailers")
 	expectQuery(t, r, "Fields", "v-Fields")
 	expectQuery(t, r, "EnableImages", "true")
 	expectQuery(t, r, "ImageTypeLimit", "7")
@@ -41,7 +41,7 @@ func TestOperationGetUsersByUserIdItemsByIdLocalTrailers(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), "p/userId", "p/id", emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{
+	result, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{
 		Fields:           "v-Fields",
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
@@ -54,7 +54,7 @@ func TestOperationGetUsersByUserIdItemsByIdLocalTrailers(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), "p/userId", "p/id", emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{
+	result, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{
 		Fields:           "v-Fields",
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
@@ -67,7 +67,7 @@ func TestOperationGetUsersByUserIdItemsByIdLocalTrailers(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), "p/userId", "p/id", emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{
+	result, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{
 		Fields:           "v-Fields",
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
@@ -80,10 +80,10 @@ func TestOperationGetUsersByUserIdItemsByIdLocalTrailers(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "[{}]")
-	if _, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), "p/userId", "p/id"); err != nil {
+	if _, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), "p/userId", "p/id", emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{}, emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetUsersByUserIdItemsByIdLocalTrailers(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{}, emby.GetUsersByUserIdItemsByIdLocalTrailersOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

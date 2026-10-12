@@ -9,6 +9,6 @@ type TvSeriesChangesAnswerChangesItems struct {
 	Iso31661      string `json:"iso_3166_1,omitempty"`
 	Iso6391       string `json:"iso_639_1,omitempty"`
 	OriginalValue any    `json:"original_value,omitempty"`
-	Time          string `json:"time,omitempty"`
+	Time          Time   `json:"time,omitzero"`
 	Value         any    `json:"value,omitempty"`
 }

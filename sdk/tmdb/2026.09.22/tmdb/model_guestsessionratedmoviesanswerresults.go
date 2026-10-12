@@ -14,7 +14,7 @@ type GuestSessionRatedMoviesAnswerResults struct {
 	Popularity       float64 `json:"popularity,omitempty"`
 	PosterPath       string  `json:"poster_path,omitempty"`
 	Rating           float64 `json:"rating,omitempty"`
-	ReleaseDate      string  `json:"release_date,omitempty"`
+	ReleaseDate      Day     `json:"release_date,omitzero"`
 	Title            string  `json:"title,omitempty"`
 	Video            bool    `json:"video"`
 	VoteAverage      float64 `json:"vote_average,omitempty"`

@@ -39,7 +39,7 @@ func (r GetDevicesResponse) Record() (DeviceInfoDtoQueryResult, error) {
 // GetDevicesOptions holds the query and header parameters of GetDevices.
 type GetDevicesOptions struct {
 	// Gets or sets the user identifier.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetDevicesOptions) ToHeaders() *client.Headers {
 func (o GetDevicesOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

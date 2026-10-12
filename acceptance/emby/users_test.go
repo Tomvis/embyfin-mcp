@@ -100,7 +100,7 @@ func TestEmbyPlayedAndResume(t *testing.T) {
 	id := embyMovie(t, "Princess Mononoke").Id
 
 	ud := sdkacc.Must(embyc.Playstate.PostUsersByUserIdPlayedItemsById(ctx, adminID, id)).Answer
-	if !pointer.From(ud.Played) || ud.PlayCount == 0 || ud.LastPlayedDate == "" {
+	if !pointer.From(ud.Played) || ud.PlayCount == 0 || ud.LastPlayedDate.IsZero() {
 		t.Errorf("marking played = %+v", ud)
 	}
 	if it := sdkacc.Must(embyc.UserLibrary.GetUsersByUserIdItemsById(ctx, adminID, id)).Answer; it.UserData == nil || !pointer.From(it.UserData.Played) {

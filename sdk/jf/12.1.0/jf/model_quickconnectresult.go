@@ -19,7 +19,7 @@ type QuickConnectResult struct {
 	Code string `json:"Code,omitempty"`
 
 	// Gets or sets the DateTime that this request was created.
-	DateAdded string `json:"DateAdded,omitempty"`
+	DateAdded Time `json:"DateAdded,omitzero"`
 
 	// Gets the requesting device id.
 	DeviceId string `json:"DeviceId,omitempty"`

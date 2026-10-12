@@ -40,7 +40,7 @@ func (r GetInstantMixFromMusicGenreByNameResponse) Record() (BaseItemDtoQueryRes
 // GetInstantMixFromMusicGenreByNameOptions holds the query and header parameters of GetInstantMixFromMusicGenreByName.
 type GetInstantMixFromMusicGenreByNameOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 
 	// Optional. The maximum number of records to return.
 	Limit *int
@@ -71,7 +71,7 @@ func (o GetInstantMixFromMusicGenreByNameOptions) ToHeaders() *client.Headers {
 func (o GetInstantMixFromMusicGenreByNameOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Limit != nil {
 		out.Append("limit", strconv.Itoa(*o.Limit))

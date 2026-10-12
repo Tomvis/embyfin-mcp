@@ -8,7 +8,7 @@ type ForgotPasswordResult struct {
 	Action ForgotPasswordAction `json:"Action,omitempty"`
 
 	// Gets or sets the pin expiration date.
-	PinExpirationDate string `json:"PinExpirationDate,omitempty"`
+	PinExpirationDate Time `json:"PinExpirationDate,omitzero"`
 
 	// Gets or sets the pin file.
 	PinFile string `json:"PinFile,omitempty"`

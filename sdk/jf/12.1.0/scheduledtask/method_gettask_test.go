@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -14,13 +15,13 @@ func TestOperationGetTask(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetTask(t.Context(), "p/taskId")
+	result, err := c.GetTask(t.Context(), jf.TaskID("v-taskId"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/ScheduledTasks/p%2FtaskId")
+	expectRequest(t, r, http.MethodGet, "/ScheduledTasks/v-taskId")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
@@ -36,14 +37,14 @@ func TestOperationGetTask(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetTask(t.Context(), "p/taskId")
+	result, err = c.GetTask(t.Context(), jf.TaskID("v-taskId"))
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetTask(t.Context(), "p/taskId")
+	result, err = c.GetTask(t.Context(), jf.TaskID("v-taskId"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

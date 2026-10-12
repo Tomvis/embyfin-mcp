@@ -13,7 +13,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -71,7 +72,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the id of the associated item.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {

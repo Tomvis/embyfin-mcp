@@ -17,8 +17,8 @@ func TestOperationCreateCollection(t *testing.T) {
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.CreateCollection(t.Context(), jf.CreateCollectionOptions{
 		Name:     "v-Name",
-		Ids:      []string{"a", "b"},
-		ParentId: "v-ParentId",
+		Ids:      []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
+		ParentId: jf.ItemID("v-ParentId"),
 		IsLocked: new(true),
 	})
 	if err != nil {
@@ -48,8 +48,8 @@ func TestOperationCreateCollection(t *testing.T) {
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.CreateCollection(t.Context(), jf.CreateCollectionOptions{
 		Name:     "v-Name",
-		Ids:      []string{"a", "b"},
-		ParentId: "v-ParentId",
+		Ids:      []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
+		ParentId: jf.ItemID("v-ParentId"),
 		IsLocked: new(true),
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
@@ -60,8 +60,8 @@ func TestOperationCreateCollection(t *testing.T) {
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.CreateCollection(t.Context(), jf.CreateCollectionOptions{
 		Name:     "v-Name",
-		Ids:      []string{"a", "b"},
-		ParentId: "v-ParentId",
+		Ids:      []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
+		ParentId: jf.ItemID("v-ParentId"),
 		IsLocked: new(true),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {

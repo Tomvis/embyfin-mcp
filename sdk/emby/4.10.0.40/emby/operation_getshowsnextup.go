@@ -40,7 +40,7 @@ func (r GetShowsNextUpResponse) Record() (QueryResultBaseItemDto, error) {
 // GetShowsNextUpOptions holds the query and header parameters of GetShowsNextUp.
 type GetShowsNextUpOptions struct {
 	// User Id
-	UserId string
+	UserId UserID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -52,10 +52,10 @@ type GetShowsNextUpOptions struct {
 	Fields string
 
 	// Optional. Filter by series id
-	SeriesId string
+	SeriesId ItemID
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root
-	ParentId string
+	ParentId ItemID
 
 	// Optional, include image information in output
 	EnableImages *bool
@@ -71,6 +71,11 @@ type GetShowsNextUpOptions struct {
 
 	// Use the per-series next unwatched episode mode
 	LegacyNextUp *bool
+
+	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	FieldsList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -83,7 +88,7 @@ func (o GetShowsNextUpOptions) ToHeaders() *client.Headers {
 func (o GetShowsNextUpOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("StartIndex", strconv.Itoa(*o.StartIndex))
@@ -95,10 +100,10 @@ func (o GetShowsNextUpOptions) ToQuery() *client.QueryParams {
 		out.Append("Fields", o.Fields)
 	}
 	if o.SeriesId != "" {
-		out.Append("SeriesId", o.SeriesId)
+		out.Append("SeriesId", string(o.SeriesId))
 	}
 	if o.ParentId != "" {
-		out.Append("ParentId", o.ParentId)
+		out.Append("ParentId", string(o.ParentId))
 	}
 	if o.EnableImages != nil {
 		out.Append("EnableImages", strconv.FormatBool(*o.EnableImages))
@@ -114,6 +119,9 @@ func (o GetShowsNextUpOptions) ToQuery() *client.QueryParams {
 	}
 	if o.LegacyNextUp != nil {
 		out.Append("LegacyNextUp", strconv.FormatBool(*o.LegacyNextUp))
+	}
+	if len(o.FieldsList) > 0 {
+		out.Append("Fields", client.CSV(o.FieldsList))
 	}
 	return &out
 }

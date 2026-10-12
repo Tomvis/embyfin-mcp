@@ -6,7 +6,7 @@ package jf
 type BookInfoRemoteSearchQuery struct {
 	// Gets or sets a value indicating whether disabled providers should be included.
 	IncludeDisabledProviders *bool  `json:"IncludeDisabledProviders,omitempty"`
-	ItemId                   string `json:"ItemId,omitempty"`
+	ItemId                   ItemID `json:"ItemId,omitempty"`
 
 	// The lookup info for books.
 	SearchInfo *BookInfo `json:"SearchInfo,omitempty"`

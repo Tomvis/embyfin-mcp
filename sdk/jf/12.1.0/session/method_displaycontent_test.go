@@ -14,9 +14,9 @@ func TestOperationDisplayContent(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.DisplayContent(t.Context(), "p/sessionId", jf.DisplayContentOptions{
+	result, err := c.DisplayContent(t.Context(), jf.SessionID("v-sessionId"), jf.DisplayContentOptions{
 		ItemType: jf.BaseItemKindAggregateFolder,
-		ItemId:   "v-ItemId",
+		ItemId:   jf.ItemID("v-ItemId"),
 		ItemName: "v-ItemName",
 	})
 	if err != nil {
@@ -24,7 +24,7 @@ func TestOperationDisplayContent(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Sessions/p%2FsessionId/Viewing")
+	expectRequest(t, r, http.MethodPost, "/Sessions/v-sessionId/Viewing")
 	expectQuery(t, r, "itemType", "AggregateFolder")
 	expectQuery(t, r, "itemId", "v-ItemId")
 	expectQuery(t, r, "itemName", "v-ItemName")
@@ -34,9 +34,9 @@ func TestOperationDisplayContent(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.DisplayContent(t.Context(), "p/sessionId", jf.DisplayContentOptions{
+	result, err = c.DisplayContent(t.Context(), jf.SessionID("v-sessionId"), jf.DisplayContentOptions{
 		ItemType: jf.BaseItemKindAggregateFolder,
-		ItemId:   "v-ItemId",
+		ItemId:   jf.ItemID("v-ItemId"),
 		ItemName: "v-ItemName",
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {

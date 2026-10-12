@@ -16,7 +16,7 @@ type PostVideosMergeVersionsResponse struct {
 // PostVideosMergeVersionsOptions holds the query and header parameters of PostVideosMergeVersions.
 type PostVideosMergeVersionsOptions struct {
 	// Item id list. This allows multiple, comma delimited.
-	Ids string
+	Ids []ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -28,8 +28,8 @@ func (o PostVideosMergeVersionsOptions) ToHeaders() *client.Headers {
 // ToQuery returns the query parameters the options set.
 func (o PostVideosMergeVersionsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
-	if o.Ids != "" {
-		out.Append("Ids", o.Ids)
+	if len(o.Ids) > 0 {
+		out.Append("Ids", client.Joined(o.Ids))
 	}
 	return &out
 }

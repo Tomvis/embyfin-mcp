@@ -13,7 +13,7 @@ import (
 )
 
 // SendFullGeneralCommand calls POST /Sessions/{sessionId}/Command. Issues a full general command to a client.
-func (c Client) SendFullGeneralCommand(ctx context.Context, sessionId string, input jf.GeneralCommand) (result jf.SendFullGeneralCommandResponse, err error) {
+func (c Client) SendFullGeneralCommand(ctx context.Context, sessionId jf.SessionID, input jf.GeneralCommand) (result jf.SendFullGeneralCommandResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) SendFullGeneralCommand(ctx context.Context, sessionId string, in
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "SendFullGeneralCommand",
-		Path:       fmt.Sprintf("/Sessions/%s/Command", url.PathEscape(sessionId)),
+		Path:       fmt.Sprintf("/Sessions/%s/Command", url.PathEscape(string(sessionId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

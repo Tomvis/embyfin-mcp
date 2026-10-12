@@ -14,7 +14,7 @@ import (
 )
 
 // GetUsersByUserIdItems calls GET /Users/{UserId}/Items. Gets items based on a query.
-func (c Client) GetUsersByUserIdItems(ctx context.Context, userId string, options ...emby.GetUsersByUserIdItemsOptions) (result emby.GetUsersByUserIdItemsResponse, err error) {
+func (c Client) GetUsersByUserIdItems(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsOptions) (result emby.GetUsersByUserIdItemsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdItems takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetUsersByUserIdItems(ctx context.Context, userId string, option
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetUsersByUserIdItems",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Items", url.PathEscape(userId)),
+		Path:          fmt.Sprintf("/Users/%s/Items", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetUsersByUserIdItems(ctx context.Context, userId string, option
 // GetUsersByUserIdItemsComplete calls GetUsersByUserIdItems page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetUsersByUserIdItemsComplete(ctx context.Context, userId string, options ...emby.GetUsersByUserIdItemsOptions) (result emby.GetUsersByUserIdItemsCompleteResult, err error) {
+func (c Client) GetUsersByUserIdItemsComplete(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsOptions) (result emby.GetUsersByUserIdItemsCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdItemsComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetUsersByUserIdItemsComplete(ctx context.Context, userId string
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetUsersByUserIdItemsComplete asks for them.
-func (c Client) GetUsersByUserIdItemsEach(ctx context.Context, userId string, options ...emby.GetUsersByUserIdItemsOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetUsersByUserIdItemsEach(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

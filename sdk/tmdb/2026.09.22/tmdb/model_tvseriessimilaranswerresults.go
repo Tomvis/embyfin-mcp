@@ -6,7 +6,7 @@ package tmdb
 type TvSeriesSimilarAnswerResults struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     string   `json:"backdrop_path,omitempty"`
-	FirstAirDate     string   `json:"first_air_date,omitempty"`
+	FirstAirDate     Day      `json:"first_air_date,omitzero"`
 	GenreIds         []int    `json:"genre_ids,omitzero"`
 	Id               int      `json:"id,omitempty"`
 	Name             string   `json:"name,omitempty"`

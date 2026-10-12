@@ -40,7 +40,7 @@ func (r GetLatestChannelItemsResponse) Record() (BaseItemDtoQueryResult, error) 
 // GetLatestChannelItemsOptions holds the query and header parameters of GetLatestChannelItems.
 type GetLatestChannelItemsOptions struct {
 	// Optional. User Id.
-	UserId string
+	UserId UserID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -68,7 +68,7 @@ func (o GetLatestChannelItemsOptions) ToHeaders() *client.Headers {
 func (o GetLatestChannelItemsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))

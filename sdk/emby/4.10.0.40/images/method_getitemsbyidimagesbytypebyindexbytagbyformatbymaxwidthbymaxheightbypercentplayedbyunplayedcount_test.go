@@ -16,7 +16,7 @@ func TestOperationGetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHei
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "image/png", "file bytes")
-	result, err := c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), "p/id", emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{
+	result, err := c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{
 		Width:                new(7),
 		Height:               new(7),
 		Quality:              new(7),
@@ -32,7 +32,7 @@ func TestOperationGetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHei
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2Fid/Images/Primary/7/p%2Ftag/p%2Fformat/7/7/7/7")
+	expectRequest(t, r, http.MethodGet, "/Items/v-id/Images/Primary/7/p%2Ftag/p%2Fformat/7/7/7/7")
 	expectQuery(t, r, "Width", "7")
 	expectQuery(t, r, "Height", "7")
 	expectQuery(t, r, "Quality", "7")
@@ -55,7 +55,7 @@ func TestOperationGetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHei
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
-	result, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), "p/id", emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{
+	result, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{
 		Width:                new(7),
 		Height:               new(7),
 		Quality:              new(7),
@@ -73,7 +73,7 @@ func TestOperationGetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHei
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
-	result, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), "p/id", emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{
+	result, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{
 		Width:                new(7),
 		Height:               new(7),
 		Quality:              new(7),
@@ -103,7 +103,7 @@ func TestOperationGetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHei
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), "p/id", emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{
+	result, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{
 		Width:                new(7),
 		Height:               new(7),
 		Quality:              new(7),
@@ -120,10 +120,10 @@ func TestOperationGetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHei
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "image/png", "file bytes")
-	if _, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), "p/id", emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7); err != nil {
+	if _, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), "p/id", emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{}, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, "p/tag", "p/format", 7, 7, 7, 7, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{}, emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

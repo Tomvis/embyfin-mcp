@@ -6,7 +6,7 @@ package tmdb
 type TrendingTvAnswerResults struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     string   `json:"backdrop_path,omitempty"`
-	FirstAirDate     string   `json:"first_air_date,omitempty"`
+	FirstAirDate     Day      `json:"first_air_date,omitzero"`
 	GenreIds         []int    `json:"genre_ids,omitzero"`
 	Id               int      `json:"id,omitempty"`
 	MediaType        string   `json:"media_type,omitempty"`

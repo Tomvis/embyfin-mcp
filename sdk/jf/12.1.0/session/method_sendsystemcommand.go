@@ -13,14 +13,14 @@ import (
 )
 
 // SendSystemCommand calls POST /Sessions/{sessionId}/System/{command}. Issues a system command to a client.
-func (c Client) SendSystemCommand(ctx context.Context, sessionId string, command jf.GeneralCommandType) (result jf.SendSystemCommandResponse, err error) {
+func (c Client) SendSystemCommand(ctx context.Context, sessionId jf.SessionID, command jf.GeneralCommandType) (result jf.SendSystemCommandResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "SendSystemCommand",
-		Path:       fmt.Sprintf("/Sessions/%s/System/%s", url.PathEscape(sessionId), url.PathEscape(string(command))),
+		Path:       fmt.Sprintf("/Sessions/%s/System/%s", url.PathEscape(string(sessionId)), url.PathEscape(string(command))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

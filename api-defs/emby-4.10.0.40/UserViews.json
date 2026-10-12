@@ -13,7 +13,8 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],

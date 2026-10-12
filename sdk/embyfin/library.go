@@ -326,7 +326,7 @@ func (c *Client) SetLibraryNfo(ctx context.Context, folder *VirtualFolder, on bo
 			return err
 		}
 		for _, f := range orEmpty(res.Answer).Items {
-			if f.ItemId == folder.ItemID && f.LibraryOptions != nil {
+			if string(f.ItemId) == folder.ItemID && f.LibraryOptions != nil {
 				f.LibraryOptions.MetadataSavers = savers(on)
 				_, err := c.emby.LibraryStructure.PostLibraryVirtualFoldersLibraryOptions(ctx, emby.LibraryUpdateLibraryOptions{Id: folder.ItemID, LibraryOptions: f.LibraryOptions})
 
@@ -342,7 +342,7 @@ func (c *Client) SetLibraryNfo(ctx context.Context, folder *VirtualFolder, on bo
 		return err
 	}
 	for _, f := range res.Answer {
-		if f.ItemId == folder.ItemID && f.LibraryOptions != nil {
+		if string(f.ItemId) == folder.ItemID && f.LibraryOptions != nil {
 			f.LibraryOptions.MetadataSavers = savers(on)
 			_, err := c.jf.LibraryStructure.UpdateLibraryOptions(ctx, jf.UpdateLibraryOptionsDto{Id: folder.ItemID, LibraryOptions: f.LibraryOptions})
 
@@ -463,7 +463,7 @@ func (c *Client) ScanLibrary(ctx context.Context, folder *VirtualFolder) error {
 		return errNoLibraryID
 	}
 	if c.isEmby() {
-		_, err := c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, folder.ItemID, emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
+		_, err := c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, emby.ItemID(folder.ItemID), emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
 			Recursive:           new(true),
 			MetadataRefreshMode: emby.MetadataRefreshModeDefault,
 			ImageRefreshMode:    emby.MetadataRefreshModeDefault,
@@ -472,7 +472,7 @@ func (c *Client) ScanLibrary(ctx context.Context, folder *VirtualFolder) error {
 		return err
 	}
 
-	_, err := c.jf.Library.RefreshItem(ctx, folder.ItemID, jf.RefreshItemOptions{
+	_, err := c.jf.Library.RefreshItem(ctx, jf.ItemID(folder.ItemID), jf.RefreshItemOptions{
 		MetadataRefreshMode: jf.MetadataRefreshModeDefault,
 		ImageRefreshMode:    jf.MetadataRefreshModeDefault,
 	})
@@ -483,7 +483,7 @@ func (c *Client) ScanLibrary(ctx context.Context, folder *VirtualFolder) error {
 // Person looks a person up by name, exactly as the library spells it.
 func (c *Client) Person(ctx context.Context, name, userID string) (*Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.Persons.GetPersonsByName(ctx, name, userID)
+		res, err := c.emby.Persons.GetPersonsByName(ctx, name, emby.UserID(userID))
 		if err != nil {
 			return nil, err
 		}
@@ -495,7 +495,7 @@ func (c *Client) Person(ctx context.Context, name, userID string) (*Item, error)
 		return &it, nil
 	}
 
-	res, err := c.jf.Person.GetPerson(ctx, name, userID)
+	res, err := c.jf.Person.GetPerson(ctx, name, jf.UserID(userID))
 	if err != nil {
 		return nil, err
 	}

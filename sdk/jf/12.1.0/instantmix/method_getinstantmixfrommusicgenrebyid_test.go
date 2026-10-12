@@ -17,7 +17,7 @@ func TestOperationGetInstantMixFromMusicGenreById(t *testing.T) {
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetInstantMixFromMusicGenreById(t.Context(), jf.GetInstantMixFromMusicGenreByIdOptions{
 		Id:               "v-Id",
-		UserId:           "v-UserId",
+		UserId:           jf.UserID("v-UserId"),
 		Limit:            new(7),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		EnableImages:     new(true),
@@ -56,7 +56,7 @@ func TestOperationGetInstantMixFromMusicGenreById(t *testing.T) {
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetInstantMixFromMusicGenreById(t.Context(), jf.GetInstantMixFromMusicGenreByIdOptions{
 		Id:               "v-Id",
-		UserId:           "v-UserId",
+		UserId:           jf.UserID("v-UserId"),
 		Limit:            new(7),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		EnableImages:     new(true),
@@ -72,7 +72,7 @@ func TestOperationGetInstantMixFromMusicGenreById(t *testing.T) {
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetInstantMixFromMusicGenreById(t.Context(), jf.GetInstantMixFromMusicGenreByIdOptions{
 		Id:               "v-Id",
-		UserId:           "v-UserId",
+		UserId:           jf.UserID("v-UserId"),
 		Limit:            new(7),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		EnableImages:     new(true),

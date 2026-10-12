@@ -5,7 +5,7 @@ package jf
 // GeneralCommand is the "GeneralCommand" schema.
 type GeneralCommand struct {
 	Arguments         map[string]string `json:"Arguments,omitzero"`
-	ControllingUserId string            `json:"ControllingUserId,omitempty"`
+	ControllingUserId UserID            `json:"ControllingUserId,omitempty"`
 
 	// This exists simply to identify a set of known commands.
 	Name GeneralCommandType `json:"Name,omitempty"`

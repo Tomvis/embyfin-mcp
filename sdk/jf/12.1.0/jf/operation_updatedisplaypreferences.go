@@ -16,7 +16,7 @@ type UpdateDisplayPreferencesResponse struct {
 // UpdateDisplayPreferencesOptions holds the query and header parameters of UpdateDisplayPreferences.
 type UpdateDisplayPreferencesOptions struct {
 	// User Id.
-	UserId string
+	UserId UserID
 
 	// Client.
 	Client string
@@ -32,7 +32,7 @@ func (o UpdateDisplayPreferencesOptions) ToHeaders() *client.Headers {
 func (o UpdateDisplayPreferencesOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Client != "" {
 		out.Append("client", o.Client)

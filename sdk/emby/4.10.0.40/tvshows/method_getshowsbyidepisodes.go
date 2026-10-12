@@ -14,7 +14,7 @@ import (
 )
 
 // GetShowsByIdEpisodes calls GET /Shows/{Id}/Episodes. Gets episodes for a tv season.
-func (c Client) GetShowsByIdEpisodes(ctx context.Context, id string, options ...emby.GetShowsByIdEpisodesOptions) (result emby.GetShowsByIdEpisodesResponse, err error) {
+func (c Client) GetShowsByIdEpisodes(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdEpisodesOptions) (result emby.GetShowsByIdEpisodesResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetShowsByIdEpisodes takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetShowsByIdEpisodes(ctx context.Context, id string, options ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetShowsByIdEpisodes",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Shows/%s/Episodes", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Shows/%s/Episodes", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetShowsByIdEpisodes(ctx context.Context, id string, options ...
 // GetShowsByIdEpisodesComplete calls GetShowsByIdEpisodes page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetShowsByIdEpisodesComplete(ctx context.Context, id string, options ...emby.GetShowsByIdEpisodesOptions) (result emby.GetShowsByIdEpisodesCompleteResult, err error) {
+func (c Client) GetShowsByIdEpisodesComplete(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdEpisodesOptions) (result emby.GetShowsByIdEpisodesCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetShowsByIdEpisodesComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetShowsByIdEpisodesComplete(ctx context.Context, id string, opt
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetShowsByIdEpisodesComplete asks for them.
-func (c Client) GetShowsByIdEpisodesEach(ctx context.Context, id string, options ...emby.GetShowsByIdEpisodesOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetShowsByIdEpisodesEach(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdEpisodesOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

@@ -42,7 +42,7 @@ type GetNotificationsServicesDefaultsOptions struct {
 	NotifierKey string
 
 	// The user the defaults are for
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -58,7 +58,7 @@ func (o GetNotificationsServicesDefaultsOptions) ToQuery() *client.QueryParams {
 		out.Append("NotifierKey", o.NotifierKey)
 	}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

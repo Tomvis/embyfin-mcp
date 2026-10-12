@@ -13,7 +13,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -59,7 +60,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -295,7 +297,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -531,7 +534,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -767,7 +771,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -813,7 +818,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1049,7 +1055,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1096,7 +1103,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1332,7 +1340,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1568,7 +1577,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1599,7 +1609,8 @@
           "In": "Query",
           "Description": "The media source whose subtitles the playlist segments",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         }
       ],

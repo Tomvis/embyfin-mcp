@@ -7,11 +7,11 @@ type VirtualFolderInfo struct {
 	CollectionType     string          `json:"CollectionType,omitempty"`
 	Guid               string          `json:"Guid,omitempty"`
 	Id                 string          `json:"Id,omitempty"`
-	ItemId             string          `json:"ItemId,omitempty"`
+	ItemId             ItemID          `json:"ItemId,omitempty"`
 	LibraryOptions     *LibraryOptions `json:"LibraryOptions,omitempty"`
 	Locations          []string        `json:"Locations,omitzero"`
 	Name               string          `json:"Name,omitempty"`
-	PrimaryImageItemId string          `json:"PrimaryImageItemId,omitempty"`
+	PrimaryImageItemId ItemID          `json:"PrimaryImageItemId,omitempty"`
 	PrimaryImageTag    string          `json:"PrimaryImageTag,omitempty"`
 	RefreshProgress    float64         `json:"RefreshProgress,omitempty"`
 	RefreshStatus      string          `json:"RefreshStatus,omitempty"`

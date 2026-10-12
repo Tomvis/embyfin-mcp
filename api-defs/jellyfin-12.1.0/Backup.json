@@ -113,7 +113,7 @@
           "JsonName": "DateCreated",
           "Description": "Gets or sets the date this backup was created with.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

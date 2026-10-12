@@ -22,10 +22,10 @@ func (r GetLatestMediaResponse) Answered() bool { return r.Answer != nil }
 // GetLatestMediaOptions holds the query and header parameters of GetLatestMedia.
 type GetLatestMediaOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Specify additional fields of information to return in the output.
 	Fields []ItemFields
@@ -65,10 +65,10 @@ func (o GetLatestMediaOptions) ToHeaders() *client.Headers {
 func (o GetLatestMediaOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))

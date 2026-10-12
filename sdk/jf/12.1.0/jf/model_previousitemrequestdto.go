@@ -7,5 +7,5 @@ package jf
 // Class PreviousItemRequestDto.
 type PreviousItemRequestDto struct {
 	// Gets or sets the playing item identifier.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 }

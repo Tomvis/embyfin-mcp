@@ -13,7 +13,7 @@ import (
 )
 
 // GetGameGenresByName calls GET /GameGenres/{Name}. Gets a Game genre, by name.
-func (c Client) GetGameGenresByName(ctx context.Context, name string, userId ...string) (result emby.GetGameGenresByNameResponse, err error) {
+func (c Client) GetGameGenresByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetGameGenresByNameResponse, err error) {
 	var option emby.GetGameGenresByNameOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetGameGenresByName takes one userId at most, not %d", len(userId))

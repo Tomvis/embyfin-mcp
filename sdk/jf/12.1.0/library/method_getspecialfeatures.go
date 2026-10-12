@@ -13,7 +13,7 @@ import (
 )
 
 // GetSpecialFeatures calls GET /Items/{itemId}/SpecialFeatures. Gets special features for an item.
-func (c Client) GetSpecialFeatures(ctx context.Context, itemId string, userId ...string) (result jf.GetSpecialFeaturesResponse, err error) {
+func (c Client) GetSpecialFeatures(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetSpecialFeaturesResponse, err error) {
 	var option jf.GetSpecialFeaturesOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetSpecialFeatures takes one userId at most, not %d", len(userId))
@@ -30,7 +30,7 @@ func (c Client) GetSpecialFeatures(ctx context.Context, itemId string, userId ..
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetSpecialFeatures",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/SpecialFeatures", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/SpecialFeatures", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

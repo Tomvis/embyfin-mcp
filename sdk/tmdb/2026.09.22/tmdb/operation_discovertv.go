@@ -39,11 +39,11 @@ func (r DiscoverTvResponse) Record() (DiscoverTvAnswer, error) {
 
 // DiscoverTvOptions holds the query and header parameters of DiscoverTv.
 type DiscoverTvOptions struct {
-	AirDateGte               string
-	AirDateLte               string
+	AirDateGte               Day
+	AirDateLte               Day
 	FirstAirDateYear         *int
-	FirstAirDateGte          string
-	FirstAirDateLte          string
+	FirstAirDateGte          Day
+	FirstAirDateLte          Day
 	IncludeAdult             *bool
 	IncludeNullFirstAirDates *bool
 	Language                 string
@@ -99,20 +99,20 @@ func (o DiscoverTvOptions) ToHeaders() *client.Headers {
 // ToQuery returns the query parameters the options set.
 func (o DiscoverTvOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
-	if o.AirDateGte != "" {
-		out.Append("air_date.gte", o.AirDateGte)
+	if !o.AirDateGte.IsZero() {
+		out.Append("air_date.gte", o.AirDateGte.As(sendDateAs("DiscoverTv", "air_date.gte")))
 	}
-	if o.AirDateLte != "" {
-		out.Append("air_date.lte", o.AirDateLte)
+	if !o.AirDateLte.IsZero() {
+		out.Append("air_date.lte", o.AirDateLte.As(sendDateAs("DiscoverTv", "air_date.lte")))
 	}
 	if o.FirstAirDateYear != nil {
 		out.Append("first_air_date_year", strconv.Itoa(*o.FirstAirDateYear))
 	}
-	if o.FirstAirDateGte != "" {
-		out.Append("first_air_date.gte", o.FirstAirDateGte)
+	if !o.FirstAirDateGte.IsZero() {
+		out.Append("first_air_date.gte", o.FirstAirDateGte.As(sendDateAs("DiscoverTv", "first_air_date.gte")))
 	}
-	if o.FirstAirDateLte != "" {
-		out.Append("first_air_date.lte", o.FirstAirDateLte)
+	if !o.FirstAirDateLte.IsZero() {
+		out.Append("first_air_date.lte", o.FirstAirDateLte.As(sendDateAs("DiscoverTv", "first_air_date.lte")))
 	}
 	if o.IncludeAdult != nil {
 		out.Append("include_adult", strconv.FormatBool(*o.IncludeAdult))

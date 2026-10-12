@@ -4,7 +4,6 @@ package videos
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
@@ -12,14 +11,10 @@ import (
 )
 
 // PostVideosMergeVersions calls POST /Videos/MergeVersions. Merges videos into a single record.
-func (c Client) PostVideosMergeVersions(ctx context.Context, ids ...string) (result emby.PostVideosMergeVersionsResponse, err error) {
+func (c Client) PostVideosMergeVersions(ctx context.Context, ids ...emby.ItemID) (result emby.PostVideosMergeVersionsResponse, err error) {
 	var option emby.PostVideosMergeVersionsOptions
-	if len(ids) > 1 {
-		err = fmt.Errorf("PostVideosMergeVersions takes one ids at most, not %d", len(ids))
-		return
-	}
-	if len(ids) == 1 {
-		option.Ids = ids[0]
+	if len(ids) > 0 {
+		option.Ids = ids
 	}
 
 	opts := client.RequestOptions{

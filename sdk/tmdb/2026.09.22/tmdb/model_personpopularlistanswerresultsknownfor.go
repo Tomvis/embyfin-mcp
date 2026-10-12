@@ -13,7 +13,7 @@ type PersonPopularListAnswerResultsKnownFor struct {
 	OriginalTitle    string  `json:"original_title,omitempty"`
 	Overview         string  `json:"overview,omitempty"`
 	PosterPath       string  `json:"poster_path,omitempty"`
-	ReleaseDate      string  `json:"release_date,omitempty"`
+	ReleaseDate      Day     `json:"release_date,omitzero"`
 	Title            string  `json:"title,omitempty"`
 	Video            bool    `json:"video"`
 	VoteAverage      float64 `json:"vote_average,omitempty"`

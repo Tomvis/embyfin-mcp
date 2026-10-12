@@ -13,14 +13,16 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
           "Name": "userId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -39,7 +41,8 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -62,7 +65,8 @@
           "Description": "The Id of the item.",
           "Required": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -93,7 +97,8 @@
           "In": "Query",
           "Description": "Filter by sessions that a given user is allowed to remote control.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -162,7 +167,8 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -187,7 +193,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -206,7 +213,8 @@
           "In": "Query",
           "Description": "Optional. The media source id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -345,14 +353,16 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
           "Name": "userId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -434,7 +444,8 @@
           "In": "Query",
           "Description": "The session id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
@@ -444,7 +455,8 @@
           "Description": "The item id.",
           "Required": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -463,7 +475,8 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -489,7 +502,8 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
@@ -516,7 +530,8 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -542,7 +557,8 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
@@ -570,7 +586,8 @@
           "In": "Query",
           "Description": "The optional controlling user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -589,7 +606,8 @@
           "Name": "sessionId",
           "Argument": "sessionId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
@@ -625,7 +643,8 @@
           "Name": "ControllingUserId",
           "JsonName": "ControllingUserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -741,7 +760,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -758,7 +778,8 @@
           "JsonName": "MediaSourceId",
           "Description": "Gets or sets the media version identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           },
           "Nullable": true
         },
@@ -813,7 +834,8 @@
           "Name": "PlaylistItemId",
           "JsonName": "PlaylistItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           },
           "Nullable": true
         },
@@ -840,7 +862,8 @@
           "JsonName": "SessionId",
           "Description": "Gets or sets the session id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           },
           "Nullable": true
         },
@@ -933,7 +956,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -950,7 +974,8 @@
           "JsonName": "MediaSourceId",
           "Description": "Gets or sets the media version identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           },
           "Nullable": true
         },
@@ -1005,7 +1030,8 @@
           "Name": "PlaylistItemId",
           "JsonName": "PlaylistItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           },
           "Nullable": true
         },
@@ -1032,7 +1058,8 @@
           "JsonName": "SessionId",
           "Description": "Gets or sets the session id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           },
           "Nullable": true
         },
@@ -1084,7 +1111,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1101,7 +1129,8 @@
           "JsonName": "MediaSourceId",
           "Description": "Gets or sets the media version identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           },
           "Nullable": true
         },
@@ -1138,7 +1167,8 @@
           "Name": "PlaylistItemId",
           "JsonName": "PlaylistItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           },
           "Nullable": true
         },
@@ -1156,7 +1186,8 @@
           "JsonName": "SessionId",
           "Description": "Gets or sets the session id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           },
           "Nullable": true
         }

@@ -22,7 +22,7 @@ func (r GetSessionsResponse) Answered() bool { return r.Answer != nil }
 // GetSessionsOptions holds the query and header parameters of GetSessions.
 type GetSessionsOptions struct {
 	// Filter by sessions that a given user is allowed to remote control.
-	ControllableByUserId string
+	ControllableByUserId UserID
 
 	// Filter by device Id.
 	DeviceId string
@@ -41,7 +41,7 @@ func (o GetSessionsOptions) ToHeaders() *client.Headers {
 func (o GetSessionsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.ControllableByUserId != "" {
-		out.Append("controllableByUserId", o.ControllableByUserId)
+		out.Append("controllableByUserId", string(o.ControllableByUserId))
 	}
 	if o.DeviceId != "" {
 		out.Append("deviceId", o.DeviceId)

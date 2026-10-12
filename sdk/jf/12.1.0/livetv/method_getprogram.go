@@ -13,7 +13,7 @@ import (
 )
 
 // GetProgram calls GET /LiveTv/Programs/{programId}. Gets a live tv program.
-func (c Client) GetProgram(ctx context.Context, programId string, userId ...string) (result jf.GetProgramResponse, err error) {
+func (c Client) GetProgram(ctx context.Context, programId string, userId ...jf.UserID) (result jf.GetProgramResponse, err error) {
 	var option jf.GetProgramOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetProgram takes one userId at most, not %d", len(userId))

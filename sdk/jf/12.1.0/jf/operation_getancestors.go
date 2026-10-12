@@ -21,7 +21,7 @@ func (r GetAncestorsResponse) Answered() bool { return r.Answer != nil }
 // GetAncestorsOptions holds the query and header parameters of GetAncestors.
 type GetAncestorsOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -34,7 +34,7 @@ func (o GetAncestorsOptions) ToHeaders() *client.Headers {
 func (o GetAncestorsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

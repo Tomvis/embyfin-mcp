@@ -13,7 +13,7 @@ import (
 )
 
 // GetRemoteImages calls GET /Items/{itemId}/RemoteImages. Gets available remote images for an item.
-func (c Client) GetRemoteImages(ctx context.Context, itemId string, options ...jf.GetRemoteImagesOptions) (result jf.GetRemoteImagesResponse, err error) {
+func (c Client) GetRemoteImages(ctx context.Context, itemId jf.ItemID, options ...jf.GetRemoteImagesOptions) (result jf.GetRemoteImagesResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetRemoteImages takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetRemoteImages(ctx context.Context, itemId string, options ...j
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetRemoteImages",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/RemoteImages", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/RemoteImages", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

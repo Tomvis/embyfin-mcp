@@ -40,7 +40,7 @@ func (r GetItemCountsResponse) Record() (ItemCounts, error) {
 // GetItemCountsOptions holds the query and header parameters of GetItemCounts.
 type GetItemCountsOptions struct {
 	// Optional. Get counts from a specific user's library.
-	UserId string
+	UserId UserID
 
 	// Optional. Get counts of favorite items.
 	IsFavorite *bool
@@ -56,7 +56,7 @@ func (o GetItemCountsOptions) ToHeaders() *client.Headers {
 func (o GetItemCountsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.IsFavorite != nil {
 		out.Append("isFavorite", strconv.FormatBool(*o.IsFavorite))

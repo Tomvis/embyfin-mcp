@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdHomeSections calls POST /Users/{UserId}/HomeSections. Requires authentication as user.
-func (c Client) PostUsersByUserIdHomeSections(ctx context.Context, userId string, input emby.ContentSection) (result emby.PostUsersByUserIdHomeSectionsResponse, err error) {
+func (c Client) PostUsersByUserIdHomeSections(ctx context.Context, userId emby.UserID, input emby.ContentSection) (result emby.PostUsersByUserIdHomeSectionsResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdHomeSections(ctx context.Context, userId string
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdHomeSections",
-		Path:       fmt.Sprintf("/Users/%s/HomeSections", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s/HomeSections", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

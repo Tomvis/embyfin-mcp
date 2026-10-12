@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
@@ -15,18 +16,18 @@ func TestOperationMarkPlayedItem(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.MarkPlayedItem(t.Context(), "p/itemId", jf.MarkPlayedItemOptions{
-		UserId:     "v-UserId",
-		DatePlayed: "v-DatePlayed",
+	result, err := c.MarkPlayedItem(t.Context(), jf.ItemID("v-itemId"), jf.MarkPlayedItemOptions{
+		UserId:     jf.UserID("v-UserId"),
+		DatePlayed: jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/UserPlayedItems/p%2FitemId")
+	expectRequest(t, r, http.MethodPost, "/UserPlayedItems/v-itemId")
 	expectQuery(t, r, "userId", "v-UserId")
-	expectQuery(t, r, "datePlayed", "v-DatePlayed")
+	expectQuery(t, r, "datePlayed", "2024-03-04T05:06:07.0000000Z")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
@@ -42,9 +43,9 @@ func TestOperationMarkPlayedItem(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.MarkPlayedItem(t.Context(), "p/itemId", jf.MarkPlayedItemOptions{
-		UserId:     "v-UserId",
-		DatePlayed: "v-DatePlayed",
+	result, err = c.MarkPlayedItem(t.Context(), jf.ItemID("v-itemId"), jf.MarkPlayedItemOptions{
+		UserId:     jf.UserID("v-UserId"),
+		DatePlayed: jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -52,9 +53,9 @@ func TestOperationMarkPlayedItem(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.MarkPlayedItem(t.Context(), "p/itemId", jf.MarkPlayedItemOptions{
-		UserId:     "v-UserId",
-		DatePlayed: "v-DatePlayed",
+	result, err = c.MarkPlayedItem(t.Context(), jf.ItemID("v-itemId"), jf.MarkPlayedItemOptions{
+		UserId:     jf.UserID("v-UserId"),
+		DatePlayed: jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
@@ -62,10 +63,10 @@ func TestOperationMarkPlayedItem(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.MarkPlayedItem(t.Context(), "p/itemId"); err != nil {
+	if _, err = c.MarkPlayedItem(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.MarkPlayedItem(t.Context(), "p/itemId", jf.MarkPlayedItemOptions{}, jf.MarkPlayedItemOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.MarkPlayedItem(t.Context(), jf.ItemID("v-itemId"), jf.MarkPlayedItemOptions{}, jf.MarkPlayedItemOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

@@ -58,7 +58,7 @@ type GetUsersItemAccessOptions struct {
 	SortOrder string
 
 	// The playlist or collection whose sharing to list
-	ItemId string
+	ItemId ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -89,7 +89,7 @@ func (o GetUsersItemAccessOptions) ToQuery() *client.QueryParams {
 		out.Append("SortOrder", o.SortOrder)
 	}
 	if o.ItemId != "" {
-		out.Append("ItemId", o.ItemId)
+		out.Append("ItemId", string(o.ItemId))
 	}
 	return &out
 }

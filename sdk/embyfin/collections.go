@@ -28,7 +28,7 @@ func (c *Client) CreateCollection(ctx context.Context, name string, itemIDs []st
 		if len(itemIDs) == 0 {
 			return "", errors.New("emby cannot create an empty collection: pass at least one item")
 		}
-		res, err := c.emby.Collection.PostCollections(ctx, emby.PostCollectionsOptions{Name: name, Ids: strings.Join(itemIDs, ",")})
+		res, err := c.emby.Collection.PostCollections(ctx, emby.PostCollectionsOptions{Name: name, Ids: apiclient.StringIDs[emby.ItemID](itemIDs)})
 		if apiclient.StatusCode(err) == http.StatusInternalServerError {
 			return "", fmt.Errorf("%w (Emby answers so for the name of a collection deleted while a refresh of it was still queued, until Emby restarts, and for a write that lands while a member is being refreshed; another name works)", err)
 		}
@@ -42,7 +42,7 @@ func (c *Client) CreateCollection(ctx context.Context, name string, itemIDs []st
 		return res.Answer.Id, nil
 	}
 
-	res, err := c.jf.Collection.CreateCollection(ctx, jf.CreateCollectionOptions{Name: name, Ids: itemIDs})
+	res, err := c.jf.Collection.CreateCollection(ctx, jf.CreateCollectionOptions{Name: name, Ids: apiclient.StringIDs[jf.ItemID](itemIDs)})
 	if err != nil {
 		return "", err
 	}
@@ -134,11 +134,11 @@ func (c *Client) collectionMissing(ctx context.Context, collectionID string, ite
 
 func (c *Client) addMembers(ctx context.Context, collectionID string, itemIDs []string) error {
 	if c.isEmby() {
-		_, err := c.emby.Collection.PostCollectionsByIdItems(ctx, collectionID, strings.Join(itemIDs, ","))
+		_, err := c.emby.Collection.PostCollectionsByIdItems(ctx, emby.ItemID(collectionID), apiclient.StringIDs[emby.ItemID](itemIDs))
 		return err
 	}
 
-	_, err := c.jf.Collection.AddToCollection(ctx, collectionID, itemIDs)
+	_, err := c.jf.Collection.AddToCollection(ctx, jf.ItemID(collectionID), apiclient.StringIDs[jf.ItemID](itemIDs))
 
 	return err
 }
@@ -322,11 +322,11 @@ func (c *Client) collectionItemsFlat(ctx context.Context, collectionID, fields s
 
 func (c *Client) removeMembers(ctx context.Context, collectionID string, itemIDs []string) error {
 	if c.isEmby() {
-		_, err := c.emby.Collection.DeleteCollectionsByIdItems(ctx, collectionID, strings.Join(itemIDs, ","))
+		_, err := c.emby.Collection.DeleteCollectionsByIdItems(ctx, emby.ItemID(collectionID), apiclient.StringIDs[emby.ItemID](itemIDs))
 		return err
 	}
 
-	_, err := c.jf.Collection.RemoveFromCollection(ctx, collectionID, itemIDs)
+	_, err := c.jf.Collection.RemoveFromCollection(ctx, jf.ItemID(collectionID), apiclient.StringIDs[jf.ItemID](itemIDs))
 
 	return err
 }

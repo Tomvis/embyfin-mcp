@@ -10,5 +10,5 @@ type QueueItem struct {
 	Id string `json:"Id,omitempty"`
 
 	// Gets or sets the playlist item id.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 }

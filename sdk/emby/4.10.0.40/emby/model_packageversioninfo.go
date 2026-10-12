@@ -14,6 +14,6 @@ type PackageVersionInfo struct {
 	Runtimes           string              `json:"runtimes,omitempty"`
 	SourceUrl          string              `json:"sourceUrl,omitempty"`
 	TargetFilename     string              `json:"targetFilename,omitempty"`
-	Timestamp          string              `json:"timestamp,omitempty"`
+	Timestamp          Time                `json:"timestamp,omitzero"`
 	VersionStr         string              `json:"versionStr,omitempty"`
 }

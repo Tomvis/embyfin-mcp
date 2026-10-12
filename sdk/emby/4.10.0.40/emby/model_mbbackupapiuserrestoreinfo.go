@@ -4,6 +4,6 @@ package emby
 
 // MBBackupApiUserRestoreInfo is the "MBBackup.Api.UserRestoreInfo" schema.
 type MBBackupApiUserRestoreInfo struct {
-	SourceUserId string `json:"SourceUserId,omitempty"`
-	TargetUserId string `json:"TargetUserId,omitempty"`
+	SourceUserId UserID `json:"SourceUserId,omitempty"`
+	TargetUserId UserID `json:"TargetUserId,omitempty"`
 }

@@ -11,7 +11,7 @@ import (
 )
 
 // DeleteItems calls DELETE /Items. Deletes items from the library and filesystem.
-func (c Client) DeleteItems(ctx context.Context, ids ...string) (result jf.DeleteItemsResponse, err error) {
+func (c Client) DeleteItems(ctx context.Context, ids ...jf.ItemID) (result jf.DeleteItemsResponse, err error) {
 	var option jf.DeleteItemsOptions
 	if len(ids) > 0 {
 		option.Ids = ids

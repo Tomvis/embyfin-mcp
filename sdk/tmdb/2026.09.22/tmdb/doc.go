@@ -45,8 +45,10 @@
 // hands them out one at a time as a range, so a loop that stops asks for no
 // page more.
 //
-// Dates are strings: TMDB writes a day as 2006-01-02, and a date it does not know
-// reads as an empty string.
+// # Dates
+//
+// A day is a Day, written 2006-01-02, and a date with a time is a Time. One TMDB does not know, which it writes
+// as an empty string, is zero, and one written any other way is held as zero with its text kept in Unread.
 //
 // # Workarounds
 //
@@ -62,4 +64,6 @@
 //   - tmdb-change-values
 //   - tmdb-display-priorities
 //   - tmdb-collection-parts
+//   - tmdb-days
+//   - tmdb-date-times
 package tmdb

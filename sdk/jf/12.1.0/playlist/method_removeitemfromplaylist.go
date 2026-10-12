@@ -13,7 +13,7 @@ import (
 )
 
 // RemoveItemFromPlaylist calls DELETE /Playlists/{playlistId}/Items. Removes items from a playlist.
-func (c Client) RemoveItemFromPlaylist(ctx context.Context, playlistId string, entryIds ...string) (result jf.RemoveItemFromPlaylistResponse, err error) {
+func (c Client) RemoveItemFromPlaylist(ctx context.Context, playlistId jf.ItemID, entryIds ...jf.PlaylistItemID) (result jf.RemoveItemFromPlaylistResponse, err error) {
 	var option jf.RemoveItemFromPlaylistOptions
 	if len(entryIds) > 0 {
 		option.EntryIds = entryIds
@@ -26,7 +26,7 @@ func (c Client) RemoveItemFromPlaylist(ctx context.Context, playlistId string, e
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "RemoveItemFromPlaylist",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(playlistId)),
+		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(string(playlistId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

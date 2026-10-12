@@ -320,6 +320,8 @@ all, err := c.Library.GetItemsComplete(ctx, jf.GetItemsOptions{Recursive: new(tr
 sessions, err := c.Session.GetSessions(ctx)                                        // options can be left out when none is required
 ```
 
+An id says what it is the id of (`jf.ItemID`, `jf.UserID`), so a user's id where an item's goes does not compile, and a date is a `jf.Time`, read in every form the server writes.
+
 `sdk/tmdb` is the same for TMDB, generated from TMDB's own OpenAPI document and named for the day that document was taken; it takes an API Read Access Token or the older API Key:
 
 ```go

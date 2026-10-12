@@ -13,7 +13,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -39,7 +40,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -135,14 +137,16 @@
           "Name": "routeItemId",
           "Argument": "routeItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
           "Name": "routeMediaSourceId",
           "Argument": "routeMediaSourceId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -168,7 +172,8 @@
           "Description": "The item id.",
           "Deprecated": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -178,7 +183,8 @@
           "Description": "The media source id.",
           "Deprecated": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -259,14 +265,16 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
           "Name": "mediaSourceId",
           "Argument": "mediaSourceId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -310,14 +318,16 @@
           "Name": "routeItemId",
           "Argument": "routeItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
           "Name": "routeMediaSourceId",
           "Argument": "routeMediaSourceId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -350,7 +360,8 @@
           "Description": "The item id.",
           "Deprecated": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -360,7 +371,8 @@
           "Description": "The media source id.",
           "Deprecated": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -442,7 +454,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -489,7 +502,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -516,7 +530,7 @@
           "JsonName": "DateCreated",
           "Description": "Gets or sets the date created.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -524,7 +538,7 @@
           "JsonName": "DateModified",
           "Description": "Gets or sets the date modified.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -586,7 +600,7 @@
           "Name": "DateCreated",
           "JsonName": "DateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },

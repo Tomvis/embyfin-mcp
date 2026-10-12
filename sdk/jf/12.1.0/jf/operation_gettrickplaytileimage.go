@@ -78,7 +78,7 @@ func (r GetTrickplayTileImageResponse) Bytes(max int64) ([]byte, error) {
 // GetTrickplayTileImageOptions holds the query and header parameters of GetTrickplayTileImage.
 type GetTrickplayTileImageOptions struct {
 	// The media version id, if using an alternate version.
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -91,7 +91,7 @@ func (o GetTrickplayTileImageOptions) ToHeaders() *client.Headers {
 func (o GetTrickplayTileImageOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.MediaSourceId != "" {
-		out.Append("mediaSourceId", o.MediaSourceId)
+		out.Append("mediaSourceId", string(o.MediaSourceId))
 	}
 	return &out
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByUserIdItemsByIdSpecialFeatures calls GET /Users/{UserId}/Items/{Id}/SpecialFeatures. Gets special features for an item.
-func (c Client) GetUsersByUserIdItemsByIdSpecialFeatures(ctx context.Context, userId string, id string, options ...emby.GetUsersByUserIdItemsByIdSpecialFeaturesOptions) (result emby.GetUsersByUserIdItemsByIdSpecialFeaturesResponse, err error) {
+func (c Client) GetUsersByUserIdItemsByIdSpecialFeatures(ctx context.Context, userId emby.UserID, id emby.ItemID, options ...emby.GetUsersByUserIdItemsByIdSpecialFeaturesOptions) (result emby.GetUsersByUserIdItemsByIdSpecialFeaturesResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdItemsByIdSpecialFeatures takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetUsersByUserIdItemsByIdSpecialFeatures(ctx context.Context, us
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetUsersByUserIdItemsByIdSpecialFeatures",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Items/%s/SpecialFeatures", url.PathEscape(userId), url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/Items/%s/SpecialFeatures", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

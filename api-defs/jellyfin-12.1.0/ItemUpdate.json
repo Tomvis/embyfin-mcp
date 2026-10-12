@@ -13,7 +13,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -39,7 +40,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -65,7 +67,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],

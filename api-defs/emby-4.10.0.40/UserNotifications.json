@@ -24,7 +24,8 @@
           "In": "Query",
           "Description": "The user the defaults are for",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -171,7 +172,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -180,7 +182,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "UserID"
             }
           }
         }

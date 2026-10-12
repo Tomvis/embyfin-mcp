@@ -189,7 +189,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -374,7 +374,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -414,7 +414,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -524,7 +524,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -619,7 +619,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {

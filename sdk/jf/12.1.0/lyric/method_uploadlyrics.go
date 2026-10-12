@@ -16,7 +16,7 @@ import (
 // UploadLyrics calls POST /Audio/{itemId}/Lyrics. Upload an external lyric file.
 //
 // input is sent as contentType, or as text/plain when that is empty.
-func (c Client) UploadLyrics(ctx context.Context, itemId string, input io.Reader, contentType string, fileName string) (result jf.UploadLyricsResponse, err error) {
+func (c Client) UploadLyrics(ctx context.Context, itemId jf.ItemID, input io.Reader, contentType string, fileName string) (result jf.UploadLyricsResponse, err error) {
 	var option jf.UploadLyricsOptions
 	option.FileName = fileName
 
@@ -29,7 +29,7 @@ func (c Client) UploadLyrics(ctx context.Context, itemId string, input io.Reader
 		HTTPMethod:    http.MethodPost,
 		Operation:     "UploadLyrics",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Audio/%s/Lyrics", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Audio/%s/Lyrics", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

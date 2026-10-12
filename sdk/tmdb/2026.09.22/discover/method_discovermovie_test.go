@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -26,11 +27,11 @@ func TestOperationDiscoverMovie(t *testing.T) {
 		Language:                   "v-Language",
 		Page:                       new(7),
 		PrimaryReleaseYear:         new(7),
-		PrimaryReleaseDateGte:      "v-PrimaryReleaseDateGte",
-		PrimaryReleaseDateLte:      "v-PrimaryReleaseDateLte",
+		PrimaryReleaseDateGte:      tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		PrimaryReleaseDateLte:      tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		Region:                     "v-Region",
-		ReleaseDateGte:             "v-ReleaseDateGte",
-		ReleaseDateLte:             "v-ReleaseDateLte",
+		ReleaseDateGte:             tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		ReleaseDateLte:             tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		SortBy:                     "v-SortBy",
 		VoteAverageGte:             new(1.5),
 		VoteAverageLte:             new(1.5),
@@ -71,11 +72,11 @@ func TestOperationDiscoverMovie(t *testing.T) {
 	expectQuery(t, r, "language", "v-Language")
 	expectQuery(t, r, "page", "7")
 	expectQuery(t, r, "primary_release_year", "7")
-	expectQuery(t, r, "primary_release_date.gte", "v-PrimaryReleaseDateGte")
-	expectQuery(t, r, "primary_release_date.lte", "v-PrimaryReleaseDateLte")
+	expectQuery(t, r, "primary_release_date.gte", "2024-03-04")
+	expectQuery(t, r, "primary_release_date.lte", "2024-03-04")
 	expectQuery(t, r, "region", "v-Region")
-	expectQuery(t, r, "release_date.gte", "v-ReleaseDateGte")
-	expectQuery(t, r, "release_date.lte", "v-ReleaseDateLte")
+	expectQuery(t, r, "release_date.gte", "2024-03-04")
+	expectQuery(t, r, "release_date.lte", "2024-03-04")
 	expectQuery(t, r, "sort_by", "v-SortBy")
 	expectQuery(t, r, "vote_average.gte", "1.5")
 	expectQuery(t, r, "vote_average.lte", "1.5")
@@ -125,11 +126,11 @@ func TestOperationDiscoverMovie(t *testing.T) {
 		Language:                   "v-Language",
 		Page:                       new(7),
 		PrimaryReleaseYear:         new(7),
-		PrimaryReleaseDateGte:      "v-PrimaryReleaseDateGte",
-		PrimaryReleaseDateLte:      "v-PrimaryReleaseDateLte",
+		PrimaryReleaseDateGte:      tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		PrimaryReleaseDateLte:      tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		Region:                     "v-Region",
-		ReleaseDateGte:             "v-ReleaseDateGte",
-		ReleaseDateLte:             "v-ReleaseDateLte",
+		ReleaseDateGte:             tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		ReleaseDateLte:             tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		SortBy:                     "v-SortBy",
 		VoteAverageGte:             new(1.5),
 		VoteAverageLte:             new(1.5),
@@ -171,11 +172,11 @@ func TestOperationDiscoverMovie(t *testing.T) {
 		Language:                   "v-Language",
 		Page:                       new(7),
 		PrimaryReleaseYear:         new(7),
-		PrimaryReleaseDateGte:      "v-PrimaryReleaseDateGte",
-		PrimaryReleaseDateLte:      "v-PrimaryReleaseDateLte",
+		PrimaryReleaseDateGte:      tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		PrimaryReleaseDateLte:      tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		Region:                     "v-Region",
-		ReleaseDateGte:             "v-ReleaseDateGte",
-		ReleaseDateLte:             "v-ReleaseDateLte",
+		ReleaseDateGte:             tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		ReleaseDateLte:             tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		SortBy:                     "v-SortBy",
 		VoteAverageGte:             new(1.5),
 		VoteAverageLte:             new(1.5),

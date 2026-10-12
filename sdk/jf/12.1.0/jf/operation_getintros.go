@@ -39,7 +39,7 @@ func (r GetIntrosResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetIntrosOptions holds the query and header parameters of GetIntros.
 type GetIntrosOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetIntrosOptions) ToHeaders() *client.Headers {
 func (o GetIntrosOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

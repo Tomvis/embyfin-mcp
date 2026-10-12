@@ -9,11 +9,11 @@ type PlayRequest struct {
 	AudioStreamIndex int `json:"AudioStreamIndex,omitempty"`
 
 	// Gets or sets the controlling user identifier.
-	ControllingUserId string `json:"ControllingUserId,omitempty"`
+	ControllingUserId UserID `json:"ControllingUserId,omitempty"`
 
 	// Gets or sets the item ids.
-	ItemIds       []string `json:"ItemIds,omitzero"`
-	MediaSourceId string   `json:"MediaSourceId,omitempty"`
+	ItemIds       []ItemID      `json:"ItemIds,omitzero"`
+	MediaSourceId MediaSourceID `json:"MediaSourceId,omitempty"`
 
 	// Gets or sets the play command.
 	PlayCommand PlayCommand `json:"PlayCommand,omitempty"`

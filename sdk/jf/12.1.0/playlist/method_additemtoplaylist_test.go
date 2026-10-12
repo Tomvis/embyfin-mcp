@@ -14,17 +14,17 @@ func TestOperationAddItemToPlaylist(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.AddItemToPlaylist(t.Context(), "p/playlistId", jf.AddItemToPlaylistOptions{
-		Ids:      []string{"a", "b"},
+	result, err := c.AddItemToPlaylist(t.Context(), jf.ItemID("v-playlistId"), jf.AddItemToPlaylistOptions{
+		Ids:      []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		Position: new(7),
-		UserId:   "v-UserId",
+		UserId:   jf.UserID("v-UserId"),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Playlists/p%2FplaylistId/Items")
+	expectRequest(t, r, http.MethodPost, "/Playlists/v-playlistId/Items")
 	expectQuery(t, r, "ids", "a", "b")
 	expectQuery(t, r, "position", "7")
 	expectQuery(t, r, "userId", "v-UserId")
@@ -34,10 +34,10 @@ func TestOperationAddItemToPlaylist(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.AddItemToPlaylist(t.Context(), "p/playlistId", jf.AddItemToPlaylistOptions{
-		Ids:      []string{"a", "b"},
+	result, err = c.AddItemToPlaylist(t.Context(), jf.ItemID("v-playlistId"), jf.AddItemToPlaylistOptions{
+		Ids:      []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		Position: new(7),
-		UserId:   "v-UserId",
+		UserId:   jf.UserID("v-UserId"),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
@@ -45,10 +45,10 @@ func TestOperationAddItemToPlaylist(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 204, "", "")
-	if _, err = c.AddItemToPlaylist(t.Context(), "p/playlistId"); err != nil {
+	if _, err = c.AddItemToPlaylist(t.Context(), jf.ItemID("v-playlistId")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.AddItemToPlaylist(t.Context(), "p/playlistId", jf.AddItemToPlaylistOptions{}, jf.AddItemToPlaylistOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.AddItemToPlaylist(t.Context(), jf.ItemID("v-playlistId"), jf.AddItemToPlaylistOptions{}, jf.AddItemToPlaylistOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

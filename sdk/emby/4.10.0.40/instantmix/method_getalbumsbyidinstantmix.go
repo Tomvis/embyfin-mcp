@@ -14,7 +14,7 @@ import (
 )
 
 // GetAlbumsByIdInstantMix calls GET /Albums/{Id}/InstantMix. Creates an instant playlist based on a given album.
-func (c Client) GetAlbumsByIdInstantMix(ctx context.Context, id string, options ...emby.GetAlbumsByIdInstantMixOptions) (result emby.GetAlbumsByIdInstantMixResponse, err error) {
+func (c Client) GetAlbumsByIdInstantMix(ctx context.Context, id emby.ItemID, options ...emby.GetAlbumsByIdInstantMixOptions) (result emby.GetAlbumsByIdInstantMixResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetAlbumsByIdInstantMix takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetAlbumsByIdInstantMix(ctx context.Context, id string, options 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetAlbumsByIdInstantMix",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Albums/%s/InstantMix", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Albums/%s/InstantMix", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetAlbumsByIdInstantMix(ctx context.Context, id string, options 
 // GetAlbumsByIdInstantMixComplete calls GetAlbumsByIdInstantMix page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetAlbumsByIdInstantMixComplete(ctx context.Context, id string, options ...emby.GetAlbumsByIdInstantMixOptions) (result emby.GetAlbumsByIdInstantMixCompleteResult, err error) {
+func (c Client) GetAlbumsByIdInstantMixComplete(ctx context.Context, id emby.ItemID, options ...emby.GetAlbumsByIdInstantMixOptions) (result emby.GetAlbumsByIdInstantMixCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetAlbumsByIdInstantMixComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetAlbumsByIdInstantMixComplete(ctx context.Context, id string, 
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetAlbumsByIdInstantMixComplete asks for them.
-func (c Client) GetAlbumsByIdInstantMixEach(ctx context.Context, id string, options ...emby.GetAlbumsByIdInstantMixOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetAlbumsByIdInstantMixEach(ctx context.Context, id emby.ItemID, options ...emby.GetAlbumsByIdInstantMixOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

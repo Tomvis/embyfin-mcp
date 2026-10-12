@@ -17,12 +17,12 @@ func TestOperationGetAudioBooksNextUp(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetAudioBooksNextUp(t.Context(), emby.GetAudioBooksNextUpOptions{
-		UserId:           "v-UserId",
+		UserId:           emby.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           "v-Fields",
-		AlbumId:          "v-AlbumId",
-		ParentId:         "v-ParentId",
+		AlbumId:          emby.ItemID("v-AlbumId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: "v-EnableImageTypes",
@@ -60,12 +60,12 @@ func TestOperationGetAudioBooksNextUp(t *testing.T) {
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
 	result, err = c.GetAudioBooksNextUp(t.Context(), emby.GetAudioBooksNextUpOptions{
-		UserId:           "v-UserId",
+		UserId:           emby.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           "v-Fields",
-		AlbumId:          "v-AlbumId",
-		ParentId:         "v-ParentId",
+		AlbumId:          emby.ItemID("v-AlbumId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: "v-EnableImageTypes",
@@ -84,12 +84,12 @@ func TestOperationGetAudioBooksNextUp(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetAudioBooksNextUp(t.Context(), emby.GetAudioBooksNextUpOptions{
-		UserId:           "v-UserId",
+		UserId:           emby.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           "v-Fields",
-		AlbumId:          "v-AlbumId",
-		ParentId:         "v-ParentId",
+		AlbumId:          emby.ItemID("v-AlbumId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: "v-EnableImageTypes",
@@ -102,12 +102,12 @@ func TestOperationGetAudioBooksNextUp(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetAudioBooksNextUp(t.Context(), emby.GetAudioBooksNextUpOptions{
-		UserId:           "v-UserId",
+		UserId:           emby.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           "v-Fields",
-		AlbumId:          "v-AlbumId",
-		ParentId:         "v-ParentId",
+		AlbumId:          emby.ItemID("v-AlbumId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: "v-EnableImageTypes",

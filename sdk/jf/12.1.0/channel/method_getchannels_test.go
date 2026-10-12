@@ -17,7 +17,7 @@ func TestOperationGetChannels(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetChannels(t.Context(), jf.GetChannelsOptions{
-		UserId:                "v-UserId",
+		UserId:                jf.UserID("v-UserId"),
 		StartIndex:            new(7),
 		Limit:                 new(7),
 		SupportsLatestItems:   new(true),
@@ -52,7 +52,7 @@ func TestOperationGetChannels(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetChannels(t.Context(), jf.GetChannelsOptions{
-		UserId:                "v-UserId",
+		UserId:                jf.UserID("v-UserId"),
 		StartIndex:            new(7),
 		Limit:                 new(7),
 		SupportsLatestItems:   new(true),
@@ -66,7 +66,7 @@ func TestOperationGetChannels(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetChannels(t.Context(), jf.GetChannelsOptions{
-		UserId:                "v-UserId",
+		UserId:                jf.UserID("v-UserId"),
 		StartIndex:            new(7),
 		Limit:                 new(7),
 		SupportsLatestItems:   new(true),

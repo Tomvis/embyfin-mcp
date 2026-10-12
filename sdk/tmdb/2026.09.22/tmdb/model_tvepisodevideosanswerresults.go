@@ -10,7 +10,7 @@ type TvEpisodeVideosAnswerResults struct {
 	Key         string `json:"key,omitempty"`
 	Name        string `json:"name,omitempty"`
 	Official    bool   `json:"official"`
-	PublishedAt string `json:"published_at,omitempty"`
+	PublishedAt Time   `json:"published_at,omitzero"`
 	Site        string `json:"site,omitempty"`
 	Size        int    `json:"size,omitempty"`
 	Type        string `json:"type,omitempty"`

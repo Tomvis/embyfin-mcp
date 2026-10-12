@@ -13,7 +13,7 @@ import (
 )
 
 // PostSessionsByIdMessage calls POST /Sessions/{Id}/Message. Issues a command to a client to display a message to the user.
-func (c Client) PostSessionsByIdMessage(ctx context.Context, id string, options emby.PostSessionsByIdMessageOptions) (result emby.PostSessionsByIdMessageResponse, err error) {
+func (c Client) PostSessionsByIdMessage(ctx context.Context, id emby.SessionID, options emby.PostSessionsByIdMessageOptions) (result emby.PostSessionsByIdMessageResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -22,7 +22,7 @@ func (c Client) PostSessionsByIdMessage(ctx context.Context, id string, options 
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostSessionsByIdMessage",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Sessions/%s/Message", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Sessions/%s/Message", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -16,7 +16,7 @@ type TaskInfo struct {
 	Description string `json:"Description,omitempty"`
 
 	// Gets or sets the id.
-	Id string `json:"Id,omitempty"`
+	Id TaskID `json:"Id,omitempty"`
 
 	// Gets or sets a value indicating whether this instance is hidden.
 	IsHidden bool `json:"IsHidden"`
@@ -41,4 +41,4 @@ type TaskInfo struct {
 func (m TaskInfo) GetName() string { return m.Name }
 
 // GetId is the record's Id, for code that handles records of several types alike.
-func (m TaskInfo) GetId() string { return m.Id }
+func (m TaskInfo) GetId() TaskID { return m.Id }

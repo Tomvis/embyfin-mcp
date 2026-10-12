@@ -13,13 +13,13 @@ type SearchHint struct {
 	AlbumArtist string `json:"AlbumArtist,omitempty"`
 
 	// Gets or sets the album id.
-	AlbumId string `json:"AlbumId,omitempty"`
+	AlbumId ItemID `json:"AlbumId,omitempty"`
 
 	// Gets or sets the artists.
 	Artists []string `json:"Artists,omitzero"`
 
 	// Gets or sets the backdrop image item identifier.
-	BackdropImageItemId string `json:"BackdropImageItemId,omitempty"`
+	BackdropImageItemId ItemID `json:"BackdropImageItemId,omitempty"`
 
 	// Gets or sets the backdrop image tag.
 	BackdropImageTag string `json:"BackdropImageTag,omitempty"`
@@ -31,7 +31,7 @@ type SearchHint struct {
 	ChannelName string `json:"ChannelName,omitempty"`
 
 	// Gets or sets the end date.
-	EndDate string `json:"EndDate,omitempty"`
+	EndDate Time `json:"EndDate,omitzero"`
 
 	// Gets or sets the episode count.
 	EpisodeCount int `json:"EpisodeCount,omitempty"`
@@ -46,7 +46,7 @@ type SearchHint struct {
 	IsFolder *bool `json:"IsFolder,omitempty"`
 
 	// Gets or sets the item id.
-	ItemId string `json:"ItemId,omitempty"`
+	ItemId ItemID `json:"ItemId,omitempty"`
 
 	// Gets or sets the matched term.
 	MatchedTerm string `json:"MatchedTerm,omitempty"`
@@ -79,13 +79,13 @@ type SearchHint struct {
 	SongCount int `json:"SongCount,omitempty"`
 
 	// Gets or sets the start date.
-	StartDate string `json:"StartDate,omitempty"`
+	StartDate Time `json:"StartDate,omitzero"`
 
 	// Gets or sets the status.
 	Status string `json:"Status,omitempty"`
 
 	// Gets or sets the thumb image item identifier.
-	ThumbImageItemId string `json:"ThumbImageItemId,omitempty"`
+	ThumbImageItemId ItemID `json:"ThumbImageItemId,omitempty"`
 
 	// Gets or sets the thumb image tag.
 	ThumbImageTag string `json:"ThumbImageTag,omitempty"`

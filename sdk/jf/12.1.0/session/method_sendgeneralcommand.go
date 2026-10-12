@@ -13,14 +13,14 @@ import (
 )
 
 // SendGeneralCommand calls POST /Sessions/{sessionId}/Command/{command}. Issues a general command to a client.
-func (c Client) SendGeneralCommand(ctx context.Context, sessionId string, command jf.GeneralCommandType) (result jf.SendGeneralCommandResponse, err error) {
+func (c Client) SendGeneralCommand(ctx context.Context, sessionId jf.SessionID, command jf.GeneralCommandType) (result jf.SendGeneralCommandResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "SendGeneralCommand",
-		Path:       fmt.Sprintf("/Sessions/%s/Command/%s", url.PathEscape(sessionId), url.PathEscape(string(command))),
+		Path:       fmt.Sprintf("/Sessions/%s/Command/%s", url.PathEscape(string(sessionId)), url.PathEscape(string(command))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

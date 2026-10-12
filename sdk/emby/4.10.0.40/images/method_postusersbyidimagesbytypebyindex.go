@@ -16,7 +16,7 @@ import (
 // PostUsersByIdImagesByTypeByIndex calls POST /Users/{Id}/Images/{Type}/{Index}. Uploads an image for an item, must be base64 encoded.
 //
 // input is sent as contentType, or as application/octet-stream when that is empty.
-func (c Client) PostUsersByIdImagesByTypeByIndex(ctx context.Context, id string, typeParam emby.ImageType, index int, input io.Reader, contentType string) (result emby.PostUsersByIdImagesByTypeByIndexResponse, err error) {
+func (c Client) PostUsersByIdImagesByTypeByIndex(ctx context.Context, id emby.UserID, typeParam emby.ImageType, index int, input io.Reader, contentType string) (result emby.PostUsersByIdImagesByTypeByIndexResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/octet-stream",
 		ExpectedStatusCodes: []int{
@@ -25,7 +25,7 @@ func (c Client) PostUsersByIdImagesByTypeByIndex(ctx context.Context, id string,
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByIdImagesByTypeByIndex",
-		Path:       fmt.Sprintf("/Users/%s/Images/%s/%d", url.PathEscape(id), url.PathEscape(string(typeParam)), index),
+		Path:       fmt.Sprintf("/Users/%s/Images/%s/%d", url.PathEscape(string(id)), url.PathEscape(string(typeParam)), index),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

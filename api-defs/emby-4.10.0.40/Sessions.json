@@ -33,14 +33,16 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -120,7 +122,8 @@
           "In": "Query",
           "Description": "Optional. Filter by sessions that a given user is allowed to remote control.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -138,7 +141,8 @@
           "In": "Query",
           "Description": "Optional. Filter by session id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -249,7 +253,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -276,7 +281,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
@@ -303,7 +309,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -354,7 +361,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -417,7 +425,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
@@ -463,7 +472,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
@@ -490,14 +500,16 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -517,14 +529,16 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         },
         {
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -544,7 +558,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           }
         }
       ],
@@ -566,7 +581,8 @@
           "Description": "The Id of the item.",
           "Required": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -637,6 +653,32 @@
           "Type": {
             "Type": "Boolean"
           }
+        },
+        {
+          "Name": "PlayableMediaTypes",
+          "Field": "PlayableMediaTypesList",
+          "In": "Query",
+          "Description": "A list of playable media types, comma delimited. Audio, Video, Book, Game, Photo.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SupportedCommands",
+          "Field": "SupportedCommandsList",
+          "In": "Query",
+          "Description": "A list of supported remote control commands, comma delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "ExpectedStatusCodes": [
@@ -781,7 +823,8 @@
           "Name": "ControllingUserId",
           "JsonName": "ControllingUserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -809,14 +852,16 @@
           "Name": "ControllingUserId",
           "JsonName": "ControllingUserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "MediaSourceId",
           "JsonName": "MediaSourceId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -853,7 +898,8 @@
           "Name": "ControllingUserId",
           "JsonName": "ControllingUserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {

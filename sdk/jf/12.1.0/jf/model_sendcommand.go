@@ -10,17 +10,17 @@ type SendCommand struct {
 	Command SendCommandType `json:"Command,omitempty"`
 
 	// Gets the UTC time when this command has been emitted.
-	EmittedAt string `json:"EmittedAt,omitempty"`
+	EmittedAt Time `json:"EmittedAt,omitzero"`
 
 	// Gets the group identifier.
 	GroupId string `json:"GroupId,omitempty"`
 
 	// Gets the playlist identifier of the playing item.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 
 	// Gets the position ticks.
 	PositionTicks int64 `json:"PositionTicks,omitempty"`
 
 	// Gets or sets the UTC time when to execute the command.
-	When string `json:"When,omitempty"`
+	When Time `json:"When,omitzero"`
 }

@@ -16,7 +16,7 @@ type RemoveFromCollectionResponse struct {
 // RemoveFromCollectionOptions holds the query and header parameters of RemoveFromCollection.
 type RemoveFromCollectionOptions struct {
 	// Item ids, comma delimited.
-	Ids []string
+	Ids []ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -29,7 +29,7 @@ func (o RemoveFromCollectionOptions) ToHeaders() *client.Headers {
 func (o RemoveFromCollectionOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	for _, v := range o.Ids {
-		out.Append("ids", v)
+		out.Append("ids", string(v))
 	}
 	return &out
 }

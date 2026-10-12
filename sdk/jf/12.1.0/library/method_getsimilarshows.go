@@ -13,7 +13,7 @@ import (
 )
 
 // GetSimilarShows calls GET /Shows/{itemId}/Similar. Gets similar items.
-func (c Client) GetSimilarShows(ctx context.Context, itemId string, options ...jf.GetSimilarShowsOptions) (result jf.GetSimilarShowsResponse, err error) {
+func (c Client) GetSimilarShows(ctx context.Context, itemId jf.ItemID, options ...jf.GetSimilarShowsOptions) (result jf.GetSimilarShowsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetSimilarShows takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetSimilarShows(ctx context.Context, itemId string, options ...j
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetSimilarShows",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Shows/%s/Similar", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Shows/%s/Similar", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

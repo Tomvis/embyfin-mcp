@@ -11,7 +11,7 @@ import (
 )
 
 // GetSyncTargets calls GET /Sync/Targets. Gets a list of available sync targets.
-func (c Client) GetSyncTargets(ctx context.Context, userId string) (result emby.GetSyncTargetsResponse, err error) {
+func (c Client) GetSyncTargets(ctx context.Context, userId emby.UserID) (result emby.GetSyncTargetsResponse, err error) {
 	var option emby.GetSyncTargetsOptions
 	option.UserId = userId
 

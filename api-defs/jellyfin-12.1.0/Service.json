@@ -7,6 +7,39 @@
   "Auth": "credential",
   "Workarounds": [
     "jellyfin-create-playlist-query",
-    "jellyfin-plugin-configuration"
+    "jellyfin-plugin-configuration",
+    "jellyfin-saved-since-text"
+  ],
+  "Dates": [
+    "2006-01-02T15:04:05.0000000Z07:00",
+    "2006-01-02T15:04:05Z07:00",
+    "2006-01-02T15:04:05"
+  ],
+  "DatesKeepUnread": true,
+  "IDs": [
+    {
+      "Name": "ItemID",
+      "Base": "String"
+    },
+    {
+      "Name": "UserID",
+      "Base": "String"
+    },
+    {
+      "Name": "SessionID",
+      "Base": "String"
+    },
+    {
+      "Name": "TaskID",
+      "Base": "String"
+    },
+    {
+      "Name": "PlaylistItemID",
+      "Base": "String"
+    },
+    {
+      "Name": "MediaSourceID",
+      "Base": "String"
+    }
   ]
 }

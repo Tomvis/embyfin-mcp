@@ -14,7 +14,7 @@ func TestOperationDownloadRemoteImage(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.DownloadRemoteImage(t.Context(), "p/itemId", jf.DownloadRemoteImageOptions{
+	result, err := c.DownloadRemoteImage(t.Context(), jf.ItemID("v-itemId"), jf.DownloadRemoteImageOptions{
 		Type:     jf.ImageTypePrimary,
 		ImageUrl: "v-ImageUrl",
 	})
@@ -23,7 +23,7 @@ func TestOperationDownloadRemoteImage(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Items/p%2FitemId/RemoteImages/Download")
+	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/RemoteImages/Download")
 	expectQuery(t, r, "type", "Primary")
 	expectQuery(t, r, "imageUrl", "v-ImageUrl")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
@@ -32,7 +32,7 @@ func TestOperationDownloadRemoteImage(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.DownloadRemoteImage(t.Context(), "p/itemId", jf.DownloadRemoteImageOptions{
+	result, err = c.DownloadRemoteImage(t.Context(), jf.ItemID("v-itemId"), jf.DownloadRemoteImageOptions{
 		Type:     jf.ImageTypePrimary,
 		ImageUrl: "v-ImageUrl",
 	})

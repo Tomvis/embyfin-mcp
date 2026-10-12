@@ -16,7 +16,7 @@ func TestOperationGetVideosByIdLiveSubtitlesM3u8(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err := c.GetVideosByIdLiveSubtitlesM3u8(t.Context(), "p/id", emby.GetVideosByIdLiveSubtitlesM3u8Options{
+	result, err := c.GetVideosByIdLiveSubtitlesM3u8(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdLiveSubtitlesM3u8Options{
 		SubtitleSegmentLength: new(7),
 		ManifestSubtitles:     "v-ManifestSubtitles",
 	})
@@ -25,7 +25,7 @@ func TestOperationGetVideosByIdLiveSubtitlesM3u8(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2Fid/live_subtitles.m3u8")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-id/live_subtitles.m3u8")
 	expectQuery(t, r, "SubtitleSegmentLength", "7")
 	expectQuery(t, r, "ManifestSubtitles", "v-ManifestSubtitles")
 	if got := r.Header.Get("Accept"); !strings.HasPrefix(got, "application/x-mpegURL") {
@@ -41,7 +41,7 @@ func TestOperationGetVideosByIdLiveSubtitlesM3u8(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err = c.GetVideosByIdLiveSubtitlesM3u8(t.Context(), "p/id", emby.GetVideosByIdLiveSubtitlesM3u8Options{
+	result, err = c.GetVideosByIdLiveSubtitlesM3u8(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdLiveSubtitlesM3u8Options{
 		SubtitleSegmentLength: new(7),
 		ManifestSubtitles:     "v-ManifestSubtitles",
 	})
@@ -52,7 +52,7 @@ func TestOperationGetVideosByIdLiveSubtitlesM3u8(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err = c.GetVideosByIdLiveSubtitlesM3u8(t.Context(), "p/id", emby.GetVideosByIdLiveSubtitlesM3u8Options{
+	result, err = c.GetVideosByIdLiveSubtitlesM3u8(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdLiveSubtitlesM3u8Options{
 		SubtitleSegmentLength: new(7),
 		ManifestSubtitles:     "v-ManifestSubtitles",
 	})
@@ -75,7 +75,7 @@ func TestOperationGetVideosByIdLiveSubtitlesM3u8(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetVideosByIdLiveSubtitlesM3u8(t.Context(), "p/id", emby.GetVideosByIdLiveSubtitlesM3u8Options{
+	result, err = c.GetVideosByIdLiveSubtitlesM3u8(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdLiveSubtitlesM3u8Options{
 		SubtitleSegmentLength: new(7),
 		ManifestSubtitles:     "v-ManifestSubtitles",
 	})

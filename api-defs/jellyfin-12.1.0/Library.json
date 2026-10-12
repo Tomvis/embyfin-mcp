@@ -13,7 +13,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -36,7 +37,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         }
@@ -56,7 +58,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -67,7 +70,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -96,7 +100,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -121,7 +126,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -146,7 +152,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -157,7 +164,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -183,7 +191,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -194,7 +203,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -220,7 +230,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -231,7 +242,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -300,7 +312,8 @@
           "In": "Query",
           "Description": "Optional. Get counts from a specific user's library.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -337,7 +350,8 @@
           "In": "Query",
           "Description": "The user id supplied as query parameter; this is required when not using an API key.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -516,7 +530,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -534,7 +548,7 @@
           "In": "Query",
           "Description": "Optional. The minimum last saved date for the current user. Format = ISO.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -543,7 +557,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -635,7 +649,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -694,7 +709,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -902,7 +918,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -950,7 +967,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -962,7 +980,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -974,7 +993,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -986,7 +1006,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1010,7 +1031,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1022,7 +1044,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1177,7 +1200,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1189,7 +1213,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1270,7 +1295,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1279,7 +1305,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1439,7 +1466,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1450,7 +1478,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -1528,7 +1557,8 @@
           "In": "Query",
           "Description": "The user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1564,7 +1594,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1712,7 +1743,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -1738,7 +1770,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1751,7 +1784,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1761,7 +1795,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1809,7 +1844,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1822,7 +1858,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1832,7 +1869,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1880,7 +1918,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1893,7 +1932,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1903,7 +1943,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1951,7 +1992,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -1964,7 +2006,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1974,7 +2017,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -2022,7 +2066,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -2035,7 +2080,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -2045,7 +2091,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -2093,7 +2140,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -2106,7 +2154,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -2116,7 +2165,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -2164,7 +2214,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -2175,7 +2226,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -2204,7 +2256,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -2215,7 +2268,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -2276,7 +2330,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -2287,7 +2342,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -2348,7 +2404,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -2359,7 +2416,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -2539,7 +2597,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],

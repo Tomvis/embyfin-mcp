@@ -11,7 +11,7 @@ import (
 )
 
 // DeleteItems calls DELETE /Items. Deletes an item from the library and file system.
-func (c Client) DeleteItems(ctx context.Context, ids string) (result emby.DeleteItemsResponse, err error) {
+func (c Client) DeleteItems(ctx context.Context, ids []emby.ItemID) (result emby.DeleteItemsResponse, err error) {
 	var option emby.DeleteItemsOptions
 	option.Ids = ids
 

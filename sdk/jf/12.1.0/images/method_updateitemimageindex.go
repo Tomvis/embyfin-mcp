@@ -13,7 +13,7 @@ import (
 )
 
 // UpdateItemImageIndex calls POST /Items/{itemId}/Images/{imageType}/{imageIndex}/Index. Updates the index for an item image.
-func (c Client) UpdateItemImageIndex(ctx context.Context, itemId string, imageType jf.ImageType, imageIndex int, newIndex int) (result jf.UpdateItemImageIndexResponse, err error) {
+func (c Client) UpdateItemImageIndex(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex int, newIndex int) (result jf.UpdateItemImageIndexResponse, err error) {
 	var option jf.UpdateItemImageIndexOptions
 	option.NewIndex = &newIndex
 
@@ -24,7 +24,7 @@ func (c Client) UpdateItemImageIndex(ctx context.Context, itemId string, imageTy
 		HTTPMethod:    http.MethodPost,
 		Operation:     "UpdateItemImageIndex",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Images/%s/%d/Index", url.PathEscape(itemId), url.PathEscape(string(imageType)), imageIndex),
+		Path:          fmt.Sprintf("/Items/%s/Images/%s/%d/Index", url.PathEscape(string(itemId)), url.PathEscape(string(imageType)), imageIndex),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

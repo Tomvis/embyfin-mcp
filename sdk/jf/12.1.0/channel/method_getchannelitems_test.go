@@ -18,7 +18,7 @@ func TestOperationGetChannelItems(t *testing.T) {
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetChannelItems(t.Context(), "p/channelId", jf.GetChannelItemsOptions{
 		FolderId:   "v-FolderId",
-		UserId:     "v-UserId",
+		UserId:     jf.UserID("v-UserId"),
 		StartIndex: new(7),
 		Limit:      new(7),
 		SortOrder:  []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},
@@ -57,7 +57,7 @@ func TestOperationGetChannelItems(t *testing.T) {
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetChannelItems(t.Context(), "p/channelId", jf.GetChannelItemsOptions{
 		FolderId:   "v-FolderId",
-		UserId:     "v-UserId",
+		UserId:     jf.UserID("v-UserId"),
 		StartIndex: new(7),
 		Limit:      new(7),
 		SortOrder:  []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},
@@ -73,7 +73,7 @@ func TestOperationGetChannelItems(t *testing.T) {
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetChannelItems(t.Context(), "p/channelId", jf.GetChannelItemsOptions{
 		FolderId:   "v-FolderId",
-		UserId:     "v-UserId",
+		UserId:     jf.UserID("v-UserId"),
 		StartIndex: new(7),
 		Limit:      new(7),
 		SortOrder:  []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},

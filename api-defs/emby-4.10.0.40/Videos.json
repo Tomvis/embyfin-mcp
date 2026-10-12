@@ -13,7 +13,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -33,7 +34,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -55,8 +57,13 @@
           "In": "Query",
           "Description": "Item id list. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "ExpectedStatusCodes": [

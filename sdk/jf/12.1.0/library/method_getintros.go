@@ -13,7 +13,7 @@ import (
 )
 
 // GetIntros calls GET /Items/{itemId}/Intros. Gets intros to play before the main media item plays.
-func (c Client) GetIntros(ctx context.Context, itemId string, userId ...string) (result jf.GetIntrosResponse, err error) {
+func (c Client) GetIntros(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetIntrosResponse, err error) {
 	var option jf.GetIntrosOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetIntros takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) GetIntros(ctx context.Context, itemId string, userId ...string) 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetIntros",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Intros", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/Intros", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

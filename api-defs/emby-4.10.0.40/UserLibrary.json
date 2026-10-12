@@ -13,14 +13,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -47,14 +49,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -81,7 +85,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -108,14 +113,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -142,14 +149,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -198,6 +207,19 @@
           "Type": {
             "Type": "Boolean"
           }
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -223,14 +245,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -279,6 +303,19 @@
           "Type": {
             "Type": "Boolean"
           }
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -307,14 +344,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -363,6 +402,19 @@
           "Type": {
             "Type": "Boolean"
           }
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -391,7 +443,8 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -411,7 +464,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -503,6 +557,45 @@
           "Type": {
             "Type": "Boolean"
           }
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -531,7 +624,8 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -558,7 +652,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -569,7 +664,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -616,6 +712,19 @@
           "Type": {
             "Type": "Boolean"
           }
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -659,7 +768,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -679,7 +789,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -717,14 +828,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -751,14 +864,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -785,14 +900,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -831,14 +948,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -877,14 +996,16 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -911,7 +1032,8 @@
           "Name": "UserId",
           "Argument": "userId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -939,7 +1061,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -947,7 +1070,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]
@@ -983,7 +1107,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -993,7 +1118,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "UserID"
             }
           }
         }

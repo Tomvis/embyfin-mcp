@@ -7,7 +7,7 @@ type PackageInfo struct {
 	Adult            bool                 `json:"adult"`
 	Category         string               `json:"category,omitempty"`
 	EnableInAppStore bool                 `json:"enableInAppStore"`
-	ExpDate          string               `json:"expDate,omitempty"`
+	ExpDate          Time                 `json:"expDate,omitzero"`
 	FeatureId        string               `json:"featureId,omitempty"`
 	Guid             string               `json:"guid,omitempty"`
 	Id               string               `json:"id,omitempty"`

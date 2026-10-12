@@ -16,7 +16,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "video/mp4", "file bytes")
-	result, err := c.GetVideoStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetVideoStreamByContainerOptions{
+	result, err := c.GetVideoStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetVideoStreamByContainerOptions{
 		Static:                      new(true),
 		Params:                      "v-Params",
 		Tag:                         "v-Tag",
@@ -25,7 +25,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 		SegmentContainer:            "v-SegmentContainer",
 		SegmentLength:               new(7),
 		MinSegments:                 new(7),
-		MediaSourceId:               "v-MediaSourceId",
+		MediaSourceId:               jf.MediaSourceID("v-MediaSourceId"),
 		DeviceId:                    "v-DeviceId",
 		AudioCodec:                  "v-AudioCodec",
 		EnableAutoStreamCopy:        new(true),
@@ -72,7 +72,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2FitemId/stream.p%2Fcontainer")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-itemId/stream.p%2Fcontainer")
 	expectQuery(t, r, "static", "true")
 	expectQuery(t, r, "params", "v-Params")
 	expectQuery(t, r, "tag", "v-Tag")
@@ -136,7 +136,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "video/mp4", "file bytes")
-	result, err = c.GetVideoStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetVideoStreamByContainerOptions{
+	result, err = c.GetVideoStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetVideoStreamByContainerOptions{
 		Static:                      new(true),
 		Params:                      "v-Params",
 		Tag:                         "v-Tag",
@@ -145,7 +145,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 		SegmentContainer:            "v-SegmentContainer",
 		SegmentLength:               new(7),
 		MinSegments:                 new(7),
-		MediaSourceId:               "v-MediaSourceId",
+		MediaSourceId:               jf.MediaSourceID("v-MediaSourceId"),
 		DeviceId:                    "v-DeviceId",
 		AudioCodec:                  "v-AudioCodec",
 		EnableAutoStreamCopy:        new(true),
@@ -194,7 +194,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "video/mp4", "file bytes")
-	result, err = c.GetVideoStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetVideoStreamByContainerOptions{
+	result, err = c.GetVideoStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetVideoStreamByContainerOptions{
 		Static:                      new(true),
 		Params:                      "v-Params",
 		Tag:                         "v-Tag",
@@ -203,7 +203,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 		SegmentContainer:            "v-SegmentContainer",
 		SegmentLength:               new(7),
 		MinSegments:                 new(7),
-		MediaSourceId:               "v-MediaSourceId",
+		MediaSourceId:               jf.MediaSourceID("v-MediaSourceId"),
 		DeviceId:                    "v-DeviceId",
 		AudioCodec:                  "v-AudioCodec",
 		EnableAutoStreamCopy:        new(true),
@@ -264,7 +264,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetVideoStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetVideoStreamByContainerOptions{
+	result, err = c.GetVideoStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetVideoStreamByContainerOptions{
 		Static:                      new(true),
 		Params:                      "v-Params",
 		Tag:                         "v-Tag",
@@ -273,7 +273,7 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 		SegmentContainer:            "v-SegmentContainer",
 		SegmentLength:               new(7),
 		MinSegments:                 new(7),
-		MediaSourceId:               "v-MediaSourceId",
+		MediaSourceId:               jf.MediaSourceID("v-MediaSourceId"),
 		DeviceId:                    "v-DeviceId",
 		AudioCodec:                  "v-AudioCodec",
 		EnableAutoStreamCopy:        new(true),
@@ -321,10 +321,10 @@ func TestOperationGetVideoStreamByContainer(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "video/mp4", "file bytes")
-	if _, err = c.GetVideoStreamByContainer(t.Context(), "p/itemId", "p/container"); err != nil {
+	if _, err = c.GetVideoStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container"); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetVideoStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetVideoStreamByContainerOptions{}, jf.GetVideoStreamByContainerOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetVideoStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetVideoStreamByContainerOptions{}, jf.GetVideoStreamByContainerOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

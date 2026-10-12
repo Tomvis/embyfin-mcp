@@ -13,7 +13,7 @@ import (
 )
 
 // GetMusicGenresByName calls GET /MusicGenres/{Name}. Gets a music genre, by name.
-func (c Client) GetMusicGenresByName(ctx context.Context, name string, userId ...string) (result emby.GetMusicGenresByNameResponse, err error) {
+func (c Client) GetMusicGenresByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetMusicGenresByNameResponse, err error) {
 	var option emby.GetMusicGenresByNameOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetMusicGenresByName takes one userId at most, not %d", len(userId))

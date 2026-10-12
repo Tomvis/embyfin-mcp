@@ -13,7 +13,7 @@ import (
 )
 
 // GetItem calls GET /Items/{itemId}. Gets an item from a user's library.
-func (c Client) GetItem(ctx context.Context, itemId string, userId ...string) (result jf.GetItemResponse, err error) {
+func (c Client) GetItem(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetItemResponse, err error) {
 	var option jf.GetItemOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetItem takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) GetItem(ctx context.Context, itemId string, userId ...string) (r
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItem",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

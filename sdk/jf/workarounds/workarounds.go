@@ -16,4 +16,5 @@ var (
 var All = []pandorest.Workaround{
 	jellyfinCreatePlaylistQuery{},
 	jellyfinPluginConfiguration{},
+	jellyfinSavedSinceText{},
 }

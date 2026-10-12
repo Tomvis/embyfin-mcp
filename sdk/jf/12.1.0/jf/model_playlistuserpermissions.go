@@ -10,5 +10,5 @@ type PlaylistUserPermissions struct {
 	CanEdit *bool `json:"CanEdit,omitempty"`
 
 	// Gets or sets the user id.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 }

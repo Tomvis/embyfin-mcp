@@ -82,13 +82,13 @@ type GetPersonsOptions struct {
 	PersonTypes []string
 
 	// Optional. Specify this to localize the search to a specific library. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. If specified, person results will be filtered on items related to said persons.
-	AppearsInItemId string
+	AppearsInItemId ItemID
 
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Optional, include image information in output.
 	EnableImages *bool
@@ -146,13 +146,13 @@ func (o GetPersonsOptions) ToQuery() *client.QueryParams {
 		out.Append("personTypes", v)
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	if o.AppearsInItemId != "" {
-		out.Append("appearsInItemId", o.AppearsInItemId)
+		out.Append("appearsInItemId", string(o.AppearsInItemId))
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.EnableImages != nil {
 		out.Append("enableImages", strconv.FormatBool(*o.EnableImages))

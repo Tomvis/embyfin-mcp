@@ -53,6 +53,11 @@ type GetUsersByUserIdItemsByIdIntrosOptions struct {
 
 	// Optional, include user data
 	EnableUserData *bool
+
+	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	FieldsList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -78,6 +83,9 @@ func (o GetUsersByUserIdItemsByIdIntrosOptions) ToQuery() *client.QueryParams {
 	}
 	if o.EnableUserData != nil {
 		out.Append("EnableUserData", strconv.FormatBool(*o.EnableUserData))
+	}
+	if len(o.FieldsList) > 0 {
+		out.Append("Fields", client.CSV(o.FieldsList))
 	}
 	return &out
 }

@@ -15,7 +15,7 @@ func TestOperationGetSessions(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "[{}]")
 	result, err := c.GetSessions(t.Context(), jf.GetSessionsOptions{
-		ControllableByUserId: "v-ControllableByUserId",
+		ControllableByUserId: jf.UserID("v-ControllableByUserId"),
 		DeviceId:             "v-DeviceId",
 		ActiveWithinSeconds:  new(7),
 	})
@@ -38,7 +38,7 @@ func TestOperationGetSessions(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetSessions(t.Context(), jf.GetSessionsOptions{
-		ControllableByUserId: "v-ControllableByUserId",
+		ControllableByUserId: jf.UserID("v-ControllableByUserId"),
 		DeviceId:             "v-DeviceId",
 		ActiveWithinSeconds:  new(7),
 	})
@@ -49,7 +49,7 @@ func TestOperationGetSessions(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetSessions(t.Context(), jf.GetSessionsOptions{
-		ControllableByUserId: "v-ControllableByUserId",
+		ControllableByUserId: jf.UserID("v-ControllableByUserId"),
 		DeviceId:             "v-DeviceId",
 		ActiveWithinSeconds:  new(7),
 	})

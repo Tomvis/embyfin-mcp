@@ -39,13 +39,13 @@ func (r GetSyncOptionsResponse) Record() (SyncDialogOptions, error) {
 // GetSyncOptionsOptions holds the query and header parameters of GetSyncOptions.
 type GetSyncOptionsOptions struct {
 	// UserId
-	UserId string
+	UserId UserID
 
 	// ItemIds
-	ItemIds string
+	ItemIds []ItemID
 
 	// ParentId
-	ParentId string
+	ParentId ItemID
 
 	// TargetId
 	TargetId string
@@ -64,13 +64,13 @@ func (o GetSyncOptionsOptions) ToHeaders() *client.Headers {
 func (o GetSyncOptionsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
-	if o.ItemIds != "" {
-		out.Append("ItemIds", o.ItemIds)
+	if len(o.ItemIds) > 0 {
+		out.Append("ItemIds", client.Joined(o.ItemIds))
 	}
 	if o.ParentId != "" {
-		out.Append("ParentId", o.ParentId)
+		out.Append("ParentId", string(o.ParentId))
 	}
 	if o.TargetId != "" {
 		out.Append("TargetId", o.TargetId)

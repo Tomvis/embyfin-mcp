@@ -181,7 +181,7 @@ func TestItemLastWatchedCountsAnAccountThatLostAccess(t *testing.T) {
 		arrival := func(user string) map[string]any {
 			played := map[string]any{"Played": false}
 			if user == "u2" {
-				played = map[string]any{"Played": true, "PlayCount": 2, "LastPlayedDate": "2026-09-01T20:00:00Z"}
+				played = map[string]any{"Played": true, "PlayCount": 2, "LastPlayedDate": "2026-09-01T20:00:00.1234567Z"}
 			}
 			return map[string]any{"Id": "32", "Name": "Arrival", "Type": "Movie", "Path": "/media/films/Arrival (2016)/Arrival (2016).mkv", "UserData": played}
 		}
@@ -219,7 +219,7 @@ func TestItemLastWatchedCountsAnAccountThatLostAccess(t *testing.T) {
 
 		out := mustCall(t, cs, "item_last_watched", map[string]any{"id": "32"})
 		got, _ := json.Marshal(out["users"])
-		want := `[{"played":false,"user":"root"},{"last_played":"2026-09-01T20:00:00Z","no_access":true,"play_count":2,"played":true,"user":"alice"}]`
+		want := `[{"played":false,"user":"root"},{"last_played":"2026-09-01T20:00:00.1234567Z","no_access":true,"play_count":2,"played":true,"user":"alice"}]`
 		if string(got) != want {
 			t.Errorf("jellyfin %v: users = %s, want root's row and alice's watch before she lost the library, and nothing of bob's", jellyfin, got)
 		}

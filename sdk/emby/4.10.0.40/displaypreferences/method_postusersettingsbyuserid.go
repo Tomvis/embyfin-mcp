@@ -13,7 +13,7 @@ import (
 )
 
 // PostUserSettingsByUserId calls POST /UserSettings/{UserId}. Updates a user's display preferences for an item.
-func (c Client) PostUserSettingsByUserId(ctx context.Context, userId string, input []string) (result emby.PostUserSettingsByUserIdResponse, err error) {
+func (c Client) PostUserSettingsByUserId(ctx context.Context, userId emby.UserID, input []string) (result emby.PostUserSettingsByUserIdResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUserSettingsByUserId(ctx context.Context, userId string, inp
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUserSettingsByUserId",
-		Path:       fmt.Sprintf("/UserSettings/%s", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/UserSettings/%s", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

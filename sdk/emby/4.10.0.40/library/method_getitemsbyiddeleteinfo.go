@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdDeleteInfo calls GET /Items/{Id}/DeleteInfo. Gets delete info for an item.
-func (c Client) GetItemsByIdDeleteInfo(ctx context.Context, id string) (result emby.GetItemsByIdDeleteInfoResponse, err error) {
+func (c Client) GetItemsByIdDeleteInfo(ctx context.Context, id emby.ItemID) (result emby.GetItemsByIdDeleteInfoResponse, err error) {
 	result.LibraryDeleteInfo = &emby.LibraryDeleteInfo{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetItemsByIdDeleteInfo(ctx context.Context, id string) (result e
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetItemsByIdDeleteInfo",
-		Path:       fmt.Sprintf("/Items/%s/DeleteInfo", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/DeleteInfo", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

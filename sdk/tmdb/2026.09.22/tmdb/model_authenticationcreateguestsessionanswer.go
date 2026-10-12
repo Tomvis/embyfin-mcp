@@ -4,7 +4,7 @@ package tmdb
 
 // AuthenticationCreateGuestSessionAnswer is an object the document declares inline.
 type AuthenticationCreateGuestSessionAnswer struct {
-	ExpiresAt      string `json:"expires_at,omitempty"`
+	ExpiresAt      Time   `json:"expires_at,omitzero"`
 	GuestSessionId string `json:"guest_session_id,omitempty"`
 	Success        bool   `json:"success"`
 }

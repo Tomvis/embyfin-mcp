@@ -40,10 +40,10 @@ func (r GetSimilarAlbumsResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetSimilarAlbumsOptions holds the query and header parameters of GetSimilarAlbums.
 type GetSimilarAlbumsOptions struct {
 	// Exclude artist ids.
-	ExcludeArtistIds []string
+	ExcludeArtistIds []ItemID
 
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 
 	// Optional. The maximum number of records to return.
 	Limit *int
@@ -62,10 +62,10 @@ func (o GetSimilarAlbumsOptions) ToHeaders() *client.Headers {
 func (o GetSimilarAlbumsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	for _, v := range o.ExcludeArtistIds {
-		out.Append("excludeArtistIds", v)
+		out.Append("excludeArtistIds", string(v))
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Limit != nil {
 		out.Append("limit", strconv.Itoa(*o.Limit))

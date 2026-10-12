@@ -13,7 +13,7 @@ type BookInfo struct {
 	Name                string                    `json:"Name,omitempty"`
 	ParentIndexNumber   int                       `json:"ParentIndexNumber,omitempty"`
 	Path                string                    `json:"Path,omitempty"`
-	PremiereDate        string                    `json:"PremiereDate,omitempty"`
+	PremiereDate        Time                      `json:"PremiereDate,omitzero"`
 	ProviderIds         map[string]string         `json:"ProviderIds,omitzero"`
 	SeriesName          string                    `json:"SeriesName,omitempty"`
 	Year                int                       `json:"Year,omitempty"`

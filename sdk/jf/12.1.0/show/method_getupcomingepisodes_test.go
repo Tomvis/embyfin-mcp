@@ -17,11 +17,11 @@ func TestOperationGetUpcomingEpisodes(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetUpcomingEpisodes(t.Context(), jf.GetUpcomingEpisodesOptions{
-		UserId:           "v-UserId",
+		UserId:           jf.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
-		ParentId:         "v-ParentId",
+		ParentId:         jf.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
@@ -58,11 +58,11 @@ func TestOperationGetUpcomingEpisodes(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetUpcomingEpisodes(t.Context(), jf.GetUpcomingEpisodesOptions{
-		UserId:           "v-UserId",
+		UserId:           jf.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
-		ParentId:         "v-ParentId",
+		ParentId:         jf.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
@@ -75,11 +75,11 @@ func TestOperationGetUpcomingEpisodes(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetUpcomingEpisodes(t.Context(), jf.GetUpcomingEpisodesOptions{
-		UserId:           "v-UserId",
+		UserId:           jf.UserID("v-UserId"),
 		StartIndex:       new(7),
 		Limit:            new(7),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
-		ParentId:         "v-ParentId",
+		ParentId:         jf.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		ImageTypeLimit:   new(7),
 		EnableImageTypes: []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},

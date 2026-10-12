@@ -14,7 +14,7 @@ import (
 )
 
 // GetGamesByIdSimilar calls GET /Games/{Id}/Similar. Finds games similar to a given game.
-func (c Client) GetGamesByIdSimilar(ctx context.Context, id string, options ...emby.GetGamesByIdSimilarOptions) (result emby.GetGamesByIdSimilarResponse, err error) {
+func (c Client) GetGamesByIdSimilar(ctx context.Context, id emby.ItemID, options ...emby.GetGamesByIdSimilarOptions) (result emby.GetGamesByIdSimilarResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetGamesByIdSimilar takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetGamesByIdSimilar(ctx context.Context, id string, options ...e
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetGamesByIdSimilar",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Games/%s/Similar", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Games/%s/Similar", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetGamesByIdSimilar(ctx context.Context, id string, options ...e
 // GetGamesByIdSimilarComplete calls GetGamesByIdSimilar page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetGamesByIdSimilarComplete(ctx context.Context, id string, options ...emby.GetGamesByIdSimilarOptions) (result emby.GetGamesByIdSimilarCompleteResult, err error) {
+func (c Client) GetGamesByIdSimilarComplete(ctx context.Context, id emby.ItemID, options ...emby.GetGamesByIdSimilarOptions) (result emby.GetGamesByIdSimilarCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetGamesByIdSimilarComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetGamesByIdSimilarComplete(ctx context.Context, id string, opti
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetGamesByIdSimilarComplete asks for them.
-func (c Client) GetGamesByIdSimilarEach(ctx context.Context, id string, options ...emby.GetGamesByIdSimilarOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetGamesByIdSimilarEach(ctx context.Context, id emby.ItemID, options ...emby.GetGamesByIdSimilarOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

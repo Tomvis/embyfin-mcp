@@ -14,7 +14,7 @@ type RemoteSearchResult struct {
 	Name              string `json:"Name,omitempty"`
 	Overview          string `json:"Overview,omitempty"`
 	ParentIndexNumber int    `json:"ParentIndexNumber,omitempty"`
-	PremiereDate      string `json:"PremiereDate,omitempty"`
+	PremiereDate      Time   `json:"PremiereDate,omitzero"`
 
 	// Gets or sets the year.
 	ProductionYear int `json:"ProductionYear,omitempty"`

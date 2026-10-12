@@ -15,12 +15,12 @@ func TestOperationSetItemImageByIndex(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.SetItemImageByIndex(t.Context(), "p/itemId", jf.ImageTypePrimary, 7, strings.NewReader("raw bytes"), "image/png")
+	result, err := c.SetItemImageByIndex(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, 7, strings.NewReader("raw bytes"), "image/png")
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Items/p%2FitemId/Images/Primary/7")
+	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/Images/Primary/7")
 	if got := r.Header.Get("Content-Type"); got != "image/png" {
 		t.Errorf("Content-Type = %q, want %q", got, "image/png")
 	}
@@ -33,7 +33,7 @@ func TestOperationSetItemImageByIndex(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.SetItemImageByIndex(t.Context(), "p/itemId", jf.ImageTypePrimary, 7, strings.NewReader("raw bytes"), "image/png")
+	result, err = c.SetItemImageByIndex(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, 7, strings.NewReader("raw bytes"), "image/png")
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

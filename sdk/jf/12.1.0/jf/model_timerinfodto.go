@@ -12,7 +12,7 @@ type TimerInfoDto struct {
 	ChannelPrimaryImageTag string `json:"ChannelPrimaryImageTag,omitempty"`
 
 	// Gets or sets the end date of the recording, in UTC.
-	EndDate string `json:"EndDate,omitempty"`
+	EndDate Time `json:"EndDate,omitzero"`
 
 	// Gets or sets the external channel identifier.
 	ExternalChannelId string `json:"ExternalChannelId,omitempty"`
@@ -46,7 +46,7 @@ type TimerInfoDto struct {
 	ParentBackdropImageTags []string `json:"ParentBackdropImageTags,omitzero"`
 
 	// Gets or sets the Id of the Parent that has a backdrop if the item does not have one.
-	ParentBackdropItemId string `json:"ParentBackdropItemId,omitempty"`
+	ParentBackdropItemId ItemID `json:"ParentBackdropItemId,omitempty"`
 
 	// Gets or sets the post padding seconds.
 	PostPaddingSeconds int `json:"PostPaddingSeconds,omitempty"`
@@ -76,7 +76,7 @@ type TimerInfoDto struct {
 	ServiceName string `json:"ServiceName,omitempty"`
 
 	// Gets or sets the start date of the recording, in UTC.
-	StartDate string `json:"StartDate,omitempty"`
+	StartDate Time `json:"StartDate,omitzero"`
 
 	// Gets or sets the status.
 	Status RecordingStatus `json:"Status,omitempty"`

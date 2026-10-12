@@ -40,7 +40,7 @@ func (r GetSuggestionsResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetSuggestionsOptions holds the query and header parameters of GetSuggestions.
 type GetSuggestionsOptions struct {
 	// The user id.
-	UserId string
+	UserId UserID
 
 	// The media types.
 	MediaType []MediaType
@@ -68,7 +68,7 @@ func (o GetSuggestionsOptions) ToHeaders() *client.Headers {
 func (o GetSuggestionsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	for _, v := range o.MediaType {
 		out.Append("mediaType", string(v))

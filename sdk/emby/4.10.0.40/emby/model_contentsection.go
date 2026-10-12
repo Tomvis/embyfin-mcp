@@ -15,7 +15,7 @@ type ContentSection struct {
 	ItemTypes             []string         `json:"ItemTypes,omitzero"`
 	Monitor               []string         `json:"Monitor,omitzero"`
 	Name                  string           `json:"Name,omitempty"`
-	ParentId              string           `json:"ParentId,omitempty"`
+	ParentId              ItemID           `json:"ParentId,omitempty"`
 	ParentItem            *BaseItemDto     `json:"ParentItem,omitempty"`
 	PremiumFeature        string           `json:"PremiumFeature,omitempty"`
 	PremiumMessage        string           `json:"PremiumMessage,omitempty"`

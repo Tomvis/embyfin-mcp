@@ -4,13 +4,13 @@ package emby
 
 // UserAction is the "UserAction" schema.
 type UserAction struct {
-	Date          string         `json:"Date,omitempty"`
+	Date          Time           `json:"Date,omitzero"`
 	Id            string         `json:"Id,omitempty"`
 	IsFavorite    *bool          `json:"IsFavorite,omitempty"`
-	ItemId        string         `json:"ItemId,omitempty"`
+	ItemId        ItemID         `json:"ItemId,omitempty"`
 	Played        *bool          `json:"Played,omitempty"`
 	PositionTicks int64          `json:"PositionTicks,omitempty"`
 	ServerId      string         `json:"ServerId,omitempty"`
 	Type          UserActionType `json:"Type,omitempty"`
-	UserId        string         `json:"UserId,omitempty"`
+	UserId        UserID         `json:"UserId,omitempty"`
 }

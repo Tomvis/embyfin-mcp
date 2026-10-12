@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByIdPassword calls POST /Users/{Id}/Password. Updates a user's password.
-func (c Client) PostUsersByIdPassword(ctx context.Context, id string, input emby.UpdateUserPassword) (result emby.PostUsersByIdPasswordResponse, err error) {
+func (c Client) PostUsersByIdPassword(ctx context.Context, id emby.UserID, input emby.UpdateUserPassword) (result emby.PostUsersByIdPasswordResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByIdPassword(ctx context.Context, id string, input emby
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByIdPassword",
-		Path:       fmt.Sprintf("/Users/%s/Password", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Password", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

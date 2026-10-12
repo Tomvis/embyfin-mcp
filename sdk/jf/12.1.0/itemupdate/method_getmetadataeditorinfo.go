@@ -13,7 +13,7 @@ import (
 )
 
 // GetMetadataEditorInfo calls GET /Items/{itemId}/MetadataEditor. Gets metadata editor info for an item.
-func (c Client) GetMetadataEditorInfo(ctx context.Context, itemId string) (result jf.GetMetadataEditorInfoResponse, err error) {
+func (c Client) GetMetadataEditorInfo(ctx context.Context, itemId jf.ItemID) (result jf.GetMetadataEditorInfoResponse, err error) {
 	result.MetadataEditorInfo = &jf.MetadataEditorInfo{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetMetadataEditorInfo(ctx context.Context, itemId string) (resul
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetMetadataEditorInfo",
-		Path:       fmt.Sprintf("/Items/%s/MetadataEditor", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Items/%s/MetadataEditor", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

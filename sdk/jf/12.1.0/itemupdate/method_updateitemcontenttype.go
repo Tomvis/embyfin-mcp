@@ -13,7 +13,7 @@ import (
 )
 
 // UpdateItemContentType calls POST /Items/{itemId}/ContentType. Updates an item's content type.
-func (c Client) UpdateItemContentType(ctx context.Context, itemId string, contentTypeOption ...string) (result jf.UpdateItemContentTypeResponse, err error) {
+func (c Client) UpdateItemContentType(ctx context.Context, itemId jf.ItemID, contentTypeOption ...string) (result jf.UpdateItemContentTypeResponse, err error) {
 	var option jf.UpdateItemContentTypeOptions
 	if len(contentTypeOption) > 1 {
 		err = fmt.Errorf("UpdateItemContentType takes one contentTypeOption at most, not %d", len(contentTypeOption))
@@ -30,7 +30,7 @@ func (c Client) UpdateItemContentType(ctx context.Context, itemId string, conten
 		HTTPMethod:    http.MethodPost,
 		Operation:     "UpdateItemContentType",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/ContentType", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/ContentType", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

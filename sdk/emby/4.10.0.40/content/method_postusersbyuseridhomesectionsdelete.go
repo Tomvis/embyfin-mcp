@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdHomeSectionsDelete calls POST /Users/{UserId}/HomeSections/Delete. Requires authentication as user.
-func (c Client) PostUsersByUserIdHomeSectionsDelete(ctx context.Context, userId string, input emby.UserLibraryDeleteHomeSections) (result emby.PostUsersByUserIdHomeSectionsDeleteResponse, err error) {
+func (c Client) PostUsersByUserIdHomeSectionsDelete(ctx context.Context, userId emby.UserID, input emby.UserLibraryDeleteHomeSections) (result emby.PostUsersByUserIdHomeSectionsDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdHomeSectionsDelete(ctx context.Context, userId 
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdHomeSectionsDelete",
-		Path:       fmt.Sprintf("/Users/%s/HomeSections/Delete", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s/HomeSections/Delete", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

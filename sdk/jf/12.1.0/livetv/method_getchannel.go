@@ -13,7 +13,7 @@ import (
 )
 
 // GetChannel calls GET /LiveTv/Channels/{channelId}. Gets a live tv channel.
-func (c Client) GetChannel(ctx context.Context, channelId string, userId ...string) (result jf.GetChannelResponse, err error) {
+func (c Client) GetChannel(ctx context.Context, channelId string, userId ...jf.UserID) (result jf.GetChannelResponse, err error) {
 	var option jf.GetChannelOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetChannel takes one userId at most, not %d", len(userId))

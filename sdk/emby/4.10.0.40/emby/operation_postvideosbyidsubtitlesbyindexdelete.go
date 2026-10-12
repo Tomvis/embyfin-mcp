@@ -16,7 +16,7 @@ type PostVideosByIdSubtitlesByIndexDeleteResponse struct {
 // PostVideosByIdSubtitlesByIndexDeleteOptions holds the query and header parameters of PostVideosByIdSubtitlesByIndexDelete.
 type PostVideosByIdSubtitlesByIndexDeleteOptions struct {
 	// MediaSourceId
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -29,7 +29,7 @@ func (o PostVideosByIdSubtitlesByIndexDeleteOptions) ToHeaders() *client.Headers
 func (o PostVideosByIdSubtitlesByIndexDeleteOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.MediaSourceId != "" {
-		out.Append("MediaSourceId", o.MediaSourceId)
+		out.Append("MediaSourceId", string(o.MediaSourceId))
 	}
 	return &out
 }

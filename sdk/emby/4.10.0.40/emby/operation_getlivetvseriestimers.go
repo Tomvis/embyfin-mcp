@@ -50,6 +50,11 @@ type GetLiveTvSeriesTimersOptions struct {
 
 	// Optional. The maximum number of records to return
 	Limit *int
+
+	// Optional. Sort by SortName or Priority
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	SortByList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -72,6 +77,9 @@ func (o GetLiveTvSeriesTimersOptions) ToQuery() *client.QueryParams {
 	}
 	if o.Limit != nil {
 		out.Append("Limit", strconv.Itoa(*o.Limit))
+	}
+	if len(o.SortByList) > 0 {
+		out.Append("SortBy", client.CSV(o.SortByList))
 	}
 	return &out
 }

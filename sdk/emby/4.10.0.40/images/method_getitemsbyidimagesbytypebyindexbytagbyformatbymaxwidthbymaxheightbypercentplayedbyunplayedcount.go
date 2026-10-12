@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount calls GET /Items/{Id}/Images/{Type}/{Index}/{Tag}/{Format}/{MaxWidth}/{MaxHeight}/{PercentPlayed}/{UnPlayedCount}. Requires authentication as user.
-func (c Client) GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(ctx context.Context, id string, typeParam emby.ImageType, index int, tag string, format string, maxWidth int, maxHeight int, percentPlayed int, unPlayedCount int, options ...emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions) (result emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountResponse, err error) {
+func (c Client) GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index int, tag string, format string, maxWidth int, maxHeight int, percentPlayed int, unPlayedCount int, options ...emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions) (result emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeigh
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Items/%s/Images/%s/%d/%s/%s/%d/%d/%d/%d", url.PathEscape(id), url.PathEscape(string(typeParam)), index, url.PathEscape(tag), url.PathEscape(format), maxWidth, maxHeight, percentPlayed, unPlayedCount),
+		Path:           fmt.Sprintf("/Items/%s/Images/%s/%d/%s/%s/%d/%d/%d/%d", url.PathEscape(string(id)), url.PathEscape(string(typeParam)), index, url.PathEscape(tag), url.PathEscape(format), maxWidth, maxHeight, percentPlayed, unPlayedCount),
 		StreamResponse: true,
 	}
 

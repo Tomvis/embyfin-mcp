@@ -14,7 +14,7 @@ import (
 )
 
 // GetItemCollections calls GET /Items/{itemId}/Collections. Gets the collections that include the specified item.
-func (c Client) GetItemCollections(ctx context.Context, itemId string, options ...jf.GetItemCollectionsOptions) (result jf.GetItemCollectionsResponse, err error) {
+func (c Client) GetItemCollections(ctx context.Context, itemId jf.ItemID, options ...jf.GetItemCollectionsOptions) (result jf.GetItemCollectionsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemCollections takes one options struct at most, not %d", len(options))
 		return
@@ -32,7 +32,7 @@ func (c Client) GetItemCollections(ctx context.Context, itemId string, options .
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemCollections",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Collections", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/Collections", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -62,7 +62,7 @@ func (c Client) GetItemCollections(ctx context.Context, itemId string, options .
 // GetItemCollectionsComplete calls GetItemCollections page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetItemCollectionsComplete(ctx context.Context, itemId string, options ...jf.GetItemCollectionsOptions) (result jf.GetItemCollectionsCompleteResult, err error) {
+func (c Client) GetItemCollectionsComplete(ctx context.Context, itemId jf.ItemID, options ...jf.GetItemCollectionsOptions) (result jf.GetItemCollectionsCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemCollectionsComplete takes one options struct at most, not %d", len(options))
 		return
@@ -116,7 +116,7 @@ func (c Client) GetItemCollectionsComplete(ctx context.Context, itemId string, o
 //	}
 //
 // An error is the last pair handed out, with a zero jf.BaseItemDto. The pages are asked for as GetItemCollectionsComplete asks for them.
-func (c Client) GetItemCollectionsEach(ctx context.Context, itemId string, options ...jf.GetItemCollectionsOptions) iter.Seq2[jf.BaseItemDto, error] {
+func (c Client) GetItemCollectionsEach(ctx context.Context, itemId jf.ItemID, options ...jf.GetItemCollectionsOptions) iter.Seq2[jf.BaseItemDto, error] {
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {

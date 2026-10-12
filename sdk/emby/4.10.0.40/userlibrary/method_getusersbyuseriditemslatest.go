@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByUserIdItemsLatest calls GET /Users/{UserId}/Items/Latest. Gets latest media.
-func (c Client) GetUsersByUserIdItemsLatest(ctx context.Context, userId string, options ...emby.GetUsersByUserIdItemsLatestOptions) (result emby.GetUsersByUserIdItemsLatestResponse, err error) {
+func (c Client) GetUsersByUserIdItemsLatest(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsLatestOptions) (result emby.GetUsersByUserIdItemsLatestResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdItemsLatest takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetUsersByUserIdItemsLatest(ctx context.Context, userId string, 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetUsersByUserIdItemsLatest",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Items/Latest", url.PathEscape(userId)),
+		Path:          fmt.Sprintf("/Users/%s/Items/Latest", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

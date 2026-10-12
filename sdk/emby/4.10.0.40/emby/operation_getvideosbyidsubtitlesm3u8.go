@@ -85,7 +85,7 @@ type GetVideosByIdSubtitlesM3u8Options struct {
 	ManifestSubtitles string
 
 	// The media source whose subtitles the playlist segments
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -104,7 +104,7 @@ func (o GetVideosByIdSubtitlesM3u8Options) ToQuery() *client.QueryParams {
 		out.Append("ManifestSubtitles", o.ManifestSubtitles)
 	}
 	if o.MediaSourceId != "" {
-		out.Append("MediaSourceId", o.MediaSourceId)
+		out.Append("MediaSourceId", string(o.MediaSourceId))
 	}
 	return &out
 }

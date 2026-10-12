@@ -16,7 +16,7 @@ func TestOperationUpdateDisplayPreferences(t *testing.T) {
 
 	c, s := newOperationServer(t, 204, "", "")
 	result, err := c.UpdateDisplayPreferences(t.Context(), "p/displayPreferencesId", jf.DisplayPreferencesDto{}, jf.UpdateDisplayPreferencesOptions{
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 		Client: "v-Client",
 	})
 	if err != nil {
@@ -42,7 +42,7 @@ func TestOperationUpdateDisplayPreferences(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.UpdateDisplayPreferences(t.Context(), "p/displayPreferencesId", jf.DisplayPreferencesDto{}, jf.UpdateDisplayPreferencesOptions{
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 		Client: "v-Client",
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {

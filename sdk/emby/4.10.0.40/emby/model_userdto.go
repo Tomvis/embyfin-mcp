@@ -7,13 +7,13 @@ type UserDto struct {
 	Configuration           *UserConfiguration  `json:"Configuration,omitempty"`
 	ConnectLinkType         ConnectUserLinkType `json:"ConnectLinkType,omitempty"`
 	ConnectUserName         string              `json:"ConnectUserName,omitempty"`
-	DateCreated             string              `json:"DateCreated,omitempty"`
+	DateCreated             Time                `json:"DateCreated,omitzero"`
 	EnableAutoLogin         *bool               `json:"EnableAutoLogin,omitempty"`
 	HasConfiguredPassword   *bool               `json:"HasConfiguredPassword,omitempty"`
 	HasPassword             *bool               `json:"HasPassword,omitempty"`
-	Id                      string              `json:"Id,omitempty"`
-	LastActivityDate        string              `json:"LastActivityDate,omitempty"`
-	LastLoginDate           string              `json:"LastLoginDate,omitempty"`
+	Id                      UserID              `json:"Id,omitempty"`
+	LastActivityDate        Time                `json:"LastActivityDate,omitzero"`
+	LastLoginDate           Time                `json:"LastLoginDate,omitzero"`
 	Name                    string              `json:"Name,omitempty"`
 	Policy                  *UserPolicy         `json:"Policy,omitempty"`
 	Prefix                  string              `json:"Prefix,omitempty"`
@@ -28,4 +28,4 @@ type UserDto struct {
 func (m UserDto) GetName() string { return m.Name }
 
 // GetId is the record's Id, for code that handles records of several types alike.
-func (m UserDto) GetId() string { return m.Id }
+func (m UserDto) GetId() UserID { return m.Id }

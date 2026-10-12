@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersById calls POST /Users/{Id}. Updates a user.
-func (c Client) PostUsersById(ctx context.Context, id string, input emby.UserDto) (result emby.PostUsersByIdResponse, err error) {
+func (c Client) PostUsersById(ctx context.Context, id emby.UserID, input emby.UserDto) (result emby.PostUsersByIdResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersById(ctx context.Context, id string, input emby.UserDto
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersById",
-		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -39,7 +39,7 @@ func (r MarkUnplayedItemResponse) Record() (UserItemDataDto, error) {
 // MarkUnplayedItemOptions holds the query and header parameters of MarkUnplayedItem.
 type MarkUnplayedItemOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o MarkUnplayedItemOptions) ToHeaders() *client.Headers {
 func (o MarkUnplayedItemOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

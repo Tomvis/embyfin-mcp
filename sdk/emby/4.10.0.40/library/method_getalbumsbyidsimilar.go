@@ -14,7 +14,7 @@ import (
 )
 
 // GetAlbumsByIdSimilar calls GET /Albums/{Id}/Similar. Finds albums similar to a given album.
-func (c Client) GetAlbumsByIdSimilar(ctx context.Context, id string, options ...emby.GetAlbumsByIdSimilarOptions) (result emby.GetAlbumsByIdSimilarResponse, err error) {
+func (c Client) GetAlbumsByIdSimilar(ctx context.Context, id emby.ItemID, options ...emby.GetAlbumsByIdSimilarOptions) (result emby.GetAlbumsByIdSimilarResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetAlbumsByIdSimilar takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetAlbumsByIdSimilar(ctx context.Context, id string, options ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetAlbumsByIdSimilar",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Albums/%s/Similar", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Albums/%s/Similar", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetAlbumsByIdSimilar(ctx context.Context, id string, options ...
 // GetAlbumsByIdSimilarComplete calls GetAlbumsByIdSimilar page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetAlbumsByIdSimilarComplete(ctx context.Context, id string, options ...emby.GetAlbumsByIdSimilarOptions) (result emby.GetAlbumsByIdSimilarCompleteResult, err error) {
+func (c Client) GetAlbumsByIdSimilarComplete(ctx context.Context, id emby.ItemID, options ...emby.GetAlbumsByIdSimilarOptions) (result emby.GetAlbumsByIdSimilarCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetAlbumsByIdSimilarComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetAlbumsByIdSimilarComplete(ctx context.Context, id string, opt
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetAlbumsByIdSimilarComplete asks for them.
-func (c Client) GetAlbumsByIdSimilarEach(ctx context.Context, id string, options ...emby.GetAlbumsByIdSimilarOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetAlbumsByIdSimilarEach(ctx context.Context, id emby.ItemID, options ...emby.GetAlbumsByIdSimilarOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

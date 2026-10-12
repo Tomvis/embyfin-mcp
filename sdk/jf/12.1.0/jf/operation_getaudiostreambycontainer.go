@@ -105,7 +105,7 @@ type GetAudioStreamByContainerOptions struct {
 	MinSegments *int
 
 	// The media version id, if playing an alternate version.
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// The device id of the client requesting. Used to stop encoding processes when needed.
 	DeviceId string
@@ -256,7 +256,7 @@ func (o GetAudioStreamByContainerOptions) ToQuery() *client.QueryParams {
 		out.Append("minSegments", strconv.Itoa(*o.MinSegments))
 	}
 	if o.MediaSourceId != "" {
-		out.Append("mediaSourceId", o.MediaSourceId)
+		out.Append("mediaSourceId", string(o.MediaSourceId))
 	}
 	if o.DeviceId != "" {
 		out.Append("deviceId", o.DeviceId)

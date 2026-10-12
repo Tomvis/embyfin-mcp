@@ -13,7 +13,7 @@ import (
 )
 
 // PostVideosByIdAlternateSourcesDelete calls POST /Videos/{Id}/AlternateSources/Delete. Removes alternate video sources.
-func (c Client) PostVideosByIdAlternateSourcesDelete(ctx context.Context, id string) (result emby.PostVideosByIdAlternateSourcesDeleteResponse, err error) {
+func (c Client) PostVideosByIdAlternateSourcesDelete(ctx context.Context, id emby.ItemID) (result emby.PostVideosByIdAlternateSourcesDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostVideosByIdAlternateSourcesDelete(ctx context.Context, id str
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostVideosByIdAlternateSourcesDelete",
-		Path:       fmt.Sprintf("/Videos/%s/AlternateSources/Delete", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Videos/%s/AlternateSources/Delete", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

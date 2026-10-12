@@ -17,13 +17,13 @@ type AddItemToPlaylistResponse struct {
 // AddItemToPlaylistOptions holds the query and header parameters of AddItemToPlaylist.
 type AddItemToPlaylistOptions struct {
 	// Item id, comma delimited.
-	Ids []string
+	Ids []ItemID
 
 	// Optional. 0-based index where to place the items or at the end if `null`.
 	Position *int
 
 	// The userId.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -36,13 +36,13 @@ func (o AddItemToPlaylistOptions) ToHeaders() *client.Headers {
 func (o AddItemToPlaylistOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	for _, v := range o.Ids {
-		out.Append("ids", v)
+		out.Append("ids", string(v))
 	}
 	if o.Position != nil {
 		out.Append("position", strconv.Itoa(*o.Position))
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

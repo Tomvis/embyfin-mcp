@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdItemsByIdRating calls POST /Users/{UserId}/Items/{Id}/Rating. Updates a user's rating for an item.
-func (c Client) PostUsersByUserIdItemsByIdRating(ctx context.Context, userId string, id string, likes bool) (result emby.PostUsersByUserIdItemsByIdRatingResponse, err error) {
+func (c Client) PostUsersByUserIdItemsByIdRating(ctx context.Context, userId emby.UserID, id emby.ItemID, likes bool) (result emby.PostUsersByUserIdItemsByIdRatingResponse, err error) {
 	var option emby.PostUsersByUserIdItemsByIdRatingOptions
 	option.Likes = &likes
 
@@ -26,7 +26,7 @@ func (c Client) PostUsersByUserIdItemsByIdRating(ctx context.Context, userId str
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostUsersByUserIdItemsByIdRating",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Items/%s/Rating", url.PathEscape(userId), url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/Items/%s/Rating", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

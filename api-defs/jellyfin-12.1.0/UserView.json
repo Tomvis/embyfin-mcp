@@ -15,7 +15,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -46,7 +47,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {

@@ -10,7 +10,7 @@ type LiveTvSeriesTimerInfoDto struct {
 	ChannelNumber                    string              `json:"ChannelNumber,omitempty"`
 	ChannelPrimaryImageTag           string              `json:"ChannelPrimaryImageTag,omitempty"`
 	Days                             []DayOfWeek         `json:"Days,omitzero"`
-	EndDate                          string              `json:"EndDate,omitempty"`
+	EndDate                          Time                `json:"EndDate,omitzero"`
 	Id                               string              `json:"Id,omitempty"`
 	ImageTags                        map[string]string   `json:"ImageTags,omitzero"`
 	IsPostPaddingRequired            bool                `json:"IsPostPaddingRequired"`
@@ -23,12 +23,12 @@ type LiveTvSeriesTimerInfoDto struct {
 	Name                             string              `json:"Name,omitempty"`
 	Overview                         string              `json:"Overview,omitempty"`
 	ParentBackdropImageTags          []string            `json:"ParentBackdropImageTags,omitzero"`
-	ParentBackdropItemId             string              `json:"ParentBackdropItemId,omitempty"`
+	ParentBackdropItemId             ItemID              `json:"ParentBackdropItemId,omitempty"`
 	ParentFolderId                   string              `json:"ParentFolderId,omitempty"`
-	ParentPrimaryImageItemId         string              `json:"ParentPrimaryImageItemId,omitempty"`
+	ParentPrimaryImageItemId         ItemID              `json:"ParentPrimaryImageItemId,omitempty"`
 	ParentPrimaryImageTag            string              `json:"ParentPrimaryImageTag,omitempty"`
 	ParentThumbImageTag              string              `json:"ParentThumbImageTag,omitempty"`
-	ParentThumbItemId                string              `json:"ParentThumbItemId,omitempty"`
+	ParentThumbItemId                ItemID              `json:"ParentThumbItemId,omitempty"`
 	PostPaddingSeconds               int                 `json:"PostPaddingSeconds,omitempty"`
 	PrePaddingSeconds                int                 `json:"PrePaddingSeconds,omitempty"`
 	Priority                         int                 `json:"Priority,omitempty"`
@@ -36,10 +36,10 @@ type LiveTvSeriesTimerInfoDto struct {
 	RecordAnyChannel                 bool                `json:"RecordAnyChannel"`
 	RecordAnyTime                    bool                `json:"RecordAnyTime"`
 	RecordNewOnly                    bool                `json:"RecordNewOnly"`
-	SeriesId                         string              `json:"SeriesId,omitempty"`
+	SeriesId                         ItemID              `json:"SeriesId,omitempty"`
 	ServerId                         string              `json:"ServerId,omitempty"`
 	SkipEpisodesInLibrary            bool                `json:"SkipEpisodesInLibrary"`
-	StartDate                        string              `json:"StartDate,omitempty"`
+	StartDate                        Time                `json:"StartDate,omitzero"`
 	TimerType                        LiveTvTimerType     `json:"TimerType,omitempty"`
 	Type                             string              `json:"Type,omitempty"`
 }

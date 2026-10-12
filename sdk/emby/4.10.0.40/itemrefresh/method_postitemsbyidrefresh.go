@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdRefresh calls POST /Items/{Id}/Refresh. Refreshes metadata for an item.
-func (c Client) PostItemsByIdRefresh(ctx context.Context, id string, input emby.BaseRefreshRequest, options ...emby.PostItemsByIdRefreshOptions) (result emby.PostItemsByIdRefreshResponse, err error) {
+func (c Client) PostItemsByIdRefresh(ctx context.Context, id emby.ItemID, input emby.BaseRefreshRequest, options ...emby.PostItemsByIdRefreshOptions) (result emby.PostItemsByIdRefreshResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("PostItemsByIdRefresh takes one options struct at most, not %d", len(options))
 		return
@@ -32,7 +32,7 @@ func (c Client) PostItemsByIdRefresh(ctx context.Context, id string, input emby.
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostItemsByIdRefresh",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Refresh", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/Refresh", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

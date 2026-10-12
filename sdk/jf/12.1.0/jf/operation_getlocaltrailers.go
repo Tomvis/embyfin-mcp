@@ -21,7 +21,7 @@ func (r GetLocalTrailersResponse) Answered() bool { return r.Answer != nil }
 // GetLocalTrailersOptions holds the query and header parameters of GetLocalTrailers.
 type GetLocalTrailersOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -34,7 +34,7 @@ func (o GetLocalTrailersOptions) ToHeaders() *client.Headers {
 func (o GetLocalTrailersOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

@@ -7,8 +7,8 @@ type MovieReviewsAnswerResults struct {
 	Author        string                                  `json:"author,omitempty"`
 	AuthorDetails *MovieReviewsAnswerResultsAuthorDetails `json:"author_details,omitempty"`
 	Content       string                                  `json:"content,omitempty"`
-	CreatedAt     string                                  `json:"created_at,omitempty"`
+	CreatedAt     Time                                    `json:"created_at,omitzero"`
 	Id            string                                  `json:"id,omitempty"`
-	UpdatedAt     string                                  `json:"updated_at,omitempty"`
+	UpdatedAt     Time                                    `json:"updated_at,omitzero"`
 	Url           string                                  `json:"url,omitempty"`
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteUsersByUserIdPlayedItemsById calls DELETE /Users/{UserId}/PlayedItems/{Id}. Marks an item as unplayed.
-func (c Client) DeleteUsersByUserIdPlayedItemsById(ctx context.Context, userId string, id string) (result emby.DeleteUsersByUserIdPlayedItemsByIdResponse, err error) {
+func (c Client) DeleteUsersByUserIdPlayedItemsById(ctx context.Context, userId emby.UserID, id emby.ItemID) (result emby.DeleteUsersByUserIdPlayedItemsByIdResponse, err error) {
 	result.UserItemDataDto = &emby.UserItemDataDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) DeleteUsersByUserIdPlayedItemsById(ctx context.Context, userId s
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteUsersByUserIdPlayedItemsById",
-		Path:       fmt.Sprintf("/Users/%s/PlayedItems/%s", url.PathEscape(userId), url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/PlayedItems/%s", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

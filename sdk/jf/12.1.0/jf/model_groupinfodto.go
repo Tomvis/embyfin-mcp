@@ -13,7 +13,7 @@ type GroupInfoDto struct {
 	GroupName string `json:"GroupName,omitempty"`
 
 	// Gets the date when this DTO has been created.
-	LastUpdatedAt string `json:"LastUpdatedAt,omitempty"`
+	LastUpdatedAt Time `json:"LastUpdatedAt,omitzero"`
 
 	// Gets the participants.
 	Participants []string `json:"Participants,omitzero"`

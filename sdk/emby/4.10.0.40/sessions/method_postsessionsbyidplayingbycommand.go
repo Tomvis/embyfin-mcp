@@ -13,7 +13,7 @@ import (
 )
 
 // PostSessionsByIdPlayingByCommand calls POST /Sessions/{Id}/Playing/{Command}. Issues a playstate command to a client.
-func (c Client) PostSessionsByIdPlayingByCommand(ctx context.Context, id string, command emby.PlaystateCommand, input emby.PlaystateRequest, seekPositionTicks ...int64) (result emby.PostSessionsByIdPlayingByCommandResponse, err error) {
+func (c Client) PostSessionsByIdPlayingByCommand(ctx context.Context, id emby.SessionID, command emby.PlaystateCommand, input emby.PlaystateRequest, seekPositionTicks ...int64) (result emby.PostSessionsByIdPlayingByCommandResponse, err error) {
 	var option emby.PostSessionsByIdPlayingByCommandOptions
 	if len(seekPositionTicks) > 1 {
 		err = fmt.Errorf("PostSessionsByIdPlayingByCommand takes one seekPositionTicks at most, not %d", len(seekPositionTicks))
@@ -32,7 +32,7 @@ func (c Client) PostSessionsByIdPlayingByCommand(ctx context.Context, id string,
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostSessionsByIdPlayingByCommand",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Sessions/%s/Playing/%s", url.PathEscape(id), url.PathEscape(string(command))),
+		Path:          fmt.Sprintf("/Sessions/%s/Playing/%s", url.PathEscape(string(id)), url.PathEscape(string(command))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

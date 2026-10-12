@@ -16,7 +16,7 @@ func TestOperationGetItemsByIdCriticReviews(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetItemsByIdCriticReviews(t.Context(), "p/id", emby.GetItemsByIdCriticReviewsOptions{
+	result, err := c.GetItemsByIdCriticReviews(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdCriticReviewsOptions{
 		StartIndex: new(7),
 		Limit:      new(7),
 	})
@@ -25,7 +25,7 @@ func TestOperationGetItemsByIdCriticReviews(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2Fid/CriticReviews")
+	expectRequest(t, r, http.MethodGet, "/Items/v-id/CriticReviews")
 	expectQuery(t, r, "StartIndex", "7")
 	expectQuery(t, r, "Limit", "7")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
@@ -43,7 +43,7 @@ func TestOperationGetItemsByIdCriticReviews(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.GetItemsByIdCriticReviews(t.Context(), "p/id", emby.GetItemsByIdCriticReviewsOptions{
+	result, err = c.GetItemsByIdCriticReviews(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdCriticReviewsOptions{
 		StartIndex: new(7),
 		Limit:      new(7),
 	})
@@ -59,7 +59,7 @@ func TestOperationGetItemsByIdCriticReviews(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetItemsByIdCriticReviews(t.Context(), "p/id", emby.GetItemsByIdCriticReviewsOptions{
+	result, err = c.GetItemsByIdCriticReviews(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdCriticReviewsOptions{
 		StartIndex: new(7),
 		Limit:      new(7),
 	})
@@ -69,7 +69,7 @@ func TestOperationGetItemsByIdCriticReviews(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetItemsByIdCriticReviews(t.Context(), "p/id", emby.GetItemsByIdCriticReviewsOptions{
+	result, err = c.GetItemsByIdCriticReviews(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdCriticReviewsOptions{
 		StartIndex: new(7),
 		Limit:      new(7),
 	})
@@ -79,10 +79,10 @@ func TestOperationGetItemsByIdCriticReviews(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.GetItemsByIdCriticReviews(t.Context(), "p/id"); err != nil {
+	if _, err = c.GetItemsByIdCriticReviews(t.Context(), emby.ItemID("v-id")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetItemsByIdCriticReviews(t.Context(), "p/id", emby.GetItemsByIdCriticReviewsOptions{}, emby.GetItemsByIdCriticReviewsOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetItemsByIdCriticReviews(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdCriticReviewsOptions{}, emby.GetItemsByIdCriticReviewsOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }
@@ -107,7 +107,7 @@ func TestOperationGetItemsByIdCriticReviewsComplete(t *testing.T) {
 			t.Parallel()
 
 			c, starts := pagedServer(t, "StartIndex", "{}", tc.total, tc.pages)
-			result, err := c.GetItemsByIdCriticReviewsComplete(t.Context(), "p/id", tc.options)
+			result, err := c.GetItemsByIdCriticReviewsComplete(t.Context(), emby.ItemID("v-id"), tc.options)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -123,7 +123,7 @@ func TestOperationGetItemsByIdCriticReviewsEach(t *testing.T) {
 
 	c, starts := pagedServer(t, "StartIndex", "{}", 0, 2)
 	n := 0
-	for _, err := range c.GetItemsByIdCriticReviewsEach(t.Context(), "p/id", emby.GetItemsByIdCriticReviewsOptions{Limit: new(1)}) {
+	for _, err := range c.GetItemsByIdCriticReviewsEach(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdCriticReviewsOptions{Limit: new(1)}) {
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -135,7 +135,7 @@ func TestOperationGetItemsByIdCriticReviewsEach(t *testing.T) {
 
 	// stopping after the first result asks for no page more
 	c, starts = pagedServer(t, "StartIndex", "{}", 0, 2)
-	for range c.GetItemsByIdCriticReviewsEach(t.Context(), "p/id", emby.GetItemsByIdCriticReviewsOptions{Limit: new(1)}) {
+	for range c.GetItemsByIdCriticReviewsEach(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdCriticReviewsOptions{Limit: new(1)}) {
 		break
 	}
 	if len(*starts) != 1 {

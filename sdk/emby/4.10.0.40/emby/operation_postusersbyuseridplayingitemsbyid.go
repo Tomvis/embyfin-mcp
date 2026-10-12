@@ -17,7 +17,7 @@ type PostUsersByUserIdPlayingItemsByIdResponse struct {
 // PostUsersByUserIdPlayingItemsByIdOptions holds the query and header parameters of PostUsersByUserIdPlayingItemsById.
 type PostUsersByUserIdPlayingItemsByIdOptions struct {
 	// The id of the MediaSource
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// Indicates if the client can seek
 	CanSeek             *bool
@@ -38,7 +38,7 @@ func (o PostUsersByUserIdPlayingItemsByIdOptions) ToHeaders() *client.Headers {
 func (o PostUsersByUserIdPlayingItemsByIdOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.MediaSourceId != "" {
-		out.Append("MediaSourceId", o.MediaSourceId)
+		out.Append("MediaSourceId", string(o.MediaSourceId))
 	}
 	if o.CanSeek != nil {
 		out.Append("CanSeek", strconv.FormatBool(*o.CanSeek))

@@ -22,7 +22,7 @@ type DeviceInfoDto struct {
 	CustomName string `json:"CustomName,omitempty"`
 
 	// Gets or sets the date last modified.
-	DateLastActivity string `json:"DateLastActivity,omitempty"`
+	DateLastActivity Time `json:"DateLastActivity,omitzero"`
 
 	// Gets or sets the icon URL.
 	IconUrl string `json:"IconUrl,omitempty"`
@@ -31,7 +31,7 @@ type DeviceInfoDto struct {
 	Id string `json:"Id,omitempty"`
 
 	// Gets or sets the last user identifier.
-	LastUserId string `json:"LastUserId,omitempty"`
+	LastUserId UserID `json:"LastUserId,omitempty"`
 
 	// Gets or sets the last name of the user.
 	LastUserName string `json:"LastUserName,omitempty"`

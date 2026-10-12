@@ -14,7 +14,7 @@ import (
 )
 
 // GetPlaylistsByIdItems calls GET /Playlists/{Id}/Items. Gets the original items of a playlist.
-func (c Client) GetPlaylistsByIdItems(ctx context.Context, id string, options ...emby.GetPlaylistsByIdItemsOptions) (result emby.GetPlaylistsByIdItemsResponse, err error) {
+func (c Client) GetPlaylistsByIdItems(ctx context.Context, id emby.ItemID, options ...emby.GetPlaylistsByIdItemsOptions) (result emby.GetPlaylistsByIdItemsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetPlaylistsByIdItems takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetPlaylistsByIdItems(ctx context.Context, id string, options ..
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetPlaylistsByIdItems",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetPlaylistsByIdItems(ctx context.Context, id string, options ..
 // GetPlaylistsByIdItemsComplete calls GetPlaylistsByIdItems page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetPlaylistsByIdItemsComplete(ctx context.Context, id string, options ...emby.GetPlaylistsByIdItemsOptions) (result emby.GetPlaylistsByIdItemsCompleteResult, err error) {
+func (c Client) GetPlaylistsByIdItemsComplete(ctx context.Context, id emby.ItemID, options ...emby.GetPlaylistsByIdItemsOptions) (result emby.GetPlaylistsByIdItemsCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetPlaylistsByIdItemsComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetPlaylistsByIdItemsComplete(ctx context.Context, id string, op
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetPlaylistsByIdItemsComplete asks for them.
-func (c Client) GetPlaylistsByIdItemsEach(ctx context.Context, id string, options ...emby.GetPlaylistsByIdItemsOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetPlaylistsByIdItemsEach(ctx context.Context, id emby.ItemID, options ...emby.GetPlaylistsByIdItemsOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

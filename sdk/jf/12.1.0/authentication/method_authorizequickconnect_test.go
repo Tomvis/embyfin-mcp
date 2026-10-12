@@ -16,7 +16,7 @@ func TestOperationAuthorizeQuickConnect(t *testing.T) {
 	c, s := newOperationServer(t, 200, "application/json", "true")
 	result, err := c.AuthorizeQuickConnect(t.Context(), jf.AuthorizeQuickConnectOptions{
 		Code:   "v-Code",
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -37,7 +37,7 @@ func TestOperationAuthorizeQuickConnect(t *testing.T) {
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.AuthorizeQuickConnect(t.Context(), jf.AuthorizeQuickConnectOptions{
 		Code:   "v-Code",
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -47,7 +47,7 @@ func TestOperationAuthorizeQuickConnect(t *testing.T) {
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.AuthorizeQuickConnect(t.Context(), jf.AuthorizeQuickConnectOptions{
 		Code:   "v-Code",
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

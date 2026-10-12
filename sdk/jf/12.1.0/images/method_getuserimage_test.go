@@ -17,7 +17,7 @@ func TestOperationGetUserImage(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "image/png", "file bytes")
 	result, err := c.GetUserImage(t.Context(), jf.GetUserImageOptions{
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 		Tag:    "v-Tag",
 		Format: jf.ImageFormatBmp,
 	})
@@ -44,7 +44,7 @@ func TestOperationGetUserImage(t *testing.T) {
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
 	result, err = c.GetUserImage(t.Context(), jf.GetUserImageOptions{
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 		Tag:    "v-Tag",
 		Format: jf.ImageFormatBmp,
 	})
@@ -56,7 +56,7 @@ func TestOperationGetUserImage(t *testing.T) {
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
 	result, err = c.GetUserImage(t.Context(), jf.GetUserImageOptions{
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 		Tag:    "v-Tag",
 		Format: jf.ImageFormatBmp,
 	})
@@ -80,7 +80,7 @@ func TestOperationGetUserImage(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetUserImage(t.Context(), jf.GetUserImageOptions{
-		UserId: "v-UserId",
+		UserId: jf.UserID("v-UserId"),
 		Tag:    "v-Tag",
 		Format: jf.ImageFormatBmp,
 	})

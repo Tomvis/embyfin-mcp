@@ -8,5 +8,5 @@ type XbmcMetadataOptions struct {
 	EnablePathSubstitution       bool   `json:"EnablePathSubstitution"`
 	ReleaseDateFormat            string `json:"ReleaseDateFormat,omitempty"`
 	SaveImagePathsInNfo          bool   `json:"SaveImagePathsInNfo"`
-	UserId                       string `json:"UserId,omitempty"`
+	UserId                       UserID `json:"UserId,omitempty"`
 }

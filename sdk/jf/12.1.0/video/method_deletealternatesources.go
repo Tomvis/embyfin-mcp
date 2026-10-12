@@ -13,14 +13,14 @@ import (
 )
 
 // DeleteAlternateSources calls DELETE /Videos/{itemId}/AlternateSources. Removes alternate video sources.
-func (c Client) DeleteAlternateSources(ctx context.Context, itemId string) (result jf.DeleteAlternateSourcesResponse, err error) {
+func (c Client) DeleteAlternateSources(ctx context.Context, itemId jf.ItemID) (result jf.DeleteAlternateSourcesResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteAlternateSources",
-		Path:       fmt.Sprintf("/Videos/%s/AlternateSources", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Videos/%s/AlternateSources", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

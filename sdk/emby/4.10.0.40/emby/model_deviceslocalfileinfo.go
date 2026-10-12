@@ -5,7 +5,7 @@ package emby
 // DevicesLocalFileInfo is the "Devices.LocalFileInfo" schema.
 type DevicesLocalFileInfo struct {
 	Album       string `json:"Album,omitempty"`
-	DateCreated string `json:"DateCreated,omitempty"`
+	DateCreated Time   `json:"DateCreated,omitzero"`
 	Id          string `json:"Id,omitempty"`
 	MimeType    string `json:"MimeType,omitempty"`
 	Name        string `json:"Name,omitempty"`

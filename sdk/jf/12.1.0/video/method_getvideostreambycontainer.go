@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideoStreamByContainer calls GET /Videos/{itemId}/stream.{container}. Gets a video stream.
-func (c Client) GetVideoStreamByContainer(ctx context.Context, itemId string, container string, options ...jf.GetVideoStreamByContainerOptions) (result jf.GetVideoStreamByContainerResponse, err error) {
+func (c Client) GetVideoStreamByContainer(ctx context.Context, itemId jf.ItemID, container string, options ...jf.GetVideoStreamByContainerOptions) (result jf.GetVideoStreamByContainerResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetVideoStreamByContainer takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetVideoStreamByContainer(ctx context.Context, itemId string, co
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideoStreamByContainer",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/stream.%s", url.PathEscape(itemId), url.PathEscape(container)),
+		Path:           fmt.Sprintf("/Videos/%s/stream.%s", url.PathEscape(string(itemId)), url.PathEscape(container)),
 		StreamResponse: true,
 	}
 

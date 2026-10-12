@@ -14,7 +14,7 @@ func TestOperationRefreshItem(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.RefreshItem(t.Context(), "p/itemId", jf.RefreshItemOptions{
+	result, err := c.RefreshItem(t.Context(), jf.ItemID("v-itemId"), jf.RefreshItemOptions{
 		MetadataRefreshMode: jf.MetadataRefreshModeNone,
 		ImageRefreshMode:    jf.MetadataRefreshModeNone,
 		ReplaceAllMetadata:  new(true),
@@ -26,7 +26,7 @@ func TestOperationRefreshItem(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Items/p%2FitemId/Refresh")
+	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/Refresh")
 	expectQuery(t, r, "metadataRefreshMode", "None")
 	expectQuery(t, r, "imageRefreshMode", "None")
 	expectQuery(t, r, "replaceAllMetadata", "true")
@@ -38,7 +38,7 @@ func TestOperationRefreshItem(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.RefreshItem(t.Context(), "p/itemId", jf.RefreshItemOptions{
+	result, err = c.RefreshItem(t.Context(), jf.ItemID("v-itemId"), jf.RefreshItemOptions{
 		MetadataRefreshMode: jf.MetadataRefreshModeNone,
 		ImageRefreshMode:    jf.MetadataRefreshModeNone,
 		ReplaceAllMetadata:  new(true),
@@ -51,10 +51,10 @@ func TestOperationRefreshItem(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 204, "", "")
-	if _, err = c.RefreshItem(t.Context(), "p/itemId"); err != nil {
+	if _, err = c.RefreshItem(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.RefreshItem(t.Context(), "p/itemId", jf.RefreshItemOptions{}, jf.RefreshItemOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.RefreshItem(t.Context(), jf.ItemID("v-itemId"), jf.RefreshItemOptions{}, jf.RefreshItemOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

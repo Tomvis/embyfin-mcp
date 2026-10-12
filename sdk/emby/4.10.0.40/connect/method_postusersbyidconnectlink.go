@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByIdConnectLink calls POST /Users/{Id}/Connect/Link. Creates a Connect link for a user.
-func (c Client) PostUsersByIdConnectLink(ctx context.Context, id string, connectUsername string) (result emby.PostUsersByIdConnectLinkResponse, err error) {
+func (c Client) PostUsersByIdConnectLink(ctx context.Context, id emby.UserID, connectUsername string) (result emby.PostUsersByIdConnectLinkResponse, err error) {
 	var option emby.PostUsersByIdConnectLinkOptions
 	option.ConnectUsername = connectUsername
 
@@ -26,7 +26,7 @@ func (c Client) PostUsersByIdConnectLink(ctx context.Context, id string, connect
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostUsersByIdConnectLink",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Connect/Link", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/Connect/Link", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

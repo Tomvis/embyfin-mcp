@@ -40,7 +40,7 @@ func (r GetChannelsResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetChannelsOptions holds the query and header parameters of GetChannels.
 type GetChannelsOptions struct {
 	// User Id to filter by. Use System.Guid.Empty to not filter by user.
-	UserId string
+	UserId UserID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -68,7 +68,7 @@ func (o GetChannelsOptions) ToHeaders() *client.Headers {
 func (o GetChannelsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))

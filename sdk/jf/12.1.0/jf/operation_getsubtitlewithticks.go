@@ -81,12 +81,12 @@ type GetSubtitleWithTicksOptions struct {
 	// The item id.
 	//
 	// Deprecated: the document marks this parameter deprecated.
-	ItemId string
+	ItemId ItemID
 
 	// The media source id.
 	//
 	// Deprecated: the document marks this parameter deprecated.
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// The subtitle stream index.
 	//
@@ -123,10 +123,10 @@ func (o GetSubtitleWithTicksOptions) ToHeaders() *client.Headers {
 func (o GetSubtitleWithTicksOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.ItemId != "" {
-		out.Append("itemId", o.ItemId)
+		out.Append("itemId", string(o.ItemId))
 	}
 	if o.MediaSourceId != "" {
-		out.Append("mediaSourceId", o.MediaSourceId)
+		out.Append("mediaSourceId", string(o.MediaSourceId))
 	}
 	if o.Index != nil {
 		out.Append("index", strconv.Itoa(*o.Index))

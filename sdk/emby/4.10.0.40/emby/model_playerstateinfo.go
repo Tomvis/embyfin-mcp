@@ -9,13 +9,13 @@ type PlayerStateInfo struct {
 	IsMuted             bool             `json:"IsMuted"`
 	IsPaused            bool             `json:"IsPaused"`
 	MediaSource         *MediaSourceInfo `json:"MediaSource,omitempty"`
-	MediaSourceId       string           `json:"MediaSourceId,omitempty"`
+	MediaSourceId       MediaSourceID    `json:"MediaSourceId,omitempty"`
 	PlayMethod          PlayMethod       `json:"PlayMethod,omitempty"`
 	PlaybackRate        float64          `json:"PlaybackRate,omitempty"`
 	PositionTicks       int64            `json:"PositionTicks,omitempty"`
 	RepeatMode          RepeatMode       `json:"RepeatMode,omitempty"`
 	Shuffle             bool             `json:"Shuffle"`
-	SleepTimerEndTime   string           `json:"SleepTimerEndTime,omitempty"`
+	SleepTimerEndTime   Time             `json:"SleepTimerEndTime,omitzero"`
 	SleepTimerMode      SleepTimerMode   `json:"SleepTimerMode,omitempty"`
 	SubtitleOffset      int              `json:"SubtitleOffset,omitempty"`
 	SubtitleStreamIndex int              `json:"SubtitleStreamIndex,omitempty"`

@@ -20,7 +20,7 @@ type SeriesTimerInfoDto struct {
 	Days []DayOfWeek `json:"Days,omitzero"`
 
 	// Gets or sets the end date of the recording, in UTC.
-	EndDate string `json:"EndDate,omitempty"`
+	EndDate Time `json:"EndDate,omitzero"`
 
 	// Gets or sets the external channel identifier.
 	ExternalChannelId string `json:"ExternalChannelId,omitempty"`
@@ -55,10 +55,10 @@ type SeriesTimerInfoDto struct {
 	ParentBackdropImageTags []string `json:"ParentBackdropImageTags,omitzero"`
 
 	// Gets or sets the Id of the Parent that has a backdrop if the item does not have one.
-	ParentBackdropItemId string `json:"ParentBackdropItemId,omitempty"`
+	ParentBackdropItemId ItemID `json:"ParentBackdropItemId,omitempty"`
 
 	// Gets or sets the parent primary image item identifier.
-	ParentPrimaryImageItemId string `json:"ParentPrimaryImageItemId,omitempty"`
+	ParentPrimaryImageItemId ItemID `json:"ParentPrimaryImageItemId,omitempty"`
 
 	// Gets or sets the parent primary image tag.
 	ParentPrimaryImageTag string `json:"ParentPrimaryImageTag,omitempty"`
@@ -67,7 +67,7 @@ type SeriesTimerInfoDto struct {
 	ParentThumbImageTag string `json:"ParentThumbImageTag,omitempty"`
 
 	// Gets or sets the parent thumb item id.
-	ParentThumbItemId string `json:"ParentThumbItemId,omitempty"`
+	ParentThumbItemId ItemID `json:"ParentThumbItemId,omitempty"`
 
 	// Gets or sets the post padding seconds.
 	PostPaddingSeconds int `json:"PostPaddingSeconds,omitempty"`
@@ -98,7 +98,7 @@ type SeriesTimerInfoDto struct {
 	SkipEpisodesInLibrary *bool  `json:"SkipEpisodesInLibrary,omitempty"`
 
 	// Gets or sets the start date of the recording, in UTC.
-	StartDate string `json:"StartDate,omitempty"`
+	StartDate Time   `json:"StartDate,omitzero"`
 	Type      string `json:"Type,omitempty"`
 }
 

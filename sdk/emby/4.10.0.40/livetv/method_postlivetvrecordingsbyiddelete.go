@@ -13,7 +13,7 @@ import (
 )
 
 // PostLiveTvRecordingsByIdDelete calls POST /LiveTv/Recordings/{Id}/Delete. Deletes a live tv recording.
-func (c Client) PostLiveTvRecordingsByIdDelete(ctx context.Context, id string) (result emby.PostLiveTvRecordingsByIdDeleteResponse, err error) {
+func (c Client) PostLiveTvRecordingsByIdDelete(ctx context.Context, id emby.ItemID) (result emby.PostLiveTvRecordingsByIdDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostLiveTvRecordingsByIdDelete(ctx context.Context, id string) (
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostLiveTvRecordingsByIdDelete",
-		Path:       fmt.Sprintf("/LiveTv/Recordings/%s/Delete", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/LiveTv/Recordings/%s/Delete", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

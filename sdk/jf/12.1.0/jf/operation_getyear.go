@@ -39,7 +39,7 @@ func (r GetYearResponse) Record() (BaseItemDto, error) {
 // GetYearOptions holds the query and header parameters of GetYear.
 type GetYearOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetYearOptions) ToHeaders() *client.Headers {
 func (o GetYearOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

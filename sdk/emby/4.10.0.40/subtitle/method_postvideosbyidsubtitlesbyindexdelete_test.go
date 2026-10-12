@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,13 +14,13 @@ func TestOperationPostVideosByIdSubtitlesByIndexDelete(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostVideosByIdSubtitlesByIndexDelete(t.Context(), "p/id", 7, "v-MediaSourceId")
+	result, err := c.PostVideosByIdSubtitlesByIndexDelete(t.Context(), emby.ItemID("v-id"), 7, emby.MediaSourceID("v-MediaSourceId"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Videos/p%2Fid/Subtitles/7/Delete")
+	expectRequest(t, r, http.MethodPost, "/Videos/v-id/Subtitles/7/Delete")
 	expectQuery(t, r, "MediaSourceId", "v-MediaSourceId")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -27,7 +28,7 @@ func TestOperationPostVideosByIdSubtitlesByIndexDelete(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostVideosByIdSubtitlesByIndexDelete(t.Context(), "p/id", 7, "v-MediaSourceId")
+	result, err = c.PostVideosByIdSubtitlesByIndexDelete(t.Context(), emby.ItemID("v-id"), 7, emby.MediaSourceID("v-MediaSourceId"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

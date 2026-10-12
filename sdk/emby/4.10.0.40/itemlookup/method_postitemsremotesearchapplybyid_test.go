@@ -15,12 +15,12 @@ func TestOperationPostItemsRemoteSearchApplyById(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostItemsRemoteSearchApplyById(t.Context(), "p/id", emby.RemoteSearchResult{}, true)
+	result, err := c.PostItemsRemoteSearchApplyById(t.Context(), emby.ItemID("v-id"), emby.RemoteSearchResult{}, true)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Items/RemoteSearch/Apply/p%2Fid")
+	expectRequest(t, r, http.MethodPost, "/Items/RemoteSearch/Apply/v-id")
 	expectQuery(t, r, "ReplaceAllImages", "true")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
@@ -37,21 +37,21 @@ func TestOperationPostItemsRemoteSearchApplyById(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostItemsRemoteSearchApplyById(t.Context(), "p/id", emby.RemoteSearchResult{}, true)
+	result, err = c.PostItemsRemoteSearchApplyById(t.Context(), emby.ItemID("v-id"), emby.RemoteSearchResult{}, true)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}
 
 	// the option may be left out, and then nothing is sent for it
 	c, s = newOperationServer(t, 200, "", "")
-	if _, err = c.PostItemsRemoteSearchApplyById(t.Context(), "p/id", emby.RemoteSearchResult{}); err != nil {
+	if _, err = c.PostItemsRemoteSearchApplyById(t.Context(), emby.ItemID("v-id"), emby.RemoteSearchResult{}); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
 	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("ReplaceAllImages") != "" {
 		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("ReplaceAllImages"))
 	}
 	// two values are refused before any request
-	if _, err = c.PostItemsRemoteSearchApplyById(t.Context(), "p/id", emby.RemoteSearchResult{}, true, true); err == nil || len(s.requests) != 1 {
+	if _, err = c.PostItemsRemoteSearchApplyById(t.Context(), emby.ItemID("v-id"), emby.RemoteSearchResult{}, true, true); err == nil || len(s.requests) != 1 {
 		t.Errorf("two values = %v, %d requests", err, len(s.requests))
 	}
 }

@@ -13,14 +13,14 @@ import (
 )
 
 // StopTask calls DELETE /ScheduledTasks/Running/{taskId}. Stop specified task.
-func (c Client) StopTask(ctx context.Context, taskId string) (result jf.StopTaskResponse, err error) {
+func (c Client) StopTask(ctx context.Context, taskId jf.TaskID) (result jf.StopTaskResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "StopTask",
-		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(taskId)),
+		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(string(taskId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

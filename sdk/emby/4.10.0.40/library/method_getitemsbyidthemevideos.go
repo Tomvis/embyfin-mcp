@@ -14,7 +14,7 @@ import (
 )
 
 // GetItemsByIdThemeVideos calls GET /Items/{Id}/ThemeVideos. Gets theme videos for an item.
-func (c Client) GetItemsByIdThemeVideos(ctx context.Context, id string, options ...emby.GetItemsByIdThemeVideosOptions) (result emby.GetItemsByIdThemeVideosResponse, err error) {
+func (c Client) GetItemsByIdThemeVideos(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeVideosOptions) (result emby.GetItemsByIdThemeVideosResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdThemeVideos takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetItemsByIdThemeVideos(ctx context.Context, id string, options 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemsByIdThemeVideos",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/ThemeVideos", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/ThemeVideos", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetItemsByIdThemeVideos(ctx context.Context, id string, options 
 // GetItemsByIdThemeVideosComplete calls GetItemsByIdThemeVideos page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetItemsByIdThemeVideosComplete(ctx context.Context, id string, options ...emby.GetItemsByIdThemeVideosOptions) (result emby.GetItemsByIdThemeVideosCompleteResult, err error) {
+func (c Client) GetItemsByIdThemeVideosComplete(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeVideosOptions) (result emby.GetItemsByIdThemeVideosCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdThemeVideosComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetItemsByIdThemeVideosComplete(ctx context.Context, id string, 
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetItemsByIdThemeVideosComplete asks for them.
-func (c Client) GetItemsByIdThemeVideosEach(ctx context.Context, id string, options ...emby.GetItemsByIdThemeVideosOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetItemsByIdThemeVideosEach(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeVideosOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

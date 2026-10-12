@@ -52,7 +52,7 @@ type GetAlbumArtistsOptions struct {
 	SearchTerm string
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Specify additional fields of information to return in the output.
 	Fields []ItemFields
@@ -76,7 +76,7 @@ type GetAlbumArtistsOptions struct {
 	Genres []string
 
 	// Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-	GenreIds []string
+	GenreIds []ItemID
 
 	// Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
 	OfficialRatings []string
@@ -100,7 +100,7 @@ type GetAlbumArtistsOptions struct {
 	Person string
 
 	// Optional. If specified, results will be filtered to include only those containing the specified person ids.
-	PersonIds []string
+	PersonIds []ItemID
 
 	// Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
 	PersonTypes []string
@@ -109,10 +109,10 @@ type GetAlbumArtistsOptions struct {
 	Studios []string
 
 	// Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
-	StudioIds []string
+	StudioIds []ItemID
 
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Optional filter by items whose name is sorted equally or greater than a given input string.
 	NameStartsWithOrGreater string
@@ -158,7 +158,7 @@ func (o GetAlbumArtistsOptions) ToQuery() *client.QueryParams {
 		out.Append("searchTerm", o.SearchTerm)
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))
@@ -182,7 +182,7 @@ func (o GetAlbumArtistsOptions) ToQuery() *client.QueryParams {
 		out.Append("genres", v)
 	}
 	for _, v := range o.GenreIds {
-		out.Append("genreIds", v)
+		out.Append("genreIds", string(v))
 	}
 	for _, v := range o.OfficialRatings {
 		out.Append("officialRatings", v)
@@ -206,7 +206,7 @@ func (o GetAlbumArtistsOptions) ToQuery() *client.QueryParams {
 		out.Append("person", o.Person)
 	}
 	for _, v := range o.PersonIds {
-		out.Append("personIds", v)
+		out.Append("personIds", string(v))
 	}
 	for _, v := range o.PersonTypes {
 		out.Append("personTypes", v)
@@ -215,10 +215,10 @@ func (o GetAlbumArtistsOptions) ToQuery() *client.QueryParams {
 		out.Append("studios", v)
 	}
 	for _, v := range o.StudioIds {
-		out.Append("studioIds", v)
+		out.Append("studioIds", string(v))
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.NameStartsWithOrGreater != "" {
 		out.Append("nameStartsWithOrGreater", o.NameStartsWithOrGreater)

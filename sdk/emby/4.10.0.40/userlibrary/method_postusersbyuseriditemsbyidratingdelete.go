@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdItemsByIdRatingDelete calls POST /Users/{UserId}/Items/{Id}/Rating/Delete. Deletes a user's saved personal rating for an item.
-func (c Client) PostUsersByUserIdItemsByIdRatingDelete(ctx context.Context, userId string, id string) (result emby.PostUsersByUserIdItemsByIdRatingDeleteResponse, err error) {
+func (c Client) PostUsersByUserIdItemsByIdRatingDelete(ctx context.Context, userId emby.UserID, id emby.ItemID) (result emby.PostUsersByUserIdItemsByIdRatingDeleteResponse, err error) {
 	result.UserItemDataDto = &emby.UserItemDataDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdItemsByIdRatingDelete(ctx context.Context, user
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdItemsByIdRatingDelete",
-		Path:       fmt.Sprintf("/Users/%s/Items/%s/Rating/Delete", url.PathEscape(userId), url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Items/%s/Rating/Delete", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

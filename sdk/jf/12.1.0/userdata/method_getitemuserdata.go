@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemUserData calls GET /UserItems/{itemId}/UserData. Get Item User Data.
-func (c Client) GetItemUserData(ctx context.Context, itemId string, userId ...string) (result jf.GetItemUserDataResponse, err error) {
+func (c Client) GetItemUserData(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetItemUserDataResponse, err error) {
 	var option jf.GetItemUserDataOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetItemUserData takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) GetItemUserData(ctx context.Context, itemId string, userId ...st
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemUserData",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/UserItems/%s/UserData", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/UserItems/%s/UserData", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -13,7 +13,7 @@ import (
 )
 
 // SearchRemoteSubtitles calls GET /Items/{itemId}/RemoteSearch/Subtitles/{language}. Search remote subtitles.
-func (c Client) SearchRemoteSubtitles(ctx context.Context, itemId string, language string, isPerfectMatch ...bool) (result jf.SearchRemoteSubtitlesResponse, err error) {
+func (c Client) SearchRemoteSubtitles(ctx context.Context, itemId jf.ItemID, language string, isPerfectMatch ...bool) (result jf.SearchRemoteSubtitlesResponse, err error) {
 	var option jf.SearchRemoteSubtitlesOptions
 	if len(isPerfectMatch) > 1 {
 		err = fmt.Errorf("SearchRemoteSubtitles takes one isPerfectMatch at most, not %d", len(isPerfectMatch))
@@ -30,7 +30,7 @@ func (c Client) SearchRemoteSubtitles(ctx context.Context, itemId string, langua
 		HTTPMethod:    http.MethodGet,
 		Operation:     "SearchRemoteSubtitles",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(itemId), url.PathEscape(language)),
+		Path:          fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(string(itemId)), url.PathEscape(language)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

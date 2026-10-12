@@ -20,5 +20,5 @@ type LiveStreamRequest struct {
 	PlaySessionId                  string         `json:"PlaySessionId,omitempty"`
 	StartTimeTicks                 int64          `json:"StartTimeTicks,omitempty"`
 	SubtitleStreamIndex            int            `json:"SubtitleStreamIndex,omitempty"`
-	UserId                         string         `json:"UserId,omitempty"`
+	UserId                         UserID         `json:"UserId,omitempty"`
 }

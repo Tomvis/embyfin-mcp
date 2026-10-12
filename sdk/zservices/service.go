@@ -5,6 +5,7 @@ package zservices
 
 import (
 	"slices"
+	"time"
 
 	"github.com/katbyte/pandorest/config"
 )
@@ -26,6 +27,9 @@ var All = []config.Service{
 		Credential:          "API key",
 		Notes:               mediaServerDates,
 		Paging:              mediaServerPaging,
+		Dates:               mediaServerDateLayouts,
+		IDs:                 embyIDs,
+		Plain:               embyPlainIDs,
 		KeepNull:            append(slices.Clone(mediaServerKeepNull), embyKeepNull...),
 	},
 	{
@@ -42,6 +46,9 @@ var All = []config.Service{
 		Credential:          "API key",
 		Notes:               mediaServerDates,
 		Paging:              mediaServerPaging,
+		Dates:               mediaServerDateLayouts,
+		IDs:                 jellyfinIDs,
+		Plain:               jellyfinPlainIDs,
 		KeepNull:            append(slices.Clone(mediaServerKeepNull), jellyfinKeepNull...),
 	},
 	{
@@ -56,6 +63,8 @@ var All = []config.Service{
 		Auth:                "credential",
 		Notes:               tmdbDates,
 		Paging:              tmdbPaging,
+		Dates:               tmdbDateLayouts,
+		Days:                config.Dates{Send: time.DateOnly, KeepUnread: true},
 	},
 }
 
@@ -81,8 +90,16 @@ var mediaServerPaging = &config.Paging{Start: "StartIndex", Limit: "Limit", Item
 // tmdbPaging is how TMDB's lists page: by page number from 1, at a size TMDB fixes, answering results and total_results.
 var tmdbPaging = &config.Paging{Start: "page", Items: "results", Total: "total_results", ByPage: true}
 
+// mediaServerDateLayouts is how both servers write a date and time: seven fractional digits and a zone, which is also how one is sent, then any
+// other RFC 3339 form, then one with no zone at all.
+var mediaServerDateLayouts = config.Dates{Send: "2006-01-02T15:04:05.0000000Z07:00", Read: []string{time.RFC3339, "2006-01-02T15:04:05"}, KeepUnread: true}
+
+// tmdbDateLayouts is how TMDB writes a date with a time: three fractional digits and a zone for most, and "2006-01-02 15:04:05 UTC" for when a
+// session ends and when a change was made.
+var tmdbDateLayouts = config.Dates{Send: "2006-01-02T15:04:05.000Z07:00", Read: []string{time.RFC3339, "2006-01-02 15:04:05 MST"}, KeepUnread: true}
+
 // mediaServerDates is what no document says about its dates.
-const mediaServerDates = "Dates are strings: the servers send RFC 3339 with seven fractional digits,\nsometimes with no zone."
+const mediaServerDates = "# Dates\n\nA date and time is a Time. The servers write RFC 3339 with up to seven fractional digits, sometimes with no\nzone, and a date that reads as none of those is held as zero with its text kept in Unread. One is sent with\nseven fractional digits, and a zero one is not sent."
 
 // tmdbDates is what TMDB's document does not say about its dates.
-const tmdbDates = "Dates are strings: TMDB writes a day as 2006-01-02, and a date it does not know\nreads as an empty string."
+const tmdbDates = "# Dates\n\nA day is a Day, written 2006-01-02, and a date with a time is a Time. One TMDB does not know, which it writes\nas an empty string, is zero, and one written any other way is held as zero with its text kept in Unread."

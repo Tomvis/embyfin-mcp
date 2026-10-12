@@ -13,7 +13,7 @@ import (
 )
 
 // DisplayContent calls POST /Sessions/{sessionId}/Viewing. Instructs a session to browse to an item or view.
-func (c Client) DisplayContent(ctx context.Context, sessionId string, options jf.DisplayContentOptions) (result jf.DisplayContentResponse, err error) {
+func (c Client) DisplayContent(ctx context.Context, sessionId jf.SessionID, options jf.DisplayContentOptions) (result jf.DisplayContentResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
@@ -21,7 +21,7 @@ func (c Client) DisplayContent(ctx context.Context, sessionId string, options jf
 		HTTPMethod:    http.MethodPost,
 		Operation:     "DisplayContent",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Sessions/%s/Viewing", url.PathEscape(sessionId)),
+		Path:          fmt.Sprintf("/Sessions/%s/Viewing", url.PathEscape(string(sessionId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -14,7 +14,7 @@
           "Field": "EndDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -30,7 +30,7 @@
           "Field": "StartDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         }
       ],
@@ -208,7 +208,7 @@
           "Field": "EndDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -224,7 +224,7 @@
           "Field": "StartDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         }
       ],
@@ -1271,7 +1271,7 @@
           "Name": "Time",
           "JsonName": "time",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1642,7 +1642,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -2265,7 +2265,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -2624,14 +2624,14 @@
           "Name": "Maximum",
           "JsonName": "maximum",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
           "Name": "Minimum",
           "JsonName": "minimum",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         }
       ]
@@ -2709,7 +2709,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -2852,7 +2852,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -2969,7 +2969,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3054,7 +3054,7 @@
           "Name": "CreatedAt",
           "JsonName": "created_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3068,7 +3068,7 @@
           "Name": "UpdatedAt",
           "JsonName": "updated_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3223,7 +3223,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -3366,7 +3366,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -3555,14 +3555,14 @@
           "Name": "Maximum",
           "JsonName": "maximum",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
           "Name": "Minimum",
           "JsonName": "minimum",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         }
       ]
@@ -3640,7 +3640,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -3745,7 +3745,7 @@
           "Name": "PublishedAt",
           "JsonName": "published_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

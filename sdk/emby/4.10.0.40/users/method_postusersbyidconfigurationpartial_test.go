@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -14,12 +15,12 @@ func TestOperationPostUsersByIdConfigurationPartial(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostUsersByIdConfigurationPartial(t.Context(), "p/id", strings.NewReader("raw bytes"), "application/octet-stream")
+	result, err := c.PostUsersByIdConfigurationPartial(t.Context(), emby.UserID("v-id"), strings.NewReader("raw bytes"), "application/octet-stream")
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Users/p%2Fid/Configuration/Partial")
+	expectRequest(t, r, http.MethodPost, "/Users/v-id/Configuration/Partial")
 	if got := r.Header.Get("Content-Type"); got != "application/octet-stream" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/octet-stream")
 	}
@@ -32,7 +33,7 @@ func TestOperationPostUsersByIdConfigurationPartial(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostUsersByIdConfigurationPartial(t.Context(), "p/id", strings.NewReader("raw bytes"), "application/octet-stream")
+	result, err = c.PostUsersByIdConfigurationPartial(t.Context(), emby.UserID("v-id"), strings.NewReader("raw bytes"), "application/octet-stream")
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

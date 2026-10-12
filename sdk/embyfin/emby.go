@@ -58,7 +58,7 @@ func lockedFromEmby(fields []emby.MetadataFields) []string {
 
 func itemFromEmby(d *emby.BaseItemDto) Item {
 	it := Item{
-		ID:                d.Id,
+		ID:                string(d.Id),
 		Name:              d.Name,
 		OriginalTitle:     d.OriginalTitle,
 		SortName:          d.SortName,
@@ -66,11 +66,11 @@ func itemFromEmby(d *emby.BaseItemDto) Item {
 		Settings:          settingsOf(d.ForcedSortName, lockedFromEmby(d.LockedFields)),
 		Type:              d.Type,
 		ProductionYear:    d.ProductionYear,
-		PremiereDate:      d.PremiereDate,
-		DateCreated:       d.DateCreated,
-		DateModified:      d.DateModified,
+		PremiereDate:      embyDate(d.PremiereDate),
+		DateCreated:       embyDate(d.DateCreated),
+		DateModified:      embyDate(d.DateModified),
 		Path:              d.Path,
-		ParentID:          d.ParentId,
+		ParentID:          string(d.ParentId),
 		Overview:          d.Overview,
 		Genres:            d.Genres,
 		Tags:              d.Tags,
@@ -83,14 +83,14 @@ func itemFromEmby(d *emby.BaseItemDto) Item {
 		Etag:              d.Etag,
 		ImageTags:         d.ImageTags,
 		SeriesName:        d.SeriesName,
-		SeriesID:          d.SeriesId,
+		SeriesID:          string(d.SeriesId),
 		Album:             d.Album,
 		AlbumArtist:       d.AlbumArtist,
 		Artists:           d.Artists,
 		ParentIndexNumber: d.ParentIndexNumber,
 		IndexNumber:       d.IndexNumber,
 		IndexNumberEnd:    d.IndexNumberEnd,
-		PlaylistItemID:    d.PlaylistItemId,
+		PlaylistItemID:    string(d.PlaylistItemId),
 		IsMissing:         d.LocationType == locationVirtual,
 		IsFolder:          pointer.From(d.IsFolder),
 		UserData:          userDataFromEmby(d.UserData),
@@ -112,7 +112,7 @@ func itemFromEmby(d *emby.BaseItemDto) Item {
 }
 
 func mediaSourceFromEmby(d *emby.MediaSourceInfo) MediaSource {
-	ms := MediaSource{ItemID: d.ItemId, Name: d.Name, Container: d.Container, Size: d.Size, Bitrate: int64(d.Bitrate), Path: d.Path, RunTimeTicks: d.RunTimeTicks}
+	ms := MediaSource{ItemID: string(d.ItemId), Name: d.Name, Container: d.Container, Size: d.Size, Bitrate: int64(d.Bitrate), Path: d.Path, RunTimeTicks: d.RunTimeTicks}
 	if len(d.MediaStreams) > 0 {
 		ms.MediaStreams = make([]MediaStream, 0, len(d.MediaStreams))
 		for i := range d.MediaStreams {
@@ -150,7 +150,7 @@ func userDataFromEmby(d *emby.UserItemDataDto) *UserData {
 
 	return &UserData{
 		Played: pointer.From(d.Played), PlayCount: d.PlayCount, IsFavourite: pointer.From(d.IsFavorite),
-		LastPlayedDate: d.LastPlayedDate, PlaybackPositionTicks: d.PlaybackPositionTicks,
+		LastPlayedDate: embyDate(d.LastPlayedDate), PlaybackPositionTicks: d.PlaybackPositionTicks,
 		PlayedPercentage: d.PlayedPercentage, UnplayedItemCount: d.UnplayedItemCount, Rated: d.Rating != 0,
 	}
 }
@@ -168,7 +168,7 @@ func nameRefsFromEmby(pairs []emby.NameLongIdPair) []NameRef {
 }
 
 func virtualFolderFromEmby(d *emby.VirtualFolderInfo) VirtualFolder {
-	f := VirtualFolder{Name: d.Name, CollectionType: d.CollectionType, Locations: d.Locations, ItemID: d.ItemId, GUID: d.Guid}
+	f := VirtualFolder{Name: d.Name, CollectionType: d.CollectionType, Locations: d.Locations, ItemID: string(d.ItemId), GUID: d.Guid}
 	if o := d.LibraryOptions; o != nil {
 		f.SavesNfo = slices.Contains(o.MetadataSavers, nfoSaver)
 		// both: extraction on with no interval, or an interval with
@@ -188,7 +188,7 @@ func virtualFolderFromEmby(d *emby.VirtualFolderInfo) VirtualFolder {
 }
 
 func userFromEmby(d *emby.UserDto) User {
-	u := User{ID: d.Id, Name: d.Name, LastActivityDate: d.LastActivityDate, LastLoginDate: d.LastLoginDate, HasPassword: d.HasPassword}
+	u := User{ID: string(d.Id), Name: d.Name, LastActivityDate: embyDate(d.LastActivityDate), LastLoginDate: embyDate(d.LastLoginDate), HasPassword: d.HasPassword}
 	if p := d.Policy; p != nil {
 		// Emby has one tag list: a block, or with IsTagBlockingModeInclusive
 		// the only tags shown. IncludeTags hid nothing on 4.10 in either
@@ -217,8 +217,8 @@ func userFromEmby(d *emby.UserDto) User {
 
 func sessionFromEmby(d *emby.SessionSessionInfo) Session {
 	s := Session{
-		ID: d.Id, UserName: d.UserName, Client: d.Client, AppVersion: d.ApplicationVersion, DeviceName: d.DeviceName,
-		RemoteEndPoint: d.RemoteEndPoint, LastActivityDate: d.LastActivityDate,
+		ID: string(d.Id), UserName: d.UserName, Client: d.Client, AppVersion: d.ApplicationVersion, DeviceName: d.DeviceName,
+		RemoteEndPoint: d.RemoteEndPoint, LastActivityDate: embyDate(d.LastActivityDate),
 	}
 	if d.NowPlayingItem != nil {
 		it := itemFromEmby(d.NowPlayingItem)
@@ -227,7 +227,7 @@ func sessionFromEmby(d *emby.SessionSessionInfo) Session {
 	if d.PlayState != nil {
 		s.PlayState = PlayState{
 			PositionTicks: d.PlayState.PositionTicks, IsPaused: d.PlayState.IsPaused,
-			PlayMethod: string(d.PlayState.PlayMethod), MediaSourceID: d.PlayState.MediaSourceId,
+			PlayMethod: string(d.PlayState.PlayMethod), MediaSourceID: string(d.PlayState.MediaSourceId),
 		}
 	}
 	if t := d.TranscodingInfo; t != nil {
@@ -250,7 +250,7 @@ func sessionFromEmby(d *emby.SessionSessionInfo) Session {
 
 func taskFromEmby(d *emby.TaskInfo) Task {
 	t := Task{
-		ID: d.Id, Key: d.Key, Name: d.Name, Category: d.Category, Description: d.Description, State: string(d.State),
+		ID: string(d.Id), Key: d.Key, Name: d.Name, Category: d.Category, Description: d.Description, State: string(d.State),
 		Progress: d.CurrentProgressPercentage, Hidden: d.IsHidden,
 	}
 	for i := range d.Triggers {
@@ -262,7 +262,7 @@ func taskFromEmby(d *emby.TaskInfo) Task {
 	}
 	if r := d.LastExecutionResult; r != nil {
 		t.LastExecutionResult = &TaskResult{
-			Status: string(r.Status), StartTimeUtc: r.StartTimeUtc, EndTimeUtc: r.EndTimeUtc,
+			Status: string(r.Status), StartTimeUtc: embyDate(r.StartTimeUtc), EndTimeUtc: embyDate(r.EndTimeUtc),
 			ErrorMessage: r.ErrorMessage, LongErrorMessage: r.LongErrorMessage,
 		}
 	}
@@ -272,20 +272,20 @@ func taskFromEmby(d *emby.TaskInfo) Task {
 
 func activityFromEmby(d *emby.ActivityLogEntry) ActivityEntry {
 	return ActivityEntry{
-		Name: d.Name, Type: d.Type, Date: d.Date, Severity: string(d.Severity),
-		ShortOverview: d.ShortOverview, UserID: d.UserId, ItemID: d.ItemId,
+		Name: d.Name, Type: d.Type, Date: embyDate(d.Date), Severity: string(d.Severity),
+		ShortOverview: d.ShortOverview, UserID: string(d.UserId), ItemID: string(d.ItemId),
 	}
 }
 
 func deviceFromEmby(d *emby.DevicesDeviceInfo) Device {
 	return Device{
 		Name: d.Name, AppName: d.AppName, AppVersion: d.AppVersion,
-		LastUserName: d.LastUserName, DateLastActivity: d.DateLastActivity, ID: d.Id,
+		LastUserName: d.LastUserName, DateLastActivity: embyDate(d.DateLastActivity), ID: d.Id,
 	}
 }
 
 func logFileFromEmby(d *emby.LogFile) LogFile {
-	return LogFile{Name: d.Name, Size: d.Size, DateCreated: d.DateCreated, DateModified: d.DateModified}
+	return LogFile{Name: d.Name, Size: d.Size, DateCreated: embyDate(d.DateCreated), DateModified: embyDate(d.DateModified)}
 }
 
 func systemInfoFromEmby(d *emby.SystemInfo) *SystemInfo {
@@ -307,14 +307,14 @@ func countsFromEmby(d *emby.ItemCounts) *ItemCounts {
 
 func remoteSearchResultFromEmby(d *emby.RemoteSearchResult) RemoteSearchResult {
 	return RemoteSearchResult{
-		Name: d.Name, ProductionYear: d.ProductionYear, PremiereDate: d.PremiereDate, Overview: d.Overview,
+		Name: d.Name, ProductionYear: d.ProductionYear, PremiereDate: embyDate(d.PremiereDate), Overview: d.Overview,
 		ProviderIDs: d.ProviderIds, SearchProviderName: d.SearchProviderName, ImageURL: d.ImageUrl,
 	}
 }
 
 func remoteSearchResultToEmby(r *RemoteSearchResult) emby.RemoteSearchResult {
 	return emby.RemoteSearchResult{
-		Name: r.Name, ProductionYear: r.ProductionYear, PremiereDate: r.PremiereDate, Overview: r.Overview,
+		Name: r.Name, ProductionYear: r.ProductionYear, PremiereDate: dateOf[emby.Time](r.PremiereDate), Overview: r.Overview,
 		ProviderIds: r.ProviderIDs, SearchProviderName: r.SearchProviderName, ImageUrl: r.ImageURL,
 	}
 }

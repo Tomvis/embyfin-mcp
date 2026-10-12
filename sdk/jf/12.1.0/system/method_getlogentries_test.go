@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
@@ -19,14 +20,14 @@ func TestOperationGetLogEntries(t *testing.T) {
 	result, err := c.GetLogEntries(t.Context(), jf.GetLogEntriesOptions{
 		StartIndex:    new(7),
 		Limit:         new(7),
-		MinDate:       "v-MinDate",
-		MaxDate:       "v-MaxDate",
+		MinDate:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxDate:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasUserId:     new(true),
 		Name:          "v-Name",
 		Overview:      "v-Overview",
 		ShortOverview: "v-ShortOverview",
 		Type:          "v-Type",
-		ItemId:        "v-ItemId",
+		ItemId:        jf.ItemID("v-ItemId"),
 		Username:      "v-Username",
 		Severity:      jf.LogLevelTrace,
 		SortBy:        []jf.ActivityLogSortBy{jf.ActivityLogSortByName, jf.ActivityLogSortByLogSeverity},
@@ -40,8 +41,8 @@ func TestOperationGetLogEntries(t *testing.T) {
 	expectRequest(t, r, http.MethodGet, "/System/ActivityLog/Entries")
 	expectQuery(t, r, "startIndex", "7")
 	expectQuery(t, r, "limit", "7")
-	expectQuery(t, r, "minDate", "v-MinDate")
-	expectQuery(t, r, "maxDate", "v-MaxDate")
+	expectQuery(t, r, "minDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "maxDate", "2024-03-04T05:06:07.0000000Z")
 	expectQuery(t, r, "hasUserId", "true")
 	expectQuery(t, r, "name", "v-Name")
 	expectQuery(t, r, "overview", "v-Overview")
@@ -70,14 +71,14 @@ func TestOperationGetLogEntries(t *testing.T) {
 	result, err = c.GetLogEntries(t.Context(), jf.GetLogEntriesOptions{
 		StartIndex:    new(7),
 		Limit:         new(7),
-		MinDate:       "v-MinDate",
-		MaxDate:       "v-MaxDate",
+		MinDate:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxDate:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasUserId:     new(true),
 		Name:          "v-Name",
 		Overview:      "v-Overview",
 		ShortOverview: "v-ShortOverview",
 		Type:          "v-Type",
-		ItemId:        "v-ItemId",
+		ItemId:        jf.ItemID("v-ItemId"),
 		Username:      "v-Username",
 		Severity:      jf.LogLevelTrace,
 		SortBy:        []jf.ActivityLogSortBy{jf.ActivityLogSortByName, jf.ActivityLogSortByLogSeverity},
@@ -92,14 +93,14 @@ func TestOperationGetLogEntries(t *testing.T) {
 	result, err = c.GetLogEntries(t.Context(), jf.GetLogEntriesOptions{
 		StartIndex:    new(7),
 		Limit:         new(7),
-		MinDate:       "v-MinDate",
-		MaxDate:       "v-MaxDate",
+		MinDate:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxDate:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasUserId:     new(true),
 		Name:          "v-Name",
 		Overview:      "v-Overview",
 		ShortOverview: "v-ShortOverview",
 		Type:          "v-Type",
-		ItemId:        "v-ItemId",
+		ItemId:        jf.ItemID("v-ItemId"),
 		Username:      "v-Username",
 		Severity:      jf.LogLevelTrace,
 		SortBy:        []jf.ActivityLogSortBy{jf.ActivityLogSortByName, jf.ActivityLogSortByLogSeverity},

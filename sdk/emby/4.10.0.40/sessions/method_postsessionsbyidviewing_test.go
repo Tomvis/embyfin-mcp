@@ -14,9 +14,9 @@ func TestOperationPostSessionsByIdViewing(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostSessionsByIdViewing(t.Context(), "p/id", emby.PostSessionsByIdViewingOptions{
+	result, err := c.PostSessionsByIdViewing(t.Context(), emby.SessionID("v-id"), emby.PostSessionsByIdViewingOptions{
 		ItemType: "v-ItemType",
-		ItemId:   "v-ItemId",
+		ItemId:   emby.ItemID("v-ItemId"),
 		ItemName: "v-ItemName",
 	})
 	if err != nil {
@@ -24,7 +24,7 @@ func TestOperationPostSessionsByIdViewing(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Sessions/p%2Fid/Viewing")
+	expectRequest(t, r, http.MethodPost, "/Sessions/v-id/Viewing")
 	expectQuery(t, r, "ItemType", "v-ItemType")
 	expectQuery(t, r, "ItemId", "v-ItemId")
 	expectQuery(t, r, "ItemName", "v-ItemName")
@@ -34,9 +34,9 @@ func TestOperationPostSessionsByIdViewing(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostSessionsByIdViewing(t.Context(), "p/id", emby.PostSessionsByIdViewingOptions{
+	result, err = c.PostSessionsByIdViewing(t.Context(), emby.SessionID("v-id"), emby.PostSessionsByIdViewingOptions{
 		ItemType: "v-ItemType",
-		ItemId:   "v-ItemId",
+		ItemId:   emby.ItemID("v-ItemId"),
 		ItemName: "v-ItemName",
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {

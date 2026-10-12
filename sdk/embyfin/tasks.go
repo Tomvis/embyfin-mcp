@@ -278,9 +278,9 @@ func (c *Client) FindTask(ctx context.Context, nameOrID string) (*Task, error) {
 func (c *Client) StartTask(ctx context.Context, task *Task) error {
 	var err error
 	if c.isEmby() {
-		_, err = c.emby.ScheduledTask.PostScheduledTasksRunningById(ctx, task.ID)
+		_, err = c.emby.ScheduledTask.PostScheduledTasksRunningById(ctx, emby.TaskID(task.ID))
 	} else {
-		_, err = c.jf.ScheduledTask.StartTask(ctx, task.ID)
+		_, err = c.jf.ScheduledTask.StartTask(ctx, jf.TaskID(task.ID))
 	}
 
 	return err
@@ -292,9 +292,9 @@ func (c *Client) StartTask(ctx context.Context, task *Task) error {
 func (c *Client) StopTask(ctx context.Context, task *Task) error {
 	var err error
 	if c.isEmby() {
-		_, err = c.emby.ScheduledTask.DeleteScheduledTasksRunningById(ctx, task.ID)
+		_, err = c.emby.ScheduledTask.DeleteScheduledTasksRunningById(ctx, emby.TaskID(task.ID))
 	} else {
-		_, err = c.jf.ScheduledTask.StopTask(ctx, task.ID)
+		_, err = c.jf.ScheduledTask.StopTask(ctx, jf.TaskID(task.ID))
 	}
 
 	return err
@@ -312,7 +312,7 @@ func (c *Client) SetTaskTriggers(ctx context.Context, task *Task, triggers []Tas
 				TimeOfDayTicks: int64(t.TimeOfDay / tick), IntervalTicks: int64(t.Interval / tick), MaxRuntimeTicks: int64(t.MaxRuntime / tick),
 			})
 		}
-		_, err := c.emby.ScheduledTask.PostScheduledTasksByIdTriggers(ctx, task.ID, in)
+		_, err := c.emby.ScheduledTask.PostScheduledTasksByIdTriggers(ctx, emby.TaskID(task.ID), in)
 
 		return err
 	}
@@ -326,7 +326,7 @@ func (c *Client) SetTaskTriggers(ctx context.Context, task *Task, triggers []Tas
 			TimeOfDayTicks: int64(t.TimeOfDay / tick), IntervalTicks: int64(t.Interval / tick), MaxRuntimeTicks: int64(t.MaxRuntime / tick),
 		})
 	}
-	_, err := c.jf.ScheduledTask.UpdateTask(ctx, task.ID, in)
+	_, err := c.jf.ScheduledTask.UpdateTask(ctx, jf.TaskID(task.ID), in)
 
 	return err
 }

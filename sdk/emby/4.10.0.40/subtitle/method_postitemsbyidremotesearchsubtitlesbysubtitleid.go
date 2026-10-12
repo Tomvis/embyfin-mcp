@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdRemoteSearchSubtitlesBySubtitleId calls POST /Items/{Id}/RemoteSearch/Subtitles/{SubtitleId}. Requires authentication as user.
-func (c Client) PostItemsByIdRemoteSearchSubtitlesBySubtitleId(ctx context.Context, id string, subtitleId string, mediaSourceId string) (result emby.PostItemsByIdRemoteSearchSubtitlesBySubtitleIdResponse, err error) {
+func (c Client) PostItemsByIdRemoteSearchSubtitlesBySubtitleId(ctx context.Context, id emby.ItemID, subtitleId string, mediaSourceId emby.MediaSourceID) (result emby.PostItemsByIdRemoteSearchSubtitlesBySubtitleIdResponse, err error) {
 	var option emby.PostItemsByIdRemoteSearchSubtitlesBySubtitleIdOptions
 	option.MediaSourceId = mediaSourceId
 
@@ -26,7 +26,7 @@ func (c Client) PostItemsByIdRemoteSearchSubtitlesBySubtitleId(ctx context.Conte
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostItemsByIdRemoteSearchSubtitlesBySubtitleId",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(id), url.PathEscape(subtitleId)),
+		Path:          fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(string(id)), url.PathEscape(subtitleId)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

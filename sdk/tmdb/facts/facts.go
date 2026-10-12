@@ -153,20 +153,26 @@ type Movie struct {
 	IMDbID      string
 }
 
-// DateYear is the year of a date TMDB answers as a day (2006-01-02), 0 for
-// none. A date written any other way is an error naming what carried it:
-// read as no date, or as the wrong year, it would date a film or an episode
-// wrongly without a word.
-func DateYear(what, date string) (int, error) {
-	if date == "" {
-		return 0, nil
+// DateYear is the year of a day TMDB answers, 0 for none. A date written any way but as a day (2006-01-02) is an error naming what carried it: read as
+// no date, or as the wrong year, it would date a film or an episode wrongly without a word.
+func DateYear(what string, day tmdbapi.Day) (int, error) {
+	if day.Unread != "" {
+		return 0, fmt.Errorf("tmdb %s: a date that can't be read (%q)", what, day.Unread)
 	}
-	day, err := time.Parse(time.DateOnly, date)
-	if err != nil {
-		return 0, fmt.Errorf("tmdb %s: a date that can't be read (%q)", what, date)
+	if day.IsZero() {
+		return 0, nil
 	}
 
 	return day.Year(), nil
+}
+
+// dayText is a day as TMDB writes it (2006-01-02), or "" for none.
+func dayText(day tmdbapi.Day) string {
+	if day.IsZero() {
+		return ""
+	}
+
+	return day.String()
 }
 
 // Movie returns TMDB's film for a movie id; its ID is 0 when TMDB does not
@@ -189,7 +195,7 @@ func (f *Facts) Movie(ctx context.Context, id string) (Movie, error) {
 			if err != nil {
 				return Movie{}, err
 			}
-			m = Movie{ID: d.Id, Title: d.Title, ReleaseDate: d.ReleaseDate, Year: year, Runtime: d.Runtime, IMDbID: d.ImdbId}
+			m = Movie{ID: d.Id, Title: d.Title, ReleaseDate: dayText(d.ReleaseDate), Year: year, Runtime: d.Runtime, IMDbID: d.ImdbId}
 		}
 	}
 	keep(f, f.movies, id, m)
@@ -358,7 +364,7 @@ func (f *Facts) season(ctx context.Context, id string, n, number int) ([]Episode
 		if _, err := DateYear(fmt.Sprintf("tv %s season %d episode %d", id, at, e.EpisodeNumber), e.AirDate); err != nil {
 			return nil, err
 		}
-		out = append(out, Episode{Season: at, Episode: e.EpisodeNumber, Name: e.Name, AirDate: e.AirDate, Runtime: e.Runtime})
+		out = append(out, Episode{Season: at, Episode: e.EpisodeNumber, Name: e.Name, AirDate: dayText(e.AirDate), Runtime: e.Runtime})
 	}
 
 	return out, nil

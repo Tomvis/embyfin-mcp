@@ -13,7 +13,7 @@ import (
 )
 
 // GetStudio calls GET /Studios/{name}. Gets a studio by name.
-func (c Client) GetStudio(ctx context.Context, name string, userId ...string) (result jf.GetStudioResponse, err error) {
+func (c Client) GetStudio(ctx context.Context, name string, userId ...jf.UserID) (result jf.GetStudioResponse, err error) {
 	var option jf.GetStudioOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetStudio takes one userId at most, not %d", len(userId))

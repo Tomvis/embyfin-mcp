@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -17,9 +18,9 @@ func TestOperationChangesPeopleList(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.ChangesPeopleList(t.Context(), tmdb.ChangesPeopleListOptions{
-		EndDate:   "v-EndDate",
+		EndDate:   tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		Page:      new(7),
-		StartDate: "v-StartDate",
+		StartDate: tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -27,9 +28,9 @@ func TestOperationChangesPeopleList(t *testing.T) {
 	r, body := s.only(t)
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/3/person/changes")
-	expectQuery(t, r, "end_date", "v-EndDate")
+	expectQuery(t, r, "end_date", "2024-03-04")
 	expectQuery(t, r, "page", "7")
-	expectQuery(t, r, "start_date", "v-StartDate")
+	expectQuery(t, r, "start_date", "2024-03-04")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
@@ -46,9 +47,9 @@ func TestOperationChangesPeopleList(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.ChangesPeopleList(t.Context(), tmdb.ChangesPeopleListOptions{
-		EndDate:   "v-EndDate",
+		EndDate:   tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		Page:      new(7),
-		StartDate: "v-StartDate",
+		StartDate: tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -57,9 +58,9 @@ func TestOperationChangesPeopleList(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.ChangesPeopleList(t.Context(), tmdb.ChangesPeopleListOptions{
-		EndDate:   "v-EndDate",
+		EndDate:   tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		Page:      new(7),
-		StartDate: "v-StartDate",
+		StartDate: tmdb.Day{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

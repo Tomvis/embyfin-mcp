@@ -13,7 +13,7 @@ import (
 )
 
 // GetUserSettingsByUserId calls GET /UserSettings/{UserId}. Gets user settings.
-func (c Client) GetUserSettingsByUserId(ctx context.Context, userId string) (result emby.GetUserSettingsByUserIdResponse, err error) {
+func (c Client) GetUserSettingsByUserId(ctx context.Context, userId emby.UserID) (result emby.GetUserSettingsByUserIdResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) GetUserSettingsByUserId(ctx context.Context, userId string) (res
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetUserSettingsByUserId",
-		Path:       fmt.Sprintf("/UserSettings/%s", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/UserSettings/%s", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

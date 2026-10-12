@@ -16,7 +16,7 @@ type AddToCollectionResponse struct {
 // AddToCollectionOptions holds the query and header parameters of AddToCollection.
 type AddToCollectionOptions struct {
 	// Item ids, comma delimited.
-	Ids []string
+	Ids []ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -29,7 +29,7 @@ func (o AddToCollectionOptions) ToHeaders() *client.Headers {
 func (o AddToCollectionOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	for _, v := range o.Ids {
-		out.Append("ids", v)
+		out.Append("ids", string(v))
 	}
 	return &out
 }

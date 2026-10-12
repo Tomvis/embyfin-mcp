@@ -1459,7 +1459,7 @@ func TestServer(t *testing.T) {
 	if entries, total, err := c.ActivityLog(t.Context(), since, 10, 0); err != nil || total != 1 || entries[0].Name != "login" {
 		t.Errorf("ActivityLog = %v, %d, %v", entries, total, err)
 	}
-	if q := f.only("GET /System/ActivityLog/Entries").query; q.Get("MinDate") != "2026-09-14T11:00:00Z" || q.Get("Limit") != "10" {
+	if q := f.only("GET /System/ActivityLog/Entries").query; q.Get("MinDate") != "2026-09-14T11:00:00.0000000Z" || q.Get("Limit") != "10" {
 		t.Errorf("activity query = %v", q)
 	}
 	if info, err := c.SystemInfo(t.Context()); err != nil || info.ServerName != "nas" {

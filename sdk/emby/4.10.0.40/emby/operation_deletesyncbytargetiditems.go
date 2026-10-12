@@ -16,7 +16,7 @@ type DeleteSyncByTargetIdItemsResponse struct {
 // DeleteSyncByTargetIdItemsOptions holds the query and header parameters of DeleteSyncByTargetIdItems.
 type DeleteSyncByTargetIdItemsOptions struct {
 	// ItemIds
-	ItemIds string
+	ItemIds []ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -28,8 +28,8 @@ func (o DeleteSyncByTargetIdItemsOptions) ToHeaders() *client.Headers {
 // ToQuery returns the query parameters the options set.
 func (o DeleteSyncByTargetIdItemsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
-	if o.ItemIds != "" {
-		out.Append("ItemIds", o.ItemIds)
+	if len(o.ItemIds) > 0 {
+		out.Append("ItemIds", client.Joined(o.ItemIds))
 	}
 	return &out
 }

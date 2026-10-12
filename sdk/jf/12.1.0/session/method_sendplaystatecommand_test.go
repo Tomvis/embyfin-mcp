@@ -14,16 +14,16 @@ func TestOperationSendPlaystateCommand(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.SendPlaystateCommand(t.Context(), "p/sessionId", jf.PlaystateCommandStop, jf.SendPlaystateCommandOptions{
+	result, err := c.SendPlaystateCommand(t.Context(), jf.SessionID("v-sessionId"), jf.PlaystateCommandStop, jf.SendPlaystateCommandOptions{
 		SeekPositionTicks: new(int64(7)),
-		ControllingUserId: "v-ControllingUserId",
+		ControllingUserId: jf.UserID("v-ControllingUserId"),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Sessions/p%2FsessionId/Playing/Stop")
+	expectRequest(t, r, http.MethodPost, "/Sessions/v-sessionId/Playing/Stop")
 	expectQuery(t, r, "seekPositionTicks", "7")
 	expectQuery(t, r, "controllingUserId", "v-ControllingUserId")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
@@ -32,9 +32,9 @@ func TestOperationSendPlaystateCommand(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.SendPlaystateCommand(t.Context(), "p/sessionId", jf.PlaystateCommandStop, jf.SendPlaystateCommandOptions{
+	result, err = c.SendPlaystateCommand(t.Context(), jf.SessionID("v-sessionId"), jf.PlaystateCommandStop, jf.SendPlaystateCommandOptions{
 		SeekPositionTicks: new(int64(7)),
-		ControllingUserId: "v-ControllingUserId",
+		ControllingUserId: jf.UserID("v-ControllingUserId"),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
@@ -42,10 +42,10 @@ func TestOperationSendPlaystateCommand(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 204, "", "")
-	if _, err = c.SendPlaystateCommand(t.Context(), "p/sessionId", jf.PlaystateCommandStop); err != nil {
+	if _, err = c.SendPlaystateCommand(t.Context(), jf.SessionID("v-sessionId"), jf.PlaystateCommandStop); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.SendPlaystateCommand(t.Context(), "p/sessionId", jf.PlaystateCommandStop, jf.SendPlaystateCommandOptions{}, jf.SendPlaystateCommandOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.SendPlaystateCommand(t.Context(), jf.SessionID("v-sessionId"), jf.PlaystateCommandStop, jf.SendPlaystateCommandOptions{}, jf.SendPlaystateCommandOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

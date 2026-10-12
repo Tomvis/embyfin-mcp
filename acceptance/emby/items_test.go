@@ -37,7 +37,7 @@ func TestEmbyItemsQuery(t *testing.T) {
 	byTitle := map[string]emby.BaseItemDto{}
 	for _, it := range all.Items {
 		byTitle[it.Name] = it
-		if it.Id == "" || it.Type != "Movie" || it.Path == "" || it.Overview == "" || it.DateCreated == "" || it.ServerId == "" {
+		if it.Id == "" || it.Type != "Movie" || it.Path == "" || it.Overview == "" || it.DateCreated.IsZero() || it.ServerId == "" {
 			t.Errorf("%s did not decode: %+v", it.Name, it)
 		}
 		if it.MediaType != "Video" {
@@ -97,7 +97,7 @@ func TestEmbyItemsQuery(t *testing.T) {
 		}
 	})
 	t.Run("Ids", func(t *testing.T) {
-		res := sdkacc.Must(embyc.Items.GetItems(ctx, emby.GetItemsOptions{Ids: byTitle[sdkacc.Alien].Id + "," + byTitle[sdkacc.Aliens].Id})).Answer
+		res := sdkacc.Must(embyc.Items.GetItems(ctx, emby.GetItemsOptions{Ids: []emby.ItemID{byTitle[sdkacc.Alien].Id, byTitle[sdkacc.Aliens].Id}})).Answer
 		if len(res.Items) != 2 {
 			t.Errorf("Ids found %d, want 2", len(res.Items))
 		}
@@ -135,7 +135,7 @@ func TestEmbyItemsQuery(t *testing.T) {
 		if people.Items[i].Id == "" || people.Items[i].Type != "Person" {
 			t.Errorf("person did not decode: %+v", people.Items[i])
 		}
-		res := sdkacc.Must(embyc.Items.GetItems(ctx, emby.GetItemsOptions{ParentId: moviesID, Recursive: new(true), PersonIds: people.Items[i].Id})).Answer
+		res := sdkacc.Must(embyc.Items.GetItems(ctx, emby.GetItemsOptions{ParentId: moviesID, Recursive: new(true), PersonIds: string(people.Items[i].Id)})).Answer
 		if res.TotalRecordCount != 2 {
 			t.Errorf("PersonIds=%s found %d, want Alien and Blade Runner", sdkacc.RidleyScott, res.TotalRecordCount)
 		}
@@ -248,7 +248,7 @@ func TestEmbyItem(t *testing.T) {
 	if len(got.Tags) != 0 {
 		t.Errorf("after the update tags = %v; the server now fills the plain Tags list", got.Tags)
 	}
-	tagged := sdkacc.Must(embyc.Items.GetItems(ctx, emby.GetItemsOptions{Ids: id, Fields: "Tags,TagItems"})).Answer
+	tagged := sdkacc.Must(embyc.Items.GetItems(ctx, emby.GetItemsOptions{Ids: []emby.ItemID{id}, Fields: "Tags,TagItems"})).Answer
 	if len(tagged.Items) != 1 || !slices.ContainsFunc(tagged.Items[0].TagItems, func(p emby.NameLongIdPair) bool { return p.Name == "sdk" }) {
 		t.Errorf("after the update the item reads %+v, want sdk among its TagItems", tagged.Items)
 	}
@@ -296,14 +296,14 @@ func TestEmbyItem(t *testing.T) {
 		}
 		want := map[string]bool{}
 		for _, s := range genre.Items {
-			want[s.Id] = true
+			want[string(s.Id)] = true
 		}
 		got := map[string]bool{}
 		for _, it := range mix.Items {
-			if it.Type != "Audio" || !want[it.Id] {
+			if it.Type != "Audio" || !want[string(it.Id)] {
 				t.Errorf("the mix from %s holds %s (%s), which is not a %s song", sdkacc.DarkSide, it.Name, it.Type, sdkacc.ProgressiveRock)
 			}
-			got[it.Id] = true
+			got[string(it.Id)] = true
 		}
 		if len(got) != len(want) {
 			t.Errorf("the mix from %s holds %d of the %d %s songs", sdkacc.DarkSide, len(got), len(want), sdkacc.ProgressiveRock)
@@ -406,7 +406,7 @@ func TestEmbyCatalogue(t *testing.T) {
 	// the music families, read by library: none in the film library, and the
 	// fixtures' in the music one (whatever else the server holds, so the
 	// counts do not depend on what ran before)
-	for _, lib := range []string{moviesID, embyLibrary(t, sdkacc.SDKMusic)} {
+	for _, lib := range []emby.ItemID{moviesID, embyLibrary(t, sdkacc.SDKMusic)} {
 		wantArtists, wantAlbumArtists, wantGenres := []string{}, []string{}, []string{}
 		if lib != moviesID {
 			// the tracks' artists, The Pink Floyd among them (one track's

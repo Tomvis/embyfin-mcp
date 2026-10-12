@@ -13,7 +13,7 @@ import (
 )
 
 // GetAudioByIdUniversalByContainer calls GET /Audio/{Id}/universal.{Container}. Gets an audio stream.
-func (c Client) GetAudioByIdUniversalByContainer(ctx context.Context, id string, container string, options ...emby.GetAudioByIdUniversalByContainerOptions) (result emby.GetAudioByIdUniversalByContainerResponse, err error) {
+func (c Client) GetAudioByIdUniversalByContainer(ctx context.Context, id emby.ItemID, container string, options ...emby.GetAudioByIdUniversalByContainerOptions) (result emby.GetAudioByIdUniversalByContainerResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetAudioByIdUniversalByContainer takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetAudioByIdUniversalByContainer(ctx context.Context, id string,
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetAudioByIdUniversalByContainer",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Audio/%s/universal.%s", url.PathEscape(id), url.PathEscape(container)),
+		Path:           fmt.Sprintf("/Audio/%s/universal.%s", url.PathEscape(string(id)), url.PathEscape(container)),
 		StreamResponse: true,
 	}
 

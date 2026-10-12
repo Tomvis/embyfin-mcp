@@ -13,7 +13,7 @@ import (
 )
 
 // UpdateUserItemRating calls POST /UserItems/{itemId}/Rating. Updates a user's rating for an item.
-func (c Client) UpdateUserItemRating(ctx context.Context, itemId string, options ...jf.UpdateUserItemRatingOptions) (result jf.UpdateUserItemRatingResponse, err error) {
+func (c Client) UpdateUserItemRating(ctx context.Context, itemId jf.ItemID, options ...jf.UpdateUserItemRatingOptions) (result jf.UpdateUserItemRatingResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("UpdateUserItemRating takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) UpdateUserItemRating(ctx context.Context, itemId string, options
 		HTTPMethod:    http.MethodPost,
 		Operation:     "UpdateUserItemRating",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/UserItems/%s/Rating", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/UserItems/%s/Rating", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

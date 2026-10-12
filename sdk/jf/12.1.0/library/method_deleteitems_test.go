@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,7 +14,7 @@ func TestOperationDeleteItems(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.DeleteItems(t.Context(), "a", "b")
+	result, err := c.DeleteItems(t.Context(), jf.ItemID("a"), jf.ItemID("b"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,7 +28,7 @@ func TestOperationDeleteItems(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.DeleteItems(t.Context(), "a", "b")
+	result, err = c.DeleteItems(t.Context(), jf.ItemID("a"), jf.ItemID("b"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

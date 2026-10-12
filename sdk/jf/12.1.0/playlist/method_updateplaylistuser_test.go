@@ -15,12 +15,12 @@ func TestOperationUpdatePlaylistUser(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.UpdatePlaylistUser(t.Context(), "p/playlistId", "p/userId", jf.UpdatePlaylistUserDto{})
+	result, err := c.UpdatePlaylistUser(t.Context(), jf.ItemID("v-playlistId"), jf.UserID("v-userId"), jf.UpdatePlaylistUserDto{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Playlists/p%2FplaylistId/Users/p%2FuserId")
+	expectRequest(t, r, http.MethodPost, "/Playlists/v-playlistId/Users/v-userId")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -36,7 +36,7 @@ func TestOperationUpdatePlaylistUser(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.UpdatePlaylistUser(t.Context(), "p/playlistId", "p/userId", jf.UpdatePlaylistUserDto{})
+	result, err = c.UpdatePlaylistUser(t.Context(), jf.ItemID("v-playlistId"), jf.UserID("v-userId"), jf.UpdatePlaylistUserDto{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

@@ -43,7 +43,7 @@ type OpenLiveStreamOptions struct {
 	OpenToken string
 
 	// The user id.
-	UserId string
+	UserId UserID
 
 	// The play session id.
 	PlaySessionId string
@@ -64,7 +64,7 @@ type OpenLiveStreamOptions struct {
 	MaxAudioChannels *int
 
 	// The item id.
-	ItemId string
+	ItemId ItemID
 
 	// Whether to enable direct play. Default: true.
 	EnableDirectPlay *bool
@@ -89,7 +89,7 @@ func (o OpenLiveStreamOptions) ToQuery() *client.QueryParams {
 		out.Append("openToken", o.OpenToken)
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.PlaySessionId != "" {
 		out.Append("playSessionId", o.PlaySessionId)
@@ -110,7 +110,7 @@ func (o OpenLiveStreamOptions) ToQuery() *client.QueryParams {
 		out.Append("maxAudioChannels", strconv.Itoa(*o.MaxAudioChannels))
 	}
 	if o.ItemId != "" {
-		out.Append("itemId", o.ItemId)
+		out.Append("itemId", string(o.ItemId))
 	}
 	if o.EnableDirectPlay != nil {
 		out.Append("enableDirectPlay", strconv.FormatBool(*o.EnableDirectPlay))

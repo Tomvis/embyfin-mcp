@@ -13,7 +13,7 @@ import (
 )
 
 // GetTrickplayHlsPlaylist calls GET /Videos/{itemId}/Trickplay/{width}/tiles.m3u8. Gets an image tiles playlist for trickplay.
-func (c Client) GetTrickplayHlsPlaylist(ctx context.Context, itemId string, width int, mediaSourceId ...string) (result jf.GetTrickplayHlsPlaylistResponse, err error) {
+func (c Client) GetTrickplayHlsPlaylist(ctx context.Context, itemId jf.ItemID, width int, mediaSourceId ...jf.MediaSourceID) (result jf.GetTrickplayHlsPlaylistResponse, err error) {
 	var option jf.GetTrickplayHlsPlaylistOptions
 	if len(mediaSourceId) > 1 {
 		err = fmt.Errorf("GetTrickplayHlsPlaylist takes one mediaSourceId at most, not %d", len(mediaSourceId))
@@ -31,7 +31,7 @@ func (c Client) GetTrickplayHlsPlaylist(ctx context.Context, itemId string, widt
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetTrickplayHlsPlaylist",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/Trickplay/%d/tiles.m3u8", url.PathEscape(itemId), width),
+		Path:           fmt.Sprintf("/Videos/%s/Trickplay/%d/tiles.m3u8", url.PathEscape(string(itemId)), width),
 		StreamResponse: true,
 	}
 

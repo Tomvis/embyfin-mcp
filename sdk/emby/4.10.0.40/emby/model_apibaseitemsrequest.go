@@ -30,10 +30,10 @@ type ApiBaseItemsRequest struct {
 	ItemPersonTypes              []PersonType        `json:"ItemPersonTypes,omitzero"`
 	ListItemIds                  string              `json:"ListItemIds,omitempty"`
 	MatchAnyWord                 *bool               `json:"MatchAnyWord,omitempty"`
-	MaxDateCreated               string              `json:"MaxDateCreated,omitempty"`
+	MaxDateCreated               Time                `json:"MaxDateCreated,omitzero"`
 	MaxHeight                    int                 `json:"MaxHeight,omitempty"`
 	MaxWidth                     int                 `json:"MaxWidth,omitempty"`
-	MinDateCreated               string              `json:"MinDateCreated,omitempty"`
+	MinDateCreated               Time                `json:"MinDateCreated,omitzero"`
 	MinHeight                    int                 `json:"MinHeight,omitempty"`
 	MinWidth                     int                 `json:"MinWidth,omitempty"`
 	Name                         string              `json:"Name,omitempty"`

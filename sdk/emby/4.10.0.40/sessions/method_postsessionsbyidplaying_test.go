@@ -15,7 +15,7 @@ func TestOperationPostSessionsByIdPlaying(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostSessionsByIdPlaying(t.Context(), "p/id", emby.PlayRequest{}, emby.PostSessionsByIdPlayingOptions{
+	result, err := c.PostSessionsByIdPlaying(t.Context(), emby.SessionID("v-id"), emby.PlayRequest{}, emby.PostSessionsByIdPlayingOptions{
 		ItemIds:            []int64{1, 2},
 		StartPositionTicks: new(int64(7)),
 		PlayCommand:        emby.PlayCommandPlayNow,
@@ -24,7 +24,7 @@ func TestOperationPostSessionsByIdPlaying(t *testing.T) {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Sessions/p%2Fid/Playing")
+	expectRequest(t, r, http.MethodPost, "/Sessions/v-id/Playing")
 	expectQuery(t, r, "ItemIds", "1,2")
 	expectQuery(t, r, "StartPositionTicks", "7")
 	expectQuery(t, r, "PlayCommand", "PlayNow")
@@ -43,7 +43,7 @@ func TestOperationPostSessionsByIdPlaying(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostSessionsByIdPlaying(t.Context(), "p/id", emby.PlayRequest{}, emby.PostSessionsByIdPlayingOptions{
+	result, err = c.PostSessionsByIdPlaying(t.Context(), emby.SessionID("v-id"), emby.PlayRequest{}, emby.PostSessionsByIdPlayingOptions{
 		ItemIds:            []int64{1, 2},
 		StartPositionTicks: new(int64(7)),
 		PlayCommand:        emby.PlayCommandPlayNow,

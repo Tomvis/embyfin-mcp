@@ -13,7 +13,7 @@ type EditorsEditorButtonItem struct {
 	IsAdvanced              bool              `json:"IsAdvanced"`
 	IsReadOnly              bool              `json:"IsReadOnly"`
 	Name                    string            `json:"Name,omitempty"`
-	ParentId                string            `json:"ParentId,omitempty"`
+	ParentId                ItemID            `json:"ParentId,omitempty"`
 }
 
 // GetName is the record's Name, for code that handles records of several types alike.

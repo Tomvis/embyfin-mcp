@@ -78,7 +78,7 @@ func (r GetTrickplayHlsPlaylistResponse) Bytes(max int64) ([]byte, error) {
 // GetTrickplayHlsPlaylistOptions holds the query and header parameters of GetTrickplayHlsPlaylist.
 type GetTrickplayHlsPlaylistOptions struct {
 	// The media version id, if using an alternate version.
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -91,7 +91,7 @@ func (o GetTrickplayHlsPlaylistOptions) ToHeaders() *client.Headers {
 func (o GetTrickplayHlsPlaylistOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.MediaSourceId != "" {
-		out.Append("mediaSourceId", o.MediaSourceId)
+		out.Append("mediaSourceId", string(o.MediaSourceId))
 	}
 	return &out
 }

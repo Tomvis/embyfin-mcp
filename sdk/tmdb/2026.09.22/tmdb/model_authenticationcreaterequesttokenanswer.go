@@ -4,7 +4,7 @@ package tmdb
 
 // AuthenticationCreateRequestTokenAnswer is an object the document declares inline.
 type AuthenticationCreateRequestTokenAnswer struct {
-	ExpiresAt    string `json:"expires_at,omitempty"`
+	ExpiresAt    Time   `json:"expires_at,omitzero"`
 	RequestToken string `json:"request_token,omitempty"`
 	Success      bool   `json:"success"`
 }

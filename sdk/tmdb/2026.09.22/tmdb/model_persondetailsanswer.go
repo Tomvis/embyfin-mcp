@@ -7,8 +7,8 @@ type PersonDetailsAnswer struct {
 	Adult              bool     `json:"adult"`
 	AlsoKnownAs        []string `json:"also_known_as,omitzero"`
 	Biography          string   `json:"biography,omitempty"`
-	Birthday           string   `json:"birthday,omitempty"`
-	Deathday           string   `json:"deathday,omitempty"`
+	Birthday           Day      `json:"birthday,omitzero"`
+	Deathday           Day      `json:"deathday,omitzero"`
 	Gender             int      `json:"gender,omitempty"`
 	Homepage           string   `json:"homepage,omitempty"`
 	Id                 int      `json:"id,omitempty"`

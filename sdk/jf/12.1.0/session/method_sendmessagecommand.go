@@ -13,7 +13,7 @@ import (
 )
 
 // SendMessageCommand calls POST /Sessions/{sessionId}/Message. Issues a command to a client to display a message to the user.
-func (c Client) SendMessageCommand(ctx context.Context, sessionId string, input jf.MessageCommand) (result jf.SendMessageCommandResponse, err error) {
+func (c Client) SendMessageCommand(ctx context.Context, sessionId jf.SessionID, input jf.MessageCommand) (result jf.SendMessageCommandResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) SendMessageCommand(ctx context.Context, sessionId string, input 
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "SendMessageCommand",
-		Path:       fmt.Sprintf("/Sessions/%s/Message", url.PathEscape(sessionId)),
+		Path:       fmt.Sprintf("/Sessions/%s/Message", url.PathEscape(string(sessionId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

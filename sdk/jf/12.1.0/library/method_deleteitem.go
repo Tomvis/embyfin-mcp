@@ -13,14 +13,14 @@ import (
 )
 
 // DeleteItem calls DELETE /Items/{itemId}. Deletes an item from the library and filesystem.
-func (c Client) DeleteItem(ctx context.Context, itemId string) (result jf.DeleteItemResponse, err error) {
+func (c Client) DeleteItem(ctx context.Context, itemId jf.ItemID) (result jf.DeleteItemResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteItem",
-		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

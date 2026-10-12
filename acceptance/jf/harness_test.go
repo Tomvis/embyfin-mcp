@@ -23,7 +23,8 @@ var (
 	// jfc is set when the run is against Jellyfin; without it every test skips
 	jfc *jfclient.Client
 
-	adminID, aliceID, password = sdkacc.AdminID(), sdkacc.UserID(), sdkacc.Password()
+	adminID, aliceID = jf.UserID(sdkacc.AdminID()), jf.UserID(sdkacc.UserID())
+	password         = sdkacc.Password()
 )
 
 // runSuite connects, runs the tests, removes the libraries they created, and returns the exit code.

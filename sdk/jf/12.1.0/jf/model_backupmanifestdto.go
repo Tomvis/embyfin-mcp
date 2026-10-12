@@ -10,7 +10,7 @@ type BackupManifestDto struct {
 	BackupEngineVersion string `json:"BackupEngineVersion,omitempty"`
 
 	// Gets or sets the date this backup was created with.
-	DateCreated string `json:"DateCreated,omitempty"`
+	DateCreated Time `json:"DateCreated,omitzero"`
 
 	// Gets or sets the contents of the backup archive.
 	Options *BackupOptionsDto `json:"Options,omitempty"`

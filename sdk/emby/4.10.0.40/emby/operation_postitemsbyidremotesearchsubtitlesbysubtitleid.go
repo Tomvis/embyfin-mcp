@@ -41,7 +41,7 @@ func (r PostItemsByIdRemoteSearchSubtitlesBySubtitleIdResponse) Record() (Subtit
 // PostItemsByIdRemoteSearchSubtitlesBySubtitleIdOptions holds the query and header parameters of PostItemsByIdRemoteSearchSubtitlesBySubtitleId.
 type PostItemsByIdRemoteSearchSubtitlesBySubtitleIdOptions struct {
 	// MediaSourceId
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -54,7 +54,7 @@ func (o PostItemsByIdRemoteSearchSubtitlesBySubtitleIdOptions) ToHeaders() *clie
 func (o PostItemsByIdRemoteSearchSubtitlesBySubtitleIdOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.MediaSourceId != "" {
-		out.Append("MediaSourceId", o.MediaSourceId)
+		out.Append("MediaSourceId", string(o.MediaSourceId))
 	}
 	return &out
 }

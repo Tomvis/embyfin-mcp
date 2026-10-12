@@ -13,14 +13,14 @@ import (
 )
 
 // MoveItem calls POST /Playlists/{playlistId}/Items/{itemId}/Move/{newIndex}. Moves a playlist item.
-func (c Client) MoveItem(ctx context.Context, playlistId string, itemId string, newIndex int) (result jf.MoveItemResponse, err error) {
+func (c Client) MoveItem(ctx context.Context, playlistId jf.ItemID, itemId jf.ItemID, newIndex int) (result jf.MoveItemResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "MoveItem",
-		Path:       fmt.Sprintf("/Playlists/%s/Items/%s/Move/%d", url.PathEscape(playlistId), url.PathEscape(itemId), newIndex),
+		Path:       fmt.Sprintf("/Playlists/%s/Items/%s/Move/%d", url.PathEscape(string(playlistId)), url.PathEscape(string(itemId)), newIndex),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

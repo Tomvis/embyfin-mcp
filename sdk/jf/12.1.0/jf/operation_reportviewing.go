@@ -16,10 +16,10 @@ type ReportViewingResponse struct {
 // ReportViewingOptions holds the query and header parameters of ReportViewing.
 type ReportViewingOptions struct {
 	// The session id.
-	SessionId string
+	SessionId SessionID
 
 	// The item id.
-	ItemId string
+	ItemId ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -32,10 +32,10 @@ func (o ReportViewingOptions) ToHeaders() *client.Headers {
 func (o ReportViewingOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.SessionId != "" {
-		out.Append("sessionId", o.SessionId)
+		out.Append("sessionId", string(o.SessionId))
 	}
 	if o.ItemId != "" {
-		out.Append("itemId", o.ItemId)
+		out.Append("itemId", string(o.ItemId))
 	}
 	return &out
 }

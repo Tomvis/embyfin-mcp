@@ -16,7 +16,7 @@ func TestOperationGetItemImage(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "image/png", "file bytes")
-	result, err := c.GetItemImage(t.Context(), "p/itemId", jf.ImageTypePrimary, jf.GetItemImageOptions{
+	result, err := c.GetItemImage(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, jf.GetItemImageOptions{
 		MaxWidth:        new(7),
 		MaxHeight:       new(7),
 		Width:           new(7),
@@ -38,7 +38,7 @@ func TestOperationGetItemImage(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2FitemId/Images/Primary")
+	expectRequest(t, r, http.MethodGet, "/Items/v-itemId/Images/Primary")
 	expectQuery(t, r, "maxWidth", "7")
 	expectQuery(t, r, "maxHeight", "7")
 	expectQuery(t, r, "width", "7")
@@ -67,7 +67,7 @@ func TestOperationGetItemImage(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
-	result, err = c.GetItemImage(t.Context(), "p/itemId", jf.ImageTypePrimary, jf.GetItemImageOptions{
+	result, err = c.GetItemImage(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, jf.GetItemImageOptions{
 		MaxWidth:        new(7),
 		MaxHeight:       new(7),
 		Width:           new(7),
@@ -91,7 +91,7 @@ func TestOperationGetItemImage(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
-	result, err = c.GetItemImage(t.Context(), "p/itemId", jf.ImageTypePrimary, jf.GetItemImageOptions{
+	result, err = c.GetItemImage(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, jf.GetItemImageOptions{
 		MaxWidth:        new(7),
 		MaxHeight:       new(7),
 		Width:           new(7),
@@ -127,7 +127,7 @@ func TestOperationGetItemImage(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetItemImage(t.Context(), "p/itemId", jf.ImageTypePrimary, jf.GetItemImageOptions{
+	result, err = c.GetItemImage(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, jf.GetItemImageOptions{
 		MaxWidth:        new(7),
 		MaxHeight:       new(7),
 		Width:           new(7),
@@ -150,10 +150,10 @@ func TestOperationGetItemImage(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "image/png", "file bytes")
-	if _, err = c.GetItemImage(t.Context(), "p/itemId", jf.ImageTypePrimary); err != nil {
+	if _, err = c.GetItemImage(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetItemImage(t.Context(), "p/itemId", jf.ImageTypePrimary, jf.GetItemImageOptions{}, jf.GetItemImageOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetItemImage(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, jf.GetItemImageOptions{}, jf.GetItemImageOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

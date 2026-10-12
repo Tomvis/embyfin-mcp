@@ -85,7 +85,7 @@ func TestCreatePlaylistBody(t *testing.T) {
 	t.Parallel()
 
 	c, s := serve(t, func(*http.Request) (int, string) { return http.StatusOK, `{"Id":"p1"}` })
-	res, err := c.Playlist.CreatePlaylist(t.Context(), jf.CreatePlaylistDto{Name: "P", Ids: []string{"a", "b"}, MediaType: jf.MediaTypeVideo, UserId: "u"})
+	res, err := c.Playlist.CreatePlaylist(t.Context(), jf.CreatePlaylistDto{Name: "P", Ids: []jf.ItemID{"a", "b"}, MediaType: jf.MediaTypeVideo, UserId: "u"})
 	if err != nil {
 		t.Fatal(err)
 	}

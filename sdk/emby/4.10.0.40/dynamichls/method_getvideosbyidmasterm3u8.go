@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdMasterM3u8 calls GET /Videos/{Id}/master.m3u8. Gets a video stream using HTTP live streaming.
-func (c Client) GetVideosByIdMasterM3u8(ctx context.Context, id string, options emby.GetVideosByIdMasterM3u8Options) (result emby.GetVideosByIdMasterM3u8Response, err error) {
+func (c Client) GetVideosByIdMasterM3u8(ctx context.Context, id emby.ItemID, options emby.GetVideosByIdMasterM3u8Options) (result emby.GetVideosByIdMasterM3u8Response, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/x-mpegURL",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetVideosByIdMasterM3u8(ctx context.Context, id string, options 
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdMasterM3u8",
 		OptionsObject:  options,
-		Path:           fmt.Sprintf("/Videos/%s/master.m3u8", url.PathEscape(id)),
+		Path:           fmt.Sprintf("/Videos/%s/master.m3u8", url.PathEscape(string(id))),
 		StreamResponse: true,
 	}
 

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,21 +14,21 @@ func TestOperationPostVideosMergeVersions(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostVideosMergeVersions(t.Context(), "v-Ids")
+	result, err := c.PostVideosMergeVersions(t.Context(), emby.ItemID("a"), emby.ItemID("b"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Videos/MergeVersions")
-	expectQuery(t, r, "Ids", "v-Ids")
+	expectQuery(t, r, "Ids", "a,b")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostVideosMergeVersions(t.Context(), "v-Ids")
+	result, err = c.PostVideosMergeVersions(t.Context(), emby.ItemID("a"), emby.ItemID("b"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}
@@ -39,9 +40,5 @@ func TestOperationPostVideosMergeVersions(t *testing.T) {
 	}
 	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Ids") != "" {
 		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Ids"))
-	}
-	// two values are refused before any request
-	if _, err = c.PostVideosMergeVersions(t.Context(), "v-Ids", "v-Ids"); err == nil || len(s.requests) != 1 {
-		t.Errorf("two values = %v, %d requests", err, len(s.requests))
 	}
 }

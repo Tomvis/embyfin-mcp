@@ -84,7 +84,7 @@
           "In": "Query",
           "Description": "The minimum date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -93,7 +93,7 @@
           "In": "Query",
           "Description": "The maximum date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -147,7 +147,8 @@
           "In": "Query",
           "Description": "Filter by item id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -504,7 +505,7 @@
           "JsonName": "Date",
           "Description": "Gets or sets the date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -520,7 +521,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -572,7 +574,8 @@
           "JsonName": "UserId",
           "Description": "Gets or sets the user identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -842,7 +845,7 @@
           "JsonName": "DateCreated",
           "Description": "Gets or sets the date created.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -850,7 +853,7 @@
           "JsonName": "DateModified",
           "Description": "Gets or sets the date modified.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1970,7 +1973,7 @@
           "JsonName": "RequestReceptionTime",
           "Description": "Gets the UTC time when request has been received.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1978,7 +1981,7 @@
           "JsonName": "ResponseTransmissionTime",
           "Description": "Gets the UTC time when response has been sent.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         }
       ]

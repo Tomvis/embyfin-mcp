@@ -388,7 +388,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playlist item identifier of the playing item.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           }
         },
         {
@@ -404,7 +405,7 @@
           "JsonName": "When",
           "Description": "Gets or sets when the request has been made by the client.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         }
       ]
@@ -435,7 +436,7 @@
           "JsonName": "LastUpdatedAt",
           "Description": "Gets the date when this DTO has been created.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -508,7 +509,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playlist identifier of the item.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           }
         }
       ]
@@ -538,7 +540,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playing item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           }
         }
       ]
@@ -602,7 +605,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playing item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           }
         }
       ]
@@ -619,7 +623,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -652,7 +657,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playlist item identifier of the playing item.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           }
         },
         {
@@ -668,7 +674,7 @@
           "JsonName": "When",
           "Description": "Gets or sets when the request has been made by the client.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         }
       ]
@@ -701,7 +707,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "PlaylistItemID"
             }
           }
         }
@@ -732,7 +739,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playlist identifier of the playing item.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           }
         }
       ]

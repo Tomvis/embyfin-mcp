@@ -13,7 +13,7 @@ import (
 )
 
 // DownloadRemoteLyrics calls POST /Audio/{itemId}/RemoteSearch/Lyrics/{lyricId}. Downloads a remote lyric.
-func (c Client) DownloadRemoteLyrics(ctx context.Context, itemId string, lyricId string) (result jf.DownloadRemoteLyricsResponse, err error) {
+func (c Client) DownloadRemoteLyrics(ctx context.Context, itemId jf.ItemID, lyricId string) (result jf.DownloadRemoteLyricsResponse, err error) {
 	result.LyricDto = &jf.LyricDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) DownloadRemoteLyrics(ctx context.Context, itemId string, lyricId
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "DownloadRemoteLyrics",
-		Path:       fmt.Sprintf("/Audio/%s/RemoteSearch/Lyrics/%s", url.PathEscape(itemId), url.PathEscape(lyricId)),
+		Path:       fmt.Sprintf("/Audio/%s/RemoteSearch/Lyrics/%s", url.PathEscape(string(itemId)), url.PathEscape(lyricId)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -16,7 +16,7 @@ type MergeVersionsResponse struct {
 // MergeVersionsOptions holds the query and header parameters of MergeVersions.
 type MergeVersionsOptions struct {
 	// Item id list. This allows multiple, comma delimited.
-	Ids []string
+	Ids []ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -29,7 +29,7 @@ func (o MergeVersionsOptions) ToHeaders() *client.Headers {
 func (o MergeVersionsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	for _, v := range o.Ids {
-		out.Append("ids", v)
+		out.Append("ids", string(v))
 	}
 	return &out
 }

@@ -29,7 +29,7 @@ func newAccountServer(t *testing.T) *accountServer {
 	s := &accountServer{fakeServer: newFakeServer(t), passwords: map[string]string{}, bodies: map[string][]string{}}
 	s.users = []map[string]any{
 		{"Id": "u1", "Name": "root", "HasPassword": true, "Policy": map[string]any{"IsAdministrator": true, "EnableAllFolders": true, "EnabledFolders": []any{}, "EnableAllChannels": true}},
-		{"Id": "u2", "Name": "alice", "HasPassword": true, "LastActivityDate": "2026-09-15T00:00:00Z", "Policy": map[string]any{"EnableAllFolders": false, "EnabledFolders": []any{"guid-movies"}, "EnableRemoteAccess": true}},
+		{"Id": "u2", "Name": "alice", "HasPassword": true, "LastActivityDate": "2026-09-15T00:00:00.1234567Z", "Policy": map[string]any{"EnableAllFolders": false, "EnabledFolders": []any{"guid-movies"}, "EnableRemoteAccess": true}},
 	}
 	read := func(r *http.Request, key string) string {
 		raw, _ := io.ReadAll(r.Body)
@@ -225,7 +225,7 @@ func TestUserDelete(t *testing.T) {
 
 	// refused without confirm, saying what the account is
 	msg := mustRefuse(t, cs, "user_delete", map[string]any{"user": "alice"})
-	for _, want := range []string{"refusing to delete the account alice (id u2) without confirm=true: nothing was changed", "an ordinary account that sees Movies", "last active 2026-09-15T00:00:00Z", "playlists are not removed with it"} {
+	for _, want := range []string{"refusing to delete the account alice (id u2) without confirm=true: nothing was changed", "an ordinary account that sees Movies", "last active 2026-09-15T00:00:00.1234567Z", "playlists are not removed with it"} {
 		if !strings.Contains(msg, want) {
 			t.Errorf("user_delete without confirm = %q, want %q in it", msg, want)
 		}

@@ -4,6 +4,6 @@ package emby
 
 // UserLibraryLeaveSharedItems is the "UserLibrary.LeaveSharedItems" schema.
 type UserLibraryLeaveSharedItems struct {
-	ItemIds []string `json:"ItemIds,omitzero"`
-	UserId  string   `json:"UserId,omitempty"`
+	ItemIds []ItemID `json:"ItemIds,omitzero"`
+	UserId  UserID   `json:"UserId,omitempty"`
 }

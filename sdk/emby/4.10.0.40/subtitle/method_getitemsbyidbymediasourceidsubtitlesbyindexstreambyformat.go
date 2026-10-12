@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormat calls GET /Items/{Id}/{MediaSourceId}/Subtitles/{Index}/Stream.{Format}. Gets subtitles in a specified format.
-func (c Client) GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormat(ctx context.Context, id string, mediaSourceId string, index int, format string, options ...emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormatOptions) (result emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormatResponse, err error) {
+func (c Client) GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormat(ctx context.Context, id emby.ItemID, mediaSourceId emby.MediaSourceID, index int, format string, options ...emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormatOptions) (result emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormatResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormat takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormat(ctx co
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetItemsByIdByMediaSourceIdSubtitlesByIndexStreamByFormat",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Items/%s/%s/Subtitles/%d/Stream.%s", url.PathEscape(id), url.PathEscape(mediaSourceId), index, url.PathEscape(format)),
+		Path:           fmt.Sprintf("/Items/%s/%s/Subtitles/%d/Stream.%s", url.PathEscape(string(id)), url.PathEscape(string(mediaSourceId)), index, url.PathEscape(format)),
 		StreamResponse: true,
 	}
 

@@ -13,14 +13,14 @@ import (
 )
 
 // GetExternalIdInfos calls GET /Items/{itemId}/ExternalIdInfos. Get the item's external id info.
-func (c Client) GetExternalIdInfos(ctx context.Context, itemId string) (result jf.GetExternalIdInfosResponse, err error) {
+func (c Client) GetExternalIdInfos(ctx context.Context, itemId jf.ItemID) (result jf.GetExternalIdInfosResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetExternalIdInfos",
-		Path:       fmt.Sprintf("/Items/%s/ExternalIdInfos", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Items/%s/ExternalIdInfos", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

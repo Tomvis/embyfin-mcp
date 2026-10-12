@@ -24,7 +24,7 @@ type BoxSetInfo struct {
 
 	// Gets or sets the path.
 	Path         string `json:"Path,omitempty"`
-	PremiereDate string `json:"PremiereDate,omitempty"`
+	PremiereDate Time   `json:"PremiereDate,omitzero"`
 
 	// Gets or sets the provider ids.
 	ProviderIds map[string]string `json:"ProviderIds,omitzero"`

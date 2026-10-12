@@ -13,7 +13,7 @@ import (
 )
 
 // PostScheduledTasksByIdTriggers calls POST /ScheduledTasks/{Id}/Triggers. Updates the triggers for a scheduled task.
-func (c Client) PostScheduledTasksByIdTriggers(ctx context.Context, id string, input []emby.TaskTriggerInfo) (result emby.PostScheduledTasksByIdTriggersResponse, err error) {
+func (c Client) PostScheduledTasksByIdTriggers(ctx context.Context, id emby.TaskID, input []emby.TaskTriggerInfo) (result emby.PostScheduledTasksByIdTriggersResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostScheduledTasksByIdTriggers(ctx context.Context, id string, i
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostScheduledTasksByIdTriggers",
-		Path:       fmt.Sprintf("/ScheduledTasks/%s/Triggers", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/ScheduledTasks/%s/Triggers", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

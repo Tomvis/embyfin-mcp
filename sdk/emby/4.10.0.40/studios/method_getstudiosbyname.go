@@ -13,7 +13,7 @@ import (
 )
 
 // GetStudiosByName calls GET /Studios/{Name}. Gets a studio, by name.
-func (c Client) GetStudiosByName(ctx context.Context, name string, userId ...string) (result emby.GetStudiosByNameResponse, err error) {
+func (c Client) GetStudiosByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetStudiosByNameResponse, err error) {
 	var option emby.GetStudiosByNameOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetStudiosByName takes one userId at most, not %d", len(userId))

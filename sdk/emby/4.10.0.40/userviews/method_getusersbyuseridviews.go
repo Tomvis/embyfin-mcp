@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByUserIdViews calls GET /Users/{UserId}/Views. Requires authentication as user.
-func (c Client) GetUsersByUserIdViews(ctx context.Context, userId string, includeExternalContent bool) (result emby.GetUsersByUserIdViewsResponse, err error) {
+func (c Client) GetUsersByUserIdViews(ctx context.Context, userId emby.UserID, includeExternalContent bool) (result emby.GetUsersByUserIdViewsResponse, err error) {
 	var option emby.GetUsersByUserIdViewsOptions
 	option.IncludeExternalContent = &includeExternalContent
 
@@ -26,7 +26,7 @@ func (c Client) GetUsersByUserIdViews(ctx context.Context, userId string, includ
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetUsersByUserIdViews",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Views", url.PathEscape(userId)),
+		Path:          fmt.Sprintf("/Users/%s/Views", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

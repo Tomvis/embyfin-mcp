@@ -93,7 +93,7 @@ func TestJFDeleteItems(t *testing.T) {
 		return false
 	}
 	del := func(ids ...string) error {
-		_, err := jfc.Library.DeleteItems(ctx, ids...)
+		_, err := jfc.Library.DeleteItems(ctx, client.StringIDs[jf.ItemID](ids)...)
 		return err
 	}
 	// unknown is an id no item has
@@ -101,7 +101,7 @@ func TestJFDeleteItems(t *testing.T) {
 
 	// two at once, and nothing else
 	a, b, c, d := sdkacc.BulkTitles[0], sdkacc.BulkTitles[1], sdkacc.BulkTitles[2], sdkacc.BulkTitles[3]
-	if err := del(films[a].Id, films[b].Id); err != nil {
+	if err := del(string(films[a].Id), string(films[b].Id)); err != nil {
 		t.Fatal(err)
 	}
 	if !gone(a) || !gone(b) || gone(c) || gone(d) {
@@ -110,13 +110,13 @@ func TestJFDeleteItems(t *testing.T) {
 
 	// an unknown id stops the batch where it stands, with a 404: what came
 	// before it is deleted, what comes after it is not
-	if err := del(films[c].Id, unknown); !client.IsNotFound(err) {
+	if err := del(string(films[c].Id), unknown); !client.IsNotFound(err) {
 		t.Errorf("deleting %s and then an unknown id = %v, want a 404", c, err)
 	}
 	if !gone(c) {
 		t.Errorf("%s, before the unknown id, is still there", c)
 	}
-	if err := del(unknown, films[d].Id); !client.IsNotFound(err) {
+	if err := del(unknown, string(films[d].Id)); !client.IsNotFound(err) {
 		t.Errorf("deleting an unknown id and then %s = %v, want a 404", d, err)
 	}
 	if gone(d) {
@@ -133,7 +133,7 @@ func TestJFDeleteItems(t *testing.T) {
 	if gone(d) {
 		t.Errorf("%s went with a malformed id or none", d)
 	}
-	if err := del(films[d].Id); err != nil || !gone(d) {
+	if err := del(string(films[d].Id)); err != nil || !gone(d) {
 		t.Errorf("deleting %s alone = %v, gone %t", d, err, gone(d))
 	}
 	if n := jfCount(ctx, bulkID, jf.BaseItemKindMovie); n != 0 {

@@ -17,9 +17,9 @@ func TestOperationPostPlaylists(t *testing.T) {
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.PostPlaylists(t.Context(), emby.PostPlaylistsOptions{
 		Name:      "v-Name",
-		Ids:       "v-Ids",
+		Ids:       []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		MediaType: "v-MediaType",
-		UserId:    "v-UserId",
+		UserId:    emby.UserID("v-UserId"),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -28,7 +28,7 @@ func TestOperationPostPlaylists(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Playlists")
 	expectQuery(t, r, "Name", "v-Name")
-	expectQuery(t, r, "Ids", "v-Ids")
+	expectQuery(t, r, "Ids", "a,b")
 	expectQuery(t, r, "MediaType", "v-MediaType")
 	expectQuery(t, r, "UserId", "v-UserId")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
@@ -48,9 +48,9 @@ func TestOperationPostPlaylists(t *testing.T) {
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
 	result, err = c.PostPlaylists(t.Context(), emby.PostPlaylistsOptions{
 		Name:      "v-Name",
-		Ids:       "v-Ids",
+		Ids:       []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		MediaType: "v-MediaType",
-		UserId:    "v-UserId",
+		UserId:    emby.UserID("v-UserId"),
 	})
 	if err != nil || result.Answer != nil || result.Answered() {
 		t.Errorf("a 204 = %v, answer %v, answered %t", err, result.Answer, result.Answered())
@@ -66,9 +66,9 @@ func TestOperationPostPlaylists(t *testing.T) {
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.PostPlaylists(t.Context(), emby.PostPlaylistsOptions{
 		Name:      "v-Name",
-		Ids:       "v-Ids",
+		Ids:       []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		MediaType: "v-MediaType",
-		UserId:    "v-UserId",
+		UserId:    emby.UserID("v-UserId"),
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -78,9 +78,9 @@ func TestOperationPostPlaylists(t *testing.T) {
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.PostPlaylists(t.Context(), emby.PostPlaylistsOptions{
 		Name:      "v-Name",
-		Ids:       "v-Ids",
+		Ids:       []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		MediaType: "v-MediaType",
-		UserId:    "v-UserId",
+		UserId:    emby.UserID("v-UserId"),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

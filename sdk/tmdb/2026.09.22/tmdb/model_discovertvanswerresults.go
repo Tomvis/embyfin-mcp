@@ -5,7 +5,7 @@ package tmdb
 // DiscoverTvAnswerResults is an object the document declares inline.
 type DiscoverTvAnswerResults struct {
 	BackdropPath     string   `json:"backdrop_path,omitempty"`
-	FirstAirDate     string   `json:"first_air_date,omitempty"`
+	FirstAirDate     Day      `json:"first_air_date,omitzero"`
 	GenreIds         []int    `json:"genre_ids,omitzero"`
 	Id               int      `json:"id,omitempty"`
 	Name             string   `json:"name,omitempty"`

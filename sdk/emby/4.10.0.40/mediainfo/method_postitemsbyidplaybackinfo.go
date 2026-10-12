@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdPlaybackInfo calls POST /Items/{Id}/PlaybackInfo. Gets live playback media info for an item.
-func (c Client) PostItemsByIdPlaybackInfo(ctx context.Context, id string, input emby.PlaybackInfoRequest) (result emby.PostItemsByIdPlaybackInfoResponse, err error) {
+func (c Client) PostItemsByIdPlaybackInfo(ctx context.Context, id emby.ItemID, input emby.PlaybackInfoRequest) (result emby.PostItemsByIdPlaybackInfoResponse, err error) {
 	result.PlaybackInfoResponse = &emby.PlaybackInfoResponse{}
 	opts := client.RequestOptions{
 		ContentType: "application/json",
@@ -23,7 +23,7 @@ func (c Client) PostItemsByIdPlaybackInfo(ctx context.Context, id string, input 
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostItemsByIdPlaybackInfo",
-		Path:       fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -87,7 +87,7 @@ func TestJFAPIKeys(t *testing.T) {
 	key := keys.Items[i]
 	// (the server lists keys with Id 0 and IsActive false; the token and
 	// dates are what it fills in)
-	if key.AccessToken == "" || key.DateCreated == "" {
+	if key.AccessToken == "" || key.DateCreated.IsZero() {
 		t.Errorf("key = %+v", key)
 	}
 	// the testenv key is there too
@@ -108,7 +108,7 @@ func TestJFPlayedAndResume(t *testing.T) {
 	id := jfMovie(t, "Princess Mononoke").Id
 
 	ud := sdkacc.Must(jfc.UserData.MarkPlayedItem(ctx, id, jf.MarkPlayedItemOptions{UserId: adminID})).Answer
-	if !pointer.From(ud.Played) || ud.PlayCount == 0 || ud.LastPlayedDate == "" {
+	if !pointer.From(ud.Played) || ud.PlayCount == 0 || ud.LastPlayedDate.IsZero() {
 		t.Errorf("MarkPlayedItem = %+v", ud)
 	}
 	if it := sdkacc.Must(jfc.Library.GetItem(ctx, id, adminID)).Answer; it.UserData == nil || !pointer.From(it.UserData.Played) {

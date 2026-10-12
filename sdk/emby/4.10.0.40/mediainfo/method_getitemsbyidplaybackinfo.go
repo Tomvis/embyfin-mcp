@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdPlaybackInfo calls GET /Items/{Id}/PlaybackInfo. Gets live playback media info for an item.
-func (c Client) GetItemsByIdPlaybackInfo(ctx context.Context, id string, userId string) (result emby.GetItemsByIdPlaybackInfoResponse, err error) {
+func (c Client) GetItemsByIdPlaybackInfo(ctx context.Context, id emby.ItemID, userId emby.UserID) (result emby.GetItemsByIdPlaybackInfoResponse, err error) {
 	var option emby.GetItemsByIdPlaybackInfoOptions
 	option.UserId = userId
 
@@ -26,7 +26,7 @@ func (c Client) GetItemsByIdPlaybackInfo(ctx context.Context, id string, userId 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemsByIdPlaybackInfo",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

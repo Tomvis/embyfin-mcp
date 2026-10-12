@@ -16,9 +16,9 @@ func TestOperationGetSyncOptions(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetSyncOptions(t.Context(), emby.GetSyncOptionsOptions{
-		UserId:   "v-UserId",
-		ItemIds:  "v-ItemIds",
-		ParentId: "v-ParentId",
+		UserId:   emby.UserID("v-UserId"),
+		ItemIds:  []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
+		ParentId: emby.ItemID("v-ParentId"),
 		TargetId: "v-TargetId",
 		Category: emby.SyncCategoryLatest,
 	})
@@ -29,7 +29,7 @@ func TestOperationGetSyncOptions(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/Sync/Options")
 	expectQuery(t, r, "UserId", "v-UserId")
-	expectQuery(t, r, "ItemIds", "v-ItemIds")
+	expectQuery(t, r, "ItemIds", "a,b")
 	expectQuery(t, r, "ParentId", "v-ParentId")
 	expectQuery(t, r, "TargetId", "v-TargetId")
 	expectQuery(t, r, "Category", "Latest")
@@ -49,9 +49,9 @@ func TestOperationGetSyncOptions(t *testing.T) {
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
 	result, err = c.GetSyncOptions(t.Context(), emby.GetSyncOptionsOptions{
-		UserId:   "v-UserId",
-		ItemIds:  "v-ItemIds",
-		ParentId: "v-ParentId",
+		UserId:   emby.UserID("v-UserId"),
+		ItemIds:  []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
+		ParentId: emby.ItemID("v-ParentId"),
 		TargetId: "v-TargetId",
 		Category: emby.SyncCategoryLatest,
 	})
@@ -68,9 +68,9 @@ func TestOperationGetSyncOptions(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetSyncOptions(t.Context(), emby.GetSyncOptionsOptions{
-		UserId:   "v-UserId",
-		ItemIds:  "v-ItemIds",
-		ParentId: "v-ParentId",
+		UserId:   emby.UserID("v-UserId"),
+		ItemIds:  []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
+		ParentId: emby.ItemID("v-ParentId"),
 		TargetId: "v-TargetId",
 		Category: emby.SyncCategoryLatest,
 	})
@@ -81,9 +81,9 @@ func TestOperationGetSyncOptions(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetSyncOptions(t.Context(), emby.GetSyncOptionsOptions{
-		UserId:   "v-UserId",
-		ItemIds:  "v-ItemIds",
-		ParentId: "v-ParentId",
+		UserId:   emby.UserID("v-UserId"),
+		ItemIds:  []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
+		ParentId: emby.ItemID("v-ParentId"),
 		TargetId: "v-TargetId",
 		Category: emby.SyncCategoryLatest,
 	})

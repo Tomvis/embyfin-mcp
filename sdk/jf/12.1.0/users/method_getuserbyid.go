@@ -13,7 +13,7 @@ import (
 )
 
 // GetUserById calls GET /Users/{userId}. Gets a user by Id.
-func (c Client) GetUserById(ctx context.Context, userId string) (result jf.GetUserByIdResponse, err error) {
+func (c Client) GetUserById(ctx context.Context, userId jf.UserID) (result jf.GetUserByIdResponse, err error) {
 	result.UserDto = &jf.UserDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetUserById(ctx context.Context, userId string) (result jf.GetUs
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetUserById",
-		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

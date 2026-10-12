@@ -15,7 +15,7 @@ func TestOperationPostItemsByIdRemoteImagesDownload(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostItemsByIdRemoteImagesDownload(t.Context(), "p/id", emby.ImagesBaseDownloadRemoteImage{}, emby.PostItemsByIdRemoteImagesDownloadOptions{
+	result, err := c.PostItemsByIdRemoteImagesDownload(t.Context(), emby.ItemID("v-id"), emby.ImagesBaseDownloadRemoteImage{}, emby.PostItemsByIdRemoteImagesDownloadOptions{
 		Type:         emby.ImageTypePrimary,
 		ProviderName: "v-ProviderName",
 		ImageUrl:     "v-ImageUrl",
@@ -24,7 +24,7 @@ func TestOperationPostItemsByIdRemoteImagesDownload(t *testing.T) {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Items/p%2Fid/RemoteImages/Download")
+	expectRequest(t, r, http.MethodPost, "/Items/v-id/RemoteImages/Download")
 	expectQuery(t, r, "Type", "Primary")
 	expectQuery(t, r, "ProviderName", "v-ProviderName")
 	expectQuery(t, r, "ImageUrl", "v-ImageUrl")
@@ -43,7 +43,7 @@ func TestOperationPostItemsByIdRemoteImagesDownload(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostItemsByIdRemoteImagesDownload(t.Context(), "p/id", emby.ImagesBaseDownloadRemoteImage{}, emby.PostItemsByIdRemoteImagesDownloadOptions{
+	result, err = c.PostItemsByIdRemoteImagesDownload(t.Context(), emby.ItemID("v-id"), emby.ImagesBaseDownloadRemoteImage{}, emby.PostItemsByIdRemoteImagesDownloadOptions{
 		Type:         emby.ImageTypePrimary,
 		ProviderName: "v-ProviderName",
 		ImageUrl:     "v-ImageUrl",

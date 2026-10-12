@@ -15,7 +15,7 @@ func TestOperationGetItemsByIdRemoteImages(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetItemsByIdRemoteImages(t.Context(), "p/id", emby.GetItemsByIdRemoteImagesOptions{
+	result, err := c.GetItemsByIdRemoteImages(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdRemoteImagesOptions{
 		Type:                emby.ImageTypePrimary,
 		StartIndex:          new(7),
 		Limit:               new(7),
@@ -28,7 +28,7 @@ func TestOperationGetItemsByIdRemoteImages(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2Fid/RemoteImages")
+	expectRequest(t, r, http.MethodGet, "/Items/v-id/RemoteImages")
 	expectQuery(t, r, "Type", "Primary")
 	expectQuery(t, r, "StartIndex", "7")
 	expectQuery(t, r, "Limit", "7")
@@ -50,7 +50,7 @@ func TestOperationGetItemsByIdRemoteImages(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.GetItemsByIdRemoteImages(t.Context(), "p/id", emby.GetItemsByIdRemoteImagesOptions{
+	result, err = c.GetItemsByIdRemoteImages(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdRemoteImagesOptions{
 		Type:                emby.ImageTypePrimary,
 		StartIndex:          new(7),
 		Limit:               new(7),
@@ -70,7 +70,7 @@ func TestOperationGetItemsByIdRemoteImages(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetItemsByIdRemoteImages(t.Context(), "p/id", emby.GetItemsByIdRemoteImagesOptions{
+	result, err = c.GetItemsByIdRemoteImages(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdRemoteImagesOptions{
 		Type:                emby.ImageTypePrimary,
 		StartIndex:          new(7),
 		Limit:               new(7),
@@ -84,7 +84,7 @@ func TestOperationGetItemsByIdRemoteImages(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetItemsByIdRemoteImages(t.Context(), "p/id", emby.GetItemsByIdRemoteImagesOptions{
+	result, err = c.GetItemsByIdRemoteImages(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdRemoteImagesOptions{
 		Type:                emby.ImageTypePrimary,
 		StartIndex:          new(7),
 		Limit:               new(7),
@@ -98,10 +98,10 @@ func TestOperationGetItemsByIdRemoteImages(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.GetItemsByIdRemoteImages(t.Context(), "p/id"); err != nil {
+	if _, err = c.GetItemsByIdRemoteImages(t.Context(), emby.ItemID("v-id")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetItemsByIdRemoteImages(t.Context(), "p/id", emby.GetItemsByIdRemoteImagesOptions{}, emby.GetItemsByIdRemoteImagesOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetItemsByIdRemoteImages(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdRemoteImagesOptions{}, emby.GetItemsByIdRemoteImagesOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

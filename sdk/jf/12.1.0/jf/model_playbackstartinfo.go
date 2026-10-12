@@ -25,14 +25,14 @@ type PlaybackStartInfo struct {
 	Item *BaseItemDto `json:"Item,omitempty"`
 
 	// Gets or sets the item identifier.
-	ItemId string `json:"ItemId,omitempty"`
+	ItemId ItemID `json:"ItemId,omitempty"`
 
 	// Gets or sets the live stream identifier.
 	LiveStreamId string `json:"LiveStreamId,omitempty"`
 
 	// Gets or sets the media version identifier.
-	MediaSourceId   string      `json:"MediaSourceId,omitempty"`
-	NowPlayingQueue []QueueItem `json:"NowPlayingQueue,omitzero"`
+	MediaSourceId   MediaSourceID `json:"MediaSourceId,omitempty"`
+	NowPlayingQueue []QueueItem   `json:"NowPlayingQueue,omitzero"`
 
 	// Gets or sets the play method.
 	PlayMethod PlayMethod `json:"PlayMethod,omitempty"`
@@ -41,9 +41,9 @@ type PlaybackStartInfo struct {
 	PlaySessionId string `json:"PlaySessionId,omitempty"`
 
 	// Gets or sets the playback order.
-	PlaybackOrder          PlaybackOrder `json:"PlaybackOrder,omitempty"`
-	PlaybackStartTimeTicks int64         `json:"PlaybackStartTimeTicks,omitempty"`
-	PlaylistItemId         string        `json:"PlaylistItemId,omitempty"`
+	PlaybackOrder          PlaybackOrder  `json:"PlaybackOrder,omitempty"`
+	PlaybackStartTimeTicks int64          `json:"PlaybackStartTimeTicks,omitempty"`
+	PlaylistItemId         PlaylistItemID `json:"PlaylistItemId,omitempty"`
 
 	// Gets or sets the position ticks.
 	PositionTicks int64 `json:"PositionTicks,omitempty"`
@@ -52,7 +52,7 @@ type PlaybackStartInfo struct {
 	RepeatMode RepeatMode `json:"RepeatMode,omitempty"`
 
 	// Gets or sets the session id.
-	SessionId string `json:"SessionId,omitempty"`
+	SessionId SessionID `json:"SessionId,omitempty"`
 
 	// Gets or sets the index of the subtitle stream.
 	SubtitleStreamIndex int `json:"SubtitleStreamIndex,omitempty"`

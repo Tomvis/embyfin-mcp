@@ -7,12 +7,12 @@ type ReviewDetailsAnswer struct {
 	Author        string                            `json:"author,omitempty"`
 	AuthorDetails *ReviewDetailsAnswerAuthorDetails `json:"author_details,omitempty"`
 	Content       string                            `json:"content,omitempty"`
-	CreatedAt     string                            `json:"created_at,omitempty"`
+	CreatedAt     Time                              `json:"created_at,omitzero"`
 	Id            string                            `json:"id,omitempty"`
 	Iso6391       string                            `json:"iso_639_1,omitempty"`
 	MediaId       int                               `json:"media_id,omitempty"`
 	MediaTitle    string                            `json:"media_title,omitempty"`
 	MediaType     string                            `json:"media_type,omitempty"`
-	UpdatedAt     string                            `json:"updated_at,omitempty"`
+	UpdatedAt     Time                              `json:"updated_at,omitzero"`
 	Url           string                            `json:"url,omitempty"`
 }

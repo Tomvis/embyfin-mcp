@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,20 +14,20 @@ func TestOperationPostPlaylistsByIdItemsByItemIdMoveByNewIndex(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostPlaylistsByIdItemsByItemIdMoveByNewIndex(t.Context(), "p/id", 7, 7)
+	result, err := c.PostPlaylistsByIdItemsByItemIdMoveByNewIndex(t.Context(), emby.ItemID("v-id"), 7, 7)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Playlists/p%2Fid/Items/7/Move/7")
+	expectRequest(t, r, http.MethodPost, "/Playlists/v-id/Items/7/Move/7")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostPlaylistsByIdItemsByItemIdMoveByNewIndex(t.Context(), "p/id", 7, 7)
+	result, err = c.PostPlaylistsByIdItemsByItemIdMoveByNewIndex(t.Context(), emby.ItemID("v-id"), 7, 7)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

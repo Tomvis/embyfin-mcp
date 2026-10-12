@@ -13,7 +13,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -25,7 +26,8 @@
           "Description": "User Id",
           "Required": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -80,7 +82,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -312,7 +315,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]
@@ -448,7 +452,8 @@
           "Name": "MediaSourceId",
           "JsonName": "MediaSourceId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -471,7 +476,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]

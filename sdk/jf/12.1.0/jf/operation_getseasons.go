@@ -40,7 +40,7 @@ func (r GetSeasonsResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetSeasonsOptions holds the query and header parameters of GetSeasons.
 type GetSeasonsOptions struct {
 	// The user id.
-	UserId string
+	UserId UserID
 
 	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
 	Fields []ItemFields
@@ -77,7 +77,7 @@ func (o GetSeasonsOptions) ToHeaders() *client.Headers {
 func (o GetSeasonsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))

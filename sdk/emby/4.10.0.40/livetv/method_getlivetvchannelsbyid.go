@@ -13,7 +13,7 @@ import (
 )
 
 // GetLiveTvChannelsById calls GET /LiveTv/Channels/{Id}. Gets a live tv channel.
-func (c Client) GetLiveTvChannelsById(ctx context.Context, id string, userId ...string) (result emby.GetLiveTvChannelsByIdResponse, err error) {
+func (c Client) GetLiveTvChannelsById(ctx context.Context, id emby.ItemID, userId ...emby.UserID) (result emby.GetLiveTvChannelsByIdResponse, err error) {
 	var option emby.GetLiveTvChannelsByIdOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetLiveTvChannelsById takes one userId at most, not %d", len(userId))
@@ -32,7 +32,7 @@ func (c Client) GetLiveTvChannelsById(ctx context.Context, id string, userId ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetLiveTvChannelsById",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/LiveTv/Channels/%s", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/LiveTv/Channels/%s", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

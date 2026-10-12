@@ -21,7 +21,7 @@ import (
 func TestEmbySessions(t *testing.T) {
 	ctx := skipUnlessEmby(t)
 	movie := embyMovie(t, sdkacc.Alien)
-	itemID, err := strconv.Atoi(movie.Id)
+	itemID, err := strconv.Atoi(string(movie.Id))
 	if err != nil {
 		t.Fatalf("item id %q is not an integer: %v", movie.Id, err)
 	}
@@ -47,7 +47,7 @@ func TestEmbySessions(t *testing.T) {
 		t.Fatalf("no session carries the capabilities after PostSessionsCapabilities: %+v", sessions)
 	}
 	own := sessions[i]
-	if own.Id == "" || own.Client == "" || own.DeviceName == "" || own.LastActivityDate == "" || own.ServerId == "" {
+	if own.Id == "" || own.Client == "" || own.DeviceName == "" || own.LastActivityDate.IsZero() || own.ServerId == "" {
 		t.Errorf("session = %+v", own)
 	}
 	if !slices.Contains(own.PlayableMediaTypes, "Video") || !slices.Contains(own.SupportedCommands, "DisplayMessage") {

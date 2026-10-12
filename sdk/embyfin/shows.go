@@ -11,7 +11,7 @@ import (
 // include watch state.
 func (c *Client) Seasons(ctx context.Context, seriesID, userID string) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.TvShows.GetShowsByIdSeasons(ctx, seriesID, emby.GetShowsByIdSeasonsOptions{UserId: userID, Fields: FieldsDefault})
+		res, err := c.emby.TvShows.GetShowsByIdSeasons(ctx, emby.ItemID(seriesID), emby.GetShowsByIdSeasonsOptions{UserId: emby.UserID(userID), Fields: FieldsDefault})
 		if err != nil {
 			return nil, err
 		}
@@ -19,7 +19,7 @@ func (c *Client) Seasons(ctx context.Context, seriesID, userID string) ([]Item, 
 		return itemsFromEmby(orEmpty(res.Answer).Items), nil
 	}
 
-	res, err := c.jf.Show.GetSeasons(ctx, seriesID, jf.GetSeasonsOptions{UserId: userID, Fields: list[jf.ItemFields](FieldsDefault)})
+	res, err := c.jf.Show.GetSeasons(ctx, jf.ItemID(seriesID), jf.GetSeasonsOptions{UserId: jf.UserID(userID), Fields: list[jf.ItemFields](FieldsDefault)})
 	if err != nil {
 		return nil, err
 	}
@@ -54,8 +54,8 @@ func (o EpisodeOptions) fields() string {
 // Episodes lists a series' episodes, scoped by opts.
 func (c *Client) Episodes(ctx context.Context, seriesID string, opts EpisodeOptions) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.TvShows.GetShowsByIdEpisodes(ctx, seriesID, emby.GetShowsByIdEpisodesOptions{
-			UserId: opts.UserID, Fields: opts.fields(), SeasonId: opts.SeasonID, Season: opts.Season,
+		res, err := c.emby.TvShows.GetShowsByIdEpisodes(ctx, emby.ItemID(seriesID), emby.GetShowsByIdEpisodesOptions{
+			UserId: emby.UserID(opts.UserID), Fields: opts.fields(), SeasonId: emby.ItemID(opts.SeasonID), Season: opts.Season,
 			Limit: nz(opts.Limit), StartIndex: nz(opts.StartIndex),
 		})
 		if err != nil {
@@ -69,8 +69,8 @@ func (c *Client) Episodes(ctx context.Context, seriesID string, opts EpisodeOpti
 	if opts.Missing {
 		isMissing = new(true)
 	}
-	res, err := c.jf.Show.GetEpisodes(ctx, seriesID, jf.GetEpisodesOptions{
-		UserId: opts.UserID, Fields: list[jf.ItemFields](opts.fields()), SeasonId: opts.SeasonID, Season: opts.Season,
+	res, err := c.jf.Show.GetEpisodes(ctx, jf.ItemID(seriesID), jf.GetEpisodesOptions{
+		UserId: jf.UserID(opts.UserID), Fields: list[jf.ItemFields](opts.fields()), SeasonId: jf.ItemID(opts.SeasonID), Season: opts.Season,
 		IsMissing: isMissing, Limit: nz(opts.Limit), StartIndex: nz(opts.StartIndex),
 	})
 	if err != nil {

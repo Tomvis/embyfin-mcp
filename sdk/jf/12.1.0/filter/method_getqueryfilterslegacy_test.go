@@ -16,8 +16,8 @@ func TestOperationGetQueryFiltersLegacy(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetQueryFiltersLegacy(t.Context(), jf.GetQueryFiltersLegacyOptions{
-		UserId:           "v-UserId",
-		ParentId:         "v-ParentId",
+		UserId:           jf.UserID("v-UserId"),
+		ParentId:         jf.ItemID("v-ParentId"),
 		IncludeItemTypes: []jf.BaseItemKind{jf.BaseItemKindAggregateFolder, jf.BaseItemKindYear},
 		MediaTypes:       []jf.MediaType{jf.MediaTypeUnknown, jf.MediaTypeBook},
 	})
@@ -47,8 +47,8 @@ func TestOperationGetQueryFiltersLegacy(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetQueryFiltersLegacy(t.Context(), jf.GetQueryFiltersLegacyOptions{
-		UserId:           "v-UserId",
-		ParentId:         "v-ParentId",
+		UserId:           jf.UserID("v-UserId"),
+		ParentId:         jf.ItemID("v-ParentId"),
 		IncludeItemTypes: []jf.BaseItemKind{jf.BaseItemKindAggregateFolder, jf.BaseItemKindYear},
 		MediaTypes:       []jf.MediaType{jf.MediaTypeUnknown, jf.MediaTypeBook},
 	})
@@ -59,8 +59,8 @@ func TestOperationGetQueryFiltersLegacy(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetQueryFiltersLegacy(t.Context(), jf.GetQueryFiltersLegacyOptions{
-		UserId:           "v-UserId",
-		ParentId:         "v-ParentId",
+		UserId:           jf.UserID("v-UserId"),
+		ParentId:         jf.ItemID("v-ParentId"),
 		IncludeItemTypes: []jf.BaseItemKind{jf.BaseItemKindAggregateFolder, jf.BaseItemKindYear},
 		MediaTypes:       []jf.MediaType{jf.MediaTypeUnknown, jf.MediaTypeBook},
 	})

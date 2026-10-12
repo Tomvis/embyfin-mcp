@@ -10,7 +10,7 @@ type PlaystateRequest struct {
 	Command PlaystateCommand `json:"Command,omitempty"`
 
 	// Gets or sets the controlling user identifier.
-	ControllingUserId string `json:"ControllingUserId,omitempty"`
+	ControllingUserId UserID `json:"ControllingUserId,omitempty"`
 
 	// Gets or sets the seek position in ticks.
 	SeekPositionTicks int64 `json:"SeekPositionTicks,omitempty"`

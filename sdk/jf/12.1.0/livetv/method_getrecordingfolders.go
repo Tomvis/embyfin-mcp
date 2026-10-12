@@ -12,7 +12,7 @@ import (
 )
 
 // GetRecordingFolders calls GET /LiveTv/Recordings/Folders. Gets recording folders.
-func (c Client) GetRecordingFolders(ctx context.Context, userId ...string) (result jf.GetRecordingFoldersResponse, err error) {
+func (c Client) GetRecordingFolders(ctx context.Context, userId ...jf.UserID) (result jf.GetRecordingFoldersResponse, err error) {
 	var option jf.GetRecordingFoldersOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetRecordingFolders takes one userId at most, not %d", len(userId))

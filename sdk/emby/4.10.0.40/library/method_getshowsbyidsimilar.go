@@ -14,7 +14,7 @@ import (
 )
 
 // GetShowsByIdSimilar calls GET /Shows/{Id}/Similar. Finds tv shows similar to a given one.
-func (c Client) GetShowsByIdSimilar(ctx context.Context, id string, options ...emby.GetShowsByIdSimilarOptions) (result emby.GetShowsByIdSimilarResponse, err error) {
+func (c Client) GetShowsByIdSimilar(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdSimilarOptions) (result emby.GetShowsByIdSimilarResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetShowsByIdSimilar takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetShowsByIdSimilar(ctx context.Context, id string, options ...e
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetShowsByIdSimilar",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Shows/%s/Similar", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Shows/%s/Similar", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetShowsByIdSimilar(ctx context.Context, id string, options ...e
 // GetShowsByIdSimilarComplete calls GetShowsByIdSimilar page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetShowsByIdSimilarComplete(ctx context.Context, id string, options ...emby.GetShowsByIdSimilarOptions) (result emby.GetShowsByIdSimilarCompleteResult, err error) {
+func (c Client) GetShowsByIdSimilarComplete(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdSimilarOptions) (result emby.GetShowsByIdSimilarCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetShowsByIdSimilarComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetShowsByIdSimilarComplete(ctx context.Context, id string, opti
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetShowsByIdSimilarComplete asks for them.
-func (c Client) GetShowsByIdSimilarEach(ctx context.Context, id string, options ...emby.GetShowsByIdSimilarOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetShowsByIdSimilarEach(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdSimilarOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

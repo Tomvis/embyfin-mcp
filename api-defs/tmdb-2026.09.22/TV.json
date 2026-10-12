@@ -14,7 +14,7 @@
           "Field": "EndDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -30,7 +30,7 @@
           "Field": "StartDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         }
       ],
@@ -2384,7 +2384,7 @@
           "Name": "Time",
           "JsonName": "time",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2713,7 +2713,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -3145,7 +3145,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -3499,7 +3499,7 @@
           "Name": "PublishedAt",
           "JsonName": "published_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3905,7 +3905,7 @@
           "Name": "Time",
           "JsonName": "time",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4122,7 +4122,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -4205,7 +4205,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -4792,7 +4792,7 @@
           "Name": "PublishedAt",
           "JsonName": "published_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -12381,7 +12381,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -12599,7 +12599,7 @@
           "Name": "Time",
           "JsonName": "time",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -12922,7 +12922,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -12971,7 +12971,7 @@
           "Name": "LastAirDate",
           "JsonName": "last_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -13214,7 +13214,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -13336,7 +13336,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -13477,7 +13477,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -14034,7 +14034,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -14083,7 +14083,7 @@
           "Name": "LastAirDate",
           "JsonName": "last_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -14326,7 +14326,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -14448,7 +14448,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -14589,7 +14589,7 @@
           "Name": "AirDate",
           "JsonName": "air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -14713,7 +14713,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -14852,7 +14852,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -14998,7 +14998,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -15166,7 +15166,7 @@
           "Name": "CreatedAt",
           "JsonName": "created_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -15180,7 +15180,7 @@
           "Name": "UpdatedAt",
           "JsonName": "updated_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -15332,7 +15332,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -15471,7 +15471,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -15728,7 +15728,7 @@
           "Name": "PublishedAt",
           "JsonName": "published_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

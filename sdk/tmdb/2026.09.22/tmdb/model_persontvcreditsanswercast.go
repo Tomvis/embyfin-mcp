@@ -9,7 +9,7 @@ type PersonTvCreditsAnswerCast struct {
 	Character        string   `json:"character,omitempty"`
 	CreditId         string   `json:"credit_id,omitempty"`
 	EpisodeCount     int      `json:"episode_count,omitempty"`
-	FirstAirDate     string   `json:"first_air_date,omitempty"`
+	FirstAirDate     Day      `json:"first_air_date,omitzero"`
 	GenreIds         []int    `json:"genre_ids,omitzero"`
 	Id               int      `json:"id,omitempty"`
 	Name             string   `json:"name,omitempty"`

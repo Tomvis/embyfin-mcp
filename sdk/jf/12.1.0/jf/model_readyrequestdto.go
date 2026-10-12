@@ -10,11 +10,11 @@ type ReadyRequestDto struct {
 	IsPlaying *bool `json:"IsPlaying,omitempty"`
 
 	// Gets or sets the playlist item identifier of the playing item.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 
 	// Gets or sets the position ticks.
 	PositionTicks int64 `json:"PositionTicks,omitempty"`
 
 	// Gets or sets when the request has been made by the client.
-	When string `json:"When,omitempty"`
+	When Time `json:"When,omitzero"`
 }

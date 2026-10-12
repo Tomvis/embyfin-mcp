@@ -14,7 +14,7 @@ import (
 )
 
 // GetItemsByIdInstantMix calls GET /Items/{Id}/InstantMix. Creates an instant playlist based on a given item.
-func (c Client) GetItemsByIdInstantMix(ctx context.Context, id string, options ...emby.GetItemsByIdInstantMixOptions) (result emby.GetItemsByIdInstantMixResponse, err error) {
+func (c Client) GetItemsByIdInstantMix(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdInstantMixOptions) (result emby.GetItemsByIdInstantMixResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdInstantMix takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetItemsByIdInstantMix(ctx context.Context, id string, options .
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemsByIdInstantMix",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/InstantMix", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/InstantMix", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetItemsByIdInstantMix(ctx context.Context, id string, options .
 // GetItemsByIdInstantMixComplete calls GetItemsByIdInstantMix page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetItemsByIdInstantMixComplete(ctx context.Context, id string, options ...emby.GetItemsByIdInstantMixOptions) (result emby.GetItemsByIdInstantMixCompleteResult, err error) {
+func (c Client) GetItemsByIdInstantMixComplete(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdInstantMixOptions) (result emby.GetItemsByIdInstantMixCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdInstantMixComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetItemsByIdInstantMixComplete(ctx context.Context, id string, o
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetItemsByIdInstantMixComplete asks for them.
-func (c Client) GetItemsByIdInstantMixEach(ctx context.Context, id string, options ...emby.GetItemsByIdInstantMixOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetItemsByIdInstantMixEach(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdInstantMixOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

@@ -13,14 +13,14 @@ import (
 )
 
 // AddUserToSession calls POST /Sessions/{sessionId}/User/{userId}. Adds an additional user to a session.
-func (c Client) AddUserToSession(ctx context.Context, sessionId string, userId string) (result jf.AddUserToSessionResponse, err error) {
+func (c Client) AddUserToSession(ctx context.Context, sessionId jf.SessionID, userId jf.UserID) (result jf.AddUserToSessionResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "AddUserToSession",
-		Path:       fmt.Sprintf("/Sessions/%s/User/%s", url.PathEscape(sessionId), url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Sessions/%s/User/%s", url.PathEscape(string(sessionId)), url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

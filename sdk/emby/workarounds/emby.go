@@ -448,3 +448,53 @@ func (embyPropertyConditionValue) Apply(spec *openapi.Spec) error {
 
 	return nil
 }
+
+type embySavedSinceText struct{}
+
+func (embySavedSinceText) Name() string    { return "emby-saved-since-text" }
+func (embySavedSinceText) Service() string { return emby }
+func (embySavedSinceText) Bug() string {
+	return "GET /Items and GET /Users/{UserId}/Items declare MinDateLastSaved a date and time; the server also takes a day alone and a time with no zone, and reads those its own way, which a date and time with a zone cannot say (seen on 4.10)"
+}
+
+func (embySavedSinceText) Apply(spec *openapi.Spec) error {
+	for _, path := range []string{"/Items", "/Users/{UserId}/Items"} {
+		op, err := operation(spec, http.MethodGet, path)
+		if err != nil {
+			return err
+		}
+		p := op.Parameter(openapi.InQuery, "MinDateLastSaved")
+		if p == nil || p.Schema == nil || p.Schema.Format != "date-time" {
+			return fmt.Errorf("GET %s no longer declares MinDateLastSaved a date and time", path)
+		}
+		p.Schema.Format = ""
+	}
+
+	return nil
+}
+
+// embyJoinedLists are the lists Emby's document declares as one string each and says, in the parameter's own description, are several values joined
+// by commas. The SDK takes each as a list as well, under the same name with List after it, and joins it; the string stays for a caller that holds one.
+var embyJoinedLists = pandorest.JoinedLists(pandorest.About{Name: "emby-joined-lists", Service: emby, Bug: "21 query parameters (Fields, IncludeItemTypes, Filters, SortBy, Years and the rest) are declared one string each; the document's own description of each says it takes several values, comma delimited"}, map[string]pandorest.Joined{
+	"AnyProviderIdEquals": {Of: "string"},
+	"AudioCodecs":         {Of: "string"},
+	"AudioLayouts":        {Of: "string"},
+	"Containers":          {Of: "string"},
+	"ExcludeItemTypes":    {Of: "string"},
+	"ExtendedVideoTypes":  {Of: "ExtendedVideoTypes"},
+	"Fields":              {Of: "string"},
+	"Filters":             {Of: "string"},
+	"ImageTypes":          {Of: "ImageType"},
+	"IncludeItemTypes":    {Of: "string"},
+	"MediaTypes":          {Of: "string"},
+	"PersonTypes":         {Of: "PersonType"},
+	"PlayableMediaTypes":  {Of: "string"},
+	"SeriesStatus":        {Of: "string"},
+	"SortBy":              {Of: "string"},
+	"SubtitleCodecs":      {Of: "string"},
+	"SupportedCommands":   {Of: "string"},
+	"TargetSystems":       {Of: "PackageTargetSystem"},
+	"VideoCodecs":         {Of: "string"},
+	"VideoTypes":          {Of: "string"},
+	"Years":               {Of: "string"},
+})

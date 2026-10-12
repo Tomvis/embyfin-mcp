@@ -13,14 +13,14 @@ import (
 )
 
 // SearchRemoteLyrics calls GET /Audio/{itemId}/RemoteSearch/Lyrics. Search remote lyrics.
-func (c Client) SearchRemoteLyrics(ctx context.Context, itemId string) (result jf.SearchRemoteLyricsResponse, err error) {
+func (c Client) SearchRemoteLyrics(ctx context.Context, itemId jf.ItemID) (result jf.SearchRemoteLyricsResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "SearchRemoteLyrics",
-		Path:       fmt.Sprintf("/Audio/%s/RemoteSearch/Lyrics", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Audio/%s/RemoteSearch/Lyrics", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

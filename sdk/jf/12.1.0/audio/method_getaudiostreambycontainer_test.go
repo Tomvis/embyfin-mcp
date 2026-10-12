@@ -16,7 +16,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "audio/mpeg", "file bytes")
-	result, err := c.GetAudioStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetAudioStreamByContainerOptions{
+	result, err := c.GetAudioStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetAudioStreamByContainerOptions{
 		Static:                      new(true),
 		Params:                      "v-Params",
 		Tag:                         "v-Tag",
@@ -25,7 +25,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 		SegmentContainer:            "v-SegmentContainer",
 		SegmentLength:               new(7),
 		MinSegments:                 new(7),
-		MediaSourceId:               "v-MediaSourceId",
+		MediaSourceId:               jf.MediaSourceID("v-MediaSourceId"),
 		DeviceId:                    "v-DeviceId",
 		AudioCodec:                  "v-AudioCodec",
 		EnableAutoStreamCopy:        new(true),
@@ -70,7 +70,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Audio/p%2FitemId/stream.p%2Fcontainer")
+	expectRequest(t, r, http.MethodGet, "/Audio/v-itemId/stream.p%2Fcontainer")
 	expectQuery(t, r, "static", "true")
 	expectQuery(t, r, "params", "v-Params")
 	expectQuery(t, r, "tag", "v-Tag")
@@ -132,7 +132,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "audio/mpeg", "file bytes")
-	result, err = c.GetAudioStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetAudioStreamByContainerOptions{
+	result, err = c.GetAudioStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetAudioStreamByContainerOptions{
 		Static:                      new(true),
 		Params:                      "v-Params",
 		Tag:                         "v-Tag",
@@ -141,7 +141,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 		SegmentContainer:            "v-SegmentContainer",
 		SegmentLength:               new(7),
 		MinSegments:                 new(7),
-		MediaSourceId:               "v-MediaSourceId",
+		MediaSourceId:               jf.MediaSourceID("v-MediaSourceId"),
 		DeviceId:                    "v-DeviceId",
 		AudioCodec:                  "v-AudioCodec",
 		EnableAutoStreamCopy:        new(true),
@@ -188,7 +188,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "audio/mpeg", "file bytes")
-	result, err = c.GetAudioStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetAudioStreamByContainerOptions{
+	result, err = c.GetAudioStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetAudioStreamByContainerOptions{
 		Static:                      new(true),
 		Params:                      "v-Params",
 		Tag:                         "v-Tag",
@@ -197,7 +197,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 		SegmentContainer:            "v-SegmentContainer",
 		SegmentLength:               new(7),
 		MinSegments:                 new(7),
-		MediaSourceId:               "v-MediaSourceId",
+		MediaSourceId:               jf.MediaSourceID("v-MediaSourceId"),
 		DeviceId:                    "v-DeviceId",
 		AudioCodec:                  "v-AudioCodec",
 		EnableAutoStreamCopy:        new(true),
@@ -256,7 +256,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetAudioStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetAudioStreamByContainerOptions{
+	result, err = c.GetAudioStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetAudioStreamByContainerOptions{
 		Static:                      new(true),
 		Params:                      "v-Params",
 		Tag:                         "v-Tag",
@@ -265,7 +265,7 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 		SegmentContainer:            "v-SegmentContainer",
 		SegmentLength:               new(7),
 		MinSegments:                 new(7),
-		MediaSourceId:               "v-MediaSourceId",
+		MediaSourceId:               jf.MediaSourceID("v-MediaSourceId"),
 		DeviceId:                    "v-DeviceId",
 		AudioCodec:                  "v-AudioCodec",
 		EnableAutoStreamCopy:        new(true),
@@ -311,10 +311,10 @@ func TestOperationGetAudioStreamByContainer(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "audio/mpeg", "file bytes")
-	if _, err = c.GetAudioStreamByContainer(t.Context(), "p/itemId", "p/container"); err != nil {
+	if _, err = c.GetAudioStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container"); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetAudioStreamByContainer(t.Context(), "p/itemId", "p/container", jf.GetAudioStreamByContainerOptions{}, jf.GetAudioStreamByContainerOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetAudioStreamByContainer(t.Context(), jf.ItemID("v-itemId"), "p/container", jf.GetAudioStreamByContainerOptions{}, jf.GetAudioStreamByContainerOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

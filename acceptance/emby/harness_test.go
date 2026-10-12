@@ -24,7 +24,8 @@ var (
 	// embyc is set when the run is against Emby; without it every test skips
 	embyc *embyclient.Client
 
-	adminID, aliceID, password = sdkacc.AdminID(), sdkacc.UserID(), sdkacc.Password()
+	adminID, aliceID = emby.UserID(sdkacc.AdminID()), emby.UserID(sdkacc.UserID())
+	password         = sdkacc.Password()
 )
 
 // runSuite connects, runs the tests, removes the libraries they created, and returns the exit code.
@@ -62,7 +63,7 @@ func removeLibraries() {
 // embyLibraryID resolves a library name to its ItemId, "" when absent. Emby
 // 4.10 identifies a library by Id and answers 500, "Unrecognized Guid
 // format", to a Name.
-func embyLibraryID(ctx context.Context, name string) (string, error) {
+func embyLibraryID(ctx context.Context, name string) (emby.ItemID, error) {
 	folders, err := embyc.LibraryStructure.GetLibraryVirtualFoldersQuery(ctx, emby.GetLibraryVirtualFoldersQueryOptions{})
 	if err != nil {
 		return "", err
@@ -83,7 +84,7 @@ func embyDeleteVirtualFolder(ctx context.Context, name string) error {
 	if err != nil || id == "" {
 		return err
 	}
-	_, err = embyc.LibraryStructure.PostLibraryVirtualFoldersDelete(ctx, emby.LibraryRemoveVirtualFolder{Id: id})
+	_, err = embyc.LibraryStructure.PostLibraryVirtualFoldersDelete(ctx, emby.LibraryRemoveVirtualFolder{Id: string(id)})
 
 	return err
 }

@@ -40,7 +40,7 @@ func (r UpdateUserItemRatingResponse) Record() (UserItemDataDto, error) {
 // UpdateUserItemRatingOptions holds the query and header parameters of UpdateUserItemRating.
 type UpdateUserItemRatingOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Whether this M:Jellyfin.Api.Controllers.UserLibraryController.UpdateUserItemRating(System.Nullable{System.Guid},System.Guid,System.Nullable{System.Boolean}) is likes.
 	Likes *bool
@@ -56,7 +56,7 @@ func (o UpdateUserItemRatingOptions) ToHeaders() *client.Headers {
 func (o UpdateUserItemRatingOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Likes != nil {
 		out.Append("likes", strconv.FormatBool(*o.Likes))

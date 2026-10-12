@@ -13,7 +13,7 @@ import (
 )
 
 // GetPlaylistUser calls GET /Playlists/{playlistId}/Users/{userId}. Get a playlist user.
-func (c Client) GetPlaylistUser(ctx context.Context, playlistId string, userId string) (result jf.GetPlaylistUserResponse, err error) {
+func (c Client) GetPlaylistUser(ctx context.Context, playlistId jf.ItemID, userId jf.UserID) (result jf.GetPlaylistUserResponse, err error) {
 	result.PlaylistUserPermissions = &jf.PlaylistUserPermissions{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetPlaylistUser(ctx context.Context, playlistId string, userId s
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetPlaylistUser",
-		Path:       fmt.Sprintf("/Playlists/%s/Users/%s", url.PathEscape(playlistId), url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Playlists/%s/Users/%s", url.PathEscape(string(playlistId)), url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

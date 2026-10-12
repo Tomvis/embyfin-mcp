@@ -4,7 +4,7 @@ package emby
 
 // SessionPartyMessage is the "Session.PartyMessage" schema.
 type SessionPartyMessage struct {
-	DateTime string `json:"DateTime,omitempty"`
+	DateTime Time   `json:"DateTime,omitzero"`
 	Message  string `json:"Message,omitempty"`
 	UserId   int64  `json:"UserId,omitempty"`
 }

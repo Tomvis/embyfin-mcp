@@ -43,10 +43,10 @@ type CreateCollectionOptions struct {
 	Name string
 
 	// Item Ids to add to the collection.
-	Ids []string
+	Ids []ItemID
 
 	// Optional. Create the collection within a specific folder.
-	ParentId string
+	ParentId ItemID
 
 	// Whether or not to lock the new collection.
 	IsLocked *bool
@@ -65,10 +65,10 @@ func (o CreateCollectionOptions) ToQuery() *client.QueryParams {
 		out.Append("name", o.Name)
 	}
 	for _, v := range o.Ids {
-		out.Append("ids", v)
+		out.Append("ids", string(v))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	if o.IsLocked != nil {
 		out.Append("isLocked", strconv.FormatBool(*o.IsLocked))

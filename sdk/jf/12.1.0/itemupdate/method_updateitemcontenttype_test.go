@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,13 +14,13 @@ func TestOperationUpdateItemContentType(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.UpdateItemContentType(t.Context(), "p/itemId", "v-ContentType")
+	result, err := c.UpdateItemContentType(t.Context(), jf.ItemID("v-itemId"), "v-ContentType")
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Items/p%2FitemId/ContentType")
+	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/ContentType")
 	expectQuery(t, r, "contentType", "v-ContentType")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -27,21 +28,21 @@ func TestOperationUpdateItemContentType(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.UpdateItemContentType(t.Context(), "p/itemId", "v-ContentType")
+	result, err = c.UpdateItemContentType(t.Context(), jf.ItemID("v-itemId"), "v-ContentType")
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}
 
 	// the option may be left out, and then nothing is sent for it
 	c, s = newOperationServer(t, 204, "", "")
-	if _, err = c.UpdateItemContentType(t.Context(), "p/itemId"); err != nil {
+	if _, err = c.UpdateItemContentType(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
 	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("contentType") != "" {
 		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("contentType"))
 	}
 	// two values are refused before any request
-	if _, err = c.UpdateItemContentType(t.Context(), "p/itemId", "v-ContentType", "v-ContentType"); err == nil || len(s.requests) != 1 {
+	if _, err = c.UpdateItemContentType(t.Context(), jf.ItemID("v-itemId"), "v-ContentType", "v-ContentType"); err == nil || len(s.requests) != 1 {
 		t.Errorf("two values = %v, %d requests", err, len(s.requests))
 	}
 }

@@ -16,14 +16,14 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetPostedPlaybackInfo(t.Context(), "p/itemId", jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
-		UserId:               "v-UserId",
+	result, err := c.GetPostedPlaybackInfo(t.Context(), jf.ItemID("v-itemId"), jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
+		UserId:               jf.UserID("v-UserId"),
 		MaxStreamingBitrate:  new(7),
 		StartTimeTicks:       new(int64(7)),
 		AudioStreamIndex:     new(7),
 		SubtitleStreamIndex:  new(7),
 		MaxAudioChannels:     new(7),
-		MediaSourceId:        "v-MediaSourceId",
+		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"),
 		LiveStreamId:         "v-LiveStreamId",
 		AutoOpenLiveStream:   new(true),
 		EnableDirectPlay:     new(true),
@@ -36,7 +36,7 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Items/p%2FitemId/PlaybackInfo")
+	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/PlaybackInfo")
 	expectQuery(t, r, "userId", "v-UserId")
 	expectQuery(t, r, "maxStreamingBitrate", "7")
 	expectQuery(t, r, "startTimeTicks", "7")
@@ -75,14 +75,14 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetPostedPlaybackInfo(t.Context(), "p/itemId", jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
-		UserId:               "v-UserId",
+	result, err = c.GetPostedPlaybackInfo(t.Context(), jf.ItemID("v-itemId"), jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
+		UserId:               jf.UserID("v-UserId"),
 		MaxStreamingBitrate:  new(7),
 		StartTimeTicks:       new(int64(7)),
 		AudioStreamIndex:     new(7),
 		SubtitleStreamIndex:  new(7),
 		MaxAudioChannels:     new(7),
-		MediaSourceId:        "v-MediaSourceId",
+		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"),
 		LiveStreamId:         "v-LiveStreamId",
 		AutoOpenLiveStream:   new(true),
 		EnableDirectPlay:     new(true),
@@ -97,14 +97,14 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetPostedPlaybackInfo(t.Context(), "p/itemId", jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
-		UserId:               "v-UserId",
+	result, err = c.GetPostedPlaybackInfo(t.Context(), jf.ItemID("v-itemId"), jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
+		UserId:               jf.UserID("v-UserId"),
 		MaxStreamingBitrate:  new(7),
 		StartTimeTicks:       new(int64(7)),
 		AudioStreamIndex:     new(7),
 		SubtitleStreamIndex:  new(7),
 		MaxAudioChannels:     new(7),
-		MediaSourceId:        "v-MediaSourceId",
+		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"),
 		LiveStreamId:         "v-LiveStreamId",
 		AutoOpenLiveStream:   new(true),
 		EnableDirectPlay:     new(true),
@@ -119,10 +119,10 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.GetPostedPlaybackInfo(t.Context(), "p/itemId", jf.PlaybackInfoDto{}); err != nil {
+	if _, err = c.GetPostedPlaybackInfo(t.Context(), jf.ItemID("v-itemId"), jf.PlaybackInfoDto{}); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetPostedPlaybackInfo(t.Context(), "p/itemId", jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{}, jf.GetPostedPlaybackInfoOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetPostedPlaybackInfo(t.Context(), jf.ItemID("v-itemId"), jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{}, jf.GetPostedPlaybackInfoOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

@@ -16,9 +16,9 @@ func TestOperationGetSubtitle(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "text/plain", "file bytes")
-	result, err := c.GetSubtitle(t.Context(), "p/routeItemId", "p/routeMediaSourceId", 7, "p/routeFormat", jf.GetSubtitleOptions{
-		ItemId:             "v-ItemId",
-		MediaSourceId:      "v-MediaSourceId",
+	result, err := c.GetSubtitle(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, "p/routeFormat", jf.GetSubtitleOptions{
+		ItemId:             jf.ItemID("v-ItemId"),
+		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"),
 		Index:              new(7),
 		Format:             "v-Format",
 		EndPositionTicks:   new(int64(7)),
@@ -31,7 +31,7 @@ func TestOperationGetSubtitle(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2FrouteItemId/p%2FrouteMediaSourceId/Subtitles/7/Stream.p%2FrouteFormat")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-routeItemId/v-routeMediaSourceId/Subtitles/7/Stream.p%2FrouteFormat")
 	expectQuery(t, r, "itemId", "v-ItemId")
 	expectQuery(t, r, "mediaSourceId", "v-MediaSourceId")
 	expectQuery(t, r, "index", "7")
@@ -53,9 +53,9 @@ func TestOperationGetSubtitle(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "text/plain", "file bytes")
-	result, err = c.GetSubtitle(t.Context(), "p/routeItemId", "p/routeMediaSourceId", 7, "p/routeFormat", jf.GetSubtitleOptions{
-		ItemId:             "v-ItemId",
-		MediaSourceId:      "v-MediaSourceId",
+	result, err = c.GetSubtitle(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, "p/routeFormat", jf.GetSubtitleOptions{
+		ItemId:             jf.ItemID("v-ItemId"),
+		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"),
 		Index:              new(7),
 		Format:             "v-Format",
 		EndPositionTicks:   new(int64(7)),
@@ -70,9 +70,9 @@ func TestOperationGetSubtitle(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "text/plain", "file bytes")
-	result, err = c.GetSubtitle(t.Context(), "p/routeItemId", "p/routeMediaSourceId", 7, "p/routeFormat", jf.GetSubtitleOptions{
-		ItemId:             "v-ItemId",
-		MediaSourceId:      "v-MediaSourceId",
+	result, err = c.GetSubtitle(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, "p/routeFormat", jf.GetSubtitleOptions{
+		ItemId:             jf.ItemID("v-ItemId"),
+		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"),
 		Index:              new(7),
 		Format:             "v-Format",
 		EndPositionTicks:   new(int64(7)),
@@ -99,9 +99,9 @@ func TestOperationGetSubtitle(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetSubtitle(t.Context(), "p/routeItemId", "p/routeMediaSourceId", 7, "p/routeFormat", jf.GetSubtitleOptions{
-		ItemId:             "v-ItemId",
-		MediaSourceId:      "v-MediaSourceId",
+	result, err = c.GetSubtitle(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, "p/routeFormat", jf.GetSubtitleOptions{
+		ItemId:             jf.ItemID("v-ItemId"),
+		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"),
 		Index:              new(7),
 		Format:             "v-Format",
 		EndPositionTicks:   new(int64(7)),
@@ -115,10 +115,10 @@ func TestOperationGetSubtitle(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "text/plain", "file bytes")
-	if _, err = c.GetSubtitle(t.Context(), "p/routeItemId", "p/routeMediaSourceId", 7, "p/routeFormat"); err != nil {
+	if _, err = c.GetSubtitle(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, "p/routeFormat"); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetSubtitle(t.Context(), "p/routeItemId", "p/routeMediaSourceId", 7, "p/routeFormat", jf.GetSubtitleOptions{}, jf.GetSubtitleOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetSubtitle(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, "p/routeFormat", jf.GetSubtitleOptions{}, jf.GetSubtitleOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

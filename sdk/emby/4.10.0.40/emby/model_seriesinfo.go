@@ -6,7 +6,7 @@ package emby
 type SeriesInfo struct {
 	DisplayOrder        SeriesDisplayOrder        `json:"DisplayOrder,omitempty"`
 	EnableAdultMetadata *bool                     `json:"EnableAdultMetadata,omitempty"`
-	EpisodeAirDate      string                    `json:"EpisodeAirDate,omitempty"`
+	EpisodeAirDate      Time                      `json:"EpisodeAirDate,omitzero"`
 	IndexNumber         int                       `json:"IndexNumber,omitempty"`
 	IsAutomated         *bool                     `json:"IsAutomated,omitempty"`
 	MetadataCountryCode string                    `json:"MetadataCountryCode,omitempty"`
@@ -15,7 +15,7 @@ type SeriesInfo struct {
 	Name                string                    `json:"Name,omitempty"`
 	ParentIndexNumber   int                       `json:"ParentIndexNumber,omitempty"`
 	Path                string                    `json:"Path,omitempty"`
-	PremiereDate        string                    `json:"PremiereDate,omitempty"`
+	PremiereDate        Time                      `json:"PremiereDate,omitzero"`
 	ProviderIds         map[string]string         `json:"ProviderIds,omitzero"`
 	Year                int                       `json:"Year,omitempty"`
 }

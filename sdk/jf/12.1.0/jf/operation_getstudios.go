@@ -49,7 +49,7 @@ type GetStudiosOptions struct {
 	SearchTerm string
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Specify additional fields of information to return in the output.
 	Fields []ItemFields
@@ -73,7 +73,7 @@ type GetStudiosOptions struct {
 	EnableImageTypes []ImageType
 
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Optional filter by items whose name is sorted equally or greater than a given input string.
 	NameStartsWithOrGreater string
@@ -110,7 +110,7 @@ func (o GetStudiosOptions) ToQuery() *client.QueryParams {
 		out.Append("searchTerm", o.SearchTerm)
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))
@@ -134,7 +134,7 @@ func (o GetStudiosOptions) ToQuery() *client.QueryParams {
 		out.Append("enableImageTypes", string(v))
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.NameStartsWithOrGreater != "" {
 		out.Append("nameStartsWithOrGreater", o.NameStartsWithOrGreater)

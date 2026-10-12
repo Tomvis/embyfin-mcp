@@ -14,8 +14,8 @@ func TestOperationPostUsersByUserIdPlayingItemsById(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostUsersByUserIdPlayingItemsById(t.Context(), "p/userId", "p/id", emby.PostUsersByUserIdPlayingItemsByIdOptions{
-		MediaSourceId:       "v-MediaSourceId",
+	result, err := c.PostUsersByUserIdPlayingItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.PostUsersByUserIdPlayingItemsByIdOptions{
+		MediaSourceId:       emby.MediaSourceID("v-MediaSourceId"),
 		CanSeek:             new(true),
 		AudioStreamIndex:    new(7),
 		SubtitleStreamIndex: new(7),
@@ -28,7 +28,7 @@ func TestOperationPostUsersByUserIdPlayingItemsById(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Users/p%2FuserId/PlayingItems/p%2Fid")
+	expectRequest(t, r, http.MethodPost, "/Users/v-userId/PlayingItems/v-id")
 	expectQuery(t, r, "MediaSourceId", "v-MediaSourceId")
 	expectQuery(t, r, "CanSeek", "true")
 	expectQuery(t, r, "AudioStreamIndex", "7")
@@ -42,8 +42,8 @@ func TestOperationPostUsersByUserIdPlayingItemsById(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostUsersByUserIdPlayingItemsById(t.Context(), "p/userId", "p/id", emby.PostUsersByUserIdPlayingItemsByIdOptions{
-		MediaSourceId:       "v-MediaSourceId",
+	result, err = c.PostUsersByUserIdPlayingItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.PostUsersByUserIdPlayingItemsByIdOptions{
+		MediaSourceId:       emby.MediaSourceID("v-MediaSourceId"),
 		CanSeek:             new(true),
 		AudioStreamIndex:    new(7),
 		SubtitleStreamIndex: new(7),

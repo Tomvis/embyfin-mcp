@@ -13,7 +13,7 @@ import (
 )
 
 // UnmarkFavoriteItem calls DELETE /UserFavoriteItems/{itemId}. Unmarks item as a favorite.
-func (c Client) UnmarkFavoriteItem(ctx context.Context, itemId string, userId ...string) (result jf.UnmarkFavoriteItemResponse, err error) {
+func (c Client) UnmarkFavoriteItem(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.UnmarkFavoriteItemResponse, err error) {
 	var option jf.UnmarkFavoriteItemOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("UnmarkFavoriteItem takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) UnmarkFavoriteItem(ctx context.Context, itemId string, userId ..
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "UnmarkFavoriteItem",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/UserFavoriteItems/%s", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/UserFavoriteItems/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -32,6 +32,11 @@ type GetPackagesOptions struct {
 
 	// Optional. Filter by package that contain adult content.
 	IsAdult *bool
+
+	// Optional. Filter by target system type. Allows multiple, comma delimited.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	TargetSystemsList []PackageTargetSystem
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -54,6 +59,9 @@ func (o GetPackagesOptions) ToQuery() *client.QueryParams {
 	}
 	if o.IsAdult != nil {
 		out.Append("IsAdult", strconv.FormatBool(*o.IsAdult))
+	}
+	if len(o.TargetSystemsList) > 0 {
+		out.Append("TargetSystems", client.Joined(o.TargetSystemsList))
 	}
 	return &out
 }

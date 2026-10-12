@@ -49,7 +49,7 @@ type GetYearsOptions struct {
 	SortOrder []SortOrder
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Specify additional fields of information to return in the output.
 	Fields []ItemFields
@@ -76,7 +76,7 @@ type GetYearsOptions struct {
 	EnableImageTypes []ImageType
 
 	// User Id.
-	UserId string
+	UserId UserID
 
 	// Search recursively.
 	Recursive *bool
@@ -104,7 +104,7 @@ func (o GetYearsOptions) ToQuery() *client.QueryParams {
 		out.Append("sortOrder", string(v))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))
@@ -131,7 +131,7 @@ func (o GetYearsOptions) ToQuery() *client.QueryParams {
 		out.Append("enableImageTypes", string(v))
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Recursive != nil {
 		out.Append("recursive", strconv.FormatBool(*o.Recursive))

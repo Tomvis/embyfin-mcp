@@ -13,7 +13,7 @@ import (
 )
 
 // MarkPlayedItem calls POST /UserPlayedItems/{itemId}. Marks an item as played for user.
-func (c Client) MarkPlayedItem(ctx context.Context, itemId string, options ...jf.MarkPlayedItemOptions) (result jf.MarkPlayedItemResponse, err error) {
+func (c Client) MarkPlayedItem(ctx context.Context, itemId jf.ItemID, options ...jf.MarkPlayedItemOptions) (result jf.MarkPlayedItemResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("MarkPlayedItem takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) MarkPlayedItem(ctx context.Context, itemId string, options ...jf
 		HTTPMethod:    http.MethodPost,
 		Operation:     "MarkPlayedItem",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/UserPlayedItems/%s", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/UserPlayedItems/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

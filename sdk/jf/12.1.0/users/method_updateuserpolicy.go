@@ -13,7 +13,7 @@ import (
 )
 
 // UpdateUserPolicy calls POST /Users/{userId}/Policy. Updates a user policy.
-func (c Client) UpdateUserPolicy(ctx context.Context, userId string, input jf.UserPolicy) (result jf.UpdateUserPolicyResponse, err error) {
+func (c Client) UpdateUserPolicy(ctx context.Context, userId jf.UserID, input jf.UserPolicy) (result jf.UpdateUserPolicyResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) UpdateUserPolicy(ctx context.Context, userId string, input jf.Us
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "UpdateUserPolicy",
-		Path:       fmt.Sprintf("/Users/%s/Policy", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s/Policy", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

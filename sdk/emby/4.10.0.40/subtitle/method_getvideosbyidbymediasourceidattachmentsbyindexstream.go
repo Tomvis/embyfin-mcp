@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdByMediaSourceIdAttachmentsByIndexStream calls GET /Videos/{Id}/{MediaSourceId}/Attachments/{Index}/Stream. Gets subtitles in a specified format.
-func (c Client) GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(ctx context.Context, id string, mediaSourceId string, index int) (result emby.GetVideosByIdByMediaSourceIdAttachmentsByIndexStreamResponse, err error) {
+func (c Client) GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(ctx context.Context, id emby.ItemID, mediaSourceId emby.MediaSourceID, index int) (result emby.GetVideosByIdByMediaSourceIdAttachmentsByIndexStreamResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/octet-stream",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(ctx context
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdByMediaSourceIdAttachmentsByIndexStream",
-		Path:           fmt.Sprintf("/Videos/%s/%s/Attachments/%d/Stream", url.PathEscape(id), url.PathEscape(mediaSourceId), index),
+		Path:           fmt.Sprintf("/Videos/%s/%s/Attachments/%d/Stream", url.PathEscape(string(id)), url.PathEscape(string(mediaSourceId)), index),
 		StreamResponse: true,
 	}
 

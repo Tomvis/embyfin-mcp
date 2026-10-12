@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteItemsById calls DELETE /Items/{Id}. Deletes an item from the library and file system.
-func (c Client) DeleteItemsById(ctx context.Context, id string) (result emby.DeleteItemsByIdResponse, err error) {
+func (c Client) DeleteItemsById(ctx context.Context, id emby.ItemID) (result emby.DeleteItemsByIdResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) DeleteItemsById(ctx context.Context, id string) (result emby.Del
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteItemsById",
-		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

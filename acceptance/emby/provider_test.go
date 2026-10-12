@@ -83,7 +83,7 @@ func TestEmbyRemoteSearch(t *testing.T) {
 	ctx := skipUnlessEmby(t)
 	movie := embyMovie(t, sdkacc.BladeRunner)
 	// Emby item ids are integers; the search query carries one as a number
-	itemID, err := strconv.ParseInt(movie.Id, 10, 64)
+	itemID, err := strconv.ParseInt(string(movie.Id), 10, 64)
 	if err != nil {
 		t.Fatalf("item id %q is not an integer: %v", movie.Id, err)
 	}

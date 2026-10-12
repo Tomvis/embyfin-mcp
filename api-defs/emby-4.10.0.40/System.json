@@ -336,14 +336,14 @@
           "Name": "DateCreated",
           "JsonName": "DateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
           "Name": "DateModified",
           "JsonName": "DateModified",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

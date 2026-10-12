@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsRemoteSearchApplyById calls POST /Items/RemoteSearch/Apply/{Id}. Applies search criteria to an item and refreshes metadata.
-func (c Client) PostItemsRemoteSearchApplyById(ctx context.Context, id string, input emby.RemoteSearchResult, replaceAllImages ...bool) (result emby.PostItemsRemoteSearchApplyByIdResponse, err error) {
+func (c Client) PostItemsRemoteSearchApplyById(ctx context.Context, id emby.ItemID, input emby.RemoteSearchResult, replaceAllImages ...bool) (result emby.PostItemsRemoteSearchApplyByIdResponse, err error) {
 	var option emby.PostItemsRemoteSearchApplyByIdOptions
 	if len(replaceAllImages) > 1 {
 		err = fmt.Errorf("PostItemsRemoteSearchApplyById takes one replaceAllImages at most, not %d", len(replaceAllImages))
@@ -32,7 +32,7 @@ func (c Client) PostItemsRemoteSearchApplyById(ctx context.Context, id string, i
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostItemsRemoteSearchApplyById",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/RemoteSearch/Apply/%s", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/RemoteSearch/Apply/%s", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

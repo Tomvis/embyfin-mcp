@@ -7,7 +7,7 @@ package jf
 // DTO for playlists.
 type PlaylistDto struct {
 	// Gets or sets the item ids.
-	ItemIds []string `json:"ItemIds,omitzero"`
+	ItemIds []ItemID `json:"ItemIds,omitzero"`
 
 	// Gets or sets a value indicating whether the playlist is publicly readable.
 	OpenAccess bool `json:"OpenAccess"`

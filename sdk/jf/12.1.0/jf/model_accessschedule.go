@@ -19,5 +19,5 @@ type AccessSchedule struct {
 	StartHour float64 `json:"StartHour,omitempty"`
 
 	// Gets the id of the associated user.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 }

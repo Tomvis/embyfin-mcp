@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdByStreamFileName calls GET /Videos/{Id}/{StreamFileName}. Gets a video stream.
-func (c Client) GetVideosByIdByStreamFileName(ctx context.Context, id string, streamFileName string, options emby.GetVideosByIdByStreamFileNameOptions) (result emby.GetVideosByIdByStreamFileNameResponse, err error) {
+func (c Client) GetVideosByIdByStreamFileName(ctx context.Context, id emby.ItemID, streamFileName string, options emby.GetVideosByIdByStreamFileNameOptions) (result emby.GetVideosByIdByStreamFileNameResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "video/*",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetVideosByIdByStreamFileName(ctx context.Context, id string, st
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdByStreamFileName",
 		OptionsObject:  options,
-		Path:           fmt.Sprintf("/Videos/%s/%s", url.PathEscape(id), url.PathEscape(streamFileName)),
+		Path:           fmt.Sprintf("/Videos/%s/%s", url.PathEscape(string(id)), url.PathEscape(streamFileName)),
 		StreamResponse: true,
 	}
 

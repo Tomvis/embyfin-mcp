@@ -4,6 +4,6 @@ package emby
 
 // QueueItem is the "QueueItem" schema.
 type QueueItem struct {
-	Id             int64  `json:"Id,omitempty"`
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	Id             int64          `json:"Id,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 }

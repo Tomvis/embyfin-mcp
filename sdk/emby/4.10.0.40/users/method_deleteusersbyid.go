@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteUsersById calls DELETE /Users/{Id}. Deletes a user.
-func (c Client) DeleteUsersById(ctx context.Context, id string) (result emby.DeleteUsersByIdResponse, err error) {
+func (c Client) DeleteUsersById(ctx context.Context, id emby.UserID) (result emby.DeleteUsersByIdResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) DeleteUsersById(ctx context.Context, id string) (result emby.Del
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteUsersById",
-		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

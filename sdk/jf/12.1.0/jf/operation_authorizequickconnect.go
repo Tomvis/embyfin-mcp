@@ -24,7 +24,7 @@ type AuthorizeQuickConnectOptions struct {
 	Code string
 
 	// The user the authorize. Access to the requested user is required.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -40,7 +40,7 @@ func (o AuthorizeQuickConnectOptions) ToQuery() *client.QueryParams {
 		out.Append("code", o.Code)
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

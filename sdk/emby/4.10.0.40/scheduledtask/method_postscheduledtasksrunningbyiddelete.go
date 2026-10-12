@@ -13,7 +13,7 @@ import (
 )
 
 // PostScheduledTasksRunningByIdDelete calls POST /ScheduledTasks/Running/{Id}/Delete. Stops a scheduled task.
-func (c Client) PostScheduledTasksRunningByIdDelete(ctx context.Context, id string) (result emby.PostScheduledTasksRunningByIdDeleteResponse, err error) {
+func (c Client) PostScheduledTasksRunningByIdDelete(ctx context.Context, id emby.TaskID) (result emby.PostScheduledTasksRunningByIdDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostScheduledTasksRunningByIdDelete(ctx context.Context, id stri
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostScheduledTasksRunningByIdDelete",
-		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s/Delete", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s/Delete", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

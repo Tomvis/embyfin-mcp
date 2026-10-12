@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	pandorest "github.com/katbyte/pandorest/importer/workarounds"
 	"github.com/katbyte/pandorest/openapi"
 )
 
@@ -574,3 +575,11 @@ func (tmdbCollectionParts) Apply(spec *openapi.Spec) error {
 
 	return nil
 }
+
+// tmdbDays are the days TMDB's document declares as plain text, so that nothing marks them for the SDK's Day. A film's release dates by country are
+// left alone here: those carry a time as well, and tmdbDateTimes takes them.
+var tmdbDays = pandorest.UndeclaredDaysExcept(pandorest.About{Name: "tmdb-days", Service: tmdb, Bug: "a day TMDB writes as 2006-01-02 (release_date, air_date, a birthday, the first and last day of a list of films in cinemas) is declared a plain string, so nothing says it is a date"}, map[string][]string{"GET /3/movie/{movie_id}/release_dates": {"release_date"}}, "air_date", "birthday", "deathday", "first_air_date", "last_air_date", "maximum", "minimum", "release_date")
+
+// tmdbDateTimes are the dates with a time that the document declares as plain text. It must come after tmdbDays, which by then has every release_date
+// but the one that carries a time.
+var tmdbDateTimes = pandorest.UndeclaredDates(pandorest.About{Name: "tmdb-date-times", Service: tmdb, Bug: "a date with a time (when a review was written, a video published, a session ends, a change made, a film released in one country) is declared a plain string, so nothing says it is a date"}, "created_at", "expires_at", "published_at", "release_date", "time", "updated_at")

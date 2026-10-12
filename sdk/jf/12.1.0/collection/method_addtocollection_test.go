@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,13 +14,13 @@ func TestOperationAddToCollection(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.AddToCollection(t.Context(), "p/collectionId", []string{"a", "b"})
+	result, err := c.AddToCollection(t.Context(), jf.ItemID("v-collectionId"), []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Collections/p%2FcollectionId/Items")
+	expectRequest(t, r, http.MethodPost, "/Collections/v-collectionId/Items")
 	expectQuery(t, r, "ids", "a", "b")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -27,7 +28,7 @@ func TestOperationAddToCollection(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.AddToCollection(t.Context(), "p/collectionId", []string{"a", "b"})
+	result, err = c.AddToCollection(t.Context(), jf.ItemID("v-collectionId"), []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

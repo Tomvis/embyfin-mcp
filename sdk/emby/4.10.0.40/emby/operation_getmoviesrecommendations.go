@@ -28,10 +28,10 @@ type GetMoviesRecommendationsOptions struct {
 	ItemLimit *int
 
 	// Optional. Filter by user id, and attach user data
-	UserId string
+	UserId UserID
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root
-	ParentId string
+	ParentId ItemID
 
 	// Optional, include image information in output
 	EnableImages *bool
@@ -62,10 +62,10 @@ func (o GetMoviesRecommendationsOptions) ToQuery() *client.QueryParams {
 		out.Append("ItemLimit", strconv.Itoa(*o.ItemLimit))
 	}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	if o.ParentId != "" {
-		out.Append("ParentId", o.ParentId)
+		out.Append("ParentId", string(o.ParentId))
 	}
 	if o.EnableImages != nil {
 		out.Append("EnableImages", strconv.FormatBool(*o.EnableImages))

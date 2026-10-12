@@ -15,12 +15,12 @@ func TestOperationUploadSubtitle(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.UploadSubtitle(t.Context(), "p/itemId", jf.UploadSubtitleDto{})
+	result, err := c.UploadSubtitle(t.Context(), jf.ItemID("v-itemId"), jf.UploadSubtitleDto{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Videos/p%2FitemId/Subtitles")
+	expectRequest(t, r, http.MethodPost, "/Videos/v-itemId/Subtitles")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -36,7 +36,7 @@ func TestOperationUploadSubtitle(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.UploadSubtitle(t.Context(), "p/itemId", jf.UploadSubtitleDto{})
+	result, err = c.UploadSubtitle(t.Context(), jf.ItemID("v-itemId"), jf.UploadSubtitleDto{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

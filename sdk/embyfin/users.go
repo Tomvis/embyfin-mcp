@@ -242,13 +242,13 @@ func (c *Client) SetPlayed(ctx context.Context, userID, itemID string, played bo
 	var err error
 	switch {
 	case c.isEmby() && played:
-		_, err = c.emby.Playstate.PostUsersByUserIdPlayedItemsById(ctx, userID, itemID)
+		_, err = c.emby.Playstate.PostUsersByUserIdPlayedItemsById(ctx, emby.UserID(userID), emby.ItemID(itemID))
 	case c.isEmby():
-		_, err = c.emby.Playstate.DeleteUsersByUserIdPlayedItemsById(ctx, userID, itemID)
+		_, err = c.emby.Playstate.DeleteUsersByUserIdPlayedItemsById(ctx, emby.UserID(userID), emby.ItemID(itemID))
 	case played:
-		_, err = c.jf.UserData.MarkPlayedItem(ctx, itemID, jf.MarkPlayedItemOptions{UserId: userID})
+		_, err = c.jf.UserData.MarkPlayedItem(ctx, jf.ItemID(itemID), jf.MarkPlayedItemOptions{UserId: jf.UserID(userID)})
 	default:
-		_, err = c.jf.UserData.MarkUnplayedItem(ctx, itemID, userID)
+		_, err = c.jf.UserData.MarkUnplayedItem(ctx, jf.ItemID(itemID), jf.UserID(userID))
 	}
 
 	return err
@@ -260,13 +260,13 @@ func (c *Client) SetFavourite(ctx context.Context, userID, itemID string, favour
 	var err error
 	switch {
 	case c.isEmby() && favourite:
-		_, err = c.emby.UserLibrary.PostUsersByUserIdFavoriteItemsById(ctx, userID, itemID)
+		_, err = c.emby.UserLibrary.PostUsersByUserIdFavoriteItemsById(ctx, emby.UserID(userID), emby.ItemID(itemID))
 	case c.isEmby():
-		_, err = c.emby.UserLibrary.DeleteUsersByUserIdFavoriteItemsById(ctx, userID, itemID)
+		_, err = c.emby.UserLibrary.DeleteUsersByUserIdFavoriteItemsById(ctx, emby.UserID(userID), emby.ItemID(itemID))
 	case favourite:
-		_, err = c.jf.UserData.MarkFavoriteItem(ctx, itemID, userID)
+		_, err = c.jf.UserData.MarkFavoriteItem(ctx, jf.ItemID(itemID), jf.UserID(userID))
 	default:
-		_, err = c.jf.UserData.UnmarkFavoriteItem(ctx, itemID, userID)
+		_, err = c.jf.UserData.UnmarkFavoriteItem(ctx, jf.ItemID(itemID), jf.UserID(userID))
 	}
 
 	return err
@@ -286,11 +286,11 @@ func (c *Client) SetProgress(ctx context.Context, userID, itemID string, positio
 		return errors.New("the position must be above zero")
 	}
 	if c.isEmby() {
-		_, err := c.emby.Playstate.PostUsersByUserIdItemsByItemIdUserData(ctx, userID, itemID, emby.UserItemDataDto{PlaybackPositionTicks: positionTicks, Played: new(false)})
+		_, err := c.emby.Playstate.PostUsersByUserIdItemsByItemIdUserData(ctx, emby.UserID(userID), emby.ItemID(itemID), emby.UserItemDataDto{PlaybackPositionTicks: positionTicks, Played: new(false)})
 		return err
 	}
 
-	_, err := c.jf.UserData.UpdateItemUserData(ctx, itemID, jf.UpdateUserItemDataDto{PlaybackPositionTicks: positionTicks, Played: new(false)}, userID)
+	_, err := c.jf.UserData.UpdateItemUserData(ctx, jf.ItemID(itemID), jf.UpdateUserItemDataDto{PlaybackPositionTicks: positionTicks, Played: new(false)}, jf.UserID(userID))
 
 	return err
 }
@@ -301,7 +301,7 @@ func (c *Client) NextUp(ctx context.Context, userID string, limit int) ([]Item, 
 		// Emby 4.10's default NextUp mode returns nothing for API-key callers; the legacy
 		// per-series "next unwatched episode" mode is what we want anyway.
 		res, err := c.emby.TvShows.GetShowsNextUp(ctx, emby.GetShowsNextUpOptions{
-			UserId: userID, Fields: FieldsDefault, LegacyNextUp: new(true), Limit: nz(limit),
+			UserId: emby.UserID(userID), Fields: FieldsDefault, LegacyNextUp: new(true), Limit: nz(limit),
 		})
 		if err != nil {
 			return nil, err
@@ -310,7 +310,7 @@ func (c *Client) NextUp(ctx context.Context, userID string, limit int) ([]Item, 
 		return itemsFromEmby(orEmpty(res.Answer).Items), nil
 	}
 
-	res, err := c.jf.Show.GetNextUp(ctx, jf.GetNextUpOptions{UserId: userID, Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
+	res, err := c.jf.Show.GetNextUp(ctx, jf.GetNextUpOptions{UserId: jf.UserID(userID), Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
 	if err != nil {
 		return nil, err
 	}
@@ -337,7 +337,7 @@ func (c *Client) Resume(ctx context.Context, userID string, limit int) ([]Item, 
 		for start := 0; ; start += page {
 			// without Recursive and MediaTypes Emby answers with an empty list
 			// even when items are in progress
-			res, err := c.emby.Items.GetUsersByUserIdItemsResume(ctx, userID, emby.GetUsersByUserIdItemsResumeOptions{
+			res, err := c.emby.Items.GetUsersByUserIdItemsResume(ctx, emby.UserID(userID), emby.GetUsersByUserIdItemsResumeOptions{
 				Fields: FieldsDefault + "," + embyPlayFields, EnableUserData: new(true), Recursive: new(true), MediaTypes: "Video",
 				StartIndex: nz(start), Limit: new(page),
 			})
@@ -363,7 +363,7 @@ func (c *Client) Resume(ctx context.Context, userID string, limit int) ([]Item, 
 	}
 
 	res, err := c.jf.Library.GetResumeItems(ctx, jf.GetResumeItemsOptions{
-		UserId: userID, Fields: list[jf.ItemFields](FieldsDefault), EnableUserData: new(true),
+		UserId: jf.UserID(userID), Fields: list[jf.ItemFields](FieldsDefault), EnableUserData: new(true),
 		MediaTypes: []jf.MediaType{jf.MediaTypeVideo}, Limit: nz(limit),
 	})
 	if err != nil {

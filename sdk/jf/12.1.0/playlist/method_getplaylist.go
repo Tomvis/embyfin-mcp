@@ -13,7 +13,7 @@ import (
 )
 
 // GetPlaylist calls GET /Playlists/{playlistId}. Get a playlist.
-func (c Client) GetPlaylist(ctx context.Context, playlistId string) (result jf.GetPlaylistResponse, err error) {
+func (c Client) GetPlaylist(ctx context.Context, playlistId jf.ItemID) (result jf.GetPlaylistResponse, err error) {
 	result.PlaylistDto = &jf.PlaylistDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetPlaylist(ctx context.Context, playlistId string) (result jf.G
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetPlaylist",
-		Path:       fmt.Sprintf("/Playlists/%s", url.PathEscape(playlistId)),
+		Path:       fmt.Sprintf("/Playlists/%s", url.PathEscape(string(playlistId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

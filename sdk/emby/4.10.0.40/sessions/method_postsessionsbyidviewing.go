@@ -13,7 +13,7 @@ import (
 )
 
 // PostSessionsByIdViewing calls POST /Sessions/{Id}/Viewing. Instructs a session to browse to an item or view.
-func (c Client) PostSessionsByIdViewing(ctx context.Context, id string, options emby.PostSessionsByIdViewingOptions) (result emby.PostSessionsByIdViewingResponse, err error) {
+func (c Client) PostSessionsByIdViewing(ctx context.Context, id emby.SessionID, options emby.PostSessionsByIdViewingOptions) (result emby.PostSessionsByIdViewingResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -22,7 +22,7 @@ func (c Client) PostSessionsByIdViewing(ctx context.Context, id string, options 
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostSessionsByIdViewing",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Sessions/%s/Viewing", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Sessions/%s/Viewing", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -18,10 +18,10 @@ type MediaSourceInfo struct {
 	EncoderProtocol            MediaProtocol            `json:"EncoderProtocol,omitempty"`
 	Formats                    []string                 `json:"Formats,omitzero"`
 	HasMixedProtocols          *bool                    `json:"HasMixedProtocols,omitempty"`
-	Id                         string                   `json:"Id,omitempty"`
+	Id                         MediaSourceID            `json:"Id,omitempty"`
 	IsInfiniteStream           *bool                    `json:"IsInfiniteStream,omitempty"`
 	IsRemote                   *bool                    `json:"IsRemote,omitempty"`
-	ItemId                     string                   `json:"ItemId,omitempty"`
+	ItemId                     ItemID                   `json:"ItemId,omitempty"`
 	LiveStreamId               string                   `json:"LiveStreamId,omitempty"`
 	MediaStreams               []MediaStream            `json:"MediaStreams,omitzero"`
 	MimeType                   string                   `json:"MimeType,omitempty"`
@@ -52,11 +52,11 @@ type MediaSourceInfo struct {
 	TranscodingUrl             string                   `json:"TranscodingUrl,omitempty"`
 	Type                       MediaSourceType          `json:"Type,omitempty"`
 	Video3DFormat              Video3DFormat            `json:"Video3DFormat,omitempty"`
-	WallClockStart             string                   `json:"WallClockStart,omitempty"`
+	WallClockStart             Time                     `json:"WallClockStart,omitzero"`
 }
 
 // GetName is the record's Name, for code that handles records of several types alike.
 func (m MediaSourceInfo) GetName() string { return m.Name }
 
 // GetId is the record's Id, for code that handles records of several types alike.
-func (m MediaSourceInfo) GetId() string { return m.Id }
+func (m MediaSourceInfo) GetId() MediaSourceID { return m.Id }

@@ -13,7 +13,7 @@ import (
 )
 
 // GetSubtitle calls GET /Videos/{routeItemId}/{routeMediaSourceId}/Subtitles/{routeIndex}/Stream.{routeFormat}. Gets subtitles in a specified format.
-func (c Client) GetSubtitle(ctx context.Context, routeItemId string, routeMediaSourceId string, routeIndex int, routeFormat string, options ...jf.GetSubtitleOptions) (result jf.GetSubtitleResponse, err error) {
+func (c Client) GetSubtitle(ctx context.Context, routeItemId jf.ItemID, routeMediaSourceId jf.MediaSourceID, routeIndex int, routeFormat string, options ...jf.GetSubtitleOptions) (result jf.GetSubtitleResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetSubtitle takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetSubtitle(ctx context.Context, routeItemId string, routeMediaS
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetSubtitle",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/Stream.%s", url.PathEscape(routeItemId), url.PathEscape(routeMediaSourceId), routeIndex, url.PathEscape(routeFormat)),
+		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/Stream.%s", url.PathEscape(string(routeItemId)), url.PathEscape(string(routeMediaSourceId)), routeIndex, url.PathEscape(routeFormat)),
 		StreamResponse: true,
 	}
 

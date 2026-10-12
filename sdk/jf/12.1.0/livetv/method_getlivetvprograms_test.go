@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
@@ -18,13 +19,13 @@ func TestOperationGetLiveTvPrograms(t *testing.T) {
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetLiveTvPrograms(t.Context(), jf.GetLiveTvProgramsOptions{
 		ChannelIds:             []string{"a", "b"},
-		UserId:                 "v-UserId",
-		MinStartDate:           "v-MinStartDate",
+		UserId:                 jf.UserID("v-UserId"),
+		MinStartDate:           jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasAired:               new(true),
 		IsAiring:               new(true),
-		MaxStartDate:           "v-MaxStartDate",
-		MinEndDate:             "v-MinEndDate",
-		MaxEndDate:             "v-MaxEndDate",
+		MaxStartDate:           jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:             jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:             jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		IsMovie:                new(true),
 		IsSeries:               new(true),
 		IsNews:                 new(true),
@@ -35,7 +36,7 @@ func TestOperationGetLiveTvPrograms(t *testing.T) {
 		SortBy:                 []jf.ItemSortBy{jf.ItemSortByDefault, jf.ItemSortByIndexNumber},
 		SortOrder:              []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},
 		Genres:                 []string{"a", "b"},
-		GenreIds:               []string{"a", "b"},
+		GenreIds:               []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
@@ -53,12 +54,12 @@ func TestOperationGetLiveTvPrograms(t *testing.T) {
 	expectRequest(t, r, http.MethodGet, "/LiveTv/Programs")
 	expectQuery(t, r, "channelIds", "a", "b")
 	expectQuery(t, r, "userId", "v-UserId")
-	expectQuery(t, r, "minStartDate", "v-MinStartDate")
+	expectQuery(t, r, "minStartDate", "2024-03-04T05:06:07.0000000Z")
 	expectQuery(t, r, "hasAired", "true")
 	expectQuery(t, r, "isAiring", "true")
-	expectQuery(t, r, "maxStartDate", "v-MaxStartDate")
-	expectQuery(t, r, "minEndDate", "v-MinEndDate")
-	expectQuery(t, r, "maxEndDate", "v-MaxEndDate")
+	expectQuery(t, r, "maxStartDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "minEndDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "maxEndDate", "2024-03-04T05:06:07.0000000Z")
 	expectQuery(t, r, "isMovie", "true")
 	expectQuery(t, r, "isSeries", "true")
 	expectQuery(t, r, "isNews", "true")
@@ -95,13 +96,13 @@ func TestOperationGetLiveTvPrograms(t *testing.T) {
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetLiveTvPrograms(t.Context(), jf.GetLiveTvProgramsOptions{
 		ChannelIds:             []string{"a", "b"},
-		UserId:                 "v-UserId",
-		MinStartDate:           "v-MinStartDate",
+		UserId:                 jf.UserID("v-UserId"),
+		MinStartDate:           jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasAired:               new(true),
 		IsAiring:               new(true),
-		MaxStartDate:           "v-MaxStartDate",
-		MinEndDate:             "v-MinEndDate",
-		MaxEndDate:             "v-MaxEndDate",
+		MaxStartDate:           jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:             jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:             jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		IsMovie:                new(true),
 		IsSeries:               new(true),
 		IsNews:                 new(true),
@@ -112,7 +113,7 @@ func TestOperationGetLiveTvPrograms(t *testing.T) {
 		SortBy:                 []jf.ItemSortBy{jf.ItemSortByDefault, jf.ItemSortByIndexNumber},
 		SortOrder:              []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},
 		Genres:                 []string{"a", "b"},
-		GenreIds:               []string{"a", "b"},
+		GenreIds:               []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
@@ -130,13 +131,13 @@ func TestOperationGetLiveTvPrograms(t *testing.T) {
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetLiveTvPrograms(t.Context(), jf.GetLiveTvProgramsOptions{
 		ChannelIds:             []string{"a", "b"},
-		UserId:                 "v-UserId",
-		MinStartDate:           "v-MinStartDate",
+		UserId:                 jf.UserID("v-UserId"),
+		MinStartDate:           jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasAired:               new(true),
 		IsAiring:               new(true),
-		MaxStartDate:           "v-MaxStartDate",
-		MinEndDate:             "v-MinEndDate",
-		MaxEndDate:             "v-MaxEndDate",
+		MaxStartDate:           jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:             jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:             jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		IsMovie:                new(true),
 		IsSeries:               new(true),
 		IsNews:                 new(true),
@@ -147,7 +148,7 @@ func TestOperationGetLiveTvPrograms(t *testing.T) {
 		SortBy:                 []jf.ItemSortBy{jf.ItemSortByDefault, jf.ItemSortByIndexNumber},
 		SortOrder:              []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},
 		Genres:                 []string{"a", "b"},
-		GenreIds:               []string{"a", "b"},
+		GenreIds:               []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},

@@ -12,7 +12,7 @@ import (
 )
 
 // GetRootFolder calls GET /Items/Root. Gets the root folder from a user's library.
-func (c Client) GetRootFolder(ctx context.Context, userId ...string) (result jf.GetRootFolderResponse, err error) {
+func (c Client) GetRootFolder(ctx context.Context, userId ...jf.UserID) (result jf.GetRootFolderResponse, err error) {
 	var option jf.GetRootFolderOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetRootFolder takes one userId at most, not %d", len(userId))

@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdTagsAdd calls POST /Items/{Id}/Tags/Add. Adds new tags to an item.
-func (c Client) PostItemsByIdTagsAdd(ctx context.Context, id string, input emby.UserLibraryAddTags) (result emby.PostItemsByIdTagsAddResponse, err error) {
+func (c Client) PostItemsByIdTagsAdd(ctx context.Context, id emby.ItemID, input emby.UserLibraryAddTags) (result emby.PostItemsByIdTagsAddResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostItemsByIdTagsAdd(ctx context.Context, id string, input emby.
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostItemsByIdTagsAdd",
-		Path:       fmt.Sprintf("/Items/%s/Tags/Add", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/Tags/Add", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -59,7 +59,7 @@
           "Name": "CreatedAt",
           "JsonName": "created_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -101,7 +101,7 @@
           "Name": "UpdatedAt",
           "JsonName": "updated_at",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

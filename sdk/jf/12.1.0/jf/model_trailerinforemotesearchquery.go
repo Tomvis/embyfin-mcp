@@ -6,7 +6,7 @@ package jf
 type TrailerInfoRemoteSearchQuery struct {
 	// Gets or sets a value indicating whether disabled providers should be included.
 	IncludeDisabledProviders *bool  `json:"IncludeDisabledProviders,omitempty"`
-	ItemId                   string `json:"ItemId,omitempty"`
+	ItemId                   ItemID `json:"ItemId,omitempty"`
 
 	// The lookup info for trailers.
 	SearchInfo *TrailerInfo `json:"SearchInfo,omitempty"`

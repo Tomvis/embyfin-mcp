@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByIdConfiguration calls POST /Users/{Id}/Configuration. Updates a user configuration.
-func (c Client) PostUsersByIdConfiguration(ctx context.Context, id string, input emby.UserConfiguration) (result emby.PostUsersByIdConfigurationResponse, err error) {
+func (c Client) PostUsersByIdConfiguration(ctx context.Context, id emby.UserID, input emby.UserConfiguration) (result emby.PostUsersByIdConfigurationResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByIdConfiguration(ctx context.Context, id string, input
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByIdConfiguration",
-		Path:       fmt.Sprintf("/Users/%s/Configuration", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Configuration", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

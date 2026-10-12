@@ -14,7 +14,7 @@ import (
 )
 
 // GetUsersByUserIdSectionsBySectionIdItems calls GET /Users/{UserId}/Sections/{SectionId}/Items. Requires authentication as user.
-func (c Client) GetUsersByUserIdSectionsBySectionIdItems(ctx context.Context, userId string, sectionId string, options ...emby.GetUsersByUserIdSectionsBySectionIdItemsOptions) (result emby.GetUsersByUserIdSectionsBySectionIdItemsResponse, err error) {
+func (c Client) GetUsersByUserIdSectionsBySectionIdItems(ctx context.Context, userId emby.UserID, sectionId string, options ...emby.GetUsersByUserIdSectionsBySectionIdItemsOptions) (result emby.GetUsersByUserIdSectionsBySectionIdItemsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdSectionsBySectionIdItems takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetUsersByUserIdSectionsBySectionIdItems(ctx context.Context, us
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetUsersByUserIdSectionsBySectionIdItems",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Sections/%s/Items", url.PathEscape(userId), url.PathEscape(sectionId)),
+		Path:          fmt.Sprintf("/Users/%s/Sections/%s/Items", url.PathEscape(string(userId)), url.PathEscape(sectionId)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetUsersByUserIdSectionsBySectionIdItems(ctx context.Context, us
 // GetUsersByUserIdSectionsBySectionIdItemsComplete calls GetUsersByUserIdSectionsBySectionIdItems page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetUsersByUserIdSectionsBySectionIdItemsComplete(ctx context.Context, userId string, sectionId string, options ...emby.GetUsersByUserIdSectionsBySectionIdItemsOptions) (result emby.GetUsersByUserIdSectionsBySectionIdItemsCompleteResult, err error) {
+func (c Client) GetUsersByUserIdSectionsBySectionIdItemsComplete(ctx context.Context, userId emby.UserID, sectionId string, options ...emby.GetUsersByUserIdSectionsBySectionIdItemsOptions) (result emby.GetUsersByUserIdSectionsBySectionIdItemsCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdSectionsBySectionIdItemsComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetUsersByUserIdSectionsBySectionIdItemsComplete(ctx context.Con
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetUsersByUserIdSectionsBySectionIdItemsComplete asks for them.
-func (c Client) GetUsersByUserIdSectionsBySectionIdItemsEach(ctx context.Context, userId string, sectionId string, options ...emby.GetUsersByUserIdSectionsBySectionIdItemsOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetUsersByUserIdSectionsBySectionIdItemsEach(ctx context.Context, userId emby.UserID, sectionId string, options ...emby.GetUsersByUserIdSectionsBySectionIdItemsOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

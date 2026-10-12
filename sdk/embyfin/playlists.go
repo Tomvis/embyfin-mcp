@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 
+	apiclient "github.com/katbyte/pandorest/client"
+
 	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
@@ -21,7 +23,7 @@ import (
 func (c *Client) CreatePlaylist(ctx context.Context, name string, itemIDs []string, mediaType, userID string) (string, error) {
 	if c.isEmby() {
 		res, err := c.emby.Playlist.PostPlaylists(ctx, emby.PostPlaylistsOptions{
-			Name: name, Ids: strings.Join(itemIDs, ","), MediaType: mediaType, UserId: userID,
+			Name: name, Ids: apiclient.StringIDs[emby.ItemID](itemIDs), MediaType: mediaType, UserId: emby.UserID(userID),
 		})
 		if err != nil {
 			return "", err
@@ -34,7 +36,7 @@ func (c *Client) CreatePlaylist(ctx context.Context, name string, itemIDs []stri
 	}
 
 	res, err := c.jf.Playlist.CreatePlaylist(ctx, jf.CreatePlaylistDto{
-		Name: name, Ids: itemIDs, UserId: userID, MediaType: jf.MediaType(mediaType),
+		Name: name, Ids: apiclient.StringIDs[jf.ItemID](itemIDs), UserId: jf.UserID(userID), MediaType: jf.MediaType(mediaType),
 	})
 	if err != nil {
 		return "", err
@@ -47,7 +49,7 @@ func (c *Client) CreatePlaylist(ctx context.Context, name string, itemIDs []stri
 // Each item carries PlaylistItemID, which is what removal requires.
 func (c *Client) PlaylistItems(ctx context.Context, playlistID, userID string) ([]Item, int, error) {
 	if c.isEmby() {
-		res, err := c.emby.Playlist.GetPlaylistsByIdItems(ctx, playlistID, emby.GetPlaylistsByIdItemsOptions{UserId: userID, Fields: FieldsDefault})
+		res, err := c.emby.Playlist.GetPlaylistsByIdItems(ctx, emby.ItemID(playlistID), emby.GetPlaylistsByIdItemsOptions{UserId: emby.UserID(userID), Fields: FieldsDefault})
 		if err != nil {
 			return nil, 0, err
 		}
@@ -56,7 +58,7 @@ func (c *Client) PlaylistItems(ctx context.Context, playlistID, userID string) (
 		return itemsFromEmby(page.Items), page.TotalRecordCount, nil
 	}
 
-	res, err := c.jf.Playlist.GetPlaylistItems(ctx, playlistID, jf.GetPlaylistItemsOptions{UserId: userID, Fields: list[jf.ItemFields](FieldsDefault)})
+	res, err := c.jf.Playlist.GetPlaylistItems(ctx, jf.ItemID(playlistID), jf.GetPlaylistItemsOptions{UserId: jf.UserID(userID), Fields: list[jf.ItemFields](FieldsDefault)})
 	if err != nil {
 		return nil, 0, err
 	}
@@ -94,7 +96,7 @@ func (c *Client) PlaylistHeld(ctx context.Context, playlistID string) ([]Item, e
 // readPlaylist is PlaylistHeld with the fields given.
 func (c *Client) readPlaylist(ctx context.Context, playlistID, fields string) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.Playlist.GetPlaylistsByIdItems(ctx, playlistID, emby.GetPlaylistsByIdItemsOptions{Fields: fields})
+		res, err := c.emby.Playlist.GetPlaylistsByIdItems(ctx, emby.ItemID(playlistID), emby.GetPlaylistsByIdItemsOptions{Fields: fields})
 		if err != nil {
 			return nil, err
 		}
@@ -106,7 +108,7 @@ func (c *Client) readPlaylist(ctx context.Context, playlistID, fields string) ([
 		if err != nil {
 			return nil, fmt.Errorf("can't read every entry of the playlist: %w", err)
 		}
-		res, err := c.jf.Playlist.GetPlaylistItems(ctx, playlistID, jf.GetPlaylistItemsOptions{UserId: viewer, Fields: list[jf.ItemFields](fields)})
+		res, err := c.jf.Playlist.GetPlaylistItems(ctx, jf.ItemID(playlistID), jf.GetPlaylistItemsOptions{UserId: jf.UserID(viewer), Fields: list[jf.ItemFields](fields)})
 		if err == nil || fresh {
 			if err != nil {
 				return nil, err
@@ -346,11 +348,11 @@ func itemCounts(entries []Item) map[string]int {
 
 func (c *Client) addItems(ctx context.Context, playlistID string, itemIDs []string, userID string) error {
 	if c.isEmby() {
-		_, err := c.emby.Playlist.PostPlaylistsByIdItems(ctx, playlistID, emby.PostPlaylistsByIdItemsOptions{Ids: strings.Join(itemIDs, ","), UserId: userID})
+		_, err := c.emby.Playlist.PostPlaylistsByIdItems(ctx, emby.ItemID(playlistID), emby.PostPlaylistsByIdItemsOptions{Ids: apiclient.StringIDs[emby.ItemID](itemIDs), UserId: emby.UserID(userID)})
 		return err
 	}
 
-	_, err := c.jf.Playlist.AddItemToPlaylist(ctx, playlistID, jf.AddItemToPlaylistOptions{Ids: itemIDs, UserId: userID})
+	_, err := c.jf.Playlist.AddItemToPlaylist(ctx, jf.ItemID(playlistID), jf.AddItemToPlaylistOptions{Ids: apiclient.StringIDs[jf.ItemID](itemIDs), UserId: jf.UserID(userID)})
 
 	return err
 }
@@ -556,11 +558,11 @@ func (c *Client) playlistOff(ctx context.Context, playlistID string, want, asked
 
 func (c *Client) removeEntries(ctx context.Context, playlistID string, entryIDs []string) error {
 	if c.isEmby() {
-		_, err := c.emby.Playlist.DeletePlaylistsByIdItems(ctx, playlistID, strings.Join(entryIDs, ","))
+		_, err := c.emby.Playlist.DeletePlaylistsByIdItems(ctx, emby.ItemID(playlistID), apiclient.StringIDs[emby.PlaylistItemID](entryIDs))
 		return err
 	}
 
-	_, err := c.jf.Playlist.RemoveItemFromPlaylist(ctx, playlistID, entryIDs...)
+	_, err := c.jf.Playlist.RemoveItemFromPlaylist(ctx, jf.ItemID(playlistID), apiclient.StringIDs[jf.PlaylistItemID](entryIDs)...)
 
 	return err
 }
@@ -787,7 +789,7 @@ func (c *Client) moveEmbyEntry(ctx context.Context, playlistID string, entries, 
 		if err != nil {
 			return fmt.Errorf("entry id %q is not an Emby playlist entry id", entryID)
 		}
-		_, err = c.emby.Playlist.PostPlaylistsByIdItemsByItemIdMoveByNewIndex(ctx, playlistID, id, newIndex)
+		_, err = c.emby.Playlist.PostPlaylistsByIdItemsByItemIdMoveByNewIndex(ctx, emby.ItemID(playlistID), id, newIndex)
 
 		return err
 	}

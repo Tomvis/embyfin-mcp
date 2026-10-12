@@ -14,7 +14,7 @@ type EditorsEditorRoot struct {
 	IsAdvanced              bool                          `json:"IsAdvanced"`
 	IsReadOnly              bool                          `json:"IsReadOnly"`
 	Name                    string                        `json:"Name,omitempty"`
-	ParentId                string                        `json:"ParentId,omitempty"`
+	ParentId                ItemID                        `json:"ParentId,omitempty"`
 	PostbackActions         []ActionsPostbackAction       `json:"PostbackActions,omitzero"`
 	PropertyConditions      []ConditionsPropertyCondition `json:"PropertyConditions,omitzero"`
 	TitleButton             *EditorsEditorButtonItem      `json:"TitleButton,omitempty"`

@@ -21,7 +21,7 @@ func (r GetSyncTargetsResponse) Answered() bool { return r.Answer != nil }
 // GetSyncTargetsOptions holds the query and header parameters of GetSyncTargets.
 type GetSyncTargetsOptions struct {
 	// UserId
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -34,7 +34,7 @@ func (o GetSyncTargetsOptions) ToHeaders() *client.Headers {
 func (o GetSyncTargetsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

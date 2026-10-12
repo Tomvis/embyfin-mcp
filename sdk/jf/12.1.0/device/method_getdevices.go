@@ -12,7 +12,7 @@ import (
 )
 
 // GetDevices calls GET /Devices. Get Devices.
-func (c Client) GetDevices(ctx context.Context, userId ...string) (result jf.GetDevicesResponse, err error) {
+func (c Client) GetDevices(ctx context.Context, userId ...jf.UserID) (result jf.GetDevicesResponse, err error) {
 	var option jf.GetDevicesOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetDevices takes one userId at most, not %d", len(userId))

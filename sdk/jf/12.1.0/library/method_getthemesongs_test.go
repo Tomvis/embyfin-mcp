@@ -15,8 +15,8 @@ func TestOperationGetThemeSongs(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetThemeSongs(t.Context(), "p/itemId", jf.GetThemeSongsOptions{
-		UserId:            "v-UserId",
+	result, err := c.GetThemeSongs(t.Context(), jf.ItemID("v-itemId"), jf.GetThemeSongsOptions{
+		UserId:            jf.UserID("v-UserId"),
 		InheritFromParent: new(true),
 		SortBy:            []jf.ItemSortBy{jf.ItemSortByDefault, jf.ItemSortByIndexNumber},
 		SortOrder:         []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},
@@ -26,7 +26,7 @@ func TestOperationGetThemeSongs(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2FitemId/ThemeSongs")
+	expectRequest(t, r, http.MethodGet, "/Items/v-itemId/ThemeSongs")
 	expectQuery(t, r, "userId", "v-UserId")
 	expectQuery(t, r, "inheritFromParent", "true")
 	expectQuery(t, r, "sortBy", "Default", "IndexNumber")
@@ -46,8 +46,8 @@ func TestOperationGetThemeSongs(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetThemeSongs(t.Context(), "p/itemId", jf.GetThemeSongsOptions{
-		UserId:            "v-UserId",
+	result, err = c.GetThemeSongs(t.Context(), jf.ItemID("v-itemId"), jf.GetThemeSongsOptions{
+		UserId:            jf.UserID("v-UserId"),
 		InheritFromParent: new(true),
 		SortBy:            []jf.ItemSortBy{jf.ItemSortByDefault, jf.ItemSortByIndexNumber},
 		SortOrder:         []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},
@@ -58,8 +58,8 @@ func TestOperationGetThemeSongs(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetThemeSongs(t.Context(), "p/itemId", jf.GetThemeSongsOptions{
-		UserId:            "v-UserId",
+	result, err = c.GetThemeSongs(t.Context(), jf.ItemID("v-itemId"), jf.GetThemeSongsOptions{
+		UserId:            jf.UserID("v-UserId"),
 		InheritFromParent: new(true),
 		SortBy:            []jf.ItemSortBy{jf.ItemSortByDefault, jf.ItemSortByIndexNumber},
 		SortOrder:         []jf.SortOrder{jf.SortOrderAscending, jf.SortOrderDescending},
@@ -70,10 +70,10 @@ func TestOperationGetThemeSongs(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.GetThemeSongs(t.Context(), "p/itemId"); err != nil {
+	if _, err = c.GetThemeSongs(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetThemeSongs(t.Context(), "p/itemId", jf.GetThemeSongsOptions{}, jf.GetThemeSongsOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetThemeSongs(t.Context(), jf.ItemID("v-itemId"), jf.GetThemeSongsOptions{}, jf.GetThemeSongsOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

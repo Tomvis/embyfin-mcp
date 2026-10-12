@@ -16,13 +16,13 @@ func TestOperationGetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t *testin
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/octet-stream", "file bytes")
-	result, err := c.GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t.Context(), "p/id", "p/mediaSourceId", 7)
+	result, err := c.GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2Fid/p%2FmediaSourceId/Attachments/7/Stream")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-id/v-mediaSourceId/Attachments/7/Stream")
 	if got := r.Header.Get("Accept"); !strings.HasPrefix(got, "application/octet-stream") {
 		t.Errorf("Accept = %q, want application/octet-stream asked for first", got)
 	}
@@ -36,7 +36,7 @@ func TestOperationGetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t *testin
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/octet-stream", "file bytes")
-	result, err = c.GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t.Context(), "p/id", "p/mediaSourceId", 7)
+	result, err = c.GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -44,7 +44,7 @@ func TestOperationGetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t *testin
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/octet-stream", "file bytes")
-	result, err = c.GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t.Context(), "p/id", "p/mediaSourceId", 7)
+	result, err = c.GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -64,7 +64,7 @@ func TestOperationGetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t *testin
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t.Context(), "p/id", "p/mediaSourceId", 7)
+	result, err = c.GetVideosByIdByMediaSourceIdAttachmentsByIndexStream(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

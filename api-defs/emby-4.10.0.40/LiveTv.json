@@ -81,7 +81,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -322,7 +323,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -340,7 +342,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -349,7 +351,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -358,7 +360,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -367,7 +369,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -457,7 +459,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -466,7 +468,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -475,7 +477,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -484,7 +486,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -529,8 +531,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -583,7 +590,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -934,8 +942,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -1015,7 +1028,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1125,6 +1139,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -1243,7 +1494,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1261,7 +1513,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1270,7 +1522,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1279,7 +1531,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1288,7 +1540,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1378,7 +1630,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1387,7 +1639,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1396,7 +1648,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1405,7 +1657,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1450,8 +1702,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -1504,7 +1761,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1855,8 +2113,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -1936,7 +2199,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -2046,6 +2310,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -2203,7 +2704,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -2221,7 +2723,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2230,7 +2732,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2239,7 +2741,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2248,7 +2750,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2338,7 +2840,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2347,7 +2849,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2356,7 +2858,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2365,7 +2867,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2410,8 +2912,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -2464,7 +2971,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -2815,8 +3323,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -2896,7 +3409,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -3006,6 +3520,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -3041,7 +3792,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -3052,7 +3804,8 @@
           "In": "Query",
           "Description": "Optional attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -3217,7 +3970,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -3235,7 +3989,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3244,7 +3998,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3253,7 +4007,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3262,7 +4016,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3352,7 +4106,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3361,7 +4115,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3370,7 +4124,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3379,7 +4133,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3424,8 +4178,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -3478,7 +4237,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -3829,8 +4589,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -3910,7 +4675,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -4020,6 +4786,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -4271,6 +5274,19 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Name, StartDate\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -4398,7 +5414,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -4416,7 +5433,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4425,7 +5442,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4434,7 +5451,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4443,7 +5460,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4533,7 +5550,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4542,7 +5559,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4551,7 +5568,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4560,7 +5577,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -4605,8 +5622,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -4659,7 +5681,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -5010,8 +6033,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -5091,7 +6119,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -5201,6 +6230,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -5319,7 +6585,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -5337,7 +6604,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5346,7 +6613,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5355,7 +6622,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5364,7 +6631,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5454,7 +6721,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5463,7 +6730,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5472,7 +6739,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5481,7 +6748,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5526,8 +6793,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -5580,7 +6852,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -5931,8 +7204,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -6012,7 +7290,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -6122,6 +7401,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -6277,7 +7793,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -6295,7 +7812,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6304,7 +7821,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6313,7 +7830,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6322,7 +7839,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6412,7 +7929,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6421,7 +7938,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6430,7 +7947,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6439,7 +7956,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6484,8 +8001,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -6538,7 +8060,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -6889,8 +8412,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -6970,7 +8498,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -7080,6 +8609,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -7115,7 +8881,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -7126,7 +8893,8 @@
           "In": "Query",
           "Description": "Optional attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -7236,7 +9004,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -7254,7 +9023,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -7263,7 +9032,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -7272,7 +9041,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -7281,7 +9050,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -7371,7 +9140,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -7380,7 +9149,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -7389,7 +9158,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -7398,7 +9167,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -7443,8 +9212,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -7497,7 +9271,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -7848,8 +9623,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -7929,7 +9709,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -8039,6 +9820,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -8142,6 +10160,19 @@
           "Type": {
             "Type": "Integer"
           }
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Sort by SortName or Priority\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -8669,7 +10700,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -8687,7 +10719,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -8696,7 +10728,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -8705,7 +10737,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -8714,7 +10746,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -8804,7 +10836,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -8813,7 +10845,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -8822,7 +10854,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -8831,7 +10863,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere date. Format = ISO",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -8876,8 +10908,13 @@
           "In": "Query",
           "Description": "Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "StartIndex",
@@ -8930,7 +10967,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -9281,8 +11319,13 @@
           "In": "Query",
           "Description": "Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "VideoTypes",
@@ -9362,7 +11405,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -9472,6 +11516,243 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "AnyProviderIdEquals",
+          "Field": "AnyProviderIdEqualsList",
+          "In": "Query",
+          "Description": "Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioCodecs",
+          "Field": "AudioCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "AudioLayouts",
+          "Field": "AudioLayoutsList",
+          "In": "Query",
+          "Description": "Optional filter by AudioLayout. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Containers",
+          "Field": "ContainersList",
+          "In": "Query",
+          "Description": "Optional filter by Container. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExcludeItemTypes",
+          "Field": "ExcludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ExtendedVideoTypes",
+          "Field": "ExtendedVideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ExtendedVideoTypes"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Filters",
+          "Field": "FiltersList",
+          "In": "Query",
+          "Description": "Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "ImageTypes",
+          "Field": "ImageTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "ImageType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "IncludeItemTypes",
+          "Field": "IncludeItemTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "MediaTypes",
+          "Field": "MediaTypesList",
+          "In": "Query",
+          "Description": "Optional filter by MediaType. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "PersonTypes",
+          "Field": "PersonTypesList",
+          "In": "Query",
+          "Description": "Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PersonType"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SeriesStatus",
+          "Field": "SeriesStatusList",
+          "In": "Query",
+          "Description": "Optional filter by Series Status. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SortBy",
+          "Field": "SortByList",
+          "In": "Query",
+          "Description": "Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "SubtitleCodecs",
+          "Field": "SubtitleCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by SubtitleCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoCodecs",
+          "Field": "VideoCodecsList",
+          "In": "Query",
+          "Description": "Optional filter by VideoCodec. Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "VideoTypes",
+          "Field": "VideoTypesList",
+          "In": "Query",
+          "Description": "Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
+        },
+        {
+          "Name": "Years",
+          "Field": "YearsList",
+          "In": "Query",
+          "Description": "Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Request": {
@@ -9497,7 +11778,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -10014,7 +12296,7 @@
           "Name": "MaxDateCreated",
           "JsonName": "MaxDateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -10038,7 +12320,7 @@
           "Name": "MinDateCreated",
           "JsonName": "MinDateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -10319,14 +12601,14 @@
           "Name": "EndDate",
           "JsonName": "EndDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
           "Name": "StartDate",
           "JsonName": "StartDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         }
       ]
@@ -10583,7 +12865,7 @@
           "Name": "EndDate",
           "JsonName": "EndDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -10724,7 +13006,8 @@
           "Name": "SeriesId",
           "JsonName": "SeriesId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -10745,7 +13028,7 @@
           "Name": "StartDate",
           "JsonName": "StartDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -10815,7 +13098,7 @@
           "Name": "EndDate",
           "JsonName": "EndDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -10917,7 +13200,8 @@
           "Name": "ParentBackdropItemId",
           "JsonName": "ParentBackdropItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -10931,7 +13215,8 @@
           "Name": "ParentPrimaryImageItemId",
           "JsonName": "ParentPrimaryImageItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -10952,7 +13237,8 @@
           "Name": "ParentThumbItemId",
           "JsonName": "ParentThumbItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -11008,7 +13294,8 @@
           "Name": "SeriesId",
           "JsonName": "SeriesId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -11029,7 +13316,7 @@
           "Name": "StartDate",
           "JsonName": "StartDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -11085,7 +13372,7 @@
           "Name": "EndDate",
           "JsonName": "EndDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -11145,7 +13432,8 @@
           "Name": "ParentBackdropItemId",
           "JsonName": "ParentBackdropItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -11217,7 +13505,7 @@
           "Name": "StartDate",
           "JsonName": "StartDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

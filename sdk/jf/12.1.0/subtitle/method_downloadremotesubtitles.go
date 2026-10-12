@@ -13,14 +13,14 @@ import (
 )
 
 // DownloadRemoteSubtitles calls POST /Items/{itemId}/RemoteSearch/Subtitles/{subtitleId}. Downloads a remote subtitle.
-func (c Client) DownloadRemoteSubtitles(ctx context.Context, itemId string, subtitleId string) (result jf.DownloadRemoteSubtitlesResponse, err error) {
+func (c Client) DownloadRemoteSubtitles(ctx context.Context, itemId jf.ItemID, subtitleId string) (result jf.DownloadRemoteSubtitlesResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "DownloadRemoteSubtitles",
-		Path:       fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(itemId), url.PathEscape(subtitleId)),
+		Path:       fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(string(itemId)), url.PathEscape(subtitleId)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

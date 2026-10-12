@@ -30,6 +30,16 @@ type PostSessionsCapabilitiesOptions struct {
 
 	// Determines whether sync is supported.
 	SupportsSync *bool
+
+	// A list of playable media types, comma delimited. Audio, Video, Book, Game, Photo.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	PlayableMediaTypesList []string
+
+	// A list of supported remote control commands, comma delimited
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	SupportedCommandsList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -55,6 +65,12 @@ func (o PostSessionsCapabilitiesOptions) ToQuery() *client.QueryParams {
 	}
 	if o.SupportsSync != nil {
 		out.Append("SupportsSync", strconv.FormatBool(*o.SupportsSync))
+	}
+	if len(o.PlayableMediaTypesList) > 0 {
+		out.Append("PlayableMediaTypes", client.CSV(o.PlayableMediaTypesList))
+	}
+	if len(o.SupportedCommandsList) > 0 {
+		out.Append("SupportedCommands", client.CSV(o.SupportedCommandsList))
 	}
 	return &out
 }

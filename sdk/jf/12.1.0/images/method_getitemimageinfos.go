@@ -13,14 +13,14 @@ import (
 )
 
 // GetItemImageInfos calls GET /Items/{itemId}/Images. Get item image infos.
-func (c Client) GetItemImageInfos(ctx context.Context, itemId string) (result jf.GetItemImageInfosResponse, err error) {
+func (c Client) GetItemImageInfos(ctx context.Context, itemId jf.ItemID) (result jf.GetItemImageInfosResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetItemImageInfos",
-		Path:       fmt.Sprintf("/Items/%s/Images", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Items/%s/Images", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

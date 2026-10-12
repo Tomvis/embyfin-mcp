@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,20 +14,20 @@ func TestOperationDownloadRemoteSubtitles(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.DownloadRemoteSubtitles(t.Context(), "p/itemId", "p/subtitleId")
+	result, err := c.DownloadRemoteSubtitles(t.Context(), jf.ItemID("v-itemId"), "p/subtitleId")
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Items/p%2FitemId/RemoteSearch/Subtitles/p%2FsubtitleId")
+	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/RemoteSearch/Subtitles/p%2FsubtitleId")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.DownloadRemoteSubtitles(t.Context(), "p/itemId", "p/subtitleId")
+	result, err = c.DownloadRemoteSubtitles(t.Context(), jf.ItemID("v-itemId"), "p/subtitleId")
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

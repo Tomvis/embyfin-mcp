@@ -17,7 +17,7 @@ import (
 //
 // input is sent as contentType, which must name a concrete type: the
 // operation takes image/*.
-func (c Client) SetItemImage(ctx context.Context, itemId string, imageType jf.ImageType, input io.Reader, contentType string) (result jf.SetItemImageResponse, err error) {
+func (c Client) SetItemImage(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, input io.Reader, contentType string) (result jf.SetItemImageResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "image/*",
 		ExpectedStatusCodes: []int{
@@ -25,7 +25,7 @@ func (c Client) SetItemImage(ctx context.Context, itemId string, imageType jf.Im
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "SetItemImage",
-		Path:       fmt.Sprintf("/Items/%s/Images/%s", url.PathEscape(itemId), url.PathEscape(string(imageType))),
+		Path:       fmt.Sprintf("/Items/%s/Images/%s", url.PathEscape(string(itemId)), url.PathEscape(string(imageType))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -3,6 +3,7 @@ package workarounds
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"slices"
 	"strings"
 
@@ -73,6 +74,28 @@ func (jellyfinPluginConfiguration) Apply(spec *openapi.Spec) error {
 	}
 	// nothing else refers to it, so it would be a model no operation answers
 	delete(spec.Components.Schemas, base)
+
+	return nil
+}
+
+type jellyfinSavedSinceText struct{}
+
+func (jellyfinSavedSinceText) Name() string    { return "jellyfin-saved-since-text" }
+func (jellyfinSavedSinceText) Service() string { return jellyfin }
+func (jellyfinSavedSinceText) Bug() string {
+	return "GET /Items declares minDateLastSaved a date and time; the server also takes a day alone and a time with no zone, and reads those its own way, which a date and time with a zone cannot say (seen on 12.1)"
+}
+
+func (jellyfinSavedSinceText) Apply(spec *openapi.Spec) error {
+	op, err := operation(spec, http.MethodGet, "/Items")
+	if err != nil {
+		return err
+	}
+	p := op.Parameter(openapi.InQuery, "minDateLastSaved")
+	if p == nil || p.Schema == nil || p.Schema.Format != "date-time" {
+		return errors.New("GET /Items no longer declares minDateLastSaved a date and time")
+	}
+	p.Schema.Format = ""
 
 	return nil
 }

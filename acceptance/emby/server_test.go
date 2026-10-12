@@ -77,7 +77,7 @@ func TestEmbyLogsAndActivity(t *testing.T) {
 	if len(logs) == 0 {
 		t.Fatal("GetSystemLogsQuery listed nothing")
 	}
-	if logs[0].Name == "" || logs[0].Size == 0 || logs[0].DateModified == "" {
+	if logs[0].Name == "" || logs[0].Size == 0 || logs[0].DateModified.IsZero() {
 		t.Errorf("log file = %+v", logs[0])
 	}
 	body := sdkacc.Must(embyc.System.GetSystemLogsByName(ctx, logs[0].Name)).HttpResponse.Body
@@ -91,7 +91,7 @@ func TestEmbyLogsAndActivity(t *testing.T) {
 		t.Fatalf("GetSystemActivityLogEntries = %+v", entries)
 	}
 	for _, e := range entries.Items {
-		if e.Id == 0 || e.Name == "" || e.Type == "" || e.Date == "" || e.Severity == "" {
+		if e.Id == 0 || e.Name == "" || e.Type == "" || e.Date.IsZero() || e.Severity == "" {
 			t.Errorf("activity entry did not decode: %+v", e)
 		}
 	}
@@ -101,7 +101,7 @@ func TestEmbyLogsAndActivity(t *testing.T) {
 	// and the testenv script's login is always there)
 	devices := sdkacc.Must(embyc.Device.GetDevices(ctx)).Answer
 	if !slices.ContainsFunc(devices.Items, func(d emby.DevicesDeviceInfo) bool {
-		return d.Name == "testenv" && d.Id != "" && d.AppName != "" && d.LastUserId == adminID && d.DateLastActivity != ""
+		return d.Name == "testenv" && d.Id != "" && d.AppName != "" && d.LastUserId == adminID && !d.DateLastActivity.IsZero()
 	}) {
 		t.Errorf("GetDevices does not list the testenv device: %+v", devices.Items)
 	}

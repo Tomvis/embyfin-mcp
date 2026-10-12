@@ -13,14 +13,14 @@ import (
 )
 
 // GetPlaylistUsers calls GET /Playlists/{playlistId}/Users. Get a playlist's users.
-func (c Client) GetPlaylistUsers(ctx context.Context, playlistId string) (result jf.GetPlaylistUsersResponse, err error) {
+func (c Client) GetPlaylistUsers(ctx context.Context, playlistId jf.ItemID) (result jf.GetPlaylistUsersResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetPlaylistUsers",
-		Path:       fmt.Sprintf("/Playlists/%s/Users", url.PathEscape(playlistId)),
+		Path:       fmt.Sprintf("/Playlists/%s/Users", url.PathEscape(string(playlistId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

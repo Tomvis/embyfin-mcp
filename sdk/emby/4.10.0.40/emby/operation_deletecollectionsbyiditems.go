@@ -16,7 +16,7 @@ type DeleteCollectionsByIdItemsResponse struct {
 // DeleteCollectionsByIdItemsOptions holds the query and header parameters of DeleteCollectionsByIdItems.
 type DeleteCollectionsByIdItemsOptions struct {
 	// Item id, comma delimited
-	Ids string
+	Ids []ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -28,8 +28,8 @@ func (o DeleteCollectionsByIdItemsOptions) ToHeaders() *client.Headers {
 // ToQuery returns the query parameters the options set.
 func (o DeleteCollectionsByIdItemsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
-	if o.Ids != "" {
-		out.Append("Ids", o.Ids)
+	if len(o.Ids) > 0 {
+		out.Append("Ids", client.Joined(o.Ids))
 	}
 	return &out
 }

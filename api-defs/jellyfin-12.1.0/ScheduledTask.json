@@ -13,7 +13,8 @@
           "Name": "taskId",
           "Argument": "taskId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "TaskID"
           }
         }
       ],
@@ -79,7 +80,8 @@
           "Name": "taskId",
           "Argument": "taskId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "TaskID"
           }
         }
       ],
@@ -98,7 +100,8 @@
           "Name": "taskId",
           "Argument": "taskId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "TaskID"
           }
         }
       ],
@@ -117,7 +120,8 @@
           "Name": "taskId",
           "Argument": "taskId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "TaskID"
           }
         }
       ],
@@ -174,7 +178,8 @@
           "JsonName": "Id",
           "Description": "Gets or sets the id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "TaskID"
           },
           "Nullable": true
         },
@@ -248,7 +253,7 @@
           "JsonName": "EndTimeUtc",
           "Description": "Gets or sets the end time UTC.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -301,7 +306,7 @@
           "JsonName": "StartTimeUtc",
           "Description": "Gets or sets the start time UTC.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

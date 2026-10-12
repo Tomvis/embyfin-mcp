@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdThumbnailSet calls GET /Items/{Id}/ThumbnailSet. Requires authentication as user.
-func (c Client) GetItemsByIdThumbnailSet(ctx context.Context, id string, width int) (result emby.GetItemsByIdThumbnailSetResponse, err error) {
+func (c Client) GetItemsByIdThumbnailSet(ctx context.Context, id emby.ItemID, width int) (result emby.GetItemsByIdThumbnailSetResponse, err error) {
 	var option emby.GetItemsByIdThumbnailSetOptions
 	option.Width = &width
 
@@ -26,7 +26,7 @@ func (c Client) GetItemsByIdThumbnailSet(ctx context.Context, id string, width i
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemsByIdThumbnailSet",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/ThumbnailSet", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/ThumbnailSet", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

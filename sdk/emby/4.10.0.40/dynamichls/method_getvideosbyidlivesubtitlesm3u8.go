@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdLiveSubtitlesM3u8 calls GET /Videos/{Id}/live_subtitles.m3u8. Gets an HLS subtitle playlist.
-func (c Client) GetVideosByIdLiveSubtitlesM3u8(ctx context.Context, id string, options emby.GetVideosByIdLiveSubtitlesM3u8Options) (result emby.GetVideosByIdLiveSubtitlesM3u8Response, err error) {
+func (c Client) GetVideosByIdLiveSubtitlesM3u8(ctx context.Context, id emby.ItemID, options emby.GetVideosByIdLiveSubtitlesM3u8Options) (result emby.GetVideosByIdLiveSubtitlesM3u8Response, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/x-mpegURL",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetVideosByIdLiveSubtitlesM3u8(ctx context.Context, id string, o
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdLiveSubtitlesM3u8",
 		OptionsObject:  options,
-		Path:           fmt.Sprintf("/Videos/%s/live_subtitles.m3u8", url.PathEscape(id)),
+		Path:           fmt.Sprintf("/Videos/%s/live_subtitles.m3u8", url.PathEscape(string(id))),
 		StreamResponse: true,
 	}
 

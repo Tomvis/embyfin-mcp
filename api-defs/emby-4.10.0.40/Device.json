@@ -282,7 +282,7 @@
           "Name": "DateLastActivity",
           "JsonName": "DateLastActivity",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -317,7 +317,8 @@
           "Name": "LastUserId",
           "JsonName": "LastUserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -371,7 +372,7 @@
           "Name": "DateCreated",
           "JsonName": "DateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },

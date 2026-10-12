@@ -7,7 +7,7 @@ package jf
 // Update existing playlist dto. Fields set to `null` will not be updated and keep their current values.
 type UpdatePlaylistDto struct {
 	// Gets or sets item ids of the playlist.
-	Ids []string `json:"Ids,omitzero"`
+	Ids []ItemID `json:"Ids,omitzero"`
 
 	// Gets or sets a value indicating whether the playlist is public.
 	IsPublic *bool `json:"IsPublic,omitempty"`

@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteItemsByIdImagesByType calls DELETE /Items/{Id}/Images/{Type}. Requires authentication as administrator.
-func (c Client) DeleteItemsByIdImagesByType(ctx context.Context, id string, typeParam emby.ImageType, index ...int) (result emby.DeleteItemsByIdImagesByTypeResponse, err error) {
+func (c Client) DeleteItemsByIdImagesByType(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index ...int) (result emby.DeleteItemsByIdImagesByTypeResponse, err error) {
 	var option emby.DeleteItemsByIdImagesByTypeOptions
 	if len(index) > 1 {
 		err = fmt.Errorf("DeleteItemsByIdImagesByType takes one index at most, not %d", len(index))
@@ -31,7 +31,7 @@ func (c Client) DeleteItemsByIdImagesByType(ctx context.Context, id string, type
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "DeleteItemsByIdImagesByType",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Images/%s", url.PathEscape(id), url.PathEscape(string(typeParam))),
+		Path:          fmt.Sprintf("/Items/%s/Images/%s", url.PathEscape(string(id)), url.PathEscape(string(typeParam))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

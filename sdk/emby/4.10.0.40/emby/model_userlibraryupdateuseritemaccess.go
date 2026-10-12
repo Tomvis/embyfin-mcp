@@ -5,6 +5,6 @@ package emby
 // UserLibraryUpdateUserItemAccess is the "UserLibrary.UpdateUserItemAccess" schema.
 type UserLibraryUpdateUserItemAccess struct {
 	ItemAccess UserItemShareLevel `json:"ItemAccess,omitempty"`
-	ItemIds    []string           `json:"ItemIds,omitzero"`
-	UserIds    []string           `json:"UserIds,omitzero"`
+	ItemIds    []ItemID           `json:"ItemIds,omitzero"`
+	UserIds    []UserID           `json:"UserIds,omitzero"`
 }

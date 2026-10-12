@@ -24,8 +24,13 @@
           "In": "Query",
           "Description": "ItemIds",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "ExpectedStatusCodes": [
@@ -257,7 +262,8 @@
           "Description": "UserId",
           "Required": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -266,8 +272,13 @@
           "In": "Query",
           "Description": "ItemIds",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "ParentId",
@@ -275,7 +286,8 @@
           "In": "Query",
           "Description": "ParentId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -324,7 +336,8 @@
           "Description": "UserId",
           "Required": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -354,7 +367,8 @@
           "Name": "ItemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -392,8 +406,13 @@
           "In": "Query",
           "Description": "ItemIds",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "ExpectedStatusCodes": [
@@ -451,8 +470,13 @@
           "In": "Query",
           "Description": "ItemIds",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "ExpectedStatusCodes": [
@@ -876,14 +900,14 @@
           "Name": "DateCreated",
           "JsonName": "DateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
           "Name": "DateLastModified",
           "JsonName": "DateLastModified",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -947,7 +971,8 @@
           "Name": "PrimaryImageItemId",
           "JsonName": "PrimaryImageItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1084,7 +1109,7 @@
           "Name": "DateCreated",
           "JsonName": "DateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1134,7 +1159,8 @@
           "Name": "MediaSourceId",
           "JsonName": "MediaSourceId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -1148,7 +1174,8 @@
           "Name": "PrimaryImageItemId",
           "JsonName": "PrimaryImageItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1237,7 +1264,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1260,7 +1288,8 @@
           "Name": "ParentId",
           "JsonName": "ParentId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1302,7 +1331,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1457,7 +1487,7 @@
           "Name": "SyncJobDateCreated",
           "JsonName": "SyncJobDateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1485,7 +1515,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]
@@ -1520,7 +1551,7 @@
           "Name": "Date",
           "JsonName": "Date",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -1542,7 +1573,8 @@
           "Name": "ItemId",
           "JsonName": "ItemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1580,7 +1612,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]

@@ -11,11 +11,16 @@
 - a true or false in a record the servers only ever answer is a plain `bool`, where it was a pointer: `info.HasPendingRestart`. A record a request sends keeps its pointers, so a value never set is still never sent, and three answers keep theirs because "not said" means something: Emby's `TranscodingInfo.VideoDecoderIsHardware` and `VideoEncoderIsHardware`, and Jellyfin's `PluginInfo.CanUninstall`
 - an operation with exactly one option takes it as a plain argument in place of the struct: `c.Library.DeleteItems(ctx, ids)`. An optional one can be left out, and a `false` or `0` that is given is sent; a paged list and an operation with two or more options keep the struct
 - the hand-written TMDB code, `Facts` and the retrying transport, moved from `sdk/tmdb` to `sdk/tmdb/facts`; TMDB's `New`, `Client` and `DefaultBaseURL` are in the versioned folder
+- a date in the Emby and Jellyfin SDKs is a `Time`, where it was a string: `item.DateCreated.Year()`. It reads every form the two servers write, a date written any other way is zero with its text kept in `Unread`, and a zero one is not sent. One option stays text, `MinDateLastSaved` on the item searches (`GET /Items` on both servers and Emby's `GET /Users/{UserId}/Items`): the servers also take a bare day there and read it their own way. The other operations that take it, 57 on Emby and one on Jellyfin, take a `Time`
+- in the TMDB SDK a day is a `Day` and a date with a time is a `Time`, in options and answers alike: `film.ReleaseDate.Year()`. TMDB's document declares them plain strings, so which fields are dates is said by two workarounds and checked against the recorded answers. `facts.DateYear` takes a `Day`
+- an id in the Emby and Jellyfin SDKs says what it is the id of: `ItemID`, `UserID`, `SessionID`, `TaskID`, `PlaylistItemID` and `MediaSourceID`, each a string underneath, so a user's id where an item's goes does not compile. `emby.ItemID(text)` and `string(id)` convert one, pandorest's `client.StringIDs` a list. An id of anything else is a string as before
+- on Emby the options that take several ids as one comma-joined text are lists: `Ids`, `ExcludeItemIds` and `ItemIds` are `[]emby.ItemID`, and a playlist's `EntryIds` is `[]emby.PlaylistItemID`. They are sent joined as before
 
 ### Changed
 
 - built on pandorest 0.8.3: an error from any of the three SDKs never repeats the API key or token it was given
 - built on go-kt 0.6.4: a tool that takes no arguments refuses one, where it was answered as if the argument had meant something: `library_list`, `server_info` and seven more. A failure's words reach the caller without what an address in them may carry a credential in: who it signs in as, its query values and what follows its `#`
+- a date a server writes as year 1, which is how both write a date they do not have, is no date. A tool leaves it out where it showed `0001-01-01T00:00:00.0000000Z`; `audit_quality` no longer lists a file as written after the server first saw it in year 1; `audit_missing_episodes` and `show_missing` no longer count an episode dated so as aired; and an edit of an item sends such a date back as none
 - `sdk/embyfin` names the two API versions it is built on, `EmbyAPIVersion` and `JellyfinAPIVersion`, and `server_info` reports both as `sdk_api_versions`, beside the one for the connected server
 - a call none of whose options is required can leave the options out: `c.Sessions.GetSessions(ctx)`
 - the generator's settings moved out of `sdk/pandorest`: the program is `sdk/main.go` (`go run ./sdk`), the list of services is `sdk/zservices`, and each service's workarounds sit beside its SDK in `sdk/<service>/workarounds`
@@ -33,6 +38,7 @@
 - 92 tools: 62 read, 24 write, 6 delete
 - `acceptance/embyfin`: live tests of the hand-written `sdk/embyfin` layer by itself, each written once and run against both servers (`make testacc-embyfin`)
 - `sdk/embyfin`: `Count` says how many items a search matches without fetching any of them, and `ItemCounts` carries the server's artists, books, programs and its own total of everything, which Emby leaves at 0
+- the Emby SDK takes a list wherever Emby's document says a text option carries several values joined by commas, 21 options in all: `IncludeItemTypesList`, `FieldsList`, `YearsList` and the rest sit beside the text option of the same name and are sent joined. The text option stays, so no caller has to move
 
 ### Fixed
 

@@ -39,7 +39,7 @@ func (r GetProgramResponse) Record() (BaseItemDto, error) {
 // GetProgramOptions holds the query and header parameters of GetProgram.
 type GetProgramOptions struct {
 	// Optional. Attach user data.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetProgramOptions) ToHeaders() *client.Headers {
 func (o GetProgramOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

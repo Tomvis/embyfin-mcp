@@ -13,7 +13,7 @@ import (
 )
 
 // UpdateTask calls POST /ScheduledTasks/{taskId}/Triggers. Update specified task triggers.
-func (c Client) UpdateTask(ctx context.Context, taskId string, input []jf.TaskTriggerInfo) (result jf.UpdateTaskResponse, err error) {
+func (c Client) UpdateTask(ctx context.Context, taskId jf.TaskID, input []jf.TaskTriggerInfo) (result jf.UpdateTaskResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) UpdateTask(ctx context.Context, taskId string, input []jf.TaskTr
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "UpdateTask",
-		Path:       fmt.Sprintf("/ScheduledTasks/%s/Triggers", url.PathEscape(taskId)),
+		Path:       fmt.Sprintf("/ScheduledTasks/%s/Triggers", url.PathEscape(string(taskId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

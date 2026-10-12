@@ -55,11 +55,11 @@ type DiscoverMovieOptions struct {
 	Language              string
 	Page                  *int
 	PrimaryReleaseYear    *int
-	PrimaryReleaseDateGte string
-	PrimaryReleaseDateLte string
+	PrimaryReleaseDateGte Day
+	PrimaryReleaseDateLte Day
 	Region                string
-	ReleaseDateGte        string
-	ReleaseDateLte        string
+	ReleaseDateGte        Day
+	ReleaseDateLte        Day
 	SortBy                string
 	VoteAverageGte        *float64
 	VoteAverageLte        *float64
@@ -142,20 +142,20 @@ func (o DiscoverMovieOptions) ToQuery() *client.QueryParams {
 	if o.PrimaryReleaseYear != nil {
 		out.Append("primary_release_year", strconv.Itoa(*o.PrimaryReleaseYear))
 	}
-	if o.PrimaryReleaseDateGte != "" {
-		out.Append("primary_release_date.gte", o.PrimaryReleaseDateGte)
+	if !o.PrimaryReleaseDateGte.IsZero() {
+		out.Append("primary_release_date.gte", o.PrimaryReleaseDateGte.As(sendDateAs("DiscoverMovie", "primary_release_date.gte")))
 	}
-	if o.PrimaryReleaseDateLte != "" {
-		out.Append("primary_release_date.lte", o.PrimaryReleaseDateLte)
+	if !o.PrimaryReleaseDateLte.IsZero() {
+		out.Append("primary_release_date.lte", o.PrimaryReleaseDateLte.As(sendDateAs("DiscoverMovie", "primary_release_date.lte")))
 	}
 	if o.Region != "" {
 		out.Append("region", o.Region)
 	}
-	if o.ReleaseDateGte != "" {
-		out.Append("release_date.gte", o.ReleaseDateGte)
+	if !o.ReleaseDateGte.IsZero() {
+		out.Append("release_date.gte", o.ReleaseDateGte.As(sendDateAs("DiscoverMovie", "release_date.gte")))
 	}
-	if o.ReleaseDateLte != "" {
-		out.Append("release_date.lte", o.ReleaseDateLte)
+	if !o.ReleaseDateLte.IsZero() {
+		out.Append("release_date.lte", o.ReleaseDateLte.As(sendDateAs("DiscoverMovie", "release_date.lte")))
 	}
 	if o.SortBy != "" {
 		out.Append("sort_by", o.SortBy)

@@ -7,6 +7,6 @@ type RunUICommand struct {
 	ClientLocale string `json:"ClientLocale,omitempty"`
 	CommandId    string `json:"CommandId,omitempty"`
 	Data         string `json:"Data,omitempty"`
-	ItemId       string `json:"ItemId,omitempty"`
+	ItemId       ItemID `json:"ItemId,omitempty"`
 	PageId       string `json:"PageId,omitempty"`
 }

@@ -8,7 +8,7 @@ type LiveTvTimerInfoDto struct {
 	ChannelName             string                `json:"ChannelName,omitempty"`
 	ChannelNumber           string                `json:"ChannelNumber,omitempty"`
 	ChannelPrimaryImageTag  string                `json:"ChannelPrimaryImageTag,omitempty"`
-	EndDate                 string                `json:"EndDate,omitempty"`
+	EndDate                 Time                  `json:"EndDate,omitzero"`
 	Id                      string                `json:"Id,omitempty"`
 	IsPostPaddingRequired   *bool                 `json:"IsPostPaddingRequired,omitempty"`
 	IsPrePaddingRequired    *bool                 `json:"IsPrePaddingRequired,omitempty"`
@@ -16,7 +16,7 @@ type LiveTvTimerInfoDto struct {
 	Name                    string                `json:"Name,omitempty"`
 	Overview                string                `json:"Overview,omitempty"`
 	ParentBackdropImageTags []string              `json:"ParentBackdropImageTags,omitzero"`
-	ParentBackdropItemId    string                `json:"ParentBackdropItemId,omitempty"`
+	ParentBackdropItemId    ItemID                `json:"ParentBackdropItemId,omitempty"`
 	ParentFolderId          string                `json:"ParentFolderId,omitempty"`
 	PostPaddingSeconds      int                   `json:"PostPaddingSeconds,omitempty"`
 	PrePaddingSeconds       int                   `json:"PrePaddingSeconds,omitempty"`
@@ -26,7 +26,7 @@ type LiveTvTimerInfoDto struct {
 	RunTimeTicks            int64                 `json:"RunTimeTicks,omitempty"`
 	SeriesTimerId           string                `json:"SeriesTimerId,omitempty"`
 	ServerId                string                `json:"ServerId,omitempty"`
-	StartDate               string                `json:"StartDate,omitempty"`
+	StartDate               Time                  `json:"StartDate,omitzero"`
 	Status                  LiveTvRecordingStatus `json:"Status,omitempty"`
 	TimerType               LiveTvTimerType       `json:"TimerType,omitempty"`
 	Type                    string                `json:"Type,omitempty"`

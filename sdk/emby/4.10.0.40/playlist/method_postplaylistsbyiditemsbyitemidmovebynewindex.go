@@ -13,7 +13,7 @@ import (
 )
 
 // PostPlaylistsByIdItemsByItemIdMoveByNewIndex calls POST /Playlists/{Id}/Items/{ItemId}/Move/{NewIndex}. Moves a playlist item.
-func (c Client) PostPlaylistsByIdItemsByItemIdMoveByNewIndex(ctx context.Context, id string, itemId int64, newIndex int) (result emby.PostPlaylistsByIdItemsByItemIdMoveByNewIndexResponse, err error) {
+func (c Client) PostPlaylistsByIdItemsByItemIdMoveByNewIndex(ctx context.Context, id emby.ItemID, itemId int64, newIndex int) (result emby.PostPlaylistsByIdItemsByItemIdMoveByNewIndexResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostPlaylistsByIdItemsByItemIdMoveByNewIndex(ctx context.Context
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostPlaylistsByIdItemsByItemIdMoveByNewIndex",
-		Path:       fmt.Sprintf("/Playlists/%s/Items/%d/Move/%d", url.PathEscape(id), itemId, newIndex),
+		Path:       fmt.Sprintf("/Playlists/%s/Items/%d/Move/%d", url.PathEscape(string(id)), itemId, newIndex),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -16,13 +16,13 @@ func TestOperationGetTrickplayTileImage(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "image/png", "file bytes")
-	result, err := c.GetTrickplayTileImage(t.Context(), "p/itemId", 7, 7, "v-MediaSourceId")
+	result, err := c.GetTrickplayTileImage(t.Context(), jf.ItemID("v-itemId"), 7, 7, jf.MediaSourceID("v-MediaSourceId"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2FitemId/Trickplay/7/7.jpg")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-itemId/Trickplay/7/7.jpg")
 	expectQuery(t, r, "mediaSourceId", "v-MediaSourceId")
 	if got := r.Header.Get("Accept"); !strings.HasPrefix(got, "image/*") {
 		t.Errorf("Accept = %q, want image/* asked for first", got)
@@ -37,7 +37,7 @@ func TestOperationGetTrickplayTileImage(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
-	result, err = c.GetTrickplayTileImage(t.Context(), "p/itemId", 7, 7, "v-MediaSourceId")
+	result, err = c.GetTrickplayTileImage(t.Context(), jf.ItemID("v-itemId"), 7, 7, jf.MediaSourceID("v-MediaSourceId"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func TestOperationGetTrickplayTileImage(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
-	result, err = c.GetTrickplayTileImage(t.Context(), "p/itemId", 7, 7, "v-MediaSourceId")
+	result, err = c.GetTrickplayTileImage(t.Context(), jf.ItemID("v-itemId"), 7, 7, jf.MediaSourceID("v-MediaSourceId"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,21 +65,21 @@ func TestOperationGetTrickplayTileImage(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetTrickplayTileImage(t.Context(), "p/itemId", 7, 7, "v-MediaSourceId")
+	result, err = c.GetTrickplayTileImage(t.Context(), jf.ItemID("v-itemId"), 7, 7, jf.MediaSourceID("v-MediaSourceId"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}
 
 	// the option may be left out, and then nothing is sent for it
 	c, s = newOperationServer(t, 200, "image/png", "file bytes")
-	if _, err = c.GetTrickplayTileImage(t.Context(), "p/itemId", 7, 7); err != nil {
+	if _, err = c.GetTrickplayTileImage(t.Context(), jf.ItemID("v-itemId"), 7, 7); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
 	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("mediaSourceId") != "" {
 		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("mediaSourceId"))
 	}
 	// two values are refused before any request
-	if _, err = c.GetTrickplayTileImage(t.Context(), "p/itemId", 7, 7, "v-MediaSourceId", "v-MediaSourceId"); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetTrickplayTileImage(t.Context(), jf.ItemID("v-itemId"), 7, 7, jf.MediaSourceID("v-MediaSourceId"), jf.MediaSourceID("v-MediaSourceId")); err == nil || len(s.requests) != 1 {
 		t.Errorf("two values = %v, %d requests", err, len(s.requests))
 	}
 }

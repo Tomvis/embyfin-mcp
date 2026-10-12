@@ -13,7 +13,7 @@ import (
 )
 
 // AddItemToPlaylist calls POST /Playlists/{playlistId}/Items. Adds items to a playlist.
-func (c Client) AddItemToPlaylist(ctx context.Context, playlistId string, options ...jf.AddItemToPlaylistOptions) (result jf.AddItemToPlaylistResponse, err error) {
+func (c Client) AddItemToPlaylist(ctx context.Context, playlistId jf.ItemID, options ...jf.AddItemToPlaylistOptions) (result jf.AddItemToPlaylistResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("AddItemToPlaylist takes one options struct at most, not %d", len(options))
 		return
@@ -30,7 +30,7 @@ func (c Client) AddItemToPlaylist(ctx context.Context, playlistId string, option
 		HTTPMethod:    http.MethodPost,
 		Operation:     "AddItemToPlaylist",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(playlistId)),
+		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(string(playlistId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -7,7 +7,7 @@ package jf
 // Create new playlist dto.
 type CreatePlaylistDto struct {
 	// Gets or sets item ids to add to the playlist.
-	Ids []string `json:"Ids,omitzero"`
+	Ids []ItemID `json:"Ids,omitzero"`
 
 	// Gets or sets a value indicating whether the playlist is public.
 	IsPublic *bool `json:"IsPublic,omitempty"`
@@ -19,7 +19,7 @@ type CreatePlaylistDto struct {
 	Name string `json:"Name,omitempty"`
 
 	// Gets or sets the user id.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 
 	// Gets or sets the playlist users.
 	Users []PlaylistUserPermissions `json:"Users,omitzero"`

@@ -419,7 +419,7 @@ func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields stri
 		SearchTerm:       opts.SearchTerm,
 		IncludeItemTypes: opts.IncludeItemTypes,
 		ExcludeItemTypes: opts.ExcludeItemTypes,
-		ParentId:         opts.ParentID,
+		ParentId:         emby.ItemID(opts.ParentID),
 		PersonIds:        opts.PersonIDs,
 		// Emby reads these as one pipe-delimited value
 		Genres:            strings.Join(opts.Genres, "|"),
@@ -429,7 +429,7 @@ func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields stri
 		Years:             opts.Years,
 		MediaTypes:        opts.MediaTypes,
 		ArtistIds:         opts.ArtistIDs,
-		Ids:               opts.IDs,
+		Ids:               list[emby.ItemID](opts.IDs),
 		Filters:           opts.Filters,
 		SortBy:            opts.SortBy,
 		SortOrder:         opts.SortOrder,
@@ -447,7 +447,7 @@ func (c *Client) searchEmby(ctx context.Context, opts SearchOptions, fields stri
 	// in 10.9 and takes userId as a query parameter instead.
 	var res *emby.QueryResultBaseItemDto
 	if opts.UserID != "" {
-		resp, err := c.emby.Items.GetUsersByUserIdItems(ctx, opts.UserID, embyUserItemsOptions(&o))
+		resp, err := c.emby.Items.GetUsersByUserIdItems(ctx, emby.UserID(opts.UserID), embyUserItemsOptions(&o))
 		if err != nil {
 			return nil, 0, err
 		}
@@ -510,23 +510,23 @@ func (c *Client) searchJF(ctx context.Context, opts SearchOptions, fields string
 		SearchTerm:          opts.SearchTerm,
 		IncludeItemTypes:    list[jf.BaseItemKind](opts.IncludeItemTypes),
 		ExcludeItemTypes:    list[jf.BaseItemKind](opts.ExcludeItemTypes),
-		ParentId:            opts.ParentID,
-		PersonIds:           list[string](opts.PersonIDs),
+		ParentId:            jf.ItemID(opts.ParentID),
+		PersonIds:           apiclient.StringIDs[jf.ItemID](list[string](opts.PersonIDs)),
 		Genres:              opts.Genres,
 		Tags:                opts.Tags,
 		Studios:             opts.Studios,
 		OfficialRatings:     opts.OfficialRatings,
 		Years:               years,
 		MediaTypes:          list[jf.MediaType](opts.MediaTypes),
-		ArtistIds:           list[string](opts.ArtistIDs),
+		ArtistIds:           apiclient.StringIDs[jf.ItemID](list[string](opts.ArtistIDs)),
 		ParentIndexNumber:   opts.ParentIndexNumber,
-		Ids:                 list[string](opts.IDs),
+		Ids:                 apiclient.StringIDs[jf.ItemID](list[string](opts.IDs)),
 		Filters:             list[jf.ItemFilter](opts.Filters),
 		SortBy:              list[jf.ItemSortBy](opts.SortBy),
 		SortOrder:           list[jf.SortOrder](opts.SortOrder),
 		MinDateLastSaved:    opts.SavedSince,
 		IsMissing:           opts.IsMissing,
-		UserId:              opts.UserID,
+		UserId:              jf.UserID(opts.UserID),
 		Limit:               limit,
 		StartIndex:          nz(opts.StartIndex),
 	}
@@ -630,10 +630,10 @@ func (c *Client) ItemsByAnyProviderID(ctx context.Context, ids []string) ([]Item
 		return nil, errors.New("jellyfin cannot find items by several provider ids at once")
 	}
 	res, err := c.emby.Items.GetItems(ctx, emby.GetItemsOptions{
-		Recursive:           new(true),
-		Fields:              FieldsDefault,
-		IncludeItemTypes:    ProviderIDTypes,
-		AnyProviderIdEquals: strings.Join(ids, ","),
+		Recursive:               new(true),
+		Fields:                  FieldsDefault,
+		IncludeItemTypes:        ProviderIDTypes,
+		AnyProviderIdEqualsList: ids,
 	})
 	if err != nil {
 		return nil, err
@@ -657,7 +657,7 @@ func (c *Client) ItemsByAnyProviderID(ctx context.Context, ids []string) ([]Item
 // userID is required: Emby returns HTTP 500 for /Similar without one.
 func (c *Client) Similar(ctx context.Context, id, userID string, limit int) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.Library.GetItemsByIdSimilar(ctx, id, emby.GetItemsByIdSimilarOptions{UserId: userID, Fields: FieldsDefault, Limit: nz(limit)})
+		res, err := c.emby.Library.GetItemsByIdSimilar(ctx, emby.ItemID(id), emby.GetItemsByIdSimilarOptions{UserId: emby.UserID(userID), Fields: FieldsDefault, Limit: nz(limit)})
 		if err != nil {
 			return nil, err
 		}
@@ -665,7 +665,7 @@ func (c *Client) Similar(ctx context.Context, id, userID string, limit int) ([]I
 		return itemsFromEmby(orEmpty(res.Answer).Items), nil
 	}
 
-	res, err := c.jf.Library.GetSimilarItems(ctx, id, jf.GetSimilarItemsOptions{UserId: userID, Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
+	res, err := c.jf.Library.GetSimilarItems(ctx, jf.ItemID(id), jf.GetSimilarItemsOptions{UserId: jf.UserID(userID), Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
 	if err != nil {
 		return nil, err
 	}
@@ -676,7 +676,7 @@ func (c *Client) Similar(ctx context.Context, id, userID string, limit int) ([]I
 // InstantMix builds a music mix seeded from a song, album, artist, or genre.
 func (c *Client) InstantMix(ctx context.Context, id string, limit int) ([]Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.InstantMix.GetItemsByIdInstantMix(ctx, id, emby.GetItemsByIdInstantMixOptions{Fields: FieldsDefault, Limit: nz(limit)})
+		res, err := c.emby.InstantMix.GetItemsByIdInstantMix(ctx, emby.ItemID(id), emby.GetItemsByIdInstantMixOptions{Fields: FieldsDefault, Limit: nz(limit)})
 		if err != nil {
 			return nil, err
 		}
@@ -706,7 +706,7 @@ func (c *Client) InstantMix(ctx context.Context, id string, limit int) ([]Item, 
 		}
 		mixes := make([][]Item, 0, len(songs))
 		for i := range songs {
-			res, err := c.emby.InstantMix.GetItemsByIdInstantMix(ctx, songs[i].ID, emby.GetItemsByIdInstantMixOptions{Fields: FieldsDefault, Limit: nz(limit)})
+			res, err := c.emby.InstantMix.GetItemsByIdInstantMix(ctx, emby.ItemID(songs[i].ID), emby.GetItemsByIdInstantMixOptions{Fields: FieldsDefault, Limit: nz(limit)})
 			if err != nil {
 				return nil, err
 			}
@@ -716,7 +716,7 @@ func (c *Client) InstantMix(ctx context.Context, id string, limit int) ([]Item, 
 		return interleave(mixes, limit), nil
 	}
 
-	res, err := c.jf.InstantMix.GetInstantMixFromItem(ctx, id, jf.GetInstantMixFromItemOptions{Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
+	res, err := c.jf.InstantMix.GetInstantMixFromItem(ctx, jf.ItemID(id), jf.GetInstantMixFromItemOptions{Fields: list[jf.ItemFields](FieldsDefault), Limit: nz(limit)})
 	if err != nil {
 		return nil, err
 	}
@@ -777,14 +777,14 @@ func (c *Client) RefreshItem(ctx context.Context, id string, replaceAll bool) (b
 		replace = new(true)
 	}
 	if c.isEmby() {
-		_, err = c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, id, emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
+		_, err = c.emby.ItemRefresh.PostItemsByIdRefresh(ctx, emby.ItemID(id), emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
 			MetadataRefreshMode: emby.MetadataRefreshModeFullRefresh,
 			ImageRefreshMode:    emby.MetadataRefreshModeFullRefresh,
 			ReplaceAllMetadata:  replace,
 			ReplaceAllImages:    replace,
 		})
 	} else {
-		_, err = c.jf.Library.RefreshItem(ctx, id, jf.RefreshItemOptions{
+		_, err = c.jf.Library.RefreshItem(ctx, jf.ItemID(id), jf.RefreshItemOptions{
 			MetadataRefreshMode: jf.MetadataRefreshModeFullRefresh,
 			ImageRefreshMode:    jf.MetadataRefreshModeFullRefresh,
 			ReplaceAllMetadata:  replace,
@@ -805,11 +805,11 @@ func (c *Client) RefreshItem(ctx context.Context, id string, replaceAll bool) (b
 // DeleteItem permanently removes an item AND its media file from disk.
 func (c *Client) DeleteItem(ctx context.Context, id string) error {
 	if c.isEmby() {
-		_, err := c.emby.Library.DeleteItemsById(ctx, id)
+		_, err := c.emby.Library.DeleteItemsById(ctx, emby.ItemID(id))
 		return err
 	}
 
-	_, err := c.jf.Library.DeleteItem(ctx, id)
+	_, err := c.jf.Library.DeleteItem(ctx, jf.ItemID(id))
 
 	return err
 }
@@ -824,11 +824,11 @@ func (c *Client) DeleteItems(ctx context.Context, ids []string) error {
 		return nil
 	}
 	if c.isEmby() {
-		_, err := c.emby.Library.DeleteItems(ctx, strings.Join(ids, ","))
+		_, err := c.emby.Library.DeleteItems(ctx, apiclient.StringIDs[emby.ItemID](ids))
 		return err
 	}
 
-	_, err := c.jf.Library.DeleteItems(ctx, ids...)
+	_, err := c.jf.Library.DeleteItems(ctx, apiclient.StringIDs[jf.ItemID](ids)...)
 
 	return err
 }
@@ -838,7 +838,7 @@ func (c *Client) DeleteItems(ctx context.Context, ids []string) error {
 // only when asked for them: embyPlayFields).
 func (c *Client) UserItem(ctx context.Context, userID, itemID string) (*Item, error) {
 	if c.isEmby() {
-		res, err := c.emby.UserLibrary.GetUsersByUserIdItemsById(ctx, userID, itemID)
+		res, err := c.emby.UserLibrary.GetUsersByUserIdItemsById(ctx, emby.UserID(userID), emby.ItemID(itemID))
 		if err != nil {
 			return nil, err
 		}
@@ -850,7 +850,7 @@ func (c *Client) UserItem(ctx context.Context, userID, itemID string) (*Item, er
 		return &it, nil
 	}
 
-	res, err := c.jf.Library.GetItem(ctx, itemID, userID)
+	res, err := c.jf.Library.GetItem(ctx, jf.ItemID(itemID), jf.UserID(userID))
 	if err != nil {
 		return nil, err
 	}
@@ -866,7 +866,7 @@ func (c *Client) UserItem(ctx context.Context, userID, itemID string) (*Item, er
 // post leaves out).
 func (c *Client) FullItem(ctx context.Context, userID, itemID string) (map[string]any, error) {
 	if c.isEmby() {
-		res, err := c.emby.UserLibrary.GetUsersByUserIdItemsById(ctx, userID, itemID)
+		res, err := c.emby.UserLibrary.GetUsersByUserIdItemsById(ctx, emby.UserID(userID), emby.ItemID(itemID))
 		if err != nil {
 			return nil, err
 		}
@@ -878,7 +878,7 @@ func (c *Client) FullItem(ctx context.Context, userID, itemID string) (map[strin
 		return toMap(res.Answer)
 	}
 
-	res, err := c.jf.Library.GetItem(ctx, itemID, userID)
+	res, err := c.jf.Library.GetItem(ctx, jf.ItemID(itemID), jf.UserID(userID))
 	if err != nil {
 		return nil, err
 	}
@@ -896,7 +896,7 @@ func (c *Client) UpdateItem(ctx context.Context, itemID string, full map[string]
 		if err := fromMap(full, &dto); err != nil {
 			return err
 		}
-		_, err := c.emby.ItemUpdate.PostItemsByItemId(ctx, itemID, dto)
+		_, err := c.emby.ItemUpdate.PostItemsByItemId(ctx, emby.ItemID(itemID), dto)
 
 		return err
 	}
@@ -905,7 +905,7 @@ func (c *Client) UpdateItem(ctx context.Context, itemID string, full map[string]
 	if err := fromMap(full, &dto); err != nil {
 		return err
 	}
-	_, err := c.jf.ItemUpdate.UpdateItem(ctx, itemID, dto)
+	_, err := c.jf.ItemUpdate.UpdateItem(ctx, jf.ItemID(itemID), dto)
 
 	return err
 }

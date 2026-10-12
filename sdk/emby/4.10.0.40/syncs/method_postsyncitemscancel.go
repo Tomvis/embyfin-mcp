@@ -4,7 +4,6 @@ package syncs
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
@@ -12,14 +11,10 @@ import (
 )
 
 // PostSyncItemsCancel calls POST /Sync/Items/Cancel. Cancels items from a sync target.
-func (c Client) PostSyncItemsCancel(ctx context.Context, itemIds ...string) (result emby.PostSyncItemsCancelResponse, err error) {
+func (c Client) PostSyncItemsCancel(ctx context.Context, itemIds ...emby.ItemID) (result emby.PostSyncItemsCancelResponse, err error) {
 	var option emby.PostSyncItemsCancelOptions
-	if len(itemIds) > 1 {
-		err = fmt.Errorf("PostSyncItemsCancel takes one itemIds at most, not %d", len(itemIds))
-		return
-	}
-	if len(itemIds) == 1 {
-		option.ItemIds = itemIds[0]
+	if len(itemIds) > 0 {
+		option.ItemIds = itemIds
 	}
 
 	opts := client.RequestOptions{

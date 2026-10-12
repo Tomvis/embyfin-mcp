@@ -16,17 +16,17 @@ func TestOperationGetVideosByIdSubtitlesM3u8(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err := c.GetVideosByIdSubtitlesM3u8(t.Context(), "p/id", emby.GetVideosByIdSubtitlesM3u8Options{
+	result, err := c.GetVideosByIdSubtitlesM3u8(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdSubtitlesM3u8Options{
 		SubtitleSegmentLength: new(7),
 		ManifestSubtitles:     "v-ManifestSubtitles",
-		MediaSourceId:         "v-MediaSourceId",
+		MediaSourceId:         emby.MediaSourceID("v-MediaSourceId"),
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2Fid/subtitles.m3u8")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-id/subtitles.m3u8")
 	expectQuery(t, r, "SubtitleSegmentLength", "7")
 	expectQuery(t, r, "ManifestSubtitles", "v-ManifestSubtitles")
 	expectQuery(t, r, "MediaSourceId", "v-MediaSourceId")
@@ -43,10 +43,10 @@ func TestOperationGetVideosByIdSubtitlesM3u8(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err = c.GetVideosByIdSubtitlesM3u8(t.Context(), "p/id", emby.GetVideosByIdSubtitlesM3u8Options{
+	result, err = c.GetVideosByIdSubtitlesM3u8(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdSubtitlesM3u8Options{
 		SubtitleSegmentLength: new(7),
 		ManifestSubtitles:     "v-ManifestSubtitles",
-		MediaSourceId:         "v-MediaSourceId",
+		MediaSourceId:         emby.MediaSourceID("v-MediaSourceId"),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -55,10 +55,10 @@ func TestOperationGetVideosByIdSubtitlesM3u8(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err = c.GetVideosByIdSubtitlesM3u8(t.Context(), "p/id", emby.GetVideosByIdSubtitlesM3u8Options{
+	result, err = c.GetVideosByIdSubtitlesM3u8(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdSubtitlesM3u8Options{
 		SubtitleSegmentLength: new(7),
 		ManifestSubtitles:     "v-ManifestSubtitles",
-		MediaSourceId:         "v-MediaSourceId",
+		MediaSourceId:         emby.MediaSourceID("v-MediaSourceId"),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -79,10 +79,10 @@ func TestOperationGetVideosByIdSubtitlesM3u8(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetVideosByIdSubtitlesM3u8(t.Context(), "p/id", emby.GetVideosByIdSubtitlesM3u8Options{
+	result, err = c.GetVideosByIdSubtitlesM3u8(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdSubtitlesM3u8Options{
 		SubtitleSegmentLength: new(7),
 		ManifestSubtitles:     "v-ManifestSubtitles",
-		MediaSourceId:         "v-MediaSourceId",
+		MediaSourceId:         emby.MediaSourceID("v-MediaSourceId"),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

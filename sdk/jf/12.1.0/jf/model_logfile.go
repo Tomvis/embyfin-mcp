@@ -5,10 +5,10 @@ package jf
 // LogFile is the "LogFile" schema.
 type LogFile struct {
 	// Gets or sets the date created.
-	DateCreated string `json:"DateCreated,omitempty"`
+	DateCreated Time `json:"DateCreated,omitzero"`
 
 	// Gets or sets the date modified.
-	DateModified string `json:"DateModified,omitempty"`
+	DateModified Time `json:"DateModified,omitzero"`
 
 	// Gets or sets the name.
 	Name string `json:"Name,omitempty"`

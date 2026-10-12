@@ -85,7 +85,7 @@ type GetAudioByIdUniversalByContainerOptions struct {
 	StartTimeTicks *int64
 
 	// The user the stream is for
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -104,7 +104,7 @@ func (o GetAudioByIdUniversalByContainerOptions) ToQuery() *client.QueryParams {
 		out.Append("StartTimeTicks", strconv.FormatInt(*o.StartTimeTicks, 10))
 	}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

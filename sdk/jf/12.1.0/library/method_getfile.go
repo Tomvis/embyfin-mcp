@@ -13,7 +13,7 @@ import (
 )
 
 // GetFile calls GET /Items/{itemId}/File. Get the original file of an item.
-func (c Client) GetFile(ctx context.Context, itemId string) (result jf.GetFileResponse, err error) {
+func (c Client) GetFile(ctx context.Context, itemId jf.ItemID) (result jf.GetFileResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "audio/*",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetFile(ctx context.Context, itemId string) (result jf.GetFileRe
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetFile",
-		Path:           fmt.Sprintf("/Items/%s/File", url.PathEscape(itemId)),
+		Path:           fmt.Sprintf("/Items/%s/File", url.PathEscape(string(itemId))),
 		StreamResponse: true,
 	}
 

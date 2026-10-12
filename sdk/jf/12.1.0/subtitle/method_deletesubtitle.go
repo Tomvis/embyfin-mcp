@@ -13,14 +13,14 @@ import (
 )
 
 // DeleteSubtitle calls DELETE /Videos/{itemId}/Subtitles/{index}. Deletes an external subtitle file.
-func (c Client) DeleteSubtitle(ctx context.Context, itemId string, index int) (result jf.DeleteSubtitleResponse, err error) {
+func (c Client) DeleteSubtitle(ctx context.Context, itemId jf.ItemID, index int) (result jf.DeleteSubtitleResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteSubtitle",
-		Path:       fmt.Sprintf("/Videos/%s/Subtitles/%d", url.PathEscape(itemId), index),
+		Path:       fmt.Sprintf("/Videos/%s/Subtitles/%d", url.PathEscape(string(itemId)), index),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -13,7 +13,7 @@ import (
 )
 
 // GetSubtitlePlaylist calls GET /Videos/{itemId}/{mediaSourceId}/Subtitles/{index}/subtitles.m3u8. Gets an HLS subtitle playlist.
-func (c Client) GetSubtitlePlaylist(ctx context.Context, itemId string, mediaSourceId string, index int, segmentLength int) (result jf.GetSubtitlePlaylistResponse, err error) {
+func (c Client) GetSubtitlePlaylist(ctx context.Context, itemId jf.ItemID, mediaSourceId jf.MediaSourceID, index int, segmentLength int) (result jf.GetSubtitlePlaylistResponse, err error) {
 	var option jf.GetSubtitlePlaylistOptions
 	option.SegmentLength = &segmentLength
 
@@ -25,7 +25,7 @@ func (c Client) GetSubtitlePlaylist(ctx context.Context, itemId string, mediaSou
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetSubtitlePlaylist",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/subtitles.m3u8", url.PathEscape(itemId), url.PathEscape(mediaSourceId), index),
+		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/subtitles.m3u8", url.PathEscape(string(itemId)), url.PathEscape(string(mediaSourceId)), index),
 		StreamResponse: true,
 	}
 

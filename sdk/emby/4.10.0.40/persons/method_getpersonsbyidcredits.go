@@ -13,7 +13,7 @@ import (
 )
 
 // GetPersonsByIdCredits calls GET /Persons/{Id}/Credits. Gets credits for a person.
-func (c Client) GetPersonsByIdCredits(ctx context.Context, id string) (result emby.GetPersonsByIdCreditsResponse, err error) {
+func (c Client) GetPersonsByIdCredits(ctx context.Context, id emby.ItemID) (result emby.GetPersonsByIdCreditsResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) GetPersonsByIdCredits(ctx context.Context, id string) (result em
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetPersonsByIdCredits",
-		Path:       fmt.Sprintf("/Persons/%s/Credits", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Persons/%s/Credits", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

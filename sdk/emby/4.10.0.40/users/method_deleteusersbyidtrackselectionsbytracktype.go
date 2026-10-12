@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteUsersByIdTrackSelectionsByTrackType calls DELETE /Users/{Id}/TrackSelections/{TrackType}. Clears audio or subtitle track selections for a user.
-func (c Client) DeleteUsersByIdTrackSelectionsByTrackType(ctx context.Context, id string, trackType string) (result emby.DeleteUsersByIdTrackSelectionsByTrackTypeResponse, err error) {
+func (c Client) DeleteUsersByIdTrackSelectionsByTrackType(ctx context.Context, id emby.UserID, trackType string) (result emby.DeleteUsersByIdTrackSelectionsByTrackTypeResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) DeleteUsersByIdTrackSelectionsByTrackType(ctx context.Context, i
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteUsersByIdTrackSelectionsByTrackType",
-		Path:       fmt.Sprintf("/Users/%s/TrackSelections/%s", url.PathEscape(id), url.PathEscape(trackType)),
+		Path:       fmt.Sprintf("/Users/%s/TrackSelections/%s", url.PathEscape(string(id)), url.PathEscape(trackType)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

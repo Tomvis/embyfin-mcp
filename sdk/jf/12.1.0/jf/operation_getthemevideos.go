@@ -40,7 +40,7 @@ func (r GetThemeVideosResponse) Record() (ThemeMediaResult, error) {
 // GetThemeVideosOptions holds the query and header parameters of GetThemeVideos.
 type GetThemeVideosOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 
 	// Optional. Determines whether or not parent items should be searched for theme media.
 	InheritFromParent *bool
@@ -62,7 +62,7 @@ func (o GetThemeVideosOptions) ToHeaders() *client.Headers {
 func (o GetThemeVideosOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.InheritFromParent != nil {
 		out.Append("inheritFromParent", strconv.FormatBool(*o.InheritFromParent))

@@ -39,7 +39,7 @@ func (r GetMusicGenreResponse) Record() (BaseItemDto, error) {
 // GetMusicGenreOptions holds the query and header parameters of GetMusicGenre.
 type GetMusicGenreOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetMusicGenreOptions) ToHeaders() *client.Headers {
 func (o GetMusicGenreOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

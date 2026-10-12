@@ -42,13 +42,13 @@ type PostPlaylistsOptions struct {
 	Name string
 
 	// Item Ids to add to the playlist
-	Ids string
+	Ids []ItemID
 
 	// The playlist media type
 	MediaType string
 
 	// The user who owns the playlist
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -63,14 +63,14 @@ func (o PostPlaylistsOptions) ToQuery() *client.QueryParams {
 	if o.Name != "" {
 		out.Append("Name", o.Name)
 	}
-	if o.Ids != "" {
-		out.Append("Ids", o.Ids)
+	if len(o.Ids) > 0 {
+		out.Append("Ids", client.Joined(o.Ids))
 	}
 	if o.MediaType != "" {
 		out.Append("MediaType", o.MediaType)
 	}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

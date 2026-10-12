@@ -13,7 +13,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -83,8 +84,13 @@
           "Description": "The item ids",
           "Required": true,
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "ExpectedStatusCodes": [
@@ -103,7 +109,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -499,7 +506,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -611,7 +618,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -712,7 +719,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -820,7 +827,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -921,7 +928,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -1022,7 +1029,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -1133,7 +1140,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -1234,7 +1241,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -1731,7 +1738,7 @@
           "Name": "EpisodeAirDate",
           "JsonName": "EpisodeAirDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -1801,7 +1808,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -1939,7 +1946,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -2040,7 +2047,7 @@
           "Name": "PremiereDate",
           "JsonName": "PremiereDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },

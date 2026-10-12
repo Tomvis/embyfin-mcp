@@ -13,7 +13,7 @@ import (
 )
 
 // PostSessionsByIdUsersByUserIdDelete calls POST /Sessions/{Id}/Users/{UserId}/Delete. Removes an additional user from a session.
-func (c Client) PostSessionsByIdUsersByUserIdDelete(ctx context.Context, id string, userId string) (result emby.PostSessionsByIdUsersByUserIdDeleteResponse, err error) {
+func (c Client) PostSessionsByIdUsersByUserIdDelete(ctx context.Context, id emby.SessionID, userId emby.UserID) (result emby.PostSessionsByIdUsersByUserIdDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostSessionsByIdUsersByUserIdDelete(ctx context.Context, id stri
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostSessionsByIdUsersByUserIdDelete",
-		Path:       fmt.Sprintf("/Sessions/%s/Users/%s/Delete", url.PathEscape(id), url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Sessions/%s/Users/%s/Delete", url.PathEscape(string(id)), url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

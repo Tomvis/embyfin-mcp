@@ -15,12 +15,12 @@ func TestOperationPostUsersByUserIdItemsByItemIdUserData(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostUsersByUserIdItemsByItemIdUserData(t.Context(), "p/userId", "p/itemId", emby.UserItemDataDto{})
+	result, err := c.PostUsersByUserIdItemsByItemIdUserData(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-itemId"), emby.UserItemDataDto{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Users/p%2FuserId/Items/p%2FitemId/UserData")
+	expectRequest(t, r, http.MethodPost, "/Users/v-userId/Items/v-itemId/UserData")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -36,7 +36,7 @@ func TestOperationPostUsersByUserIdItemsByItemIdUserData(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostUsersByUserIdItemsByItemIdUserData(t.Context(), "p/userId", "p/itemId", emby.UserItemDataDto{})
+	result, err = c.PostUsersByUserIdItemsByItemIdUserData(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-itemId"), emby.UserItemDataDto{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

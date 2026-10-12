@@ -38,7 +38,7 @@ type MediaStream struct {
 	IsHearingImpaired               *bool                  `json:"IsHearingImpaired,omitempty"`
 	IsInterlaced                    *bool                  `json:"IsInterlaced,omitempty"`
 	IsTextSubtitleStream            *bool                  `json:"IsTextSubtitleStream,omitempty"`
-	ItemId                          string                 `json:"ItemId,omitempty"`
+	ItemId                          ItemID                 `json:"ItemId,omitempty"`
 	Language                        string                 `json:"Language,omitempty"`
 	Level                           float64                `json:"Level,omitempty"`
 	MimeType                        string                 `json:"MimeType,omitempty"`

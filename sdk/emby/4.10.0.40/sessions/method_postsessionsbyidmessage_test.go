@@ -14,7 +14,7 @@ func TestOperationPostSessionsByIdMessage(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostSessionsByIdMessage(t.Context(), "p/id", emby.PostSessionsByIdMessageOptions{
+	result, err := c.PostSessionsByIdMessage(t.Context(), emby.SessionID("v-id"), emby.PostSessionsByIdMessageOptions{
 		Text:      "v-Text",
 		Header:    "v-Header",
 		TimeoutMs: new(int64(7)),
@@ -24,7 +24,7 @@ func TestOperationPostSessionsByIdMessage(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Sessions/p%2Fid/Message")
+	expectRequest(t, r, http.MethodPost, "/Sessions/v-id/Message")
 	expectQuery(t, r, "Text", "v-Text")
 	expectQuery(t, r, "Header", "v-Header")
 	expectQuery(t, r, "TimeoutMs", "7")
@@ -34,7 +34,7 @@ func TestOperationPostSessionsByIdMessage(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostSessionsByIdMessage(t.Context(), "p/id", emby.PostSessionsByIdMessageOptions{
+	result, err = c.PostSessionsByIdMessage(t.Context(), emby.SessionID("v-id"), emby.PostSessionsByIdMessageOptions{
 		Text:      "v-Text",
 		Header:    "v-Header",
 		TimeoutMs: new(int64(7)),

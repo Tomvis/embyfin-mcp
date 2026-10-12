@@ -43,7 +43,7 @@ type GetShowsByIdEpisodesOptions struct {
 	Season *int
 
 	// Optional. Filter by season id
-	SeasonId string
+	SeasonId ItemID
 
 	// Artist or AlbumArtist
 	ArtistType string
@@ -73,22 +73,22 @@ type GetShowsByIdEpisodesOptions struct {
 	AdjacentTo string
 
 	// Optional. Skip through the list until a given item is found.
-	StartItemId string
+	StartItemId ItemID
 
 	// Optional filter by minimum index number.
 	MinIndexNumber *int
 
 	// Optional. The minimum premiere date. Format = ISO
-	MinStartDate string
+	MinStartDate Time
 
 	// Optional. The maximum premiere date. Format = ISO
-	MaxStartDate string
+	MaxStartDate Time
 
 	// Optional. The minimum premiere date. Format = ISO
-	MinEndDate string
+	MinEndDate Time
 
 	// Optional. The maximum premiere date. Format = ISO
-	MaxEndDate string
+	MaxEndDate Time
 
 	// Optional filter by minimum number of game players.
 	MinPlayers *int
@@ -118,16 +118,16 @@ type GetShowsByIdEpisodesOptions struct {
 	AiredDuringSeason *int
 
 	// Optional. The minimum premiere date. Format = ISO
-	MinPremiereDate string
+	MinPremiereDate Time
 
 	// Optional. The minimum premiere date. Format = ISO
-	MinDateLastSaved string
+	MinDateLastSaved Time
 
 	// Optional. The minimum premiere date. Format = ISO
-	MinDateLastSavedForUser string
+	MinDateLastSavedForUser Time
 
 	// Optional. The maximum premiere date. Format = ISO
-	MaxPremiereDate string
+	MaxPremiereDate Time
 
 	// Optional filter by items that have an overview or not.
 	HasOverview *bool
@@ -142,7 +142,7 @@ type GetShowsByIdEpisodesOptions struct {
 	HasTvdbId *bool
 
 	// Optional. If specified, results will be filtered by exxcluding item ids. This allows multiple, comma delimeted.
-	ExcludeItemIds string
+	ExcludeItemIds []ItemID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -160,7 +160,7 @@ type GetShowsByIdEpisodesOptions struct {
 	SortOrder string
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines
 	Fields string
@@ -277,7 +277,7 @@ type GetShowsByIdEpisodesOptions struct {
 	Albums string
 
 	// Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.
-	Ids string
+	Ids []ItemID
 
 	// Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.
 	VideoTypes string
@@ -304,7 +304,7 @@ type GetShowsByIdEpisodesOptions struct {
 	Path string
 
 	// User Id
-	UserId string
+	UserId UserID
 
 	// Optional filter by minimum official rating (PG, PG-13, TV-MA, etc).
 	MinOfficialRating string
@@ -341,6 +341,96 @@ type GetShowsByIdEpisodesOptions struct {
 
 	// Optional filter by items whose name is equally or lesser than a given input string.
 	NameLessThan string
+
+	// Optional. If specified, result will be filtered to contain only items which match at least one of the specified IDs. Each provider ID must be in the form 'prov.id', e.g. 'imdb.tt123456'. This allows multiple, comma delimeted value pairs.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	AnyProviderIdEqualsList []string
+
+	// Optional filter by AudioCodec. Allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	AudioCodecsList []string
+
+	// Optional filter by AudioLayout. Allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	AudioLayoutsList []string
+
+	// Optional filter by Container. Allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	ContainersList []string
+
+	// Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	ExcludeItemTypesList []string
+
+	// Optional filter by ExtendedVideoType. Allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	ExtendedVideoTypesList []ExtendedVideoTypes
+
+	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	FieldsList []string
+
+	// Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	FiltersList []string
+
+	// Optional. If specified, results will be filtered based on those containing image types. This allows multiple, comma delimited.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	ImageTypesList []ImageType
+
+	// Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	IncludeItemTypesList []string
+
+	// Optional filter by MediaType. Allows multiple, comma delimited.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	MediaTypesList []string
+
+	// Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	PersonTypesList []PersonType
+
+	// Optional filter by Series Status. Allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	SeriesStatusList []string
+
+	// Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	SortByList []string
+
+	// Optional filter by SubtitleCodec. Allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	SubtitleCodecsList []string
+
+	// Optional filter by VideoCodec. Allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	VideoCodecsList []string
+
+	// Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	VideoTypesList []string
+
+	// Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimeted.
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	YearsList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -356,7 +446,7 @@ func (o GetShowsByIdEpisodesOptions) ToQuery() *client.QueryParams {
 		out.Append("Season", strconv.Itoa(*o.Season))
 	}
 	if o.SeasonId != "" {
-		out.Append("SeasonId", o.SeasonId)
+		out.Append("SeasonId", string(o.SeasonId))
 	}
 	if o.ArtistType != "" {
 		out.Append("ArtistType", o.ArtistType)
@@ -386,22 +476,22 @@ func (o GetShowsByIdEpisodesOptions) ToQuery() *client.QueryParams {
 		out.Append("AdjacentTo", o.AdjacentTo)
 	}
 	if o.StartItemId != "" {
-		out.Append("StartItemId", o.StartItemId)
+		out.Append("StartItemId", string(o.StartItemId))
 	}
 	if o.MinIndexNumber != nil {
 		out.Append("MinIndexNumber", strconv.Itoa(*o.MinIndexNumber))
 	}
-	if o.MinStartDate != "" {
-		out.Append("MinStartDate", o.MinStartDate)
+	if !o.MinStartDate.IsZero() {
+		out.Append("MinStartDate", o.MinStartDate.As(sendDateAs("GetShowsByIdEpisodes", "MinStartDate")))
 	}
-	if o.MaxStartDate != "" {
-		out.Append("MaxStartDate", o.MaxStartDate)
+	if !o.MaxStartDate.IsZero() {
+		out.Append("MaxStartDate", o.MaxStartDate.As(sendDateAs("GetShowsByIdEpisodes", "MaxStartDate")))
 	}
-	if o.MinEndDate != "" {
-		out.Append("MinEndDate", o.MinEndDate)
+	if !o.MinEndDate.IsZero() {
+		out.Append("MinEndDate", o.MinEndDate.As(sendDateAs("GetShowsByIdEpisodes", "MinEndDate")))
 	}
-	if o.MaxEndDate != "" {
-		out.Append("MaxEndDate", o.MaxEndDate)
+	if !o.MaxEndDate.IsZero() {
+		out.Append("MaxEndDate", o.MaxEndDate.As(sendDateAs("GetShowsByIdEpisodes", "MaxEndDate")))
 	}
 	if o.MinPlayers != nil {
 		out.Append("MinPlayers", strconv.Itoa(*o.MinPlayers))
@@ -430,17 +520,17 @@ func (o GetShowsByIdEpisodesOptions) ToQuery() *client.QueryParams {
 	if o.AiredDuringSeason != nil {
 		out.Append("AiredDuringSeason", strconv.Itoa(*o.AiredDuringSeason))
 	}
-	if o.MinPremiereDate != "" {
-		out.Append("MinPremiereDate", o.MinPremiereDate)
+	if !o.MinPremiereDate.IsZero() {
+		out.Append("MinPremiereDate", o.MinPremiereDate.As(sendDateAs("GetShowsByIdEpisodes", "MinPremiereDate")))
 	}
-	if o.MinDateLastSaved != "" {
-		out.Append("MinDateLastSaved", o.MinDateLastSaved)
+	if !o.MinDateLastSaved.IsZero() {
+		out.Append("MinDateLastSaved", o.MinDateLastSaved.As(sendDateAs("GetShowsByIdEpisodes", "MinDateLastSaved")))
 	}
-	if o.MinDateLastSavedForUser != "" {
-		out.Append("MinDateLastSavedForUser", o.MinDateLastSavedForUser)
+	if !o.MinDateLastSavedForUser.IsZero() {
+		out.Append("MinDateLastSavedForUser", o.MinDateLastSavedForUser.As(sendDateAs("GetShowsByIdEpisodes", "MinDateLastSavedForUser")))
 	}
-	if o.MaxPremiereDate != "" {
-		out.Append("MaxPremiereDate", o.MaxPremiereDate)
+	if !o.MaxPremiereDate.IsZero() {
+		out.Append("MaxPremiereDate", o.MaxPremiereDate.As(sendDateAs("GetShowsByIdEpisodes", "MaxPremiereDate")))
 	}
 	if o.HasOverview != nil {
 		out.Append("HasOverview", strconv.FormatBool(*o.HasOverview))
@@ -454,8 +544,8 @@ func (o GetShowsByIdEpisodesOptions) ToQuery() *client.QueryParams {
 	if o.HasTvdbId != nil {
 		out.Append("HasTvdbId", strconv.FormatBool(*o.HasTvdbId))
 	}
-	if o.ExcludeItemIds != "" {
-		out.Append("ExcludeItemIds", o.ExcludeItemIds)
+	if len(o.ExcludeItemIds) > 0 {
+		out.Append("ExcludeItemIds", client.Joined(o.ExcludeItemIds))
 	}
 	if o.StartIndex != nil {
 		out.Append("StartIndex", strconv.Itoa(*o.StartIndex))
@@ -473,7 +563,7 @@ func (o GetShowsByIdEpisodesOptions) ToQuery() *client.QueryParams {
 		out.Append("SortOrder", o.SortOrder)
 	}
 	if o.ParentId != "" {
-		out.Append("ParentId", o.ParentId)
+		out.Append("ParentId", string(o.ParentId))
 	}
 	if o.Fields != "" {
 		out.Append("Fields", o.Fields)
@@ -589,8 +679,8 @@ func (o GetShowsByIdEpisodesOptions) ToQuery() *client.QueryParams {
 	if o.Albums != "" {
 		out.Append("Albums", o.Albums)
 	}
-	if o.Ids != "" {
-		out.Append("Ids", o.Ids)
+	if len(o.Ids) > 0 {
+		out.Append("Ids", client.Joined(o.Ids))
 	}
 	if o.VideoTypes != "" {
 		out.Append("VideoTypes", o.VideoTypes)
@@ -617,7 +707,7 @@ func (o GetShowsByIdEpisodesOptions) ToQuery() *client.QueryParams {
 		out.Append("Path", o.Path)
 	}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	if o.MinOfficialRating != "" {
 		out.Append("MinOfficialRating", o.MinOfficialRating)
@@ -654,6 +744,60 @@ func (o GetShowsByIdEpisodesOptions) ToQuery() *client.QueryParams {
 	}
 	if o.NameLessThan != "" {
 		out.Append("NameLessThan", o.NameLessThan)
+	}
+	if len(o.AnyProviderIdEqualsList) > 0 {
+		out.Append("AnyProviderIdEquals", client.CSV(o.AnyProviderIdEqualsList))
+	}
+	if len(o.AudioCodecsList) > 0 {
+		out.Append("AudioCodecs", client.CSV(o.AudioCodecsList))
+	}
+	if len(o.AudioLayoutsList) > 0 {
+		out.Append("AudioLayouts", client.CSV(o.AudioLayoutsList))
+	}
+	if len(o.ContainersList) > 0 {
+		out.Append("Containers", client.CSV(o.ContainersList))
+	}
+	if len(o.ExcludeItemTypesList) > 0 {
+		out.Append("ExcludeItemTypes", client.CSV(o.ExcludeItemTypesList))
+	}
+	if len(o.ExtendedVideoTypesList) > 0 {
+		out.Append("ExtendedVideoTypes", client.Joined(o.ExtendedVideoTypesList))
+	}
+	if len(o.FieldsList) > 0 {
+		out.Append("Fields", client.CSV(o.FieldsList))
+	}
+	if len(o.FiltersList) > 0 {
+		out.Append("Filters", client.CSV(o.FiltersList))
+	}
+	if len(o.ImageTypesList) > 0 {
+		out.Append("ImageTypes", client.Joined(o.ImageTypesList))
+	}
+	if len(o.IncludeItemTypesList) > 0 {
+		out.Append("IncludeItemTypes", client.CSV(o.IncludeItemTypesList))
+	}
+	if len(o.MediaTypesList) > 0 {
+		out.Append("MediaTypes", client.CSV(o.MediaTypesList))
+	}
+	if len(o.PersonTypesList) > 0 {
+		out.Append("PersonTypes", client.Joined(o.PersonTypesList))
+	}
+	if len(o.SeriesStatusList) > 0 {
+		out.Append("SeriesStatus", client.CSV(o.SeriesStatusList))
+	}
+	if len(o.SortByList) > 0 {
+		out.Append("SortBy", client.CSV(o.SortByList))
+	}
+	if len(o.SubtitleCodecsList) > 0 {
+		out.Append("SubtitleCodecs", client.CSV(o.SubtitleCodecsList))
+	}
+	if len(o.VideoCodecsList) > 0 {
+		out.Append("VideoCodecs", client.CSV(o.VideoCodecsList))
+	}
+	if len(o.VideoTypesList) > 0 {
+		out.Append("VideoTypes", client.CSV(o.VideoTypesList))
+	}
+	if len(o.YearsList) > 0 {
+		out.Append("Years", client.CSV(o.YearsList))
 	}
 	return &out
 }

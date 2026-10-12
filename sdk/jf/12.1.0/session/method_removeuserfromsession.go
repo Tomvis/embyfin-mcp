@@ -13,14 +13,14 @@ import (
 )
 
 // RemoveUserFromSession calls DELETE /Sessions/{sessionId}/User/{userId}. Removes an additional user from a session.
-func (c Client) RemoveUserFromSession(ctx context.Context, sessionId string, userId string) (result jf.RemoveUserFromSessionResponse, err error) {
+func (c Client) RemoveUserFromSession(ctx context.Context, sessionId jf.SessionID, userId jf.UserID) (result jf.RemoveUserFromSessionResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "RemoveUserFromSession",
-		Path:       fmt.Sprintf("/Sessions/%s/User/%s", url.PathEscape(sessionId), url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Sessions/%s/User/%s", url.PathEscape(string(sessionId)), url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

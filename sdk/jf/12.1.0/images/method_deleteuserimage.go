@@ -12,7 +12,7 @@ import (
 )
 
 // DeleteUserImage calls DELETE /UserImage. Delete the user's image.
-func (c Client) DeleteUserImage(ctx context.Context, userId ...string) (result jf.DeleteUserImageResponse, err error) {
+func (c Client) DeleteUserImage(ctx context.Context, userId ...jf.UserID) (result jf.DeleteUserImageResponse, err error) {
 	var option jf.DeleteUserImageOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("DeleteUserImage takes one userId at most, not %d", len(userId))

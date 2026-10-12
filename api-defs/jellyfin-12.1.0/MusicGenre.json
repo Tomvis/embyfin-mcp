@@ -25,7 +25,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id, and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],

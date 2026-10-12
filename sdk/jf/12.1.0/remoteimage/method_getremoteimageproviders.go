@@ -13,14 +13,14 @@ import (
 )
 
 // GetRemoteImageProviders calls GET /Items/{itemId}/RemoteImages/Providers. Gets available remote image providers for an item.
-func (c Client) GetRemoteImageProviders(ctx context.Context, itemId string) (result jf.GetRemoteImageProvidersResponse, err error) {
+func (c Client) GetRemoteImageProviders(ctx context.Context, itemId jf.ItemID) (result jf.GetRemoteImageProvidersResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetRemoteImageProviders",
-		Path:       fmt.Sprintf("/Items/%s/RemoteImages/Providers", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Items/%s/RemoteImages/Providers", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

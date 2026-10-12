@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,13 +14,13 @@ func TestOperationRemoveItemFromPlaylist(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.RemoveItemFromPlaylist(t.Context(), "p/playlistId", "a", "b")
+	result, err := c.RemoveItemFromPlaylist(t.Context(), jf.ItemID("v-playlistId"), jf.PlaylistItemID("a"), jf.PlaylistItemID("b"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodDelete, "/Playlists/p%2FplaylistId/Items")
+	expectRequest(t, r, http.MethodDelete, "/Playlists/v-playlistId/Items")
 	expectQuery(t, r, "entryIds", "a", "b")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -27,14 +28,14 @@ func TestOperationRemoveItemFromPlaylist(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.RemoveItemFromPlaylist(t.Context(), "p/playlistId", "a", "b")
+	result, err = c.RemoveItemFromPlaylist(t.Context(), jf.ItemID("v-playlistId"), jf.PlaylistItemID("a"), jf.PlaylistItemID("b"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}
 
 	// the option may be left out, and then nothing is sent for it
 	c, s = newOperationServer(t, 204, "", "")
-	if _, err = c.RemoveItemFromPlaylist(t.Context(), "p/playlistId"); err != nil {
+	if _, err = c.RemoveItemFromPlaylist(t.Context(), jf.ItemID("v-playlistId")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
 	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("entryIds") != "" {

@@ -296,7 +296,8 @@
           "In": "Query",
           "Description": "Optional. Attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -539,7 +540,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -790,7 +792,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -799,7 +802,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere start date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -826,7 +829,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere start date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -835,7 +838,7 @@
           "In": "Query",
           "Description": "Optional. The minimum premiere end date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -844,7 +847,7 @@
           "In": "Query",
           "Description": "Optional. The maximum premiere end date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -956,7 +959,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1084,7 +1088,8 @@
           "In": "Query",
           "Description": "Optional. Attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -1136,7 +1141,8 @@
           "In": "Query",
           "Description": "Optional. filter by user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1259,7 +1265,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           }
         },
@@ -1338,7 +1345,8 @@
           "In": "Query",
           "Description": "Optional. Attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -1366,7 +1374,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -1403,7 +1412,8 @@
           "In": "Query",
           "Description": "Optional. Filter by user and attach user data.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -1996,7 +2006,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           },
           "Nullable": true
@@ -2108,7 +2119,7 @@
           "JsonName": "MaxEndDate",
           "Description": "Gets or sets the maximum premiere end date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -2117,7 +2128,7 @@
           "JsonName": "MaxStartDate",
           "Description": "Gets or sets the maximum premiere start date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -2126,7 +2137,7 @@
           "JsonName": "MinEndDate",
           "Description": "Gets or sets the minimum premiere end date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -2135,7 +2146,7 @@
           "JsonName": "MinStartDate",
           "Description": "Gets or sets the minimum premiere start date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -2188,7 +2199,8 @@
           "JsonName": "UserId",
           "Description": "Gets or sets optional. Filter by user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           },
           "Nullable": true
         }
@@ -2203,7 +2215,7 @@
           "JsonName": "EndDate",
           "Description": "Gets or sets the end date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2211,7 +2223,7 @@
           "JsonName": "StartDate",
           "Description": "Gets or sets the start date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         }
       ]
@@ -2558,7 +2570,7 @@
           "JsonName": "EndDate",
           "Description": "Gets or sets the end date of the recording, in UTC.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2675,7 +2687,8 @@
           "JsonName": "ParentBackdropItemId",
           "Description": "Gets or sets the Id of the Parent that has a backdrop if the item does not have one.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -2684,7 +2697,8 @@
           "JsonName": "ParentPrimaryImageItemId",
           "Description": "Gets or sets the parent primary image item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -2711,7 +2725,8 @@
           "JsonName": "ParentThumbItemId",
           "Description": "Gets or sets the parent thumb item id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -2802,7 +2817,7 @@
           "JsonName": "StartDate",
           "Description": "Gets or sets the start date of the recording, in UTC.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -2915,7 +2930,7 @@
           "JsonName": "EndDate",
           "Description": "Gets or sets the end date of the recording, in UTC.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3022,7 +3037,8 @@
           "JsonName": "ParentBackdropItemId",
           "Description": "Gets or sets the Id of the Parent that has a backdrop if the item does not have one.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -3110,7 +3126,7 @@
           "JsonName": "StartDate",
           "Description": "Gets or sets the start date of the recording, in UTC.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

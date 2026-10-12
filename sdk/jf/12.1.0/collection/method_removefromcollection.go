@@ -13,7 +13,7 @@ import (
 )
 
 // RemoveFromCollection calls DELETE /Collections/{collectionId}/Items. Removes items from a collection.
-func (c Client) RemoveFromCollection(ctx context.Context, collectionId string, ids []string) (result jf.RemoveFromCollectionResponse, err error) {
+func (c Client) RemoveFromCollection(ctx context.Context, collectionId jf.ItemID, ids []jf.ItemID) (result jf.RemoveFromCollectionResponse, err error) {
 	var option jf.RemoveFromCollectionOptions
 	option.Ids = ids
 
@@ -24,7 +24,7 @@ func (c Client) RemoveFromCollection(ctx context.Context, collectionId string, i
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "RemoveFromCollection",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(collectionId)),
+		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(string(collectionId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

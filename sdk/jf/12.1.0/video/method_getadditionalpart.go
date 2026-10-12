@@ -13,7 +13,7 @@ import (
 )
 
 // GetAdditionalPart calls GET /Videos/{itemId}/AdditionalParts. Gets additional parts for a video.
-func (c Client) GetAdditionalPart(ctx context.Context, itemId string, userId ...string) (result jf.GetAdditionalPartResponse, err error) {
+func (c Client) GetAdditionalPart(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetAdditionalPartResponse, err error) {
 	var option jf.GetAdditionalPartOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetAdditionalPart takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) GetAdditionalPart(ctx context.Context, itemId string, userId ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetAdditionalPart",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Videos/%s/AdditionalParts", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Videos/%s/AdditionalParts", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

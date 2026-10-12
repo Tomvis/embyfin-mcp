@@ -5,6 +5,6 @@ package emby
 // ForgotPasswordResult is the "ForgotPasswordResult" schema.
 type ForgotPasswordResult struct {
 	Action            ForgotPasswordAction `json:"Action,omitempty"`
-	PinExpirationDate string               `json:"PinExpirationDate,omitempty"`
+	PinExpirationDate Time                 `json:"PinExpirationDate,omitzero"`
 	PinFile           string               `json:"PinFile,omitempty"`
 }

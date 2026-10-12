@@ -531,7 +531,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]

@@ -19,70 +19,70 @@ func TestJFPlaylists(t *testing.T) {
 	a, b := jfMovie(t, sdkacc.Alien), jfMovie(t, sdkacc.Aliens)
 
 	created := sdkacc.Must(jfc.Playlist.CreatePlaylist(ctx, jf.CreatePlaylistDto{
-		Name: "SDK Playlist", Ids: []string{a.Id}, UserId: adminID, MediaType: jf.MediaTypeVideo, IsPublic: new(true),
+		Name: "SDK Playlist", Ids: []jf.ItemID{a.Id}, UserId: adminID, MediaType: jf.MediaTypeVideo, IsPublic: new(true),
 	})).Answer
 	if created.Id == "" {
 		t.Fatal("CreatePlaylist returned no id")
 	}
 	id := created.Id
-	sdkacc.RemoveLater(t, "deleting "+id, func() error { _, err := jfc.Library.DeleteItem(context.WithoutCancel(ctx), id); return err })
+	sdkacc.RemoveLater(t, "deleting "+id, func() error { _, err := jfc.Library.DeleteItem(context.WithoutCancel(ctx), jf.ItemID(id)); return err })
 
 	// the playlist's own record and its share list want a user behind the
 	// request: with an API key the server answers 400 ("Guid can't be
 	// empty") rather than serving them, userId query or not
-	if _, err := jfc.Playlist.GetPlaylist(ctx, id); client.StatusCode(err) != 400 {
+	if _, err := jfc.Playlist.GetPlaylist(ctx, jf.ItemID(id)); client.StatusCode(err) != 400 {
 		t.Errorf("GetPlaylist with an API key = %v, want a 400", err)
 	}
-	if _, err := jfc.Playlist.GetPlaylistUsers(ctx, id); client.StatusCode(err) != 400 {
+	if _, err := jfc.Playlist.GetPlaylistUsers(ctx, jf.ItemID(id)); client.StatusCode(err) != 400 {
 		t.Errorf("GetPlaylistUsers with an API key = %v, want a 400", err)
 	}
 	// and so do the playlist's own update and move, which sdk/embyfin works
 	// around with the item update and a remove and re-add
-	if _, err := jfc.Playlist.UpdatePlaylist(ctx, id, jf.UpdatePlaylistDto{Name: "SDK Renamed"}); client.StatusCode(err) != 400 {
+	if _, err := jfc.Playlist.UpdatePlaylist(ctx, jf.ItemID(id), jf.UpdatePlaylistDto{Name: "SDK Renamed"}); client.StatusCode(err) != 400 {
 		t.Errorf("UpdatePlaylist with an API key = %v, want a 400", err)
 	}
-	if _, err := jfc.Playlist.MoveItem(ctx, id, a.Id, 0); client.StatusCode(err) != 400 {
+	if _, err := jfc.Playlist.MoveItem(ctx, jf.ItemID(id), a.Id, 0); client.StatusCode(err) != 400 {
 		t.Errorf("MoveItem with an API key = %v, want a 400", err)
 	}
 
-	items := sdkacc.Must(jfc.Playlist.GetPlaylistItems(ctx, id, jf.GetPlaylistItemsOptions{UserId: adminID})).Answer
+	items := sdkacc.Must(jfc.Playlist.GetPlaylistItems(ctx, jf.ItemID(id), jf.GetPlaylistItemsOptions{UserId: adminID})).Answer
 	if items.TotalRecordCount != 1 || len(items.Items) != 1 || items.Items[0].Id != a.Id || items.Items[0].PlaylistItemId == "" {
 		t.Fatalf("GetPlaylistItems = %+v", items)
 	}
 
-	if _, err := jfc.Playlist.AddItemToPlaylist(ctx, id, jf.AddItemToPlaylistOptions{Ids: []string{b.Id}, UserId: adminID}); err != nil {
+	if _, err := jfc.Playlist.AddItemToPlaylist(ctx, jf.ItemID(id), jf.AddItemToPlaylistOptions{Ids: []jf.ItemID{b.Id}, UserId: adminID}); err != nil {
 		t.Fatal(err)
 	}
-	items = sdkacc.Must(jfc.Playlist.GetPlaylistItems(ctx, id, jf.GetPlaylistItemsOptions{UserId: adminID})).Answer
+	items = sdkacc.Must(jfc.Playlist.GetPlaylistItems(ctx, jf.ItemID(id), jf.GetPlaylistItemsOptions{UserId: adminID})).Answer
 	if len(items.Items) != 2 || items.Items[1].Id != b.Id {
 		t.Errorf("after AddItemToPlaylist = %+v", items.Items)
 	}
 
 	// an entry's id is its item's id (Emby numbers them), so a refresh
 	// cannot change it
-	if items.Items[0].PlaylistItemId != a.Id || items.Items[1].PlaylistItemId != b.Id {
+	if string(items.Items[0].PlaylistItemId) != string(a.Id) || string(items.Items[1].PlaylistItemId) != string(b.Id) {
 		t.Errorf("entry ids = %s %s, want the item ids %s %s", items.Items[0].PlaylistItemId, items.Items[1].PlaylistItemId, a.Id, b.Id)
 	}
 	// a removal of an entry the playlist does not hold is answered 204 and
 	// changes nothing
-	if _, err := jfc.Playlist.RemoveItemFromPlaylist(ctx, id, []string{"00000000000000000000000000000001"}...); err != nil {
+	if _, err := jfc.Playlist.RemoveItemFromPlaylist(ctx, jf.ItemID(id), []jf.PlaylistItemID{"00000000000000000000000000000001"}...); err != nil {
 		t.Errorf("removing an unknown entry = %v", err)
 	}
-	if n := len(sdkacc.Must(jfc.Playlist.GetPlaylistItems(ctx, id, jf.GetPlaylistItemsOptions{UserId: adminID})).Answer.Items); n != 2 {
+	if n := len(sdkacc.Must(jfc.Playlist.GetPlaylistItems(ctx, jf.ItemID(id), jf.GetPlaylistItemsOptions{UserId: adminID})).Answer.Items); n != 2 {
 		t.Errorf("after removing an unknown entry the playlist holds %d", n)
 	}
 
 	// entries are removed by their playlist entry id
-	if _, err := jfc.Playlist.RemoveItemFromPlaylist(ctx, id, []string{items.Items[0].PlaylistItemId}...); err != nil {
+	if _, err := jfc.Playlist.RemoveItemFromPlaylist(ctx, jf.ItemID(id), []jf.PlaylistItemID{items.Items[0].PlaylistItemId}...); err != nil {
 		t.Fatal(err)
 	}
-	items = sdkacc.Must(jfc.Playlist.GetPlaylistItems(ctx, id, jf.GetPlaylistItemsOptions{UserId: adminID})).Answer
+	items = sdkacc.Must(jfc.Playlist.GetPlaylistItems(ctx, jf.ItemID(id), jf.GetPlaylistItemsOptions{UserId: adminID})).Answer
 	if len(items.Items) != 1 || items.Items[0].Id != b.Id {
 		t.Errorf("after RemoveItemFromPlaylist = %+v", items.Items)
 	}
 
 	// the playlist is an item too
-	if it := sdkacc.Must(jfc.Library.GetItem(ctx, id, adminID)).Answer; it.Type != jf.BaseItemKindPlaylist || it.Name != "SDK Playlist" {
+	if it := sdkacc.Must(jfc.Library.GetItem(ctx, jf.ItemID(id), adminID)).Answer; it.Type != jf.BaseItemKindPlaylist || it.Name != "SDK Playlist" {
 		t.Errorf("the playlist as an item = %+v", it)
 	}
 }
@@ -99,7 +99,7 @@ func TestJFCollections(t *testing.T) {
 
 	jfScanIdle(ctx, t)
 	const name = "SDK Collection"
-	created := sdkacc.Must(jfc.Collection.CreateCollection(ctx, jf.CreateCollectionOptions{Name: name, Ids: []string{a.Id, b.Id}})).Answer
+	created := sdkacc.Must(jfc.Collection.CreateCollection(ctx, jf.CreateCollectionOptions{Name: name, Ids: []jf.ItemID{a.Id, b.Id}})).Answer
 	if created.Id == "" {
 		t.Fatal("CreateCollection returned no id")
 	}
@@ -109,10 +109,10 @@ func TestJFCollections(t *testing.T) {
 	// a collection's children are linked, not parented, and the server only
 	// resolves the links for a user: without UserId the list is empty
 	members := func() []string {
-		res := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{ParentId: id, UserId: adminID, SortBy: []jf.ItemSortBy{jf.ItemSortByName}})).Answer
+		res := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{ParentId: jf.ItemID(id), UserId: adminID, SortBy: []jf.ItemSortBy{jf.ItemSortByName}})).Answer
 		ids := make([]string, 0, len(res.Items))
 		for _, it := range res.Items {
-			ids = append(ids, it.Id)
+			ids = append(ids, string(it.Id))
 		}
 		return ids
 	}
@@ -129,7 +129,7 @@ func TestJFCollections(t *testing.T) {
 		return got, ok
 	}
 	// the create's own members land with nothing sent again
-	if got, ok := holds(sdkacc.EditPatience, a.Id, b.Id); !ok {
+	if got, ok := holds(sdkacc.EditPatience, string(a.Id), string(b.Id)); !ok {
 		t.Fatalf("after CreateCollection members = %v, want %s and %s", got, sdkacc.Alien, sdkacc.Aliens)
 	}
 	// Jellyfin loses an add or a removal made while it is still refreshing
@@ -153,24 +153,24 @@ func TestJFCollections(t *testing.T) {
 		}
 	}
 	change("AddToCollection", func() error {
-		_, err := jfc.Collection.AddToCollection(ctx, id, []string{c.Id})
+		_, err := jfc.Collection.AddToCollection(ctx, jf.ItemID(id), []jf.ItemID{c.Id})
 		return err
-	}, a.Id, b.Id, c.Id)
+	}, string(a.Id), string(b.Id), string(c.Id))
 	change("RemoveFromCollection", func() error {
-		_, err := jfc.Collection.RemoveFromCollection(ctx, id, []string{a.Id})
+		_, err := jfc.Collection.RemoveFromCollection(ctx, jf.ItemID(id), []jf.ItemID{a.Id})
 		return err
-	}, b.Id, c.Id)
+	}, string(b.Id), string(c.Id))
 	// removing an item the collection does not hold is answered 204 and
 	// changes nothing, which is why sdk/embyfin checks membership first
-	if _, err := jfc.Collection.RemoveFromCollection(ctx, id, []string{a.Id}); err != nil {
+	if _, err := jfc.Collection.RemoveFromCollection(ctx, jf.ItemID(id), []jf.ItemID{a.Id}); err != nil {
 		t.Errorf("removing a non-member = %v", err)
 	}
-	if got, ok := holds(sdkacc.EditPatience, b.Id, c.Id); !ok {
+	if got, ok := holds(sdkacc.EditPatience, string(b.Id), string(c.Id)); !ok {
 		t.Errorf("after removing a non-member members = %v", got)
 	}
 	var item *jf.BaseItemDto
 	if !sdkacc.Poll(sdkacc.EditPatience, func() bool {
-		item = sdkacc.Must(jfc.Library.GetItem(ctx, id, adminID)).Answer
+		item = sdkacc.Must(jfc.Library.GetItem(ctx, jf.ItemID(id), adminID)).Answer
 
 		return item != nil && item.Type == jf.BaseItemKindBoxSet && item.Name == name && item.ChildCount == 2
 	}) {
@@ -197,7 +197,7 @@ func jfDeleteCollection(ctx context.Context, t *testing.T, id string) {
 	t.Helper()
 
 	for range 3 {
-		if _, err := jfc.Library.DeleteItem(ctx, id); err != nil && !client.IsNotFound(err) {
+		if _, err := jfc.Library.DeleteItem(ctx, jf.ItemID(id)); err != nil && !client.IsNotFound(err) {
 			t.Errorf("deleting collection %s: %v", id, err)
 			return
 		}
@@ -207,7 +207,7 @@ func jfDeleteCollection(ctx context.Context, t *testing.T, id string) {
 			return
 		}
 		jfWaitForScan(ctx, t, since)
-		if back := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{Ids: []string{id}})).Answer; len(back.Items) == 0 {
+		if back := sdkacc.Must(jfc.Library.GetItems(ctx, jf.GetItemsOptions{Ids: []jf.ItemID{jf.ItemID(id)}})).Answer; len(back.Items) == 0 {
 			return
 		}
 		t.Logf("collection %s came back after a scan; deleting it again", id)

@@ -13,7 +13,7 @@ import (
 )
 
 // GetAudioByIdMasterM3u8 calls GET /Audio/{Id}/master.m3u8. Gets an audio stream using HTTP live streaming.
-func (c Client) GetAudioByIdMasterM3u8(ctx context.Context, id string, options emby.GetAudioByIdMasterM3u8Options) (result emby.GetAudioByIdMasterM3u8Response, err error) {
+func (c Client) GetAudioByIdMasterM3u8(ctx context.Context, id emby.ItemID, options emby.GetAudioByIdMasterM3u8Options) (result emby.GetAudioByIdMasterM3u8Response, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/x-mpegURL",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetAudioByIdMasterM3u8(ctx context.Context, id string, options e
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetAudioByIdMasterM3u8",
 		OptionsObject:  options,
-		Path:           fmt.Sprintf("/Audio/%s/master.m3u8", url.PathEscape(id)),
+		Path:           fmt.Sprintf("/Audio/%s/master.m3u8", url.PathEscape(string(id))),
 		StreamResponse: true,
 	}
 

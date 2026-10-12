@@ -4,7 +4,7 @@ package tmdb
 
 // CreditDetailsAnswerMediaSeasons is an object the document declares inline.
 type CreditDetailsAnswerMediaSeasons struct {
-	AirDate      string `json:"air_date,omitempty"`
+	AirDate      Day    `json:"air_date,omitzero"`
 	EpisodeCount int    `json:"episode_count,omitempty"`
 	Id           int    `json:"id,omitempty"`
 	Name         string `json:"name,omitempty"`

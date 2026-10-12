@@ -40,7 +40,7 @@ func (r GetEpisodesResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetEpisodesOptions holds the query and header parameters of GetEpisodes.
 type GetEpisodesOptions struct {
 	// The user id.
-	UserId string
+	UserId UserID
 
 	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
 	Fields []ItemFields
@@ -49,7 +49,7 @@ type GetEpisodesOptions struct {
 	Season *int
 
 	// Optional. Filter by season id.
-	SeasonId string
+	SeasonId ItemID
 
 	// Optional. Filter by items that are missing episodes or not.
 	IsMissing *bool
@@ -58,7 +58,7 @@ type GetEpisodesOptions struct {
 	AdjacentTo string
 
 	// Optional. Skip through the list until a given item is found.
-	StartItemId string
+	StartItemId ItemID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -92,7 +92,7 @@ func (o GetEpisodesOptions) ToHeaders() *client.Headers {
 func (o GetEpisodesOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))
@@ -101,7 +101,7 @@ func (o GetEpisodesOptions) ToQuery() *client.QueryParams {
 		out.Append("season", strconv.Itoa(*o.Season))
 	}
 	if o.SeasonId != "" {
-		out.Append("seasonId", o.SeasonId)
+		out.Append("seasonId", string(o.SeasonId))
 	}
 	if o.IsMissing != nil {
 		out.Append("isMissing", strconv.FormatBool(*o.IsMissing))
@@ -110,7 +110,7 @@ func (o GetEpisodesOptions) ToQuery() *client.QueryParams {
 		out.Append("adjacentTo", o.AdjacentTo)
 	}
 	if o.StartItemId != "" {
-		out.Append("startItemId", o.StartItemId)
+		out.Append("startItemId", string(o.StartItemId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))

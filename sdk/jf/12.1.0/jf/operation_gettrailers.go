@@ -40,7 +40,7 @@ func (r GetTrailersResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetTrailersOptions holds the query and header parameters of GetTrailers.
 type GetTrailersOptions struct {
 	// The user id supplied as query parameter; this is required when not using an API key.
-	UserId string
+	UserId UserID
 
 	// Optional filter by maximum official rating (PG, PG-13, TV-MA, etc).
 	MaxOfficialRating string
@@ -94,16 +94,16 @@ type GetTrailersOptions struct {
 	MinCriticRating *float64
 
 	// Optional. The minimum premiere date. Format = ISO.
-	MinPremiereDate string
+	MinPremiereDate Time
 
 	// Optional. The minimum last saved date. Format = ISO.
-	MinDateLastSaved string
+	MinDateLastSaved Time
 
 	// Optional. The minimum last saved date for the current user. Format = ISO.
-	MinDateLastSavedForUser string
+	MinDateLastSavedForUser Time
 
 	// Optional. The maximum premiere date. Format = ISO.
-	MaxPremiereDate string
+	MaxPremiereDate Time
 
 	// Optional filter by items that have an overview or not.
 	HasOverview *bool
@@ -133,7 +133,7 @@ type GetTrailersOptions struct {
 	IsSports *bool
 
 	// Optional. If specified, results will be filtered by excluding item ids. This allows multiple, comma delimited.
-	ExcludeItemIds []string
+	ExcludeItemIds []ItemID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -151,7 +151,7 @@ type GetTrailersOptions struct {
 	SortOrder []SortOrder
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
 	Fields []ItemFields
@@ -202,7 +202,7 @@ type GetTrailersOptions struct {
 	Person string
 
 	// Optional. If specified, results will be filtered to include only those containing the specified person id.
-	PersonIds []string
+	PersonIds []ItemID
 
 	// Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
 	PersonTypes []string
@@ -214,25 +214,25 @@ type GetTrailersOptions struct {
 	Artists []string
 
 	// Optional. If specified, results will be filtered based on artist id. This allows multiple, pipe delimited.
-	ExcludeArtistIds []string
+	ExcludeArtistIds []ItemID
 
 	// Optional. If specified, results will be filtered to include only those containing the specified artist id.
-	ArtistIds []string
+	ArtistIds []ItemID
 
 	// Optional. If specified, results will be filtered to include only those containing the specified album artist id.
-	AlbumArtistIds []string
+	AlbumArtistIds []ItemID
 
 	// Optional. If specified, results will be filtered to include only those containing the specified contributing artist id.
-	ContributingArtistIds []string
+	ContributingArtistIds []ItemID
 
 	// Optional. If specified, results will be filtered based on album. This allows multiple, pipe delimited.
 	Albums []string
 
 	// Optional. If specified, results will be filtered based on album id. This allows multiple, pipe delimited.
-	AlbumIds []string
+	AlbumIds []ItemID
 
 	// Optional. If specific items are needed, specify a list of item id's to retrieve. This allows multiple, comma delimited.
-	Ids []string
+	Ids []ItemID
 
 	// Optional filter by VideoType (videofile, dvd, bluray, iso). Allows multiple, comma delimited.
 	VideoTypes []VideoType
@@ -280,10 +280,10 @@ type GetTrailersOptions struct {
 	NameLessThan string
 
 	// Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
-	StudioIds []string
+	StudioIds []ItemID
 
 	// Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-	GenreIds []string
+	GenreIds []ItemID
 
 	// Optional. If specified, results will be filtered based on audio language. This allows multiple, comma delimited values.
 	AudioLanguages []string
@@ -308,7 +308,7 @@ func (o GetTrailersOptions) ToHeaders() *client.Headers {
 func (o GetTrailersOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.MaxOfficialRating != "" {
 		out.Append("maxOfficialRating", o.MaxOfficialRating)
@@ -361,17 +361,17 @@ func (o GetTrailersOptions) ToQuery() *client.QueryParams {
 	if o.MinCriticRating != nil {
 		out.Append("minCriticRating", strconv.FormatFloat(*o.MinCriticRating, 'f', -1, 64))
 	}
-	if o.MinPremiereDate != "" {
-		out.Append("minPremiereDate", o.MinPremiereDate)
+	if !o.MinPremiereDate.IsZero() {
+		out.Append("minPremiereDate", o.MinPremiereDate.As(sendDateAs("GetTrailers", "minPremiereDate")))
 	}
-	if o.MinDateLastSaved != "" {
-		out.Append("minDateLastSaved", o.MinDateLastSaved)
+	if !o.MinDateLastSaved.IsZero() {
+		out.Append("minDateLastSaved", o.MinDateLastSaved.As(sendDateAs("GetTrailers", "minDateLastSaved")))
 	}
-	if o.MinDateLastSavedForUser != "" {
-		out.Append("minDateLastSavedForUser", o.MinDateLastSavedForUser)
+	if !o.MinDateLastSavedForUser.IsZero() {
+		out.Append("minDateLastSavedForUser", o.MinDateLastSavedForUser.As(sendDateAs("GetTrailers", "minDateLastSavedForUser")))
 	}
-	if o.MaxPremiereDate != "" {
-		out.Append("maxPremiereDate", o.MaxPremiereDate)
+	if !o.MaxPremiereDate.IsZero() {
+		out.Append("maxPremiereDate", o.MaxPremiereDate.As(sendDateAs("GetTrailers", "maxPremiereDate")))
 	}
 	if o.HasOverview != nil {
 		out.Append("hasOverview", strconv.FormatBool(*o.HasOverview))
@@ -401,7 +401,7 @@ func (o GetTrailersOptions) ToQuery() *client.QueryParams {
 		out.Append("isSports", strconv.FormatBool(*o.IsSports))
 	}
 	for _, v := range o.ExcludeItemIds {
-		out.Append("excludeItemIds", v)
+		out.Append("excludeItemIds", string(v))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))
@@ -419,7 +419,7 @@ func (o GetTrailersOptions) ToQuery() *client.QueryParams {
 		out.Append("sortOrder", string(v))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))
@@ -470,7 +470,7 @@ func (o GetTrailersOptions) ToQuery() *client.QueryParams {
 		out.Append("person", o.Person)
 	}
 	for _, v := range o.PersonIds {
-		out.Append("personIds", v)
+		out.Append("personIds", string(v))
 	}
 	for _, v := range o.PersonTypes {
 		out.Append("personTypes", v)
@@ -482,25 +482,25 @@ func (o GetTrailersOptions) ToQuery() *client.QueryParams {
 		out.Append("artists", v)
 	}
 	for _, v := range o.ExcludeArtistIds {
-		out.Append("excludeArtistIds", v)
+		out.Append("excludeArtistIds", string(v))
 	}
 	for _, v := range o.ArtistIds {
-		out.Append("artistIds", v)
+		out.Append("artistIds", string(v))
 	}
 	for _, v := range o.AlbumArtistIds {
-		out.Append("albumArtistIds", v)
+		out.Append("albumArtistIds", string(v))
 	}
 	for _, v := range o.ContributingArtistIds {
-		out.Append("contributingArtistIds", v)
+		out.Append("contributingArtistIds", string(v))
 	}
 	for _, v := range o.Albums {
 		out.Append("albums", v)
 	}
 	for _, v := range o.AlbumIds {
-		out.Append("albumIds", v)
+		out.Append("albumIds", string(v))
 	}
 	for _, v := range o.Ids {
-		out.Append("ids", v)
+		out.Append("ids", string(v))
 	}
 	for _, v := range o.VideoTypes {
 		out.Append("videoTypes", string(v))
@@ -548,10 +548,10 @@ func (o GetTrailersOptions) ToQuery() *client.QueryParams {
 		out.Append("nameLessThan", o.NameLessThan)
 	}
 	for _, v := range o.StudioIds {
-		out.Append("studioIds", v)
+		out.Append("studioIds", string(v))
 	}
 	for _, v := range o.GenreIds {
-		out.Append("genreIds", v)
+		out.Append("genreIds", string(v))
 	}
 	for _, v := range o.AudioLanguages {
 		out.Append("audioLanguages", v)

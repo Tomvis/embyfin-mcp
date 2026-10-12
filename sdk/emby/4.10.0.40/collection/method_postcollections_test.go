@@ -18,8 +18,8 @@ func TestOperationPostCollections(t *testing.T) {
 	result, err := c.PostCollections(t.Context(), emby.PostCollectionsOptions{
 		IsLocked: new(true),
 		Name:     "v-Name",
-		ParentId: "v-ParentId",
-		Ids:      "v-Ids",
+		ParentId: emby.ItemID("v-ParentId"),
+		Ids:      []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -30,7 +30,7 @@ func TestOperationPostCollections(t *testing.T) {
 	expectQuery(t, r, "IsLocked", "true")
 	expectQuery(t, r, "Name", "v-Name")
 	expectQuery(t, r, "ParentId", "v-ParentId")
-	expectQuery(t, r, "Ids", "v-Ids")
+	expectQuery(t, r, "Ids", "a,b")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
@@ -49,8 +49,8 @@ func TestOperationPostCollections(t *testing.T) {
 	result, err = c.PostCollections(t.Context(), emby.PostCollectionsOptions{
 		IsLocked: new(true),
 		Name:     "v-Name",
-		ParentId: "v-ParentId",
-		Ids:      "v-Ids",
+		ParentId: emby.ItemID("v-ParentId"),
+		Ids:      []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 	})
 	if err != nil || result.Answer != nil || result.Answered() {
 		t.Errorf("a 204 = %v, answer %v, answered %t", err, result.Answer, result.Answered())
@@ -67,8 +67,8 @@ func TestOperationPostCollections(t *testing.T) {
 	result, err = c.PostCollections(t.Context(), emby.PostCollectionsOptions{
 		IsLocked: new(true),
 		Name:     "v-Name",
-		ParentId: "v-ParentId",
-		Ids:      "v-Ids",
+		ParentId: emby.ItemID("v-ParentId"),
+		Ids:      []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -79,8 +79,8 @@ func TestOperationPostCollections(t *testing.T) {
 	result, err = c.PostCollections(t.Context(), emby.PostCollectionsOptions{
 		IsLocked: new(true),
 		Name:     "v-Name",
-		ParentId: "v-ParentId",
-		Ids:      "v-Ids",
+		ParentId: emby.ItemID("v-ParentId"),
+		Ids:      []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

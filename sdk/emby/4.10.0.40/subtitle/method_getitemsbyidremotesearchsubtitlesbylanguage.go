@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdRemoteSearchSubtitlesByLanguage calls GET /Items/{Id}/RemoteSearch/Subtitles/{Language}. Requires authentication as user.
-func (c Client) GetItemsByIdRemoteSearchSubtitlesByLanguage(ctx context.Context, id string, language string, options emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions) (result emby.GetItemsByIdRemoteSearchSubtitlesByLanguageResponse, err error) {
+func (c Client) GetItemsByIdRemoteSearchSubtitlesByLanguage(ctx context.Context, id emby.ItemID, language string, options emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions) (result emby.GetItemsByIdRemoteSearchSubtitlesByLanguageResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -22,7 +22,7 @@ func (c Client) GetItemsByIdRemoteSearchSubtitlesByLanguage(ctx context.Context,
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemsByIdRemoteSearchSubtitlesByLanguage",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(id), url.PathEscape(language)),
+		Path:          fmt.Sprintf("/Items/%s/RemoteSearch/Subtitles/%s", url.PathEscape(string(id)), url.PathEscape(language)),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -7,5 +7,5 @@ package jf
 // Class NextItemRequestDto.
 type NextItemRequestDto struct {
 	// Gets or sets the playing item identifier.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 }

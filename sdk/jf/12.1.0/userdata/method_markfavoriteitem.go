@@ -13,7 +13,7 @@ import (
 )
 
 // MarkFavoriteItem calls POST /UserFavoriteItems/{itemId}. Marks an item as a favorite.
-func (c Client) MarkFavoriteItem(ctx context.Context, itemId string, userId ...string) (result jf.MarkFavoriteItemResponse, err error) {
+func (c Client) MarkFavoriteItem(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.MarkFavoriteItemResponse, err error) {
 	var option jf.MarkFavoriteItemOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("MarkFavoriteItem takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) MarkFavoriteItem(ctx context.Context, itemId string, userId ...s
 		HTTPMethod:    http.MethodPost,
 		Operation:     "MarkFavoriteItem",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/UserFavoriteItems/%s", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/UserFavoriteItems/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

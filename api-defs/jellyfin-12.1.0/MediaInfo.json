@@ -62,7 +62,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -73,7 +74,8 @@
           "In": "Query",
           "Description": "The user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -99,7 +101,8 @@
           "Name": "itemId",
           "Argument": "itemId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -111,7 +114,8 @@
           "Description": "The user id.",
           "Deprecated": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -171,7 +175,8 @@
           "Description": "The media source id.",
           "Deprecated": true,
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           }
         },
         {
@@ -285,7 +290,8 @@
           "In": "Query",
           "Description": "The user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -348,7 +354,8 @@
           "In": "Query",
           "Description": "The item id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -481,7 +488,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the item id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -544,7 +552,8 @@
           "JsonName": "UserId",
           "Description": "Gets or sets the user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           },
           "Nullable": true
         }
@@ -669,7 +678,8 @@
           "JsonName": "MediaSourceId",
           "Description": "Gets or sets the media source id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           },
           "Nullable": true
         },
@@ -696,7 +706,8 @@
           "JsonName": "UserId",
           "Description": "Gets or sets the playback userId.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           },
           "Nullable": true
         }

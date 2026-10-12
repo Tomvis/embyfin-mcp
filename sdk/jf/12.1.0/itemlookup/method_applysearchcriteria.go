@@ -13,7 +13,7 @@ import (
 )
 
 // ApplySearchCriteria calls POST /Items/RemoteSearch/Apply/{itemId}. Applies search criteria to an item and refreshes metadata.
-func (c Client) ApplySearchCriteria(ctx context.Context, itemId string, input jf.RemoteSearchResult, replaceAllImages ...bool) (result jf.ApplySearchCriteriaResponse, err error) {
+func (c Client) ApplySearchCriteria(ctx context.Context, itemId jf.ItemID, input jf.RemoteSearchResult, replaceAllImages ...bool) (result jf.ApplySearchCriteriaResponse, err error) {
 	var option jf.ApplySearchCriteriaOptions
 	if len(replaceAllImages) > 1 {
 		err = fmt.Errorf("ApplySearchCriteria takes one replaceAllImages at most, not %d", len(replaceAllImages))
@@ -31,7 +31,7 @@ func (c Client) ApplySearchCriteria(ctx context.Context, itemId string, input jf
 		HTTPMethod:    http.MethodPost,
 		Operation:     "ApplySearchCriteria",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/RemoteSearch/Apply/%s", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/RemoteSearch/Apply/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

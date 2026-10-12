@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,20 +14,20 @@ func TestOperationMoveItem(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.MoveItem(t.Context(), "p/playlistId", "p/itemId", 7)
+	result, err := c.MoveItem(t.Context(), jf.ItemID("v-playlistId"), jf.ItemID("v-itemId"), 7)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Playlists/p%2FplaylistId/Items/p%2FitemId/Move/7")
+	expectRequest(t, r, http.MethodPost, "/Playlists/v-playlistId/Items/v-itemId/Move/7")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.MoveItem(t.Context(), "p/playlistId", "p/itemId", 7)
+	result, err = c.MoveItem(t.Context(), jf.ItemID("v-playlistId"), jf.ItemID("v-itemId"), 7)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

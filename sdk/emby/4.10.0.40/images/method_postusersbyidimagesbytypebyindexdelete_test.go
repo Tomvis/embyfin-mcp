@@ -14,20 +14,20 @@ func TestOperationPostUsersByIdImagesByTypeByIndexDelete(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostUsersByIdImagesByTypeByIndexDelete(t.Context(), "p/id", emby.ImageTypePrimary, 7)
+	result, err := c.PostUsersByIdImagesByTypeByIndexDelete(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, 7)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Users/p%2Fid/Images/Primary/7/Delete")
+	expectRequest(t, r, http.MethodPost, "/Users/v-id/Images/Primary/7/Delete")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostUsersByIdImagesByTypeByIndexDelete(t.Context(), "p/id", emby.ImageTypePrimary, 7)
+	result, err = c.PostUsersByIdImagesByTypeByIndexDelete(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, 7)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

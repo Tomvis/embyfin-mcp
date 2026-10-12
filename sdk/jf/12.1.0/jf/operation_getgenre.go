@@ -39,7 +39,7 @@ func (r GetGenreResponse) Record() (BaseItemDto, error) {
 // GetGenreOptions holds the query and header parameters of GetGenre.
 type GetGenreOptions struct {
 	// The user id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetGenreOptions) ToHeaders() *client.Headers {
 func (o GetGenreOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

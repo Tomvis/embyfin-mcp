@@ -13,7 +13,7 @@ import (
 )
 
 // GetThemeVideos calls GET /Items/{itemId}/ThemeVideos. Get theme videos for an item.
-func (c Client) GetThemeVideos(ctx context.Context, itemId string, options ...jf.GetThemeVideosOptions) (result jf.GetThemeVideosResponse, err error) {
+func (c Client) GetThemeVideos(ctx context.Context, itemId jf.ItemID, options ...jf.GetThemeVideosOptions) (result jf.GetThemeVideosResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetThemeVideos takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetThemeVideos(ctx context.Context, itemId string, options ...jf
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetThemeVideos",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/ThemeVideos", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/ThemeVideos", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

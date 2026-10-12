@@ -39,7 +39,7 @@ func (r DeleteUserItemRatingResponse) Record() (UserItemDataDto, error) {
 // DeleteUserItemRatingOptions holds the query and header parameters of DeleteUserItemRating.
 type DeleteUserItemRatingOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o DeleteUserItemRatingOptions) ToHeaders() *client.Headers {
 func (o DeleteUserItemRatingOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

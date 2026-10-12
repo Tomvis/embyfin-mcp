@@ -39,7 +39,7 @@ func (r GetDisplayPreferencesResponse) Record() (DisplayPreferencesDto, error) {
 // GetDisplayPreferencesOptions holds the query and header parameters of GetDisplayPreferences.
 type GetDisplayPreferencesOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Client.
 	Client string
@@ -55,7 +55,7 @@ func (o GetDisplayPreferencesOptions) ToHeaders() *client.Headers {
 func (o GetDisplayPreferencesOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Client != "" {
 		out.Append("client", o.Client)

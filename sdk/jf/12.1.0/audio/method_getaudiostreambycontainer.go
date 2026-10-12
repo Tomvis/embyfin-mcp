@@ -13,7 +13,7 @@ import (
 )
 
 // GetAudioStreamByContainer calls GET /Audio/{itemId}/stream.{container}. Gets an audio stream.
-func (c Client) GetAudioStreamByContainer(ctx context.Context, itemId string, container string, options ...jf.GetAudioStreamByContainerOptions) (result jf.GetAudioStreamByContainerResponse, err error) {
+func (c Client) GetAudioStreamByContainer(ctx context.Context, itemId jf.ItemID, container string, options ...jf.GetAudioStreamByContainerOptions) (result jf.GetAudioStreamByContainerResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetAudioStreamByContainer takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetAudioStreamByContainer(ctx context.Context, itemId string, co
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetAudioStreamByContainer",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Audio/%s/stream.%s", url.PathEscape(itemId), url.PathEscape(container)),
+		Path:           fmt.Sprintf("/Audio/%s/stream.%s", url.PathEscape(string(itemId)), url.PathEscape(container)),
 		StreamResponse: true,
 	}
 

@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteUsersByUserIdFavoriteItemsById calls DELETE /Users/{UserId}/FavoriteItems/{Id}. Unmarks an item as a favorite.
-func (c Client) DeleteUsersByUserIdFavoriteItemsById(ctx context.Context, userId string, id string) (result emby.DeleteUsersByUserIdFavoriteItemsByIdResponse, err error) {
+func (c Client) DeleteUsersByUserIdFavoriteItemsById(ctx context.Context, userId emby.UserID, id emby.ItemID) (result emby.DeleteUsersByUserIdFavoriteItemsByIdResponse, err error) {
 	result.UserItemDataDto = &emby.UserItemDataDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) DeleteUsersByUserIdFavoriteItemsById(ctx context.Context, userId
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteUsersByUserIdFavoriteItemsById",
-		Path:       fmt.Sprintf("/Users/%s/FavoriteItems/%s", url.PathEscape(userId), url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/FavoriteItems/%s", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

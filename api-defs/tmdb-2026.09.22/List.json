@@ -597,7 +597,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {

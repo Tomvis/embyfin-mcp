@@ -4,6 +4,8 @@ import (
 	"context"
 	"strings"
 
+	apiclient "github.com/katbyte/pandorest/client"
+
 	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 )
@@ -102,12 +104,12 @@ func (c *Client) Play(ctx context.Context, sessionID string, itemIDs []string, p
 			}
 			ids = append(ids, n)
 		}
-		_, err := c.emby.Sessions.PostSessionsByIdPlaying(ctx, sessionID, emby.PlayRequest{}, emby.PostSessionsByIdPlayingOptions{ItemIds: ids, PlayCommand: emby.PlayCommand(playCommand)})
+		_, err := c.emby.Sessions.PostSessionsByIdPlaying(ctx, emby.SessionID(sessionID), emby.PlayRequest{}, emby.PostSessionsByIdPlayingOptions{ItemIds: ids, PlayCommand: emby.PlayCommand(playCommand)})
 
 		return err
 	}
 
-	_, err := c.jf.Session.Play(ctx, sessionID, jf.PlayOptions{ItemIds: itemIDs, PlayCommand: jf.PlayCommand(playCommand)})
+	_, err := c.jf.Session.Play(ctx, jf.SessionID(sessionID), jf.PlayOptions{ItemIds: apiclient.StringIDs[jf.ItemID](itemIDs), PlayCommand: jf.PlayCommand(playCommand)})
 
 	return err
 }
@@ -128,7 +130,7 @@ func (c *Client) PlayCommand(ctx context.Context, sessionID, command string, see
 			body.SeekPositionTicks = seekTicks
 			position = []int64{seekTicks}
 		}
-		_, err := c.emby.Sessions.PostSessionsByIdPlayingByCommand(ctx, sessionID, emby.PlaystateCommand(command), body, position...)
+		_, err := c.emby.Sessions.PostSessionsByIdPlayingByCommand(ctx, emby.SessionID(sessionID), emby.PlaystateCommand(command), body, position...)
 
 		return err
 	}
@@ -137,7 +139,7 @@ func (c *Client) PlayCommand(ctx context.Context, sessionID, command string, see
 	if seek {
 		options.SeekPositionTicks = &seekTicks
 	}
-	_, err := c.jf.Session.SendPlaystateCommand(ctx, sessionID, jf.PlaystateCommand(command), options)
+	_, err := c.jf.Session.SendPlaystateCommand(ctx, jf.SessionID(sessionID), jf.PlaystateCommand(command), options)
 
 	return err
 }
@@ -146,11 +148,11 @@ func (c *Client) PlayCommand(ctx context.Context, sessionID, command string, see
 // message as query parameters, Jellyfin as a JSON body.
 func (c *Client) Message(ctx context.Context, sessionID, header, text string, timeoutMs int) error {
 	if c.isEmby() {
-		_, err := c.emby.Sessions.PostSessionsByIdMessage(ctx, sessionID, emby.PostSessionsByIdMessageOptions{Text: text, Header: header, TimeoutMs: nz(int64(timeoutMs))})
+		_, err := c.emby.Sessions.PostSessionsByIdMessage(ctx, emby.SessionID(sessionID), emby.PostSessionsByIdMessageOptions{Text: text, Header: header, TimeoutMs: nz(int64(timeoutMs))})
 		return err
 	}
 
-	_, err := c.jf.Session.SendMessageCommand(ctx, sessionID, jf.MessageCommand{Header: header, Text: text, TimeoutMs: int64(timeoutMs)})
+	_, err := c.jf.Session.SendMessageCommand(ctx, jf.SessionID(sessionID), jf.MessageCommand{Header: header, Text: text, TimeoutMs: int64(timeoutMs)})
 
 	return err
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteUserItemRating calls DELETE /UserItems/{itemId}/Rating. Deletes a user's saved personal rating for an item.
-func (c Client) DeleteUserItemRating(ctx context.Context, itemId string, userId ...string) (result jf.DeleteUserItemRatingResponse, err error) {
+func (c Client) DeleteUserItemRating(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.DeleteUserItemRatingResponse, err error) {
 	var option jf.DeleteUserItemRatingOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("DeleteUserItemRating takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) DeleteUserItemRating(ctx context.Context, itemId string, userId 
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "DeleteUserItemRating",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/UserItems/%s/Rating", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/UserItems/%s/Rating", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

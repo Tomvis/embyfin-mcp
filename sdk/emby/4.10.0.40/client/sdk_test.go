@@ -164,7 +164,7 @@ func TestWorkaroundOptions(t *testing.T) {
 			return err
 		}, "DELETE /Library/VirtualFolders?Id=9&RefreshLibrary=false"},
 		{"playlist owner", func() error {
-			_, err := c.Playlist.PostPlaylists(ctx, emby.PostPlaylistsOptions{Name: "P", Ids: "1,2", UserId: "u"})
+			_, err := c.Playlist.PostPlaylists(ctx, emby.PostPlaylistsOptions{Name: "P", Ids: []emby.ItemID{"1", "2"}, UserId: "u"})
 			return err
 		}, "POST /Playlists?Ids=1%2C2&Name=P&UserId=u"},
 		{"comma-separated ids", func() error {

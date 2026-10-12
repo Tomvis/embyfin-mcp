@@ -234,7 +234,7 @@
           "Name": "DateTime",
           "JsonName": "DateTime",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

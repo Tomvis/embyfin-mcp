@@ -13,7 +13,7 @@ import (
 )
 
 // UpdatePlaylistUser calls POST /Playlists/{playlistId}/Users/{userId}. Modify a user of a playlist's users.
-func (c Client) UpdatePlaylistUser(ctx context.Context, playlistId string, userId string, input jf.UpdatePlaylistUserDto) (result jf.UpdatePlaylistUserResponse, err error) {
+func (c Client) UpdatePlaylistUser(ctx context.Context, playlistId jf.ItemID, userId jf.UserID, input jf.UpdatePlaylistUserDto) (result jf.UpdatePlaylistUserResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) UpdatePlaylistUser(ctx context.Context, playlistId string, userI
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "UpdatePlaylistUser",
-		Path:       fmt.Sprintf("/Playlists/%s/Users/%s", url.PathEscape(playlistId), url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Playlists/%s/Users/%s", url.PathEscape(string(playlistId)), url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

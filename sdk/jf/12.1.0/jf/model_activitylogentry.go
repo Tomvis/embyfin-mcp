@@ -7,13 +7,13 @@ package jf
 // An activity log entry.
 type ActivityLogEntry struct {
 	// Gets or sets the date.
-	Date string `json:"Date,omitempty"`
+	Date Time `json:"Date,omitzero"`
 
 	// Gets or sets the identifier.
 	Id int64 `json:"Id,omitempty"`
 
 	// Gets or sets the item identifier.
-	ItemId string `json:"ItemId,omitempty"`
+	ItemId ItemID `json:"ItemId,omitempty"`
 
 	// Gets or sets the name.
 	Name string `json:"Name,omitempty"`
@@ -31,7 +31,7 @@ type ActivityLogEntry struct {
 	Type string `json:"Type,omitempty"`
 
 	// Gets or sets the user identifier.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 
 	// Gets or sets the user primary image tag.
 	UserPrimaryImageTag string `json:"UserPrimaryImageTag,omitempty"`

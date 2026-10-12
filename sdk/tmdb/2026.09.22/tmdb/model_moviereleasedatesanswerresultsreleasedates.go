@@ -8,6 +8,6 @@ type MovieReleaseDatesAnswerResultsReleaseDates struct {
 	Descriptors   []string `json:"descriptors,omitzero"`
 	Iso6391       string   `json:"iso_639_1,omitempty"`
 	Note          string   `json:"note,omitempty"`
-	ReleaseDate   string   `json:"release_date,omitempty"`
+	ReleaseDate   Time     `json:"release_date,omitzero"`
 	Type          int      `json:"type,omitempty"`
 }

@@ -43,7 +43,7 @@ type GetLiveTvChannelsOptions struct {
 	Type ChannelType
 
 	// Optional. Filter by user and attach user data.
-	UserId string
+	UserId UserID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -116,7 +116,7 @@ func (o GetLiveTvChannelsOptions) ToQuery() *client.QueryParams {
 		out.Append("type", string(o.Type))
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))

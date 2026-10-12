@@ -4,6 +4,6 @@ package emby
 
 // LiveTvGuideInfo is the "LiveTv.GuideInfo" schema.
 type LiveTvGuideInfo struct {
-	EndDate   string `json:"EndDate,omitempty"`
-	StartDate string `json:"StartDate,omitempty"`
+	EndDate   Time `json:"EndDate,omitzero"`
+	StartDate Time `json:"StartDate,omitzero"`
 }

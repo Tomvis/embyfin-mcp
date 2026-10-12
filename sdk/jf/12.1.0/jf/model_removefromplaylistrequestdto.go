@@ -13,5 +13,5 @@ type RemoveFromPlaylistRequestDto struct {
 	ClearPlaylist *bool `json:"ClearPlaylist,omitempty"`
 
 	// Gets or sets the playlist identifiers of the items. Ignored when clearing the playlist.
-	PlaylistItemIds []string `json:"PlaylistItemIds,omitzero"`
+	PlaylistItemIds []PlaylistItemID `json:"PlaylistItemIds,omitzero"`
 }

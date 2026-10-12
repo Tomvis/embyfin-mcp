@@ -19,8 +19,8 @@ type PlaybackInfoRequest struct {
 	LiveStreamId                   string         `json:"LiveStreamId,omitempty"`
 	MaxAudioChannels               int            `json:"MaxAudioChannels,omitempty"`
 	MaxStreamingBitrate            int64          `json:"MaxStreamingBitrate,omitempty"`
-	MediaSourceId                  string         `json:"MediaSourceId,omitempty"`
+	MediaSourceId                  MediaSourceID  `json:"MediaSourceId,omitempty"`
 	StartTimeTicks                 int64          `json:"StartTimeTicks,omitempty"`
 	SubtitleStreamIndex            int            `json:"SubtitleStreamIndex,omitempty"`
-	UserId                         string         `json:"UserId,omitempty"`
+	UserId                         UserID         `json:"UserId,omitempty"`
 }

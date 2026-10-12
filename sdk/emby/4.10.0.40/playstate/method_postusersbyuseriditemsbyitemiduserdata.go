@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdItemsByItemIdUserData calls POST /Users/{UserId}/Items/{ItemId}/UserData. Updates userdata for an item.
-func (c Client) PostUsersByUserIdItemsByItemIdUserData(ctx context.Context, userId string, itemId string, input emby.UserItemDataDto) (result emby.PostUsersByUserIdItemsByItemIdUserDataResponse, err error) {
+func (c Client) PostUsersByUserIdItemsByItemIdUserData(ctx context.Context, userId emby.UserID, itemId emby.ItemID, input emby.UserItemDataDto) (result emby.PostUsersByUserIdItemsByItemIdUserDataResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdItemsByItemIdUserData(ctx context.Context, user
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdItemsByItemIdUserData",
-		Path:       fmt.Sprintf("/Users/%s/Items/%s/UserData", url.PathEscape(userId), url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Users/%s/Items/%s/UserData", url.PathEscape(string(userId)), url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -97,7 +97,8 @@
           "In": "Query",
           "Description": "Gets or sets the user identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -198,7 +199,7 @@
           "JsonName": "DateLastActivity",
           "Description": "Gets or sets the date last modified.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -225,7 +226,8 @@
           "JsonName": "LastUserId",
           "Description": "Gets or sets the last user identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           },
           "Nullable": true
         },

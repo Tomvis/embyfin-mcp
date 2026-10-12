@@ -12,7 +12,7 @@ import (
 )
 
 // GetYear calls GET /Years/{year}. Gets a year.
-func (c Client) GetYear(ctx context.Context, year int, userId ...string) (result jf.GetYearResponse, err error) {
+func (c Client) GetYear(ctx context.Context, year int, userId ...jf.UserID) (result jf.GetYearResponse, err error) {
 	var option jf.GetYearOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetYear takes one userId at most, not %d", len(userId))

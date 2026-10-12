@@ -13,7 +13,7 @@ import (
 )
 
 // PostPlaylistsByIdItems calls POST /Playlists/{Id}/Items. Adds items to a playlist.
-func (c Client) PostPlaylistsByIdItems(ctx context.Context, id string, options emby.PostPlaylistsByIdItemsOptions) (result emby.PostPlaylistsByIdItemsResponse, err error) {
+func (c Client) PostPlaylistsByIdItems(ctx context.Context, id emby.ItemID, options emby.PostPlaylistsByIdItemsOptions) (result emby.PostPlaylistsByIdItemsResponse, err error) {
 	result.PlaylistsAddToPlaylistResult = &emby.PlaylistsAddToPlaylistResult{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -23,7 +23,7 @@ func (c Client) PostPlaylistsByIdItems(ctx context.Context, id string, options e
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostPlaylistsByIdItems",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -478,11 +478,11 @@ func TestUserHistory(t *testing.T) {
 	f, _ := zzyzxServer(t)
 	f.mux.HandleFunc("GET /System/ActivityLog/Entries", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(t, w, map[string]any{"Items": []map[string]any{
-			{"Name": "Quux has finished playing Zzyzx", "Type": "playback.stop", "Date": "2026-09-20T10:00:00Z", "ItemId": "9"},
-			{"Name": "Quux has started playing Zzyzx", "Type": "playback.start", "Date": "2026-09-20T09:00:00Z", "ItemId": "9"},
-			{"Name": "Plugh has finished playing Xyzzy", "Type": "playback.stop", "Date": "2026-09-19T10:00:00Z", "ItemId": "8"},
-			{"Name": "Quux has started playing Xyzzy", "Type": "playback.start", "Date": "2026-09-18T10:00:00Z", "ItemId": "8"},
-			{"Name": "Quux logged in", "Type": "login", "Date": "2026-09-17T10:00:00Z"},
+			{"Name": "Quux has finished playing Zzyzx", "Type": "playback.stop", "Date": "2026-09-20T10:00:00.1234567Z", "ItemId": "9"},
+			{"Name": "Quux has started playing Zzyzx", "Type": "playback.start", "Date": "2026-09-20T09:00:00.1234567Z", "ItemId": "9"},
+			{"Name": "Plugh has finished playing Xyzzy", "Type": "playback.stop", "Date": "2026-09-19T10:00:00.1234567Z", "ItemId": "8"},
+			{"Name": "Quux has started playing Xyzzy", "Type": "playback.start", "Date": "2026-09-18T10:00:00.1234567Z", "ItemId": "8"},
+			{"Name": "Quux logged in", "Type": "login", "Date": "2026-09-17T10:00:00.1234567Z"},
 		}, "TotalRecordCount": 5})
 	})
 	f.mux.HandleFunc("GET /Items", func(w http.ResponseWriter, r *http.Request) {
@@ -507,7 +507,7 @@ func TestUserHistory(t *testing.T) {
 		t.Errorf("user, total, offset = %v %v %v", out["user"], out["total"], out["offset"])
 	}
 	items := objects(t, out["items"], "items")
-	if len(items) != 2 || items[0]["id"] != "9" || items[0]["event"] != "stop" || items[0]["last_played"] != "2026-09-20T10:00:00Z" || items[1]["id"] != "8" || items[1]["event"] != "start" {
+	if len(items) != 2 || items[0]["id"] != "9" || items[0]["event"] != "stop" || items[0]["last_played"] != "2026-09-20T10:00:00.1234567Z" || items[1]["id"] != "8" || items[1]["event"] != "start" {
 		t.Errorf("items = %v, want each item once at its latest event", items)
 	}
 
@@ -624,9 +624,9 @@ func activityLog(t *testing.T, newest time.Time, n int, entry func(i int) map[st
 }
 
 // entryDate is when an activityLog's i-th newest entry was written: a minute
-// before the one after it.
+// before the one after it, in the form Emby writes a date.
 func entryDate(newest time.Time, i int) string {
-	return newest.Add(-time.Duration(i) * time.Minute).UTC().Format(time.RFC3339)
+	return newest.Add(-time.Duration(i) * time.Minute).UTC().Format("2006-01-02T15:04:05.0000000Z07:00")
 }
 
 // The history tools read the whole period, however many pages of the log it
@@ -747,7 +747,7 @@ func TestUserNextUp(t *testing.T) {
 	})
 	f.mux.HandleFunc("GET /Users/{user}/Items/Resume", func(w http.ResponseWriter, _ *http.Request) {
 		started, padded := film("9", "Zzyzx", 2001), film("8", "Xyzzy", 1999)
-		started["UserData"] = map[string]any{"PlaybackPositionTicks": 300_000_000, "PlayedPercentage": 37.5, "LastPlayedDate": "2026-09-20T21:00:00Z"}
+		started["UserData"] = map[string]any{"PlaybackPositionTicks": 300_000_000, "PlayedPercentage": 37.5, "LastPlayedDate": "2026-09-20T21:00:00.1234567Z"}
 		padded["UserData"] = map[string]any{"PlaybackPositionTicks": 0}
 		writeJSON(t, w, page(started, padded))
 	})
@@ -775,7 +775,7 @@ func TestUserNextUp(t *testing.T) {
 	if len(in) != 1 || in[0]["id"] != "9" {
 		t.Fatalf("in_progress = %v, want only the item with a position", in)
 	}
-	if number(t, in[0]["position_s"], "position_s") != 30 || number(t, in[0]["percent"], "percent") != 37 || in[0]["last_played"] != "2026-09-20T21:00:00Z" {
+	if number(t, in[0]["position_s"], "position_s") != 30 || number(t, in[0]["percent"], "percent") != 37 || in[0]["last_played"] != "2026-09-20T21:00:00.1234567Z" {
 		t.Errorf("in_progress row = %v, want it resuming at 30s, 37%% through, last played 2026-09-20", in[0])
 	}
 	if out["resume"] != nil {
@@ -2106,17 +2106,17 @@ func TestServerFamily(t *testing.T) {
 	})
 	f.mux.HandleFunc("GET /System/ActivityLog/Entries", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(t, w, map[string]any{"Items": []map[string]any{
-			{"Name": "Quux has finished playing Zzyzx", "Type": "playback.stop", "Date": "2026-09-20T10:00:00Z", "Severity": "Info", "ShortOverview": "on Lounge TV", "ItemId": "9"},
-			{"Name": "Scan failed", "Type": "TaskFailed", "Date": "2026-09-19T10:00:00Z", "Severity": "Error"},
+			{"Name": "Quux has finished playing Zzyzx", "Type": "playback.stop", "Date": "2026-09-20T10:00:00.1234567Z", "Severity": "Info", "ShortOverview": "on Lounge TV", "ItemId": "9"},
+			{"Name": "Scan failed", "Type": "TaskFailed", "Date": "2026-09-19T10:00:00.1234567Z", "Severity": "Error"},
 		}, "TotalRecordCount": 7})
 	})
 	f.mux.HandleFunc("GET /Devices", func(w http.ResponseWriter, _ *http.Request) {
-		writeJSON(t, w, page(map[string]any{"Id": "d1", "Name": "Lounge TV", "AppName": "Zzyzx Player", "AppVersion": "1.2", "LastUserName": "Quux", "DateLastActivity": "2026-09-20T10:00:00Z"}))
+		writeJSON(t, w, page(map[string]any{"Id": "d1", "Name": "Lounge TV", "AppName": "Zzyzx Player", "AppVersion": "1.2", "LastUserName": "Quux", "DateLastActivity": "2026-09-20T10:00:00.1234567Z"}))
 	})
 	f.mux.HandleFunc("GET /System/Logs/Query", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(t, w, page(
-			map[string]any{"Name": "old.txt", "Size": 10, "DateModified": "2026-01-01T00:00:00Z"},
-			map[string]any{"Name": "embyserver.txt", "Size": 20, "DateModified": "2026-09-20T00:00:00Z"},
+			map[string]any{"Name": "old.txt", "Size": 10, "DateModified": "2026-01-01T00:00:00.1234567Z"},
+			map[string]any{"Name": "embyserver.txt", "Size": 20, "DateModified": "2026-09-20T00:00:00.1234567Z"},
 		))
 	})
 	f.mux.HandleFunc("GET /System/Logs/{name}", func(w http.ResponseWriter, r *http.Request) {
@@ -2124,7 +2124,7 @@ func TestServerFamily(t *testing.T) {
 	})
 	f.mux.HandleFunc("GET /ScheduledTasks", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(t, w, []map[string]any{
-			{"Id": "t1", "Key": "RefreshLibrary", "Name": "Scan media library", "Category": "Library", "State": "Idle", "LastExecutionResult": map[string]any{"Status": "Completed", "EndTimeUtc": "2026-09-20T01:00:00Z"}},
+			{"Id": "t1", "Key": "RefreshLibrary", "Name": "Scan media library", "Category": "Library", "State": "Idle", "LastExecutionResult": map[string]any{"Status": "Completed", "EndTimeUtc": "2026-09-20T01:00:00.1234567Z"}},
 			{"Id": "t2", "Key": "DeleteCacheFiles", "Name": "Clean cache", "Category": "Maintenance", "Description": "Deletes cache files no longer needed by the system", "State": "Running"},
 		})
 	})
@@ -2151,7 +2151,7 @@ func TestServerFamily(t *testing.T) {
 		t.Errorf("total = %v offset = %v, want the server's count and the page start", out["total"], out["offset"])
 	}
 	entries := objects(t, out["entries"], "entries")
-	if len(entries) != 2 || entries[0]["summary"] != "Quux has finished playing Zzyzx — on Lounge TV" || entries[0]["type"] != "playback.stop" || entries[0]["date"] != "2026-09-20T10:00:00Z" || entries[1]["severity"] != "Error" || entries[1]["summary"] != "Scan failed" {
+	if len(entries) != 2 || entries[0]["summary"] != "Quux has finished playing Zzyzx — on Lounge TV" || entries[0]["type"] != "playback.stop" || entries[0]["date"] != "2026-09-20T10:00:00.1234567Z" || entries[1]["severity"] != "Error" || entries[1]["summary"] != "Scan failed" {
 		t.Errorf("entries = %v", entries)
 	}
 	// the next page is asked of the server by offset
@@ -2164,7 +2164,7 @@ func TestServerFamily(t *testing.T) {
 	}
 
 	devices := objects(t, mustCall(t, cs, "server_devices", map[string]any{})["devices"], "devices")
-	if len(devices) != 1 || devices[0]["name"] != "Lounge TV" || devices[0]["app"] != "Zzyzx Player 1.2" || devices[0]["last_user"] != "Quux" || devices[0]["last_activity"] != "2026-09-20T10:00:00Z" {
+	if len(devices) != 1 || devices[0]["name"] != "Lounge TV" || devices[0]["app"] != "Zzyzx Player 1.2" || devices[0]["last_user"] != "Quux" || devices[0]["last_activity"] != "2026-09-20T10:00:00.1234567Z" {
 		t.Errorf("devices = %v", devices)
 	}
 
@@ -2173,7 +2173,7 @@ func TestServerFamily(t *testing.T) {
 		t.Errorf("log = %v, want the newest file's last two lines", out)
 	}
 	files := objects(t, out["files"], "files")
-	if len(files) != 2 || files[1]["name"] != "embyserver.txt" || number(t, files[1]["size"], "size") != 20 || files[1]["modified"] != "2026-09-20T00:00:00Z" {
+	if len(files) != 2 || files[1]["name"] != "embyserver.txt" || number(t, files[1]["size"], "size") != 20 || files[1]["modified"] != "2026-09-20T00:00:00.1234567Z" {
 		t.Errorf("files = %v", files)
 	}
 	out = mustCall(t, cs, "server_log", map[string]any{"name": "old.txt"})
@@ -2182,7 +2182,7 @@ func TestServerFamily(t *testing.T) {
 	}
 
 	tasks := objects(t, mustCall(t, cs, "task_list", map[string]any{})["tasks"], "tasks")
-	if len(tasks) != 2 || tasks[0]["id"] != "t1" || tasks[0]["name"] != "Scan media library" || tasks[0]["category"] != "Library" || tasks[0]["state"] != "Idle" || tasks[0]["last_status"] != "Completed" || tasks[0]["last_run"] != "2026-09-20T01:00:00Z" {
+	if len(tasks) != 2 || tasks[0]["id"] != "t1" || tasks[0]["name"] != "Scan media library" || tasks[0]["category"] != "Library" || tasks[0]["state"] != "Idle" || tasks[0]["last_status"] != "Completed" || tasks[0]["last_run"] != "2026-09-20T01:00:00.1234567Z" {
 		t.Errorf("tasks = %v", tasks)
 	}
 	if _, ok := tasks[1]["last_status"]; ok || tasks[1]["state"] != "Running" {
@@ -2285,7 +2285,7 @@ func TestPersonGet(t *testing.T) {
 		writeJSON(t, w, page(map[string]any{"Id": "p7", "Name": "Zed Zzyzx", "Type": "Person"}, map[string]any{"Id": "p8", "Name": "Zed Zzyzx Jr", "Type": "Person"}))
 	})
 	f.mux.HandleFunc("GET /Persons/{name}", func(w http.ResponseWriter, r *http.Request) {
-		writeJSON(t, w, map[string]any{"Id": "p7", "Name": r.PathValue("name"), "Type": "Person", "ProviderIds": map[string]string{"Tmdb": "500"}, "Overview": "Actor.", "PremiereDate": "1970-01-01T00:00:00Z"})
+		writeJSON(t, w, map[string]any{"Id": "p7", "Name": r.PathValue("name"), "Type": "Person", "ProviderIds": map[string]string{"Tmdb": "500"}, "Overview": "Actor.", "PremiereDate": "1970-01-01T00:00:00.1234567Z"})
 	})
 	f.mux.HandleFunc("GET /Items", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("PersonIds") != "p7" {
@@ -2318,7 +2318,7 @@ func TestPersonGet(t *testing.T) {
 	cs := session(t, f, Options{})
 
 	out := mustCall(t, cs, "person_get", map[string]any{"person": "zed zzyzx"})
-	if out["name"] != "Zed Zzyzx" || out["id"] != "p7" || out["overview"] != "Actor." || out["born"] != "1970-01-01T00:00:00Z" {
+	if out["name"] != "Zed Zzyzx" || out["id"] != "p7" || out["overview"] != "Actor." || out["born"] != "1970-01-01T00:00:00.1234567Z" {
 		t.Errorf("person = %v", out)
 	}
 	if ids := object(t, out["metadata_provider_ids"], "metadata_provider_ids"); ids["tmdb"] != "500" {
@@ -2459,10 +2459,10 @@ func TestServerActivityAboutAnItem(t *testing.T) {
 	})
 	f.mux.HandleFunc("GET /System/ActivityLog/Entries", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(t, w, map[string]any{"Items": []map[string]any{
-			{"Name": "Quux has finished playing Zzyzx", "Type": "playback.stop", "Date": "2026-09-20T10:00:00Z", "ItemId": "9"},
-			{"Name": "Plugh has started playing Zzyzx: Part Two", "Type": "playback.start", "Date": "2026-09-19T10:00:00Z", "ItemId": "10"},
-			{"Name": "Zzyzx was added", "Type": "library.new", "Date": "2026-09-18T10:00:00Z"},
-			{"Name": "Quux logged in", "Type": "login", "Date": "2026-09-17T10:00:00Z"},
+			{"Name": "Quux has finished playing Zzyzx", "Type": "playback.stop", "Date": "2026-09-20T10:00:00.1234567Z", "ItemId": "9"},
+			{"Name": "Plugh has started playing Zzyzx: Part Two", "Type": "playback.start", "Date": "2026-09-19T10:00:00.1234567Z", "ItemId": "10"},
+			{"Name": "Zzyzx was added", "Type": "library.new", "Date": "2026-09-18T10:00:00.1234567Z"},
+			{"Name": "Quux logged in", "Type": "login", "Date": "2026-09-17T10:00:00.1234567Z"},
 		}, "TotalRecordCount": 4})
 	})
 	cs := session(t, f, Options{})
@@ -2476,7 +2476,7 @@ func TestServerActivityAboutAnItem(t *testing.T) {
 	for _, e := range entries {
 		got = append(got, text(e["date"])+" "+text(e["summary"]))
 	}
-	if !slices.Equal(got, []string{"2026-09-20T10:00:00Z Quux has finished playing Zzyzx", "2026-09-18T10:00:00Z Zzyzx was added"}) {
+	if !slices.Equal(got, []string{"2026-09-20T10:00:00.1234567Z Quux has finished playing Zzyzx", "2026-09-18T10:00:00.1234567Z Zzyzx was added"}) {
 		t.Errorf("entries = %v", got)
 	}
 	if e := entries[0]; e["item_id"] != "9" || e["type"] != "playback.stop" {

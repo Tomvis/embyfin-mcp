@@ -17,7 +17,7 @@ type MediaSourceInfo struct {
 	Formats                     []string      `json:"Formats,omitzero"`
 	GenPtsInput                 *bool         `json:"GenPtsInput,omitempty"`
 	HasSegments                 *bool         `json:"HasSegments,omitempty"`
-	Id                          string        `json:"Id,omitempty"`
+	Id                          MediaSourceID `json:"Id,omitempty"`
 	IgnoreDts                   *bool         `json:"IgnoreDts,omitempty"`
 	IgnoreIndex                 *bool         `json:"IgnoreIndex,omitempty"`
 	IsInfiniteStream            *bool         `json:"IsInfiniteStream,omitempty"`
@@ -63,4 +63,4 @@ type MediaSourceInfo struct {
 func (m MediaSourceInfo) GetName() string { return m.Name }
 
 // GetId is the record's Id, for code that handles records of several types alike.
-func (m MediaSourceInfo) GetId() string { return m.Id }
+func (m MediaSourceInfo) GetId() MediaSourceID { return m.Id }

@@ -19,7 +19,7 @@ type DisplayContentOptions struct {
 	ItemType BaseItemKind
 
 	// The Id of the item.
-	ItemId string
+	ItemId ItemID
 
 	// The name of the item.
 	ItemName string
@@ -38,7 +38,7 @@ func (o DisplayContentOptions) ToQuery() *client.QueryParams {
 		out.Append("itemType", string(o.ItemType))
 	}
 	if o.ItemId != "" {
-		out.Append("itemId", o.ItemId)
+		out.Append("itemId", string(o.ItemId))
 	}
 	if o.ItemName != "" {
 		out.Append("itemName", o.ItemName)

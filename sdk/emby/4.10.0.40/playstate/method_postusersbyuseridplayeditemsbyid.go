@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdPlayedItemsById calls POST /Users/{UserId}/PlayedItems/{Id}. Marks an item as played.
-func (c Client) PostUsersByUserIdPlayedItemsById(ctx context.Context, userId string, id string, datePlayed ...string) (result emby.PostUsersByUserIdPlayedItemsByIdResponse, err error) {
+func (c Client) PostUsersByUserIdPlayedItemsById(ctx context.Context, userId emby.UserID, id emby.ItemID, datePlayed ...string) (result emby.PostUsersByUserIdPlayedItemsByIdResponse, err error) {
 	var option emby.PostUsersByUserIdPlayedItemsByIdOptions
 	if len(datePlayed) > 1 {
 		err = fmt.Errorf("PostUsersByUserIdPlayedItemsById takes one datePlayed at most, not %d", len(datePlayed))
@@ -32,7 +32,7 @@ func (c Client) PostUsersByUserIdPlayedItemsById(ctx context.Context, userId str
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostUsersByUserIdPlayedItemsById",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/PlayedItems/%s", url.PathEscape(userId), url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/PlayedItems/%s", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -43,7 +43,7 @@ func TestJFSessions(t *testing.T) {
 	if own.SupportsMediaControl {
 		t.Errorf("SupportsMediaControl is true for a session with no websocket: %+v", own)
 	}
-	if own.Id == "" || own.Client == "" || own.DeviceName == "" || own.LastActivityDate == "" || own.ServerId == "" {
+	if own.Id == "" || own.Client == "" || own.DeviceName == "" || own.LastActivityDate.IsZero() || own.ServerId == "" {
 		t.Errorf("session = %+v", own)
 	}
 	if !slices.Contains(own.PlayableMediaTypes, jf.MediaTypeVideo) || !slices.Contains(own.SupportedCommands, jf.GeneralCommandTypeDisplayMessage) {
@@ -56,7 +56,7 @@ func TestJFSessions(t *testing.T) {
 		t.Errorf("GetSessions() lacks the session %s that GetSessions(DeviceId) found", own.Id)
 	}
 
-	if _, err := jfc.Session.Play(ctx, own.Id, jf.PlayOptions{PlayCommand: jf.PlayCommandPlayNow, ItemIds: []string{movie.Id}}); err != nil {
+	if _, err := jfc.Session.Play(ctx, own.Id, jf.PlayOptions{PlayCommand: jf.PlayCommandPlayNow, ItemIds: []jf.ItemID{movie.Id}}); err != nil {
 		t.Errorf("Play: %v", err)
 	}
 	if _, err := jfc.Session.SendPlaystateCommand(ctx, own.Id, jf.PlaystateCommandPause, jf.SendPlaystateCommandOptions{}); err != nil {

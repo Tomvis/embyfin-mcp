@@ -16,7 +16,7 @@ import (
 //
 // input is sent as contentType, which must name a concrete type: the
 // operation takes image/*.
-func (c Client) PostUserImage(ctx context.Context, input io.Reader, contentType string, userId ...string) (result jf.PostUserImageResponse, err error) {
+func (c Client) PostUserImage(ctx context.Context, input io.Reader, contentType string, userId ...jf.UserID) (result jf.PostUserImageResponse, err error) {
 	var option jf.PostUserImageOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("PostUserImage takes one userId at most, not %d", len(userId))

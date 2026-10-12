@@ -46,10 +46,10 @@ type PostCollectionsOptions struct {
 	Name string
 
 	// Optional - create the collection within a specific folder
-	ParentId string
+	ParentId ItemID
 
 	// Item Ids to add to the collection
-	Ids string
+	Ids []ItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -68,10 +68,10 @@ func (o PostCollectionsOptions) ToQuery() *client.QueryParams {
 		out.Append("Name", o.Name)
 	}
 	if o.ParentId != "" {
-		out.Append("ParentId", o.ParentId)
+		out.Append("ParentId", string(o.ParentId))
 	}
-	if o.Ids != "" {
-		out.Append("Ids", o.Ids)
+	if len(o.Ids) > 0 {
+		out.Append("Ids", client.Joined(o.Ids))
 	}
 	return &out
 }

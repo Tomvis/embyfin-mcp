@@ -13,14 +13,14 @@ import (
 )
 
 // RemoveUserFromPlaylist calls DELETE /Playlists/{playlistId}/Users/{userId}. Remove a user from a playlist's users.
-func (c Client) RemoveUserFromPlaylist(ctx context.Context, playlistId string, userId string) (result jf.RemoveUserFromPlaylistResponse, err error) {
+func (c Client) RemoveUserFromPlaylist(ctx context.Context, playlistId jf.ItemID, userId jf.UserID) (result jf.RemoveUserFromPlaylistResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "RemoveUserFromPlaylist",
-		Path:       fmt.Sprintf("/Playlists/%s/Users/%s", url.PathEscape(playlistId), url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Playlists/%s/Users/%s", url.PathEscape(string(playlistId)), url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

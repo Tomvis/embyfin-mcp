@@ -40,7 +40,7 @@ func jfLibraryOptions(l sdkacc.LibraryFixture) *jf.LibraryOptions {
 
 // jfLibrary creates and scans a fixture library once and returns the id of
 // its root folder, which is what ParentId queries take.
-func jfLibrary(t *testing.T, l sdkacc.LibraryFixture) string {
+func jfLibrary(t *testing.T, l sdkacc.LibraryFixture) jf.ItemID {
 	t.Helper()
 	ctx := t.Context()
 
@@ -94,7 +94,7 @@ func jfVirtualFolder(ctx context.Context, t *testing.T, name string) *jf.Virtual
 }
 
 // jfCount is the recursive count of one item type under a folder.
-func jfCount(ctx context.Context, parentID string, kind jf.BaseItemKind) int {
+func jfCount(ctx context.Context, parentID jf.ItemID, kind jf.BaseItemKind) int {
 	res, err := jfc.Library.GetItems(ctx, jf.GetItemsOptions{
 		ParentId: parentID, Recursive: new(true), IncludeItemTypes: []jf.BaseItemKind{kind}, Limit: new(1),
 	})
@@ -128,7 +128,7 @@ func jfScanNudge(ctx context.Context, t *testing.T) func(found int) {
 
 // jfWaitForItems polls until the scan has found everything the fixture
 // holds.
-func jfWaitForItems(ctx context.Context, t *testing.T, parentID string, l sdkacc.LibraryFixture) {
+func jfWaitForItems(ctx context.Context, t *testing.T, parentID jf.ItemID, l sdkacc.LibraryFixture) {
 	t.Helper()
 
 	nudge := jfScanNudge(ctx, t)
@@ -160,12 +160,12 @@ func jfWaitForItems(ctx context.Context, t *testing.T, parentID string, l sdkacc
 	}
 }
 
-// jfScanEnded reports when the library scan last finished, "" when it has
+// jfScanEnded reports when the library scan last finished, the zero time when it has
 // never run, so a caller can tell a scan it triggers from the one before.
-func jfScanEnded(ctx context.Context) string {
+func jfScanEnded(ctx context.Context) jf.Time {
 	tasks, err := jfc.ScheduledTask.GetTasks(ctx, jf.GetTasksOptions{})
 	if err != nil {
-		return ""
+		return jf.Time{}
 	}
 	for _, task := range tasks.Answer {
 		if sdkacc.IsScanTask(task.Key, task.Name) && task.LastExecutionResult != nil {
@@ -173,7 +173,7 @@ func jfScanEnded(ctx context.Context) string {
 		}
 	}
 
-	return ""
+	return jf.Time{}
 }
 
 // jfWaitForScan waits for a library scan newer than since to finish and the
@@ -181,7 +181,7 @@ func jfScanEnded(ctx context.Context) string {
 // before a test looks at their results. A triggered scan sits queued and
 // Idle for a moment, which is why the previous end time is needed: idle
 // alone would return before it started.
-func jfWaitForScan(ctx context.Context, t *testing.T, since string) {
+func jfWaitForScan(ctx context.Context, t *testing.T, since jf.Time) {
 	t.Helper()
 
 	ok := sdkacc.Poll(sdkacc.ScanPatience, func() bool {
@@ -193,7 +193,7 @@ func jfWaitForScan(ctx context.Context, t *testing.T, since string) {
 			if !sdkacc.IsScanTask(task.Key, task.Name) {
 				continue
 			}
-			if task.State != jf.TaskStateIdle || task.LastExecutionResult == nil || task.LastExecutionResult.EndTimeUtc == since {
+			if task.State != jf.TaskStateIdle || task.LastExecutionResult == nil || task.LastExecutionResult.EndTimeUtc.Equal(since.Time) {
 				return false
 			}
 		}
@@ -239,7 +239,7 @@ func jfMovie(t *testing.T, title string) jf.BaseItemDto {
 
 // jfFirst returns the first item of a kind in a library, for the routes that
 // need any album, song or artist to read rather than a particular one.
-func jfFirst(t *testing.T, parentID string, kind jf.BaseItemKind) jf.BaseItemDto {
+func jfFirst(t *testing.T, parentID jf.ItemID, kind jf.BaseItemKind) jf.BaseItemDto {
 	t.Helper()
 
 	res := sdkacc.Must(jfc.Library.GetItems(t.Context(), jf.GetItemsOptions{
@@ -254,7 +254,7 @@ func jfFirst(t *testing.T, parentID string, kind jf.BaseItemKind) jf.BaseItemDto
 }
 
 // jfSong finds one of the fixture tracks by title.
-func jfSong(t *testing.T, parentID, title string) jf.BaseItemDto {
+func jfSong(t *testing.T, parentID jf.ItemID, title string) jf.BaseItemDto {
 	t.Helper()
 
 	res := sdkacc.Must(jfc.Library.GetItems(t.Context(), jf.GetItemsOptions{
@@ -272,7 +272,7 @@ func jfSong(t *testing.T, parentID, title string) jf.BaseItemDto {
 }
 
 // jfAlbum finds one of the fixture albums by title.
-func jfAlbum(t *testing.T, parentID, title string) jf.BaseItemDto {
+func jfAlbum(t *testing.T, parentID jf.ItemID, title string) jf.BaseItemDto {
 	t.Helper()
 
 	res := sdkacc.Must(jfc.Library.GetItems(t.Context(), jf.GetItemsOptions{
@@ -367,14 +367,14 @@ func TestJFVirtualFolders(t *testing.T) {
 	shows := jfVirtualFolder(ctx, t, sdkacc.SDKShows.Name)
 	opts, original := shows.LibraryOptions, shows.LibraryOptions.SeasonZeroDisplayName
 	opts.SeasonZeroDisplayName = "SDK Specials"
-	if _, err := jfc.LibraryStructure.UpdateLibraryOptions(ctx, jf.UpdateLibraryOptionsDto{Id: showsID, LibraryOptions: opts}); err != nil {
+	if _, err := jfc.LibraryStructure.UpdateLibraryOptions(ctx, jf.UpdateLibraryOptionsDto{Id: string(showsID), LibraryOptions: opts}); err != nil {
 		t.Fatal(err)
 	}
 	if got := jfVirtualFolder(ctx, t, sdkacc.SDKShows.Name); got.LibraryOptions.SeasonZeroDisplayName != "SDK Specials" {
 		t.Errorf("SeasonZeroDisplayName = %q after UpdateLibraryOptions", got.LibraryOptions.SeasonZeroDisplayName)
 	}
 	opts.SeasonZeroDisplayName = original
-	if _, err := jfc.LibraryStructure.UpdateLibraryOptions(ctx, jf.UpdateLibraryOptionsDto{Id: showsID, LibraryOptions: opts}); err != nil {
+	if _, err := jfc.LibraryStructure.UpdateLibraryOptions(ctx, jf.UpdateLibraryOptionsDto{Id: string(showsID), LibraryOptions: opts}); err != nil {
 		t.Fatal(err)
 	}
 
@@ -424,7 +424,7 @@ func TestJFScanTask(t *testing.T) {
 	}
 	jfWaitForScan(ctx, t, since)
 	after := sdkacc.Must(jfc.ScheduledTask.GetTask(ctx, scan.Id)).Answer
-	if after.LastExecutionResult == nil || after.LastExecutionResult.Status == "" || after.LastExecutionResult.StartTimeUtc == "" {
+	if after.LastExecutionResult == nil || after.LastExecutionResult.Status == "" || after.LastExecutionResult.StartTimeUtc.IsZero() {
 		t.Fatalf("after StartTask the scan's LastExecutionResult = %+v", after.LastExecutionResult)
 	}
 	if !strings.EqualFold(string(after.LastExecutionResult.Status), "Completed") {

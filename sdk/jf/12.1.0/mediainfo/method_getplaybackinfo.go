@@ -13,7 +13,7 @@ import (
 )
 
 // GetPlaybackInfo calls GET /Items/{itemId}/PlaybackInfo. Gets live playback media info for an item.
-func (c Client) GetPlaybackInfo(ctx context.Context, itemId string, userId ...string) (result jf.GetPlaybackInfoResponse, err error) {
+func (c Client) GetPlaybackInfo(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetPlaybackInfoResponse, err error) {
 	var option jf.GetPlaybackInfoOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetPlaybackInfo takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) GetPlaybackInfo(ctx context.Context, itemId string, userId ...st
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetPlaybackInfo",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

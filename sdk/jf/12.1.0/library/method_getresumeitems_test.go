@@ -17,11 +17,11 @@ func TestOperationGetResumeItems(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetResumeItems(t.Context(), jf.GetResumeItemsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		SearchTerm:             "v-SearchTerm",
-		ParentId:               "v-ParentId",
+		ParentId:               jf.ItemID("v-ParentId"),
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		MediaTypes:             []jf.MediaType{jf.MediaTypeUnknown, jf.MediaTypeBook},
 		EnableUserData:         new(true),
@@ -70,11 +70,11 @@ func TestOperationGetResumeItems(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetResumeItems(t.Context(), jf.GetResumeItemsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		SearchTerm:             "v-SearchTerm",
-		ParentId:               "v-ParentId",
+		ParentId:               jf.ItemID("v-ParentId"),
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		MediaTypes:             []jf.MediaType{jf.MediaTypeUnknown, jf.MediaTypeBook},
 		EnableUserData:         new(true),
@@ -93,11 +93,11 @@ func TestOperationGetResumeItems(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetResumeItems(t.Context(), jf.GetResumeItemsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		SearchTerm:             "v-SearchTerm",
-		ParentId:               "v-ParentId",
+		ParentId:               jf.ItemID("v-ParentId"),
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		MediaTypes:             []jf.MediaType{jf.MediaTypeUnknown, jf.MediaTypeBook},
 		EnableUserData:         new(true),

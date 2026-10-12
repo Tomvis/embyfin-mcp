@@ -7,7 +7,7 @@ type RemoteSearchResult struct {
 	AlbumArtist           *RemoteSearchResult  `json:"AlbumArtist,omitempty"`
 	Artists               []RemoteSearchResult `json:"Artists,omitzero"`
 	DisambiguationComment string               `json:"DisambiguationComment,omitempty"`
-	EndDate               string               `json:"EndDate,omitempty"`
+	EndDate               Time                 `json:"EndDate,omitzero"`
 	GameSystem            string               `json:"GameSystem,omitempty"`
 	ImageUrl              string               `json:"ImageUrl,omitempty"`
 	IndexNumber           int                  `json:"IndexNumber,omitempty"`
@@ -17,14 +17,14 @@ type RemoteSearchResult struct {
 	Overview              string               `json:"Overview,omitempty"`
 	ParentIndexNumber     int                  `json:"ParentIndexNumber,omitempty"`
 	PersonType            PersonType           `json:"PersonType,omitempty"`
-	PremiereDate          string               `json:"PremiereDate,omitempty"`
+	PremiereDate          Time                 `json:"PremiereDate,omitzero"`
 	ProductionYear        int                  `json:"ProductionYear,omitempty"`
 	ProviderIds           map[string]string    `json:"ProviderIds,omitzero"`
 	Role                  string               `json:"Role,omitempty"`
 	SearchProviderName    string               `json:"SearchProviderName,omitempty"`
 	SortIndexNumber       int                  `json:"SortIndexNumber,omitempty"`
 	SortParentIndexNumber int                  `json:"SortParentIndexNumber,omitempty"`
-	StartDate             string               `json:"StartDate,omitempty"`
+	StartDate             Time                 `json:"StartDate,omitzero"`
 	ThumbnailUrl          string               `json:"ThumbnailUrl,omitempty"`
 	Type                  string               `json:"Type,omitempty"`
 }

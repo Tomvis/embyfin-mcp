@@ -17,6 +17,6 @@ type UserNotificationInfo struct {
 	PluginId           string            `json:"PluginId,omitempty"`
 	ServiceName        string            `json:"ServiceName,omitempty"`
 	SetupModuleUrl     string            `json:"SetupModuleUrl,omitempty"`
-	UserId             string            `json:"UserId,omitempty"`
-	UserIds            []string          `json:"UserIds,omitzero"`
+	UserId             UserID            `json:"UserId,omitempty"`
+	UserIds            []UserID          `json:"UserIds,omitzero"`
 }

@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| `zservices` | the three APIs: where each document, its definitions and its package live, how its methods are named, how its lists page, which base client and authorizer it uses, and the wording of its `New` |
+| `zservices` | the three APIs: where each document, its definitions and its package live, how its methods are named, how its lists page, how it writes a date, which of its ids are told apart (`ids.go`), which base client and authorizer it uses, and the wording of its `New` |
 | `emby/workarounds`, `jf/workarounds`, `tmdb/workarounds` | one named fix for each bug in that service's document |
 | `main.go` | hands both to pandorest and runs its command |
 
@@ -26,9 +26,15 @@ make gencheck          # regenerate, fail if anything is uncommitted
 
 How a document is imported, what the definitions hold, how the diff reads and what the generator writes are in [pandorest's README](https://github.com/katbyte/pandorest#readme). The generated code sends its requests through pandorest's own base client; what is each server's own about being talked to, how it takes a key and what a refusal means on it, is the `service.go` in the package named for the server, beside the generated types.
 
+## Dates and ids
+
+A date is a `Time`, or a `Day` for one with no time, read in every layout the service's entry lists; one written any other way is zero with its text kept in `Unread`, and the live sweeps fail an answer that carried one, which is how a layout a server adds is found. TMDB's document declares its dates plain strings, so two workarounds name them.
+
+An id is one of six kinds on Emby and Jellyfin (`ItemID`, `UserID`, `SessionID`, `TaskID`, `PlaylistItemID`, `MediaSourceID`), so one kind where another goes does not compile. `zservices/ids.go` says which names and places are which kind, and lists the id-looking names left as plain text on purpose; the import reports a name that is in neither.
+
 ## Workarounds
 
-A document bug is fixed with a workaround in its service's `workarounds` folder, added to `All` there. For the bugs most documents have, it is one of pandorest's ready-made ones, which says only what is wrong and why: `WrongAnswers` for an operation that declares one answer and gives another (`/Environment/ParentPath` declares a JSON string and answers bare text), `UndeclaredAnswers` for one that declares none, `UndeclaredParameters` for a parameter the server reads and the document leaves out. pandorest does the patching and checks the bug is still there.
+A document bug is fixed with a workaround in its service's `workarounds` folder, added to `All` there. For the bugs most documents have, it is one of pandorest's ready-made ones, which says only what is wrong and why: `WrongAnswers` for an operation that declares one answer and gives another (`/Environment/ParentPath` declares a JSON string and answers bare text), `UndeclaredAnswers` for one that declares none, `UndeclaredParameters` for a parameter the server reads and the document leaves out, `JoinedLists` for a text option the server reads as several values joined by commas (Emby's `IncludeItemTypes`), which then takes a list as well, `UndeclaredDays` and `UndeclaredDates` for a date declared a plain string (TMDB's `release_date`). pandorest does the patching and checks the bug is still there.
 
 Anything else is a type with a `Name` (`emby-search-term`), the `Service` it is for, the `Bug` it fixes in a sentence, and `Apply`, which patches the loaded document.
 

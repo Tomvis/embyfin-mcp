@@ -43,10 +43,10 @@ type GetLiveTvProgramsOptions struct {
 	ChannelIds []string
 
 	// Optional. Filter by user id.
-	UserId string
+	UserId UserID
 
 	// Optional. The minimum premiere start date.
-	MinStartDate string
+	MinStartDate Time
 
 	// Optional. Filter by programs that have completed airing, or not.
 	HasAired *bool
@@ -55,13 +55,13 @@ type GetLiveTvProgramsOptions struct {
 	IsAiring *bool
 
 	// Optional. The maximum premiere start date.
-	MaxStartDate string
+	MaxStartDate Time
 
 	// Optional. The minimum premiere end date.
-	MinEndDate string
+	MinEndDate Time
 
 	// Optional. The maximum premiere end date.
-	MaxEndDate string
+	MaxEndDate Time
 
 	// Optional. Filter for movies.
 	IsMovie *bool
@@ -94,7 +94,7 @@ type GetLiveTvProgramsOptions struct {
 	Genres []string
 
 	// The genre ids to return guide information for.
-	GenreIds []string
+	GenreIds []ItemID
 
 	// Optional. Include image information in output.
 	EnableImages *bool
@@ -134,10 +134,10 @@ func (o GetLiveTvProgramsOptions) ToQuery() *client.QueryParams {
 		out.Append("channelIds", v)
 	}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
-	if o.MinStartDate != "" {
-		out.Append("minStartDate", o.MinStartDate)
+	if !o.MinStartDate.IsZero() {
+		out.Append("minStartDate", o.MinStartDate.As(sendDateAs("GetLiveTvPrograms", "minStartDate")))
 	}
 	if o.HasAired != nil {
 		out.Append("hasAired", strconv.FormatBool(*o.HasAired))
@@ -145,14 +145,14 @@ func (o GetLiveTvProgramsOptions) ToQuery() *client.QueryParams {
 	if o.IsAiring != nil {
 		out.Append("isAiring", strconv.FormatBool(*o.IsAiring))
 	}
-	if o.MaxStartDate != "" {
-		out.Append("maxStartDate", o.MaxStartDate)
+	if !o.MaxStartDate.IsZero() {
+		out.Append("maxStartDate", o.MaxStartDate.As(sendDateAs("GetLiveTvPrograms", "maxStartDate")))
 	}
-	if o.MinEndDate != "" {
-		out.Append("minEndDate", o.MinEndDate)
+	if !o.MinEndDate.IsZero() {
+		out.Append("minEndDate", o.MinEndDate.As(sendDateAs("GetLiveTvPrograms", "minEndDate")))
 	}
-	if o.MaxEndDate != "" {
-		out.Append("maxEndDate", o.MaxEndDate)
+	if !o.MaxEndDate.IsZero() {
+		out.Append("maxEndDate", o.MaxEndDate.As(sendDateAs("GetLiveTvPrograms", "maxEndDate")))
 	}
 	if o.IsMovie != nil {
 		out.Append("isMovie", strconv.FormatBool(*o.IsMovie))
@@ -185,7 +185,7 @@ func (o GetLiveTvProgramsOptions) ToQuery() *client.QueryParams {
 		out.Append("genres", v)
 	}
 	for _, v := range o.GenreIds {
-		out.Append("genreIds", v)
+		out.Append("genreIds", string(v))
 	}
 	if o.EnableImages != nil {
 		out.Append("enableImages", strconv.FormatBool(*o.EnableImages))

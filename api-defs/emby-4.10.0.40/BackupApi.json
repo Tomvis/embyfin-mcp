@@ -128,14 +128,16 @@
           "Name": "SourceUserId",
           "JsonName": "SourceUserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
           "Name": "TargetUserId",
           "JsonName": "TargetUserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]
@@ -155,7 +157,7 @@
           "Name": "DateCreated",
           "JsonName": "DateCreated",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

@@ -40,7 +40,7 @@ func (r GetVideosByIdAdditionalPartsResponse) Record() (QueryResultBaseItemDto, 
 // GetVideosByIdAdditionalPartsOptions holds the query and header parameters of GetVideosByIdAdditionalParts.
 type GetVideosByIdAdditionalPartsOptions struct {
 	// Optional. Filter by user id, and attach user data
-	UserId string
+	UserId UserID
 
 	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls
 	Fields string
@@ -56,6 +56,11 @@ type GetVideosByIdAdditionalPartsOptions struct {
 
 	// Optional, include user data
 	EnableUserData *bool
+
+	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	FieldsList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -68,7 +73,7 @@ func (o GetVideosByIdAdditionalPartsOptions) ToHeaders() *client.Headers {
 func (o GetVideosByIdAdditionalPartsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	if o.Fields != "" {
 		out.Append("Fields", o.Fields)
@@ -84,6 +89,9 @@ func (o GetVideosByIdAdditionalPartsOptions) ToQuery() *client.QueryParams {
 	}
 	if o.EnableUserData != nil {
 		out.Append("EnableUserData", strconv.FormatBool(*o.EnableUserData))
+	}
+	if len(o.FieldsList) > 0 {
+		out.Append("Fields", client.CSV(o.FieldsList))
 	}
 	return &out
 }

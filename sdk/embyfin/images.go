@@ -21,7 +21,7 @@ type ImageInfo struct {
 func (c *Client) Images(ctx context.Context, itemID string) ([]ImageInfo, error) {
 	var images []ImageInfo
 	if c.isEmby() {
-		res, err := c.emby.Image.GetItemsByIdImages(ctx, itemID)
+		res, err := c.emby.Image.GetItemsByIdImages(ctx, emby.ItemID(itemID))
 		if err != nil {
 			return nil, err
 		}
@@ -34,7 +34,7 @@ func (c *Client) Images(ctx context.Context, itemID string) ([]ImageInfo, error)
 		return images, nil
 	}
 
-	res, err := c.jf.Image.GetItemImageInfos(ctx, itemID)
+	res, err := c.jf.Image.GetItemImageInfos(ctx, jf.ItemID(itemID))
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ type RemoteImage struct {
 // Primary (poster), Backdrop, Logo, Thumb.
 func (c *Client) RemoteImages(ctx context.Context, itemID, imageType string, limit int) ([]RemoteImage, int, error) {
 	if c.isEmby() {
-		res, err := c.emby.RemoteImage.GetItemsByIdRemoteImages(ctx, itemID, emby.GetItemsByIdRemoteImagesOptions{Type: emby.ImageType(imageType), Limit: nz(limit)})
+		res, err := c.emby.RemoteImage.GetItemsByIdRemoteImages(ctx, emby.ItemID(itemID), emby.GetItemsByIdRemoteImagesOptions{Type: emby.ImageType(imageType), Limit: nz(limit)})
 		if err != nil {
 			return nil, 0, err
 		}
@@ -75,7 +75,7 @@ func (c *Client) RemoteImages(ctx context.Context, itemID, imageType string, lim
 		return images, found.TotalRecordCount, nil
 	}
 
-	res, err := c.jf.RemoteImage.GetRemoteImages(ctx, itemID, jf.GetRemoteImagesOptions{Type: jf.ImageType(imageType), Limit: nz(limit)})
+	res, err := c.jf.RemoteImage.GetRemoteImages(ctx, jf.ItemID(itemID), jf.GetRemoteImagesOptions{Type: jf.ImageType(imageType), Limit: nz(limit)})
 	if err != nil {
 		return nil, 0, err
 	}
@@ -91,11 +91,11 @@ func (c *Client) RemoteImages(ctx context.Context, itemID, imageType string, lim
 // as the item's image of the given type.
 func (c *Client) DownloadRemoteImage(ctx context.Context, itemID, imageType, imageURL string) error {
 	if c.isEmby() {
-		_, err := c.emby.RemoteImage.PostItemsByIdRemoteImagesDownload(ctx, itemID, emby.ImagesBaseDownloadRemoteImage{}, emby.PostItemsByIdRemoteImagesDownloadOptions{Type: emby.ImageType(imageType), ImageUrl: imageURL})
+		_, err := c.emby.RemoteImage.PostItemsByIdRemoteImagesDownload(ctx, emby.ItemID(itemID), emby.ImagesBaseDownloadRemoteImage{}, emby.PostItemsByIdRemoteImagesDownloadOptions{Type: emby.ImageType(imageType), ImageUrl: imageURL})
 		return err
 	}
 
-	_, err := c.jf.RemoteImage.DownloadRemoteImage(ctx, itemID, jf.DownloadRemoteImageOptions{Type: jf.ImageType(imageType), ImageUrl: imageURL})
+	_, err := c.jf.RemoteImage.DownloadRemoteImage(ctx, jf.ItemID(itemID), jf.DownloadRemoteImageOptions{Type: jf.ImageType(imageType), ImageUrl: imageURL})
 
 	return err
 }

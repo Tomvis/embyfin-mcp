@@ -7,8 +7,8 @@ package jf
 // Class QueueItem.
 type SyncPlayQueueItem struct {
 	// Gets the item identifier.
-	ItemId string `json:"ItemId,omitempty"`
+	ItemId ItemID `json:"ItemId,omitempty"`
 
 	// Gets the playlist identifier of the item.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 }

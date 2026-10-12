@@ -13,7 +13,7 @@ import (
 )
 
 // GetArtistsByName calls GET /Artists/{Name}. Gets an artist, by name.
-func (c Client) GetArtistsByName(ctx context.Context, name string, userId ...string) (result emby.GetArtistsByNameResponse, err error) {
+func (c Client) GetArtistsByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetArtistsByNameResponse, err error) {
 	var option emby.GetArtistsByNameOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetArtistsByName takes one userId at most, not %d", len(userId))

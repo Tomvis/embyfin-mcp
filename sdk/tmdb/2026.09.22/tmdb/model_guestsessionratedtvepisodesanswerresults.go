@@ -4,7 +4,7 @@ package tmdb
 
 // GuestSessionRatedTvEpisodesAnswerResults is an object the document declares inline.
 type GuestSessionRatedTvEpisodesAnswerResults struct {
-	AirDate        string  `json:"air_date,omitempty"`
+	AirDate        Day     `json:"air_date,omitzero"`
 	EpisodeNumber  int     `json:"episode_number,omitempty"`
 	Id             int     `json:"id,omitempty"`
 	Name           string  `json:"name,omitempty"`

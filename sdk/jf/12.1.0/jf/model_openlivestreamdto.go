@@ -31,7 +31,7 @@ type OpenLiveStreamDto struct {
 	EnableDirectStream *bool `json:"EnableDirectStream,omitempty"`
 
 	// Gets or sets the item id.
-	ItemId string `json:"ItemId,omitempty"`
+	ItemId ItemID `json:"ItemId,omitempty"`
 
 	// Gets or sets the max audio channels.
 	MaxAudioChannels int `json:"MaxAudioChannels,omitempty"`
@@ -52,5 +52,5 @@ type OpenLiveStreamDto struct {
 	SubtitleStreamIndex int `json:"SubtitleStreamIndex,omitempty"`
 
 	// Gets or sets the user id.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 }

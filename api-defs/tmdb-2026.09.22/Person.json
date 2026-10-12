@@ -14,7 +14,7 @@
           "Field": "EndDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -30,7 +30,7 @@
           "Field": "StartDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         }
       ],
@@ -76,7 +76,7 @@
           "Field": "EndDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -92,7 +92,7 @@
           "Field": "StartDate",
           "In": "Query",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         }
       ],
@@ -578,7 +578,7 @@
           "Name": "Time",
           "JsonName": "time",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -725,7 +725,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -859,7 +859,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -923,14 +923,14 @@
           "Name": "Birthday",
           "JsonName": "birthday",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
           "Name": "Deathday",
           "JsonName": "deathday",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -1188,14 +1188,14 @@
           "Name": "Birthday",
           "JsonName": "birthday",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
           "Name": "Deathday",
           "JsonName": "deathday",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -1391,7 +1391,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -1518,7 +1518,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -1726,7 +1726,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -1966,7 +1966,7 @@
           "Name": "ReleaseDate",
           "JsonName": "release_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -2075,7 +2075,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {
@@ -2205,7 +2205,7 @@
           "Name": "FirstAirDate",
           "JsonName": "first_air_date",
           "Type": {
-            "Type": "String"
+            "Type": "Date"
           }
         },
         {

@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdFile calls GET /Items/{Id}/File. Gets the original file of an item.
-func (c Client) GetItemsByIdFile(ctx context.Context, id string) (result emby.GetItemsByIdFileResponse, err error) {
+func (c Client) GetItemsByIdFile(ctx context.Context, id emby.ItemID) (result emby.GetItemsByIdFileResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/octet-stream",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetItemsByIdFile(ctx context.Context, id string) (result emby.Ge
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetItemsByIdFile",
-		Path:           fmt.Sprintf("/Items/%s/File", url.PathEscape(id)),
+		Path:           fmt.Sprintf("/Items/%s/File", url.PathEscape(string(id))),
 		StreamResponse: true,
 	}
 

@@ -4,7 +4,7 @@ package tmdb
 
 // TvSeasonDetailsAnswer is an object the document declares inline.
 type TvSeasonDetailsAnswer struct {
-	AirDate      string                          `json:"air_date,omitempty"`
+	AirDate      Day                             `json:"air_date,omitzero"`
 	Episodes     []TvSeasonDetailsAnswerEpisodes `json:"episodes,omitzero"`
 	Id           int                             `json:"id,omitempty"`
 	Name         string                          `json:"name,omitempty"`

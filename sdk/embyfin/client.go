@@ -223,6 +223,58 @@ func (c *Client) pause(ctx context.Context) error {
 	}
 }
 
+// dated is a date as either server's SDK holds one.
+type dated interface {
+	IsZero() bool
+	Format(layout string) string
+	UnreadDate() string
+}
+
+// How each server writes a date and time, so one read from it is given back as it came. Emby always writes seven digits of a second's fraction.
+// Jellyfin writes seven when the first three are zero, and otherwise as many as the time has (counted over some nine thousand dates answered by
+// Emby 4.10.1 and 4.11 and by Jellyfin 12.2).
+const (
+	sevenDigitsLayout = "2006-01-02T15:04:05.0000000Z07:00"
+	asWrittenLayout   = "2006-01-02T15:04:05.9999999Z07:00"
+)
+
+// embyDate and jfDate are a date from a server's SDK as the text this package's records carry: written the way that server writes one, "" for none,
+// and as the server sent it when it is in no form the SDK reads. Year 1, which is how both servers write a date they do not have, is none.
+func embyDate(d dated) string { return dateText(d, sevenDigitsLayout) }
+
+func jfDate(d dated) string {
+	if d.Format(".000") == ".000" {
+		return dateText(d, sevenDigitsLayout)
+	}
+
+	return dateText(d, asWrittenLayout)
+}
+
+func dateText(d dated, layout string) string {
+	if unread := d.UnreadDate(); unread != "" {
+		return unread
+	}
+	if d.IsZero() {
+		return ""
+	}
+
+	return d.Format(layout)
+}
+
+// dateOf is the text of a date this package carried, back as the SDK's own type, for a record that goes back to the server. Text in no form the SDK
+// reads cannot be sent as a date, and is left out.
+func dateOf[T any, P interface {
+	*T
+	UnmarshalJSON(data []byte) error
+}](text string) T {
+	var d T
+	if text != "" {
+		_ = P(&d).UnmarshalJSON([]byte(strconv.Quote(text)))
+	}
+
+	return d
+}
+
 // nz is n as the pointer a generated option takes, nil for 0: the options
 // here keep 0 for "not asked", and only a season or an image index means 0.
 func nz[N int | int64](n N) *N {

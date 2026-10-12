@@ -15,12 +15,12 @@ func TestOperationPostSessionsByIdCommand(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostSessionsByIdCommand(t.Context(), "p/id", emby.GeneralCommand{})
+	result, err := c.PostSessionsByIdCommand(t.Context(), emby.SessionID("v-id"), emby.GeneralCommand{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Sessions/p%2Fid/Command")
+	expectRequest(t, r, http.MethodPost, "/Sessions/v-id/Command")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -36,7 +36,7 @@ func TestOperationPostSessionsByIdCommand(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostSessionsByIdCommand(t.Context(), "p/id", emby.GeneralCommand{})
+	result, err = c.PostSessionsByIdCommand(t.Context(), emby.SessionID("v-id"), emby.GeneralCommand{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

@@ -33,7 +33,8 @@
           "In": "Query",
           "Description": "Optional. Supply a user id to search within a user's library or omit to search all.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -91,7 +92,8 @@
           "In": "Query",
           "Description": "If specified, only children of the parent are returned.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -226,7 +228,8 @@
           "JsonName": "AlbumId",
           "Description": "Gets or sets the album id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -246,7 +249,8 @@
           "JsonName": "BackdropImageItemId",
           "Description": "Gets or sets the backdrop image item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -282,7 +286,7 @@
           "JsonName": "EndDate",
           "Description": "Gets or sets the end date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -326,7 +330,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the item id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -423,7 +428,7 @@
           "JsonName": "StartDate",
           "Description": "Gets or sets the start date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -441,7 +446,8 @@
           "JsonName": "ThumbImageItemId",
           "Description": "Gets or sets the thumb image item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },

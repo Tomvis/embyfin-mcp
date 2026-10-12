@@ -31,19 +31,19 @@ type SessionInfoDto struct {
 	HasCustomDeviceName bool `json:"HasCustomDeviceName"`
 
 	// Gets or sets the id.
-	Id string `json:"Id,omitempty"`
+	Id SessionID `json:"Id,omitempty"`
 
 	// Gets or sets a value indicating whether this session is active.
 	IsActive bool `json:"IsActive"`
 
 	// Gets or sets the last activity date.
-	LastActivityDate string `json:"LastActivityDate,omitempty"`
+	LastActivityDate Time `json:"LastActivityDate,omitzero"`
 
 	// Gets or sets the last paused date.
-	LastPausedDate string `json:"LastPausedDate,omitempty"`
+	LastPausedDate Time `json:"LastPausedDate,omitzero"`
 
 	// Gets or sets the last playback check in.
-	LastPlaybackCheckIn string `json:"LastPlaybackCheckIn,omitempty"`
+	LastPlaybackCheckIn Time `json:"LastPlaybackCheckIn,omitzero"`
 
 	// Gets or sets the now playing item.
 	NowPlayingItem *BaseItemDto `json:"NowPlayingItem,omitempty"`
@@ -61,7 +61,7 @@ type SessionInfoDto struct {
 	PlayableMediaTypes []MediaType `json:"PlayableMediaTypes,omitzero"`
 
 	// Gets or sets the playlist item id.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 
 	// Gets or sets the remote end point.
 	RemoteEndPoint string `json:"RemoteEndPoint,omitempty"`
@@ -82,7 +82,7 @@ type SessionInfoDto struct {
 	TranscodingInfo *TranscodingInfo `json:"TranscodingInfo,omitempty"`
 
 	// Gets or sets the user id.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 
 	// Gets or sets the username.
 	UserName string `json:"UserName,omitempty"`

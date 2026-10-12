@@ -6,12 +6,12 @@ package emby
 type DevicesDeviceInfo struct {
 	AppName          string `json:"AppName,omitempty"`
 	AppVersion       string `json:"AppVersion,omitempty"`
-	DateLastActivity string `json:"DateLastActivity,omitempty"`
+	DateLastActivity Time   `json:"DateLastActivity,omitzero"`
 	IconUrl          string `json:"IconUrl,omitempty"`
 	Id               string `json:"Id,omitempty"`
 	InternalId       int64  `json:"InternalId,omitempty"`
 	IpAddress        string `json:"IpAddress,omitempty"`
-	LastUserId       string `json:"LastUserId,omitempty"`
+	LastUserId       UserID `json:"LastUserId,omitempty"`
 	LastUserName     string `json:"LastUserName,omitempty"`
 	Name             string `json:"Name,omitempty"`
 	ReportedDeviceId string `json:"ReportedDeviceId,omitempty"`

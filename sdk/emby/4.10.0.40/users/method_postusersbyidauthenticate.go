@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByIdAuthenticate calls POST /Users/{Id}/Authenticate. Authenticates a user.
-func (c Client) PostUsersByIdAuthenticate(ctx context.Context, id string, input emby.AuthenticateUser) (result emby.PostUsersByIdAuthenticateResponse, err error) {
+func (c Client) PostUsersByIdAuthenticate(ctx context.Context, id emby.UserID, input emby.AuthenticateUser) (result emby.PostUsersByIdAuthenticateResponse, err error) {
 	result.AuthenticationAuthenticationResult = &emby.AuthenticationAuthenticationResult{}
 	opts := client.RequestOptions{
 		ContentType: "application/json",
@@ -23,7 +23,7 @@ func (c Client) PostUsersByIdAuthenticate(ctx context.Context, id string, input 
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByIdAuthenticate",
-		Path:       fmt.Sprintf("/Users/%s/Authenticate", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Authenticate", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

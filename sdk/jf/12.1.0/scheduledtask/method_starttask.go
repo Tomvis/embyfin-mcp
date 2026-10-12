@@ -13,14 +13,14 @@ import (
 )
 
 // StartTask calls POST /ScheduledTasks/Running/{taskId}. Start specified task.
-func (c Client) StartTask(ctx context.Context, taskId string) (result jf.StartTaskResponse, err error) {
+func (c Client) StartTask(ctx context.Context, taskId jf.TaskID) (result jf.StartTaskResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "StartTask",
-		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(taskId)),
+		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(string(taskId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

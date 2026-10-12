@@ -5,6 +5,6 @@ package emby
 // PlaystateRequest is the "PlaystateRequest" schema.
 type PlaystateRequest struct {
 	Command           PlaystateCommand `json:"Command,omitempty"`
-	ControllingUserId string           `json:"ControllingUserId,omitempty"`
+	ControllingUserId UserID           `json:"ControllingUserId,omitempty"`
 	SeekPositionTicks int64            `json:"SeekPositionTicks,omitempty"`
 }

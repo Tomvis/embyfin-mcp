@@ -8,8 +8,8 @@ type SyncJob struct {
 	Bitrate            int           `json:"Bitrate,omitempty"`
 	Category           SyncCategory  `json:"Category,omitempty"`
 	Container          string        `json:"Container,omitempty"`
-	DateCreated        string        `json:"DateCreated,omitempty"`
-	DateLastModified   string        `json:"DateLastModified,omitempty"`
+	DateCreated        Time          `json:"DateCreated,omitzero"`
+	DateLastModified   Time          `json:"DateLastModified,omitzero"`
 	Id                 int64         `json:"Id,omitempty"`
 	InternalTargetId   int64         `json:"InternalTargetId,omitempty"`
 	ItemCount          int           `json:"ItemCount,omitempty"`
@@ -18,7 +18,7 @@ type SyncJob struct {
 	Name               string        `json:"Name,omitempty"`
 	ParentId           int64         `json:"ParentId,omitempty"`
 	ParentName         string        `json:"ParentName,omitempty"`
-	PrimaryImageItemId string        `json:"PrimaryImageItemId,omitempty"`
+	PrimaryImageItemId ItemID        `json:"PrimaryImageItemId,omitempty"`
 	PrimaryImageTag    string        `json:"PrimaryImageTag,omitempty"`
 	Profile            string        `json:"Profile,omitempty"`
 	Progress           float64       `json:"Progress,omitempty"`

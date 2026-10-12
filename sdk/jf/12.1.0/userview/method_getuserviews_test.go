@@ -16,7 +16,7 @@ func TestOperationGetUserViews(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetUserViews(t.Context(), jf.GetUserViewsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		IncludeExternalContent: new(true),
 		PresetViews:            []jf.CollectionType{jf.CollectionTypeUnknown, jf.CollectionTypeFolders},
 		IncludeHidden:          new(true),
@@ -47,7 +47,7 @@ func TestOperationGetUserViews(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetUserViews(t.Context(), jf.GetUserViewsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		IncludeExternalContent: new(true),
 		PresetViews:            []jf.CollectionType{jf.CollectionTypeUnknown, jf.CollectionTypeFolders},
 		IncludeHidden:          new(true),
@@ -59,7 +59,7 @@ func TestOperationGetUserViews(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetUserViews(t.Context(), jf.GetUserViewsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		IncludeExternalContent: new(true),
 		PresetViews:            []jf.CollectionType{jf.CollectionTypeUnknown, jf.CollectionTypeFolders},
 		IncludeHidden:          new(true),

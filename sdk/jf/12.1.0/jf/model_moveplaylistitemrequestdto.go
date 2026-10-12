@@ -10,5 +10,5 @@ type MovePlaylistItemRequestDto struct {
 	NewIndex int `json:"NewIndex,omitempty"`
 
 	// Gets or sets the playlist identifier of the item.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 }

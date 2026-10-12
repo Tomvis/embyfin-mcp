@@ -4,7 +4,7 @@ package emby
 
 // CreateUserByName is the "CreateUserByName" schema.
 type CreateUserByName struct {
-	CopyFromUserId  string   `json:"CopyFromUserId,omitempty"`
+	CopyFromUserId  UserID   `json:"CopyFromUserId,omitempty"`
 	Name            string   `json:"Name,omitempty"`
 	UserCopyOptions []string `json:"UserCopyOptions,omitzero"`
 }

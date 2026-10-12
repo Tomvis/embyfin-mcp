@@ -25,7 +25,7 @@ type GetProgramsDto struct {
 	Fields []ItemFields `json:"Fields,omitzero"`
 
 	// Gets or sets the genre ids to return guide information for.
-	GenreIds []string `json:"GenreIds,omitzero"`
+	GenreIds []ItemID `json:"GenreIds,omitzero"`
 
 	// Gets or sets the genres to return guide information for.
 	Genres []string `json:"Genres,omitzero"`
@@ -61,16 +61,16 @@ type GetProgramsDto struct {
 	Limit int `json:"Limit,omitempty"`
 
 	// Gets or sets the maximum premiere end date.
-	MaxEndDate string `json:"MaxEndDate,omitempty"`
+	MaxEndDate Time `json:"MaxEndDate,omitzero"`
 
 	// Gets or sets the maximum premiere start date.
-	MaxStartDate string `json:"MaxStartDate,omitempty"`
+	MaxStartDate Time `json:"MaxStartDate,omitzero"`
 
 	// Gets or sets the minimum premiere end date.
-	MinEndDate string `json:"MinEndDate,omitempty"`
+	MinEndDate Time `json:"MinEndDate,omitzero"`
 
 	// Gets or sets the minimum premiere start date.
-	MinStartDate string `json:"MinStartDate,omitempty"`
+	MinStartDate Time `json:"MinStartDate,omitzero"`
 
 	// Gets or sets filter by series timer id.
 	SeriesTimerId string `json:"SeriesTimerId,omitempty"`
@@ -85,5 +85,5 @@ type GetProgramsDto struct {
 	StartIndex int `json:"StartIndex,omitempty"`
 
 	// Gets or sets optional. Filter by user id.
-	UserId string `json:"UserId,omitempty"`
+	UserId UserID `json:"UserId,omitempty"`
 }

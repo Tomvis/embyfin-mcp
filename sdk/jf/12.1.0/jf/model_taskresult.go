@@ -7,7 +7,7 @@ package jf
 // Class TaskExecutionInfo.
 type TaskResult struct {
 	// Gets or sets the end time UTC.
-	EndTimeUtc string `json:"EndTimeUtc,omitempty"`
+	EndTimeUtc Time `json:"EndTimeUtc,omitzero"`
 
 	// Gets or sets the error message.
 	ErrorMessage string `json:"ErrorMessage,omitempty"`
@@ -25,7 +25,7 @@ type TaskResult struct {
 	Name string `json:"Name,omitempty"`
 
 	// Gets or sets the start time UTC.
-	StartTimeUtc string `json:"StartTimeUtc,omitempty"`
+	StartTimeUtc Time `json:"StartTimeUtc,omitzero"`
 
 	// Gets or sets the status.
 	Status TaskCompletionStatus `json:"Status,omitempty"`

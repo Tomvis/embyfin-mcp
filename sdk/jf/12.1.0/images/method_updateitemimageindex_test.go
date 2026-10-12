@@ -14,13 +14,13 @@ func TestOperationUpdateItemImageIndex(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.UpdateItemImageIndex(t.Context(), "p/itemId", jf.ImageTypePrimary, 7, 7)
+	result, err := c.UpdateItemImageIndex(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, 7, 7)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Items/p%2FitemId/Images/Primary/7/Index")
+	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/Images/Primary/7/Index")
 	expectQuery(t, r, "newIndex", "7")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -28,7 +28,7 @@ func TestOperationUpdateItemImageIndex(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.UpdateItemImageIndex(t.Context(), "p/itemId", jf.ImageTypePrimary, 7, 7)
+	result, err = c.UpdateItemImageIndex(t.Context(), jf.ItemID("v-itemId"), jf.ImageTypePrimary, 7, 7)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

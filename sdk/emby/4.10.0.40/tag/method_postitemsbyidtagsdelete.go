@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdTagsDelete calls POST /Items/{Id}/Tags/Delete. Removes tags from an item.
-func (c Client) PostItemsByIdTagsDelete(ctx context.Context, id string, input emby.UserLibraryRemoveTags) (result emby.PostItemsByIdTagsDeleteResponse, err error) {
+func (c Client) PostItemsByIdTagsDelete(ctx context.Context, id emby.ItemID, input emby.UserLibraryRemoveTags) (result emby.PostItemsByIdTagsDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostItemsByIdTagsDelete(ctx context.Context, id string, input em
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostItemsByIdTagsDelete",
-		Path:       fmt.Sprintf("/Items/%s/Tags/Delete", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/Tags/Delete", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -78,7 +78,7 @@ func (r GetUserImageResponse) Bytes(max int64) ([]byte, error) {
 // GetUserImageOptions holds the query and header parameters of GetUserImage.
 type GetUserImageOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Optional. Supply the cache tag from the item object to receive strong caching headers.
 	Tag string
@@ -97,7 +97,7 @@ func (o GetUserImageOptions) ToHeaders() *client.Headers {
 func (o GetUserImageOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.Tag != "" {
 		out.Append("tag", o.Tag)

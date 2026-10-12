@@ -16,7 +16,7 @@ func TestOperationGetVideosByIdStream(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "video/mp4", "file bytes")
-	result, err := c.GetVideosByIdStream(t.Context(), "p/id", emby.GetVideosByIdStreamOptions{
+	result, err := c.GetVideosByIdStream(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdStreamOptions{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		Container:            "v-Container",
@@ -46,7 +46,7 @@ func TestOperationGetVideosByIdStream(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2Fid/stream")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-id/stream")
 	expectQuery(t, r, "DeviceProfileId", "v-DeviceProfileId")
 	expectQuery(t, r, "DeviceId", "v-DeviceId")
 	expectQuery(t, r, "Container", "v-Container")
@@ -83,7 +83,7 @@ func TestOperationGetVideosByIdStream(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "video/mp4", "file bytes")
-	result, err = c.GetVideosByIdStream(t.Context(), "p/id", emby.GetVideosByIdStreamOptions{
+	result, err = c.GetVideosByIdStream(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdStreamOptions{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		Container:            "v-Container",
@@ -115,7 +115,7 @@ func TestOperationGetVideosByIdStream(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "video/mp4", "file bytes")
-	result, err = c.GetVideosByIdStream(t.Context(), "p/id", emby.GetVideosByIdStreamOptions{
+	result, err = c.GetVideosByIdStream(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdStreamOptions{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		Container:            "v-Container",
@@ -159,7 +159,7 @@ func TestOperationGetVideosByIdStream(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetVideosByIdStream(t.Context(), "p/id", emby.GetVideosByIdStreamOptions{
+	result, err = c.GetVideosByIdStream(t.Context(), emby.ItemID("v-id"), emby.GetVideosByIdStreamOptions{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		Container:            "v-Container",

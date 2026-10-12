@@ -40,7 +40,7 @@ func (r GetUserViewsResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetUserViewsOptions holds the query and header parameters of GetUserViews.
 type GetUserViewsOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 
 	// Whether or not to include external views such as channels or live tv.
 	IncludeExternalContent *bool
@@ -62,7 +62,7 @@ func (o GetUserViewsOptions) ToHeaders() *client.Headers {
 func (o GetUserViewsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.IncludeExternalContent != nil {
 		out.Append("includeExternalContent", strconv.FormatBool(*o.IncludeExternalContent))

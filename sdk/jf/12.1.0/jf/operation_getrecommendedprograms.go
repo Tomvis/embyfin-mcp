@@ -40,7 +40,7 @@ func (r GetRecommendedProgramsResponse) Record() (BaseItemDtoQueryResult, error)
 // GetRecommendedProgramsOptions holds the query and header parameters of GetRecommendedPrograms.
 type GetRecommendedProgramsOptions struct {
 	// Optional. filter by user id.
-	UserId string
+	UserId UserID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -79,7 +79,7 @@ type GetRecommendedProgramsOptions struct {
 	EnableImageTypes []ImageType
 
 	// The genres to return guide information for.
-	GenreIds []string
+	GenreIds []ItemID
 
 	// Optional. Specify additional fields of information to return in the output.
 	Fields []ItemFields
@@ -101,7 +101,7 @@ func (o GetRecommendedProgramsOptions) ToHeaders() *client.Headers {
 func (o GetRecommendedProgramsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))
@@ -140,7 +140,7 @@ func (o GetRecommendedProgramsOptions) ToQuery() *client.QueryParams {
 		out.Append("enableImageTypes", string(v))
 	}
 	for _, v := range o.GenreIds {
-		out.Append("genreIds", v)
+		out.Append("genreIds", string(v))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))

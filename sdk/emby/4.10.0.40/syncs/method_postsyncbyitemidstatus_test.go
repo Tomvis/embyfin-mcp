@@ -15,12 +15,12 @@ func TestOperationPostSyncByItemIdStatus(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostSyncByItemIdStatus(t.Context(), "p/itemId", emby.SyncedItemProgress{})
+	result, err := c.PostSyncByItemIdStatus(t.Context(), emby.ItemID("v-itemId"), emby.SyncedItemProgress{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Sync/p%2FitemId/Status")
+	expectRequest(t, r, http.MethodPost, "/Sync/v-itemId/Status")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -36,7 +36,7 @@ func TestOperationPostSyncByItemIdStatus(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostSyncByItemIdStatus(t.Context(), "p/itemId", emby.SyncedItemProgress{})
+	result, err = c.PostSyncByItemIdStatus(t.Context(), emby.ItemID("v-itemId"), emby.SyncedItemProgress{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

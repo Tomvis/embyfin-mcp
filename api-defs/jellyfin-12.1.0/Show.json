@@ -13,7 +13,8 @@
           "Name": "seriesId",
           "Argument": "seriesId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -24,7 +25,8 @@
           "In": "Query",
           "Description": "The user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -55,7 +57,8 @@
           "In": "Query",
           "Description": "Optional. Filter by season id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -82,7 +85,8 @@
           "In": "Query",
           "Description": "Optional. Skip through the list until a given item is found.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -188,7 +192,8 @@
           "In": "Query",
           "Description": "The user id of the user to get the next up episodes for.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -228,7 +233,8 @@
           "In": "Query",
           "Description": "Optional. Filter by series id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -237,7 +243,8 @@
           "In": "Query",
           "Description": "Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -286,7 +293,7 @@
           "In": "Query",
           "Description": "Optional. Starting date of shows to show in Next Up section.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -349,7 +356,8 @@
           "Name": "seriesId",
           "Argument": "seriesId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -360,7 +368,8 @@
           "In": "Query",
           "Description": "The user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -468,7 +477,8 @@
           "In": "Query",
           "Description": "The user id of the user to get the upcoming episodes for.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -508,7 +518,8 @@
           "In": "Query",
           "Description": "Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {

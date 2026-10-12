@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdPlayingItemsById calls POST /Users/{UserId}/PlayingItems/{Id}. Reports that a user has begun playing an item.
-func (c Client) PostUsersByUserIdPlayingItemsById(ctx context.Context, userId string, id string, options emby.PostUsersByUserIdPlayingItemsByIdOptions) (result emby.PostUsersByUserIdPlayingItemsByIdResponse, err error) {
+func (c Client) PostUsersByUserIdPlayingItemsById(ctx context.Context, userId emby.UserID, id emby.ItemID, options emby.PostUsersByUserIdPlayingItemsByIdOptions) (result emby.PostUsersByUserIdPlayingItemsByIdResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdPlayingItemsById(ctx context.Context, userId st
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostUsersByUserIdPlayingItemsById",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Users/%s/PlayingItems/%s", url.PathEscape(userId), url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/PlayingItems/%s", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

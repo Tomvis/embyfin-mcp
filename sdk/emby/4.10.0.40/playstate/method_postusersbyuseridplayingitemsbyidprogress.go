@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdPlayingItemsByIdProgress calls POST /Users/{UserId}/PlayingItems/{Id}/Progress. Reports a user's playback progress.
-func (c Client) PostUsersByUserIdPlayingItemsByIdProgress(ctx context.Context, userId string, id string, input emby.ApiOnPlaybackProgress, options emby.PostUsersByUserIdPlayingItemsByIdProgressOptions) (result emby.PostUsersByUserIdPlayingItemsByIdProgressResponse, err error) {
+func (c Client) PostUsersByUserIdPlayingItemsByIdProgress(ctx context.Context, userId emby.UserID, id emby.ItemID, input emby.ApiOnPlaybackProgress, options emby.PostUsersByUserIdPlayingItemsByIdProgressOptions) (result emby.PostUsersByUserIdPlayingItemsByIdProgressResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -23,7 +23,7 @@ func (c Client) PostUsersByUserIdPlayingItemsByIdProgress(ctx context.Context, u
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostUsersByUserIdPlayingItemsByIdProgress",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Users/%s/PlayingItems/%s/Progress", url.PathEscape(userId), url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/PlayingItems/%s/Progress", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

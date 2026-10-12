@@ -13,14 +13,14 @@ import (
 )
 
 // DeleteLyrics calls DELETE /Audio/{itemId}/Lyrics. Deletes an external lyric file.
-func (c Client) DeleteLyrics(ctx context.Context, itemId string) (result jf.DeleteLyricsResponse, err error) {
+func (c Client) DeleteLyrics(ctx context.Context, itemId jf.ItemID) (result jf.DeleteLyricsResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteLyrics",
-		Path:       fmt.Sprintf("/Audio/%s/Lyrics", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Audio/%s/Lyrics", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -43,7 +43,7 @@ type DlnaProfilesDlnaProfile struct {
 	TimelineOffsetSeconds            int                                `json:"TimelineOffsetSeconds,omitempty"`
 	TranscodingProfiles              []TranscodingProfile               `json:"TranscodingProfiles,omitzero"`
 	Type                             DlnaProfilesDeviceProfileType      `json:"Type,omitempty"`
-	UserId                           string                             `json:"UserId,omitempty"`
+	UserId                           UserID                             `json:"UserId,omitempty"`
 }
 
 // GetName is the record's Name, for code that handles records of several types alike.

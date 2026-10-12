@@ -46,7 +46,7 @@ type GetSystemActivityLogEntriesOptions struct {
 	Limit *int
 
 	// Optional. The minimum date. Format = ISO
-	MinDate string
+	MinDate Time
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -64,8 +64,8 @@ func (o GetSystemActivityLogEntriesOptions) ToQuery() *client.QueryParams {
 	if o.Limit != nil {
 		out.Append("Limit", strconv.Itoa(*o.Limit))
 	}
-	if o.MinDate != "" {
-		out.Append("MinDate", o.MinDate)
+	if !o.MinDate.IsZero() {
+		out.Append("MinDate", o.MinDate.As(sendDateAs("GetSystemActivityLogEntries", "MinDate")))
 	}
 	return &out
 }

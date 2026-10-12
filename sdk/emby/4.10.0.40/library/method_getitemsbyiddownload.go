@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdDownload calls GET /Items/{Id}/Download. Downloads item media.
-func (c Client) GetItemsByIdDownload(ctx context.Context, id string) (result emby.GetItemsByIdDownloadResponse, err error) {
+func (c Client) GetItemsByIdDownload(ctx context.Context, id emby.ItemID) (result emby.GetItemsByIdDownloadResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/octet-stream",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetItemsByIdDownload(ctx context.Context, id string) (result emb
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetItemsByIdDownload",
-		Path:           fmt.Sprintf("/Items/%s/Download", url.PathEscape(id)),
+		Path:           fmt.Sprintf("/Items/%s/Download", url.PathEscape(string(id))),
 		StreamResponse: true,
 	}
 

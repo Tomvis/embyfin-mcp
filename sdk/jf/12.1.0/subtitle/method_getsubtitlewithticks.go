@@ -13,7 +13,7 @@ import (
 )
 
 // GetSubtitleWithTicks calls GET /Videos/{routeItemId}/{routeMediaSourceId}/Subtitles/{routeIndex}/{routeStartPositionTicks}/Stream.{routeFormat}. Gets subtitles in a specified format.
-func (c Client) GetSubtitleWithTicks(ctx context.Context, routeItemId string, routeMediaSourceId string, routeIndex int, routeStartPositionTicks int64, routeFormat string, options ...jf.GetSubtitleWithTicksOptions) (result jf.GetSubtitleWithTicksResponse, err error) {
+func (c Client) GetSubtitleWithTicks(ctx context.Context, routeItemId jf.ItemID, routeMediaSourceId jf.MediaSourceID, routeIndex int, routeStartPositionTicks int64, routeFormat string, options ...jf.GetSubtitleWithTicksOptions) (result jf.GetSubtitleWithTicksResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetSubtitleWithTicks takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetSubtitleWithTicks(ctx context.Context, routeItemId string, ro
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetSubtitleWithTicks",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/%d/Stream.%s", url.PathEscape(routeItemId), url.PathEscape(routeMediaSourceId), routeIndex, routeStartPositionTicks, url.PathEscape(routeFormat)),
+		Path:           fmt.Sprintf("/Videos/%s/%s/Subtitles/%d/%d/Stream.%s", url.PathEscape(string(routeItemId)), url.PathEscape(string(routeMediaSourceId)), routeIndex, routeStartPositionTicks, url.PathEscape(routeFormat)),
 		StreamResponse: true,
 	}
 

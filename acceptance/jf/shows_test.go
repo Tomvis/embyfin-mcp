@@ -82,7 +82,7 @@ func TestJFShows(t *testing.T) {
 		if _, err := jfc.UserData.MarkPlayedItem(ctx, first, jf.MarkPlayedItemOptions{UserId: adminID}); err != nil {
 			t.Fatal(err)
 		}
-		sdkacc.UndoLater(t, "unmarking "+first+" played", func() error {
+		sdkacc.UndoLater(t, "unmarking "+string(first)+" played", func() error {
 			_, err := jfc.UserData.MarkUnplayedItem(context.WithoutCancel(ctx), first, adminID)
 			return err
 		})

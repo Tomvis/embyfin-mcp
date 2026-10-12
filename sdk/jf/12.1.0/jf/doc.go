@@ -45,8 +45,19 @@
 // hands them out one at a time as a range, so a loop that stops asks for no
 // page more.
 //
-// Dates are strings: the servers send RFC 3339 with seven fractional digits,
-// sometimes with no zone.
+// # Dates
+//
+// A date and time is a Time. The servers write RFC 3339 with up to seven fractional digits, sometimes with no
+// zone, and a date that reads as none of those is held as zero with its text kept in Unread. One is sent with
+// seven fractional digits, and a zero one is not sent.
+//
+// # Ids
+//
+// ItemID, UserID, SessionID, TaskID, PlaylistItemID, MediaSourceID are kinds of id the package tells apart, each a bare named type over
+// the int or string the document declares, so that one kind where another goes
+// does not compile. Where an id sits among the options it is held by value and
+// sent when not zero. int(id) and SeriesID(n) convert one value, client.IDs and
+// client.StringIDs a list.
 //
 // # Workarounds
 //
@@ -54,4 +65,5 @@
 //
 //   - jellyfin-create-playlist-query
 //   - jellyfin-plugin-configuration
+//   - jellyfin-saved-since-text
 package jf

@@ -39,7 +39,7 @@ func (r GetChannelResponse) Record() (BaseItemDto, error) {
 // GetChannelOptions holds the query and header parameters of GetChannel.
 type GetChannelOptions struct {
 	// Optional. Attach user data.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetChannelOptions) ToHeaders() *client.Headers {
 func (o GetChannelOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

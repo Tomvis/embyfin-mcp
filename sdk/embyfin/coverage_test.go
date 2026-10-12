@@ -664,7 +664,7 @@ func TestCountsDevicesAndLogFiles(t *testing.T) {
 
 	counts := `{"MovieCount":10,"SeriesCount":2,"EpisodeCount":30,"AlbumCount":4,"SongCount":50,"MusicVideoCount":1,"BoxSetCount":3,"TrailerCount":7,"ArtistCount":6,"BookCount":8,"ProgramCount":9,"ItemCount":130}`
 	devices := `{"Items":[{"Name":"Zzyzx Phone","AppName":"Zzyzx App","AppVersion":"1.2","LastUserName":"zed","DateLastActivity":"2026-09-14T00:00:00Z","Id":"d9"}],"TotalRecordCount":1}`
-	logs := `[{"Name":"server.txt","Size":2048,"DateModified":"2026-09-14T00:00:00Z","DateCreated":"2026-09-01T00:00:00Z"}]`
+	logs := `[{"Name":"server.txt","Size":2048,"DateModified":"2026-09-14T00:00:00.1234567Z","DateCreated":"2026-09-01T00:00:00.1234567Z"}]`
 	checkCounts := func(t *testing.T, backend Backend, n *ItemCounts, err error) {
 		t.Helper()
 
@@ -682,7 +682,7 @@ func TestCountsDevicesAndLogFiles(t *testing.T) {
 	checkLogs := func(t *testing.T, backend Backend, files []LogFile, err error) {
 		t.Helper()
 
-		if err != nil || len(files) != 1 || files[0].Name != "server.txt" || files[0].Size != 2048 || files[0].DateModified != "2026-09-14T00:00:00Z" {
+		if err != nil || len(files) != 1 || files[0].Name != "server.txt" || files[0].Size != 2048 || files[0].DateModified != "2026-09-14T00:00:00.1234567Z" {
 			t.Errorf("%s LogFiles = %+v, %v", backend, files, err)
 		}
 	}

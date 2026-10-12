@@ -14,7 +14,7 @@ import (
 )
 
 // GetItemsByIdCriticReviews calls GET /Items/{Id}/CriticReviews. Gets critic reviews for an item.
-func (c Client) GetItemsByIdCriticReviews(ctx context.Context, id string, options ...emby.GetItemsByIdCriticReviewsOptions) (result emby.GetItemsByIdCriticReviewsResponse, err error) {
+func (c Client) GetItemsByIdCriticReviews(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdCriticReviewsOptions) (result emby.GetItemsByIdCriticReviewsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdCriticReviews takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetItemsByIdCriticReviews(ctx context.Context, id string, option
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemsByIdCriticReviews",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/CriticReviews", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/CriticReviews", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetItemsByIdCriticReviews(ctx context.Context, id string, option
 // GetItemsByIdCriticReviewsComplete calls GetItemsByIdCriticReviews page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetItemsByIdCriticReviewsComplete(ctx context.Context, id string, options ...emby.GetItemsByIdCriticReviewsOptions) (result emby.GetItemsByIdCriticReviewsCompleteResult, err error) {
+func (c Client) GetItemsByIdCriticReviewsComplete(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdCriticReviewsOptions) (result emby.GetItemsByIdCriticReviewsCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemsByIdCriticReviewsComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetItemsByIdCriticReviewsComplete(ctx context.Context, id string
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetItemsByIdCriticReviewsComplete asks for them.
-func (c Client) GetItemsByIdCriticReviewsEach(ctx context.Context, id string, options ...emby.GetItemsByIdCriticReviewsOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetItemsByIdCriticReviewsEach(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdCriticReviewsOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

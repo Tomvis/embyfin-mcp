@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdPlayingItemsByIdDelete calls POST /Users/{UserId}/PlayingItems/{Id}/Delete. Reports that a user has stopped playing an item.
-func (c Client) PostUsersByUserIdPlayingItemsByIdDelete(ctx context.Context, userId string, id string, options emby.PostUsersByUserIdPlayingItemsByIdDeleteOptions) (result emby.PostUsersByUserIdPlayingItemsByIdDeleteResponse, err error) {
+func (c Client) PostUsersByUserIdPlayingItemsByIdDelete(ctx context.Context, userId emby.UserID, id emby.ItemID, options emby.PostUsersByUserIdPlayingItemsByIdDeleteOptions) (result emby.PostUsersByUserIdPlayingItemsByIdDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdPlayingItemsByIdDelete(ctx context.Context, use
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostUsersByUserIdPlayingItemsByIdDelete",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Users/%s/PlayingItems/%s/Delete", url.PathEscape(userId), url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/PlayingItems/%s/Delete", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

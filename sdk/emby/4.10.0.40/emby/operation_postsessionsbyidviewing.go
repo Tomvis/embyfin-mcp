@@ -19,7 +19,7 @@ type PostSessionsByIdViewingOptions struct {
 	ItemType string
 
 	// The Id of the item.
-	ItemId string
+	ItemId ItemID
 
 	// The name of the item.
 	ItemName string
@@ -38,7 +38,7 @@ func (o PostSessionsByIdViewingOptions) ToQuery() *client.QueryParams {
 		out.Append("ItemType", o.ItemType)
 	}
 	if o.ItemId != "" {
-		out.Append("ItemId", o.ItemId)
+		out.Append("ItemId", string(o.ItemId))
 	}
 	if o.ItemName != "" {
 		out.Append("ItemName", o.ItemName)

@@ -11,7 +11,7 @@ import (
 )
 
 // PostItemsDelete calls POST /Items/Delete. Deletes an item from the library and file system.
-func (c Client) PostItemsDelete(ctx context.Context, ids string) (result emby.PostItemsDeleteResponse, err error) {
+func (c Client) PostItemsDelete(ctx context.Context, ids []emby.ItemID) (result emby.PostItemsDeleteResponse, err error) {
 	var option emby.PostItemsDeleteOptions
 	option.Ids = ids
 

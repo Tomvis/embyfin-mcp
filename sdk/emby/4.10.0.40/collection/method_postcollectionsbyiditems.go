@@ -13,7 +13,7 @@ import (
 )
 
 // PostCollectionsByIdItems calls POST /Collections/{Id}/Items. Adds items to a collection.
-func (c Client) PostCollectionsByIdItems(ctx context.Context, id string, ids string) (result emby.PostCollectionsByIdItemsResponse, err error) {
+func (c Client) PostCollectionsByIdItems(ctx context.Context, id emby.ItemID, ids []emby.ItemID) (result emby.PostCollectionsByIdItemsResponse, err error) {
 	var option emby.PostCollectionsByIdItemsOptions
 	option.Ids = ids
 
@@ -25,7 +25,7 @@ func (c Client) PostCollectionsByIdItems(ctx context.Context, id string, ids str
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostCollectionsByIdItems",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

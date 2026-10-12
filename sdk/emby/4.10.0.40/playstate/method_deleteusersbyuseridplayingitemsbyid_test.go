@@ -14,8 +14,8 @@ func TestOperationDeleteUsersByUserIdPlayingItemsById(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.DeleteUsersByUserIdPlayingItemsById(t.Context(), "p/userId", "p/id", emby.DeleteUsersByUserIdPlayingItemsByIdOptions{
-		MediaSourceId: "v-MediaSourceId",
+	result, err := c.DeleteUsersByUserIdPlayingItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.DeleteUsersByUserIdPlayingItemsByIdOptions{
+		MediaSourceId: emby.MediaSourceID("v-MediaSourceId"),
 		NextMediaType: "v-NextMediaType",
 		PositionTicks: new(int64(7)),
 		LiveStreamId:  "v-LiveStreamId",
@@ -26,7 +26,7 @@ func TestOperationDeleteUsersByUserIdPlayingItemsById(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodDelete, "/Users/p%2FuserId/PlayingItems/p%2Fid")
+	expectRequest(t, r, http.MethodDelete, "/Users/v-userId/PlayingItems/v-id")
 	expectQuery(t, r, "MediaSourceId", "v-MediaSourceId")
 	expectQuery(t, r, "NextMediaType", "v-NextMediaType")
 	expectQuery(t, r, "PositionTicks", "7")
@@ -38,8 +38,8 @@ func TestOperationDeleteUsersByUserIdPlayingItemsById(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.DeleteUsersByUserIdPlayingItemsById(t.Context(), "p/userId", "p/id", emby.DeleteUsersByUserIdPlayingItemsByIdOptions{
-		MediaSourceId: "v-MediaSourceId",
+	result, err = c.DeleteUsersByUserIdPlayingItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.DeleteUsersByUserIdPlayingItemsByIdOptions{
+		MediaSourceId: emby.MediaSourceID("v-MediaSourceId"),
 		NextMediaType: "v-NextMediaType",
 		PositionTicks: new(int64(7)),
 		LiveStreamId:  "v-LiveStreamId",

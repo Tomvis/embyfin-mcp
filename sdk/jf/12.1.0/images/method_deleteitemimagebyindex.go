@@ -13,14 +13,14 @@ import (
 )
 
 // DeleteItemImageByIndex calls DELETE /Items/{itemId}/Images/{imageType}/{imageIndex}. Delete an item's image.
-func (c Client) DeleteItemImageByIndex(ctx context.Context, itemId string, imageType jf.ImageType, imageIndex int) (result jf.DeleteItemImageByIndexResponse, err error) {
+func (c Client) DeleteItemImageByIndex(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex int) (result jf.DeleteItemImageByIndexResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteItemImageByIndex",
-		Path:       fmt.Sprintf("/Items/%s/Images/%s/%d", url.PathEscape(itemId), url.PathEscape(string(imageType)), imageIndex),
+		Path:       fmt.Sprintf("/Items/%s/Images/%s/%d", url.PathEscape(string(itemId)), url.PathEscape(string(imageType)), imageIndex),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

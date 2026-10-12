@@ -14,7 +14,7 @@ import (
 )
 
 // GetUsersByUserIdItemsResume calls GET /Users/{UserId}/Items/Resume. Gets items based on a query.
-func (c Client) GetUsersByUserIdItemsResume(ctx context.Context, userId string, options ...emby.GetUsersByUserIdItemsResumeOptions) (result emby.GetUsersByUserIdItemsResumeResponse, err error) {
+func (c Client) GetUsersByUserIdItemsResume(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsResumeOptions) (result emby.GetUsersByUserIdItemsResumeResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdItemsResume takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetUsersByUserIdItemsResume(ctx context.Context, userId string, 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetUsersByUserIdItemsResume",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Items/Resume", url.PathEscape(userId)),
+		Path:          fmt.Sprintf("/Users/%s/Items/Resume", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetUsersByUserIdItemsResume(ctx context.Context, userId string, 
 // GetUsersByUserIdItemsResumeComplete calls GetUsersByUserIdItemsResume page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetUsersByUserIdItemsResumeComplete(ctx context.Context, userId string, options ...emby.GetUsersByUserIdItemsResumeOptions) (result emby.GetUsersByUserIdItemsResumeCompleteResult, err error) {
+func (c Client) GetUsersByUserIdItemsResumeComplete(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsResumeOptions) (result emby.GetUsersByUserIdItemsResumeCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdItemsResumeComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetUsersByUserIdItemsResumeComplete(ctx context.Context, userId 
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetUsersByUserIdItemsResumeComplete asks for them.
-func (c Client) GetUsersByUserIdItemsResumeEach(ctx context.Context, userId string, options ...emby.GetUsersByUserIdItemsResumeOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetUsersByUserIdItemsResumeEach(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsResumeOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

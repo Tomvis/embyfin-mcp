@@ -79,7 +79,8 @@
           "In": "Query",
           "Description": "Optional. User Id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -187,7 +188,8 @@
           "In": "Query",
           "Description": "User Id to filter by. Use System.Guid.Empty to not filter by user.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -270,7 +272,8 @@
           "In": "Query",
           "Description": "Optional. User Id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {

@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByItemIdMetadataEditor calls GET /Items/{ItemId}/MetadataEditor. Gets metadata editor info for an item.
-func (c Client) GetItemsByItemIdMetadataEditor(ctx context.Context, itemId string) (result emby.GetItemsByItemIdMetadataEditorResponse, err error) {
+func (c Client) GetItemsByItemIdMetadataEditor(ctx context.Context, itemId emby.ItemID) (result emby.GetItemsByItemIdMetadataEditorResponse, err error) {
 	result.MetadataEditorInfo = &emby.MetadataEditorInfo{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetItemsByItemIdMetadataEditor(ctx context.Context, itemId strin
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetItemsByItemIdMetadataEditor",
-		Path:       fmt.Sprintf("/Items/%s/MetadataEditor", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Items/%s/MetadataEditor", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

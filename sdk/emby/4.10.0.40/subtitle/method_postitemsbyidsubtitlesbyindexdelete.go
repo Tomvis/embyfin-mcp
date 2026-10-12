@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdSubtitlesByIndexDelete calls POST /Items/{Id}/Subtitles/{Index}/Delete. Deletes an external subtitle file.
-func (c Client) PostItemsByIdSubtitlesByIndexDelete(ctx context.Context, id string, index int, mediaSourceId string) (result emby.PostItemsByIdSubtitlesByIndexDeleteResponse, err error) {
+func (c Client) PostItemsByIdSubtitlesByIndexDelete(ctx context.Context, id emby.ItemID, index int, mediaSourceId emby.MediaSourceID) (result emby.PostItemsByIdSubtitlesByIndexDeleteResponse, err error) {
 	var option emby.PostItemsByIdSubtitlesByIndexDeleteOptions
 	option.MediaSourceId = mediaSourceId
 
@@ -25,7 +25,7 @@ func (c Client) PostItemsByIdSubtitlesByIndexDelete(ctx context.Context, id stri
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostItemsByIdSubtitlesByIndexDelete",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Subtitles/%d/Delete", url.PathEscape(id), index),
+		Path:          fmt.Sprintf("/Items/%s/Subtitles/%d/Delete", url.PathEscape(string(id)), index),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

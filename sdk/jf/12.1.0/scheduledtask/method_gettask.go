@@ -13,7 +13,7 @@ import (
 )
 
 // GetTask calls GET /ScheduledTasks/{taskId}. Get task by id.
-func (c Client) GetTask(ctx context.Context, taskId string) (result jf.GetTaskResponse, err error) {
+func (c Client) GetTask(ctx context.Context, taskId jf.TaskID) (result jf.GetTaskResponse, err error) {
 	result.TaskInfo = &jf.TaskInfo{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetTask(ctx context.Context, taskId string) (result jf.GetTaskRe
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetTask",
-		Path:       fmt.Sprintf("/ScheduledTasks/%s", url.PathEscape(taskId)),
+		Path:       fmt.Sprintf("/ScheduledTasks/%s", url.PathEscape(string(taskId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

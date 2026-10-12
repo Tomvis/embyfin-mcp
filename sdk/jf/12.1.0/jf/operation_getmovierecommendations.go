@@ -22,10 +22,10 @@ func (r GetMovieRecommendationsResponse) Answered() bool { return r.Answer != ni
 // GetMovieRecommendationsOptions holds the query and header parameters of GetMovieRecommendations.
 type GetMovieRecommendationsOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. The fields to return.
 	Fields []ItemFields
@@ -47,10 +47,10 @@ func (o GetMovieRecommendationsOptions) ToHeaders() *client.Headers {
 func (o GetMovieRecommendationsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))

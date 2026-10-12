@@ -39,7 +39,7 @@ func (r GetArtistsByNameResponse) Record() (BaseItemDto, error) {
 // GetArtistsByNameOptions holds the query and header parameters of GetArtistsByName.
 type GetArtistsByNameOptions struct {
 	// Optional. Filter by user id, and attach user data
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetArtistsByNameOptions) ToHeaders() *client.Headers {
 func (o GetArtistsByNameOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

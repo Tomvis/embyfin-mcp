@@ -15,7 +15,7 @@ func TestOperationPostItemsByIdRefresh(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostItemsByIdRefresh(t.Context(), "p/id", emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
+	result, err := c.PostItemsByIdRefresh(t.Context(), emby.ItemID("v-id"), emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
 		Recursive:           new(true),
 		MetadataRefreshMode: emby.MetadataRefreshModeValidationOnly,
 		ImageRefreshMode:    emby.MetadataRefreshModeValidationOnly,
@@ -26,7 +26,7 @@ func TestOperationPostItemsByIdRefresh(t *testing.T) {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Items/p%2Fid/Refresh")
+	expectRequest(t, r, http.MethodPost, "/Items/v-id/Refresh")
 	expectQuery(t, r, "Recursive", "true")
 	expectQuery(t, r, "MetadataRefreshMode", "ValidationOnly")
 	expectQuery(t, r, "ImageRefreshMode", "ValidationOnly")
@@ -47,7 +47,7 @@ func TestOperationPostItemsByIdRefresh(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostItemsByIdRefresh(t.Context(), "p/id", emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
+	result, err = c.PostItemsByIdRefresh(t.Context(), emby.ItemID("v-id"), emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{
 		Recursive:           new(true),
 		MetadataRefreshMode: emby.MetadataRefreshModeValidationOnly,
 		ImageRefreshMode:    emby.MetadataRefreshModeValidationOnly,
@@ -60,10 +60,10 @@ func TestOperationPostItemsByIdRefresh(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "", "")
-	if _, err = c.PostItemsByIdRefresh(t.Context(), "p/id", emby.BaseRefreshRequest{}); err != nil {
+	if _, err = c.PostItemsByIdRefresh(t.Context(), emby.ItemID("v-id"), emby.BaseRefreshRequest{}); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.PostItemsByIdRefresh(t.Context(), "p/id", emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{}, emby.PostItemsByIdRefreshOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.PostItemsByIdRefresh(t.Context(), emby.ItemID("v-id"), emby.BaseRefreshRequest{}, emby.PostItemsByIdRefreshOptions{}, emby.PostItemsByIdRefreshOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

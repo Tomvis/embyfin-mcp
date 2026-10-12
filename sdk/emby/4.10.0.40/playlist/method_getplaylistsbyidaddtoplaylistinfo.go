@@ -13,7 +13,7 @@ import (
 )
 
 // GetPlaylistsByIdAddToPlaylistInfo calls GET /Playlists/{Id}/AddToPlaylistInfo. Gets add to playlist info.
-func (c Client) GetPlaylistsByIdAddToPlaylistInfo(ctx context.Context, id string, options emby.GetPlaylistsByIdAddToPlaylistInfoOptions) (result emby.GetPlaylistsByIdAddToPlaylistInfoResponse, err error) {
+func (c Client) GetPlaylistsByIdAddToPlaylistInfo(ctx context.Context, id emby.ItemID, options emby.GetPlaylistsByIdAddToPlaylistInfoOptions) (result emby.GetPlaylistsByIdAddToPlaylistInfoResponse, err error) {
 	result.PlaylistsAddToPlaylistInfo = &emby.PlaylistsAddToPlaylistInfo{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -23,7 +23,7 @@ func (c Client) GetPlaylistsByIdAddToPlaylistInfo(ctx context.Context, id string
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetPlaylistsByIdAddToPlaylistInfo",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Playlists/%s/AddToPlaylistInfo", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Playlists/%s/AddToPlaylistInfo", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

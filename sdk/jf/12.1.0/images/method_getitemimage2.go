@@ -14,7 +14,7 @@ import (
 )
 
 // GetItemImage2 calls GET /Items/{itemId}/Images/{imageType}/{imageIndex}/{tag}/{format}/{maxWidth}/{maxHeight}/{percentPlayed}/{unplayedCount}. Gets the item's image.
-func (c Client) GetItemImage2(ctx context.Context, itemId string, imageType jf.ImageType, imageIndex int, tag string, format jf.ImageFormat, maxWidth int, maxHeight int, percentPlayed float64, unplayedCount int, options ...jf.GetItemImage2Options) (result jf.GetItemImage2Response, err error) {
+func (c Client) GetItemImage2(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex int, tag string, format jf.ImageFormat, maxWidth int, maxHeight int, percentPlayed float64, unplayedCount int, options ...jf.GetItemImage2Options) (result jf.GetItemImage2Response, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemImage2 takes one options struct at most, not %d", len(options))
 		return
@@ -32,7 +32,7 @@ func (c Client) GetItemImage2(ctx context.Context, itemId string, imageType jf.I
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetItemImage2",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Items/%s/Images/%s/%d/%s/%s/%d/%d/%s/%d", url.PathEscape(itemId), url.PathEscape(string(imageType)), imageIndex, url.PathEscape(tag), url.PathEscape(string(format)), maxWidth, maxHeight, strconv.FormatFloat(percentPlayed, 'f', -1, 64), unplayedCount),
+		Path:           fmt.Sprintf("/Items/%s/Images/%s/%d/%s/%s/%d/%d/%s/%d", url.PathEscape(string(itemId)), url.PathEscape(string(imageType)), imageIndex, url.PathEscape(tag), url.PathEscape(string(format)), maxWidth, maxHeight, strconv.FormatFloat(percentPlayed, 'f', -1, 64), unplayedCount),
 		StreamResponse: true,
 	}
 

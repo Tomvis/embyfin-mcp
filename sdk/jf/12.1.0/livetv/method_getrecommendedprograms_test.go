@@ -17,7 +17,7 @@ func TestOperationGetRecommendedPrograms(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetRecommendedPrograms(t.Context(), jf.GetRecommendedProgramsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		IsAiring:               new(true),
@@ -30,7 +30,7 @@ func TestOperationGetRecommendedPrograms(t *testing.T) {
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
-		GenreIds:               []string{"a", "b"},
+		GenreIds:               []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		EnableUserData:         new(true),
 		EnableTotalRecordCount: new(true),
@@ -74,7 +74,7 @@ func TestOperationGetRecommendedPrograms(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetRecommendedPrograms(t.Context(), jf.GetRecommendedProgramsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		IsAiring:               new(true),
@@ -87,7 +87,7 @@ func TestOperationGetRecommendedPrograms(t *testing.T) {
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
-		GenreIds:               []string{"a", "b"},
+		GenreIds:               []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		EnableUserData:         new(true),
 		EnableTotalRecordCount: new(true),
@@ -99,7 +99,7 @@ func TestOperationGetRecommendedPrograms(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetRecommendedPrograms(t.Context(), jf.GetRecommendedProgramsOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		IsAiring:               new(true),
@@ -112,7 +112,7 @@ func TestOperationGetRecommendedPrograms(t *testing.T) {
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
-		GenreIds:               []string{"a", "b"},
+		GenreIds:               []jf.ItemID{jf.ItemID("a"), jf.ItemID("b")},
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		EnableUserData:         new(true),
 		EnableTotalRecordCount: new(true),

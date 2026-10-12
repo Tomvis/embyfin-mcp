@@ -10,7 +10,7 @@ type BaseItemDto struct {
 	AlbumArtist                  string                  `json:"AlbumArtist,omitempty"`
 	AlbumArtists                 []NameIdPair            `json:"AlbumArtists,omitzero"`
 	AlbumCount                   int                     `json:"AlbumCount,omitempty"`
-	AlbumId                      string                  `json:"AlbumId,omitempty"`
+	AlbumId                      ItemID                  `json:"AlbumId,omitempty"`
 	AlbumPrimaryImageTag         string                  `json:"AlbumPrimaryImageTag,omitempty"`
 	Altitude                     float64                 `json:"Altitude,omitempty"`
 	Aperture                     float64                 `json:"Aperture,omitempty"`
@@ -44,12 +44,12 @@ type BaseItemDto struct {
 	CriticRating                 float32                 `json:"CriticRating,omitempty"`
 	CurrentProgram               *BaseItemDto            `json:"CurrentProgram,omitempty"`
 	CustomRating                 string                  `json:"CustomRating,omitempty"`
-	DateCreated                  string                  `json:"DateCreated,omitempty"`
-	DateModified                 string                  `json:"DateModified,omitempty"`
+	DateCreated                  Time                    `json:"DateCreated,omitzero"`
+	DateModified                 Time                    `json:"DateModified,omitzero"`
 	Disabled                     *bool                   `json:"Disabled,omitempty"`
 	DisplayOrder                 string                  `json:"DisplayOrder,omitempty"`
 	DisplayPreferencesId         string                  `json:"DisplayPreferencesId,omitempty"`
-	EndDate                      string                  `json:"EndDate,omitempty"`
+	EndDate                      Time                    `json:"EndDate,omitzero"`
 	EpisodeTitle                 string                  `json:"EpisodeTitle,omitempty"`
 	Etag                         string                  `json:"Etag,omitempty"`
 	ExposureTime                 float64                 `json:"ExposureTime,omitempty"`
@@ -64,7 +64,7 @@ type BaseItemDto struct {
 	Genres                       []string                `json:"Genres,omitzero"`
 	Guid                         string                  `json:"Guid,omitempty"`
 	Height                       int                     `json:"Height,omitempty"`
-	Id                           string                  `json:"Id,omitempty"`
+	Id                           ItemID                  `json:"Id,omitempty"`
 	ImageOrientation             DrawingImageOrientation `json:"ImageOrientation,omitempty"`
 	ImageTags                    map[string]string       `json:"ImageTags,omitzero"`
 	IndexNumber                  *int                    `json:"IndexNumber,omitempty"`
@@ -105,24 +105,24 @@ type BaseItemDto struct {
 	OriginalTitle                string                  `json:"OriginalTitle,omitempty"`
 	Overview                     string                  `json:"Overview,omitempty"`
 	ParentBackdropImageTags      []string                `json:"ParentBackdropImageTags,omitzero"`
-	ParentBackdropItemId         string                  `json:"ParentBackdropItemId,omitempty"`
-	ParentId                     string                  `json:"ParentId,omitempty"`
+	ParentBackdropItemId         ItemID                  `json:"ParentBackdropItemId,omitempty"`
+	ParentId                     ItemID                  `json:"ParentId,omitempty"`
 	ParentIndexNumber            *int                    `json:"ParentIndexNumber,omitempty"`
 	ParentLogoImageTag           string                  `json:"ParentLogoImageTag,omitempty"`
-	ParentLogoItemId             string                  `json:"ParentLogoItemId,omitempty"`
+	ParentLogoItemId             ItemID                  `json:"ParentLogoItemId,omitempty"`
 	ParentThumbImageTag          string                  `json:"ParentThumbImageTag,omitempty"`
-	ParentThumbItemId            string                  `json:"ParentThumbItemId,omitempty"`
+	ParentThumbItemId            ItemID                  `json:"ParentThumbItemId,omitempty"`
 	PartCount                    int                     `json:"PartCount,omitempty"`
 	Path                         string                  `json:"Path,omitempty"`
 	People                       []BaseItemPerson        `json:"People,omitzero"`
-	PlaylistItemId               string                  `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId               PlaylistItemID          `json:"PlaylistItemId,omitempty"`
 	PreferredMetadataCountryCode string                  `json:"PreferredMetadataCountryCode,omitempty"`
 	PreferredMetadataLanguage    string                  `json:"PreferredMetadataLanguage,omitempty"`
 	Prefix                       string                  `json:"Prefix,omitempty"`
-	PremiereDate                 string                  `json:"PremiereDate,omitempty"`
+	PremiereDate                 Time                    `json:"PremiereDate,omitzero"`
 	PresentationUniqueKey        string                  `json:"PresentationUniqueKey,omitempty"`
 	PrimaryImageAspectRatio      float64                 `json:"PrimaryImageAspectRatio,omitempty"`
-	PrimaryImageItemId           string                  `json:"PrimaryImageItemId,omitempty"`
+	PrimaryImageItemId           ItemID                  `json:"PrimaryImageItemId,omitempty"`
 	PrimaryImageTag              string                  `json:"PrimaryImageTag,omitempty"`
 	ProductionLocations          []string                `json:"ProductionLocations,omitzero"`
 	ProductionYear               int                     `json:"ProductionYear,omitempty"`
@@ -132,10 +132,10 @@ type BaseItemDto struct {
 	RemoteTrailers               []MediaUrl              `json:"RemoteTrailers,omitzero"`
 	RunTimeTicks                 int64                   `json:"RunTimeTicks,omitempty"`
 	SeasonCount                  int                     `json:"SeasonCount,omitempty"`
-	SeasonId                     string                  `json:"SeasonId,omitempty"`
+	SeasonId                     ItemID                  `json:"SeasonId,omitempty"`
 	SeasonName                   string                  `json:"SeasonName,omitempty"`
 	SeriesCount                  int                     `json:"SeriesCount,omitempty"`
-	SeriesId                     string                  `json:"SeriesId,omitempty"`
+	SeriesId                     ItemID                  `json:"SeriesId,omitempty"`
 	SeriesName                   string                  `json:"SeriesName,omitempty"`
 	SeriesPrimaryImageTag        string                  `json:"SeriesPrimaryImageTag,omitempty"`
 	SeriesStudio                 string                  `json:"SeriesStudio,omitempty"`
@@ -149,7 +149,7 @@ type BaseItemDto struct {
 	SortName                     string                  `json:"SortName,omitempty"`
 	SortParentIndexNumber        int                     `json:"SortParentIndexNumber,omitempty"`
 	SpecialFeatureCount          int                     `json:"SpecialFeatureCount,omitempty"`
-	StartDate                    string                  `json:"StartDate,omitempty"`
+	StartDate                    Time                    `json:"StartDate,omitzero"`
 	Status                       string                  `json:"Status,omitempty"`
 	Studios                      []NameLongIdPair        `json:"Studios,omitzero"`
 	Subviews                     []string                `json:"Subviews,omitzero"`
@@ -173,4 +173,4 @@ type BaseItemDto struct {
 func (m BaseItemDto) GetName() string { return m.Name }
 
 // GetId is the record's Id, for code that handles records of several types alike.
-func (m BaseItemDto) GetId() string { return m.Id }
+func (m BaseItemDto) GetId() ItemID { return m.Id }

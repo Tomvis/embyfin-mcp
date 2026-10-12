@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdSearchedItems calls POST /Users/{UserId}/SearchedItems/. Marks an item as a favorite.
-func (c Client) PostUsersByUserIdSearchedItems(ctx context.Context, userId string, input emby.UserLibraryReportItemsSearched) (result emby.PostUsersByUserIdSearchedItemsResponse, err error) {
+func (c Client) PostUsersByUserIdSearchedItems(ctx context.Context, userId emby.UserID, input emby.UserLibraryReportItemsSearched) (result emby.PostUsersByUserIdSearchedItemsResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdSearchedItems(ctx context.Context, userId strin
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdSearchedItems",
-		Path:       fmt.Sprintf("/Users/%s/SearchedItems/", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s/SearchedItems/", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

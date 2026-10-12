@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByIdImagesByTypeDelete calls POST /Users/{Id}/Images/{Type}/Delete. Requires authentication as user.
-func (c Client) PostUsersByIdImagesByTypeDelete(ctx context.Context, id string, typeParam emby.ImageType, index ...int) (result emby.PostUsersByIdImagesByTypeDeleteResponse, err error) {
+func (c Client) PostUsersByIdImagesByTypeDelete(ctx context.Context, id emby.UserID, typeParam emby.ImageType, index ...int) (result emby.PostUsersByIdImagesByTypeDeleteResponse, err error) {
 	var option emby.PostUsersByIdImagesByTypeDeleteOptions
 	if len(index) > 1 {
 		err = fmt.Errorf("PostUsersByIdImagesByTypeDelete takes one index at most, not %d", len(index))
@@ -31,7 +31,7 @@ func (c Client) PostUsersByIdImagesByTypeDelete(ctx context.Context, id string, 
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostUsersByIdImagesByTypeDelete",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Images/%s/Delete", url.PathEscape(id), url.PathEscape(string(typeParam))),
+		Path:          fmt.Sprintf("/Users/%s/Images/%s/Delete", url.PathEscape(string(id)), url.PathEscape(string(typeParam))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

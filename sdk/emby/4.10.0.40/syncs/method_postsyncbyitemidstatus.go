@@ -13,7 +13,7 @@ import (
 )
 
 // PostSyncByItemIdStatus calls POST /Sync/{ItemId}/Status. Gets sync status for an item.
-func (c Client) PostSyncByItemIdStatus(ctx context.Context, itemId string, input emby.SyncedItemProgress) (result emby.PostSyncByItemIdStatusResponse, err error) {
+func (c Client) PostSyncByItemIdStatus(ctx context.Context, itemId emby.ItemID, input emby.SyncedItemProgress) (result emby.PostSyncByItemIdStatusResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostSyncByItemIdStatus(ctx context.Context, itemId string, input
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostSyncByItemIdStatus",
-		Path:       fmt.Sprintf("/Sync/%s/Status", url.PathEscape(itemId)),
+		Path:       fmt.Sprintf("/Sync/%s/Status", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

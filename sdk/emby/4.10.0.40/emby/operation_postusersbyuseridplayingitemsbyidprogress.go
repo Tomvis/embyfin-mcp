@@ -17,7 +17,7 @@ type PostUsersByUserIdPlayingItemsByIdProgressResponse struct {
 // PostUsersByUserIdPlayingItemsByIdProgressOptions holds the query and header parameters of PostUsersByUserIdPlayingItemsByIdProgress.
 type PostUsersByUserIdPlayingItemsByIdProgressOptions struct {
 	// The id of the MediaSource
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// Optional. The current position, in ticks. 1ms = 10000 ticks.
 	PositionTicks *int64
@@ -50,7 +50,7 @@ func (o PostUsersByUserIdPlayingItemsByIdProgressOptions) ToHeaders() *client.He
 func (o PostUsersByUserIdPlayingItemsByIdProgressOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.MediaSourceId != "" {
-		out.Append("MediaSourceId", o.MediaSourceId)
+		out.Append("MediaSourceId", string(o.MediaSourceId))
 	}
 	if o.PositionTicks != nil {
 		out.Append("PositionTicks", strconv.FormatInt(*o.PositionTicks, 10))

@@ -16,7 +16,7 @@ func TestOperationGetAudioByIdMasterM3u8(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err := c.GetAudioByIdMasterM3u8(t.Context(), "p/id", emby.GetAudioByIdMasterM3u8Options{
+	result, err := c.GetAudioByIdMasterM3u8(t.Context(), emby.ItemID("v-id"), emby.GetAudioByIdMasterM3u8Options{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		Container:            "v-Container",
@@ -46,7 +46,7 @@ func TestOperationGetAudioByIdMasterM3u8(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Audio/p%2Fid/master.m3u8")
+	expectRequest(t, r, http.MethodGet, "/Audio/v-id/master.m3u8")
 	expectQuery(t, r, "DeviceProfileId", "v-DeviceProfileId")
 	expectQuery(t, r, "DeviceId", "v-DeviceId")
 	expectQuery(t, r, "Container", "v-Container")
@@ -83,7 +83,7 @@ func TestOperationGetAudioByIdMasterM3u8(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err = c.GetAudioByIdMasterM3u8(t.Context(), "p/id", emby.GetAudioByIdMasterM3u8Options{
+	result, err = c.GetAudioByIdMasterM3u8(t.Context(), emby.ItemID("v-id"), emby.GetAudioByIdMasterM3u8Options{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		Container:            "v-Container",
@@ -115,7 +115,7 @@ func TestOperationGetAudioByIdMasterM3u8(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/x-mpegURL", "file bytes")
-	result, err = c.GetAudioByIdMasterM3u8(t.Context(), "p/id", emby.GetAudioByIdMasterM3u8Options{
+	result, err = c.GetAudioByIdMasterM3u8(t.Context(), emby.ItemID("v-id"), emby.GetAudioByIdMasterM3u8Options{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		Container:            "v-Container",
@@ -159,7 +159,7 @@ func TestOperationGetAudioByIdMasterM3u8(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetAudioByIdMasterM3u8(t.Context(), "p/id", emby.GetAudioByIdMasterM3u8Options{
+	result, err = c.GetAudioByIdMasterM3u8(t.Context(), emby.ItemID("v-id"), emby.GetAudioByIdMasterM3u8Options{
 		DeviceProfileId:      "v-DeviceProfileId",
 		DeviceId:             "v-DeviceId",
 		Container:            "v-Container",

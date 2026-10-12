@@ -29,7 +29,7 @@ type BaseItemDto struct {
 	AlbumCount int `json:"AlbumCount,omitempty"`
 
 	// Gets or sets the album id.
-	AlbumId string `json:"AlbumId,omitempty"`
+	AlbumId ItemID `json:"AlbumId,omitempty"`
 
 	// Gets or sets the gain required for audio normalization. This field is inherited from music album normalization gain.
 	AlbumNormalizationGain float32 `json:"AlbumNormalizationGain,omitempty"`
@@ -99,8 +99,8 @@ type BaseItemDto struct {
 	CustomRating string `json:"CustomRating,omitempty"`
 
 	// Gets or sets the date created.
-	DateCreated        string `json:"DateCreated,omitempty"`
-	DateLastMediaAdded string `json:"DateLastMediaAdded,omitempty"`
+	DateCreated        Time `json:"DateCreated,omitzero"`
+	DateLastMediaAdded Time `json:"DateLastMediaAdded,omitzero"`
 
 	// Gets or sets the display order.
 	DisplayOrder string `json:"DisplayOrder,omitempty"`
@@ -110,7 +110,7 @@ type BaseItemDto struct {
 	EnableMediaSourceDisplay *bool  `json:"EnableMediaSourceDisplay,omitempty"`
 
 	// Gets or sets the end date.
-	EndDate string `json:"EndDate,omitempty"`
+	EndDate Time `json:"EndDate,omitzero"`
 
 	// Gets or sets the episode count.
 	EpisodeCount int `json:"EpisodeCount,omitempty"`
@@ -136,7 +136,7 @@ type BaseItemDto struct {
 	Height       int      `json:"Height,omitempty"`
 
 	// Gets or sets the id.
-	Id string `json:"Id,omitempty"`
+	Id ItemID `json:"Id,omitempty"`
 
 	// Gets or sets the blurhashes for the image tags.
 	// Maps image type to dictionary mapping image tag to blurhash value.
@@ -240,16 +240,16 @@ type BaseItemDto struct {
 	ParentArtImageTag string `json:"ParentArtImageTag,omitempty"`
 
 	// Gets or sets whether the item has fan art, this will hold the Id of the Parent that has one.
-	ParentArtItemId string `json:"ParentArtItemId,omitempty"`
+	ParentArtItemId ItemID `json:"ParentArtItemId,omitempty"`
 
 	// Gets or sets the parent backdrop image tags.
 	ParentBackdropImageTags []string `json:"ParentBackdropImageTags,omitzero"`
 
 	// Gets or sets whether the item has any backdrops, this will hold the Id of the Parent that has one.
-	ParentBackdropItemId string `json:"ParentBackdropItemId,omitempty"`
+	ParentBackdropItemId ItemID `json:"ParentBackdropItemId,omitempty"`
 
 	// Gets or sets the parent id.
-	ParentId string `json:"ParentId,omitempty"`
+	ParentId ItemID `json:"ParentId,omitempty"`
 
 	// Gets or sets the parent index number.
 	ParentIndexNumber *int `json:"ParentIndexNumber,omitempty"`
@@ -258,10 +258,10 @@ type BaseItemDto struct {
 	ParentLogoImageTag string `json:"ParentLogoImageTag,omitempty"`
 
 	// Gets or sets whether the item has a logo, this will hold the Id of the Parent that has one.
-	ParentLogoItemId string `json:"ParentLogoItemId,omitempty"`
+	ParentLogoItemId ItemID `json:"ParentLogoItemId,omitempty"`
 
 	// Gets or sets the parent primary image item identifier.
-	ParentPrimaryImageItemId string `json:"ParentPrimaryImageItemId,omitempty"`
+	ParentPrimaryImageItemId ItemID `json:"ParentPrimaryImageItemId,omitempty"`
 
 	// Gets or sets the parent primary image tag.
 	ParentPrimaryImageTag string `json:"ParentPrimaryImageTag,omitempty"`
@@ -270,7 +270,7 @@ type BaseItemDto struct {
 	ParentThumbImageTag string `json:"ParentThumbImageTag,omitempty"`
 
 	// Gets or sets the parent thumb item id.
-	ParentThumbItemId string `json:"ParentThumbItemId,omitempty"`
+	ParentThumbItemId ItemID `json:"ParentThumbItemId,omitempty"`
 
 	// Gets or sets the part count.
 	PartCount int `json:"PartCount,omitempty"`
@@ -285,12 +285,12 @@ type BaseItemDto struct {
 	PlayAccess PlayAccess `json:"PlayAccess,omitempty"`
 
 	// Gets or sets the playlist item identifier.
-	PlaylistItemId               string `json:"PlaylistItemId,omitempty"`
-	PreferredMetadataCountryCode string `json:"PreferredMetadataCountryCode,omitempty"`
-	PreferredMetadataLanguage    string `json:"PreferredMetadataLanguage,omitempty"`
+	PlaylistItemId               PlaylistItemID `json:"PlaylistItemId,omitempty"`
+	PreferredMetadataCountryCode string         `json:"PreferredMetadataCountryCode,omitempty"`
+	PreferredMetadataLanguage    string         `json:"PreferredMetadataLanguage,omitempty"`
 
 	// Gets or sets the premiere date.
-	PremiereDate string `json:"PremiereDate,omitempty"`
+	PremiereDate Time `json:"PremiereDate,omitzero"`
 
 	// Gets or sets the primary image aspect ratio, after image enhancements.
 	PrimaryImageAspectRatio float64  `json:"PrimaryImageAspectRatio,omitempty"`
@@ -319,7 +319,7 @@ type BaseItemDto struct {
 	ScreenshotImageTags []string `json:"ScreenshotImageTags,omitzero"`
 
 	// Gets or sets the season identifier.
-	SeasonId string `json:"SeasonId,omitempty"`
+	SeasonId ItemID `json:"SeasonId,omitempty"`
 
 	// Gets or sets the name of the season.
 	SeasonName string `json:"SeasonName,omitempty"`
@@ -328,7 +328,7 @@ type BaseItemDto struct {
 	SeriesCount int `json:"SeriesCount,omitempty"`
 
 	// Gets or sets the series id.
-	SeriesId string `json:"SeriesId,omitempty"`
+	SeriesId ItemID `json:"SeriesId,omitempty"`
 
 	// Gets or sets the name of the series.
 	SeriesName string `json:"SeriesName,omitempty"`
@@ -363,7 +363,7 @@ type BaseItemDto struct {
 	SpecialFeatureCount int `json:"SpecialFeatureCount,omitempty"`
 
 	// Gets or sets the start date of the recording, in UTC.
-	StartDate string `json:"StartDate,omitempty"`
+	StartDate Time `json:"StartDate,omitzero"`
 
 	// Gets or sets the status.
 	Status string `json:"Status,omitempty"`
@@ -404,4 +404,4 @@ type BaseItemDto struct {
 func (m BaseItemDto) GetName() string { return m.Name }
 
 // GetId is the record's Id, for code that handles records of several types alike.
-func (m BaseItemDto) GetId() string { return m.Id }
+func (m BaseItemDto) GetId() ItemID { return m.Id }

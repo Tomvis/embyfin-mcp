@@ -14,7 +14,7 @@ import (
 )
 
 // GetPlaylistItems calls GET /Playlists/{playlistId}/Items. Gets the original items of a playlist.
-func (c Client) GetPlaylistItems(ctx context.Context, playlistId string, options ...jf.GetPlaylistItemsOptions) (result jf.GetPlaylistItemsResponse, err error) {
+func (c Client) GetPlaylistItems(ctx context.Context, playlistId jf.ItemID, options ...jf.GetPlaylistItemsOptions) (result jf.GetPlaylistItemsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetPlaylistItems takes one options struct at most, not %d", len(options))
 		return
@@ -32,7 +32,7 @@ func (c Client) GetPlaylistItems(ctx context.Context, playlistId string, options
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetPlaylistItems",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(playlistId)),
+		Path:          fmt.Sprintf("/Playlists/%s/Items", url.PathEscape(string(playlistId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -62,7 +62,7 @@ func (c Client) GetPlaylistItems(ctx context.Context, playlistId string, options
 // GetPlaylistItemsComplete calls GetPlaylistItems page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetPlaylistItemsComplete(ctx context.Context, playlistId string, options ...jf.GetPlaylistItemsOptions) (result jf.GetPlaylistItemsCompleteResult, err error) {
+func (c Client) GetPlaylistItemsComplete(ctx context.Context, playlistId jf.ItemID, options ...jf.GetPlaylistItemsOptions) (result jf.GetPlaylistItemsCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetPlaylistItemsComplete takes one options struct at most, not %d", len(options))
 		return
@@ -116,7 +116,7 @@ func (c Client) GetPlaylistItemsComplete(ctx context.Context, playlistId string,
 //	}
 //
 // An error is the last pair handed out, with a zero jf.BaseItemDto. The pages are asked for as GetPlaylistItemsComplete asks for them.
-func (c Client) GetPlaylistItemsEach(ctx context.Context, playlistId string, options ...jf.GetPlaylistItemsOptions) iter.Seq2[jf.BaseItemDto, error] {
+func (c Client) GetPlaylistItemsEach(ctx context.Context, playlistId jf.ItemID, options ...jf.GetPlaylistItemsOptions) iter.Seq2[jf.BaseItemDto, error] {
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {

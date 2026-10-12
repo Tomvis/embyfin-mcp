@@ -16,7 +16,7 @@ import (
 // PostUsersByIdConfigurationPartial calls POST /Users/{Id}/Configuration/Partial. Updates a user configuration.
 //
 // input is sent as contentType, or as application/octet-stream when that is empty.
-func (c Client) PostUsersByIdConfigurationPartial(ctx context.Context, id string, input io.Reader, contentType string) (result emby.PostUsersByIdConfigurationPartialResponse, err error) {
+func (c Client) PostUsersByIdConfigurationPartial(ctx context.Context, id emby.UserID, input io.Reader, contentType string) (result emby.PostUsersByIdConfigurationPartialResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/octet-stream",
 		ExpectedStatusCodes: []int{
@@ -25,7 +25,7 @@ func (c Client) PostUsersByIdConfigurationPartial(ctx context.Context, id string
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByIdConfigurationPartial",
-		Path:       fmt.Sprintf("/Users/%s/Configuration/Partial", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Configuration/Partial", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

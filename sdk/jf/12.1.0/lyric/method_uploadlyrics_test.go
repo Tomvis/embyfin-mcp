@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -15,12 +16,12 @@ func TestOperationUploadLyrics(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.UploadLyrics(t.Context(), "p/itemId", strings.NewReader("raw bytes"), "text/plain", "v-FileName")
+	result, err := c.UploadLyrics(t.Context(), jf.ItemID("v-itemId"), strings.NewReader("raw bytes"), "text/plain", "v-FileName")
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Audio/p%2FitemId/Lyrics")
+	expectRequest(t, r, http.MethodPost, "/Audio/v-itemId/Lyrics")
 	expectQuery(t, r, "fileName", "v-FileName")
 	if got := r.Header.Get("Content-Type"); got != "text/plain" {
 		t.Errorf("Content-Type = %q, want %q", got, "text/plain")
@@ -43,14 +44,14 @@ func TestOperationUploadLyrics(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.UploadLyrics(t.Context(), "p/itemId", strings.NewReader("raw bytes"), "text/plain", "v-FileName")
+	result, err = c.UploadLyrics(t.Context(), jf.ItemID("v-itemId"), strings.NewReader("raw bytes"), "text/plain", "v-FileName")
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.UploadLyrics(t.Context(), "p/itemId", strings.NewReader("raw bytes"), "text/plain", "v-FileName")
+	result, err = c.UploadLyrics(t.Context(), jf.ItemID("v-itemId"), strings.NewReader("raw bytes"), "text/plain", "v-FileName")
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

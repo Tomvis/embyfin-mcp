@@ -73,7 +73,8 @@
           "In": "Query",
           "Description": "The user the authorize. Access to the requested user is required.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -358,14 +359,14 @@
           "JsonName": "DateCreated",
           "Description": "Gets or sets the date created.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
           "Name": "DateLastActivity",
           "JsonName": "DateLastActivity",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -373,7 +374,7 @@
           "JsonName": "DateRevoked",
           "Description": "Gets or sets the date revoked.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -416,7 +417,8 @@
           "JsonName": "UserId",
           "Description": "Gets or sets the user identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -557,7 +559,7 @@
           "JsonName": "PinExpirationDate",
           "Description": "Gets or sets the pin expiration date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -654,7 +656,7 @@
           "JsonName": "DateAdded",
           "Description": "Gets or sets the DateTime that this request was created.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

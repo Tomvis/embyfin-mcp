@@ -11,7 +11,7 @@ import (
 )
 
 // PostItemsMetadataReset calls POST /Items/Metadata/Reset. Resets metadata for one or more items.
-func (c Client) PostItemsMetadataReset(ctx context.Context, itemIds string) (result emby.PostItemsMetadataResetResponse, err error) {
+func (c Client) PostItemsMetadataReset(ctx context.Context, itemIds []emby.ItemID) (result emby.PostItemsMetadataResetResponse, err error) {
 	var option emby.PostItemsMetadataResetOptions
 	option.ItemIds = itemIds
 

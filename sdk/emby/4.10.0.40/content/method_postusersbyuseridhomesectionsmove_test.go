@@ -15,12 +15,12 @@ func TestOperationPostUsersByUserIdHomeSectionsMove(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostUsersByUserIdHomeSectionsMove(t.Context(), "p/userId", emby.UserLibraryMoveHomeSections{})
+	result, err := c.PostUsersByUserIdHomeSectionsMove(t.Context(), emby.UserID("v-userId"), emby.UserLibraryMoveHomeSections{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Users/p%2FuserId/HomeSections/Move")
+	expectRequest(t, r, http.MethodPost, "/Users/v-userId/HomeSections/Move")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -36,7 +36,7 @@ func TestOperationPostUsersByUserIdHomeSectionsMove(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostUsersByUserIdHomeSectionsMove(t.Context(), "p/userId", emby.UserLibraryMoveHomeSections{})
+	result, err = c.PostUsersByUserIdHomeSectionsMove(t.Context(), emby.UserID("v-userId"), emby.UserLibraryMoveHomeSections{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

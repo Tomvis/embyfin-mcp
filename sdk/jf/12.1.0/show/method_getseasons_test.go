@@ -15,8 +15,8 @@ func TestOperationGetSeasons(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetSeasons(t.Context(), "p/seriesId", jf.GetSeasonsOptions{
-		UserId:           "v-UserId",
+	result, err := c.GetSeasons(t.Context(), jf.ItemID("v-seriesId"), jf.GetSeasonsOptions{
+		UserId:           jf.UserID("v-UserId"),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		IsSpecialSeason:  new(true),
 		IsMissing:        new(true),
@@ -31,7 +31,7 @@ func TestOperationGetSeasons(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Shows/p%2FseriesId/Seasons")
+	expectRequest(t, r, http.MethodGet, "/Shows/v-seriesId/Seasons")
 	expectQuery(t, r, "userId", "v-UserId")
 	expectQuery(t, r, "fields", "AirTime", "SpecialFeatureCount")
 	expectQuery(t, r, "isSpecialSeason", "true")
@@ -56,8 +56,8 @@ func TestOperationGetSeasons(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetSeasons(t.Context(), "p/seriesId", jf.GetSeasonsOptions{
-		UserId:           "v-UserId",
+	result, err = c.GetSeasons(t.Context(), jf.ItemID("v-seriesId"), jf.GetSeasonsOptions{
+		UserId:           jf.UserID("v-UserId"),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		IsSpecialSeason:  new(true),
 		IsMissing:        new(true),
@@ -73,8 +73,8 @@ func TestOperationGetSeasons(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetSeasons(t.Context(), "p/seriesId", jf.GetSeasonsOptions{
-		UserId:           "v-UserId",
+	result, err = c.GetSeasons(t.Context(), jf.ItemID("v-seriesId"), jf.GetSeasonsOptions{
+		UserId:           jf.UserID("v-UserId"),
 		Fields:           []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
 		IsSpecialSeason:  new(true),
 		IsMissing:        new(true),
@@ -90,10 +90,10 @@ func TestOperationGetSeasons(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.GetSeasons(t.Context(), "p/seriesId"); err != nil {
+	if _, err = c.GetSeasons(t.Context(), jf.ItemID("v-seriesId")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetSeasons(t.Context(), "p/seriesId", jf.GetSeasonsOptions{}, jf.GetSeasonsOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetSeasons(t.Context(), jf.ItemID("v-seriesId"), jf.GetSeasonsOptions{}, jf.GetSeasonsOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

@@ -64,6 +64,20 @@
           "Type": {
             "Type": "Boolean"
           }
+        },
+        {
+          "Name": "TargetSystems",
+          "Field": "TargetSystemsList",
+          "In": "Query",
+          "Description": "Optional. Filter by target system type. Allows multiple, comma delimited.\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "Reference",
+              "ReferenceName": "PackageTargetSystem"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -253,7 +267,7 @@
           "Name": "ExpDate",
           "JsonName": "expDate",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {

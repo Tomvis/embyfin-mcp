@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByUserIdHomeSections calls GET /Users/{UserId}/HomeSections. Requires authentication as user.
-func (c Client) GetUsersByUserIdHomeSections(ctx context.Context, userId string) (result emby.GetUsersByUserIdHomeSectionsResponse, err error) {
+func (c Client) GetUsersByUserIdHomeSections(ctx context.Context, userId emby.UserID) (result emby.GetUsersByUserIdHomeSectionsResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) GetUsersByUserIdHomeSections(ctx context.Context, userId string)
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetUsersByUserIdHomeSections",
-		Path:       fmt.Sprintf("/Users/%s/HomeSections", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s/HomeSections", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

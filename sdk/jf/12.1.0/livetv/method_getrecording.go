@@ -13,7 +13,7 @@ import (
 )
 
 // GetRecording calls GET /LiveTv/Recordings/{recordingId}. Gets a live tv recording.
-func (c Client) GetRecording(ctx context.Context, recordingId string, userId ...string) (result jf.GetRecordingResponse, err error) {
+func (c Client) GetRecording(ctx context.Context, recordingId string, userId ...jf.UserID) (result jf.GetRecordingResponse, err error) {
 	var option jf.GetRecordingOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetRecording takes one userId at most, not %d", len(userId))

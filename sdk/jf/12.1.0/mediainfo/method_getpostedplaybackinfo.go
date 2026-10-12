@@ -13,7 +13,7 @@ import (
 )
 
 // GetPostedPlaybackInfo calls POST /Items/{itemId}/PlaybackInfo. Gets live playback media info for an item.
-func (c Client) GetPostedPlaybackInfo(ctx context.Context, itemId string, input jf.PlaybackInfoDto, options ...jf.GetPostedPlaybackInfoOptions) (result jf.GetPostedPlaybackInfoResponse, err error) {
+func (c Client) GetPostedPlaybackInfo(ctx context.Context, itemId jf.ItemID, input jf.PlaybackInfoDto, options ...jf.GetPostedPlaybackInfoOptions) (result jf.GetPostedPlaybackInfoResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetPostedPlaybackInfo takes one options struct at most, not %d", len(options))
 		return
@@ -32,7 +32,7 @@ func (c Client) GetPostedPlaybackInfo(ctx context.Context, itemId string, input 
 		HTTPMethod:    http.MethodPost,
 		Operation:     "GetPostedPlaybackInfo",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/PlaybackInfo", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

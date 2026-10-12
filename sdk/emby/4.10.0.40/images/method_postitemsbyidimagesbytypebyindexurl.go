@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdImagesByTypeByIndexUrl calls POST /Items/{Id}/Images/{Type}/{Index}/Url. Updates the index for an item image.
-func (c Client) PostItemsByIdImagesByTypeByIndexUrl(ctx context.Context, id string, typeParam emby.ImageType, index int, urlOption string) (result emby.PostItemsByIdImagesByTypeByIndexUrlResponse, err error) {
+func (c Client) PostItemsByIdImagesByTypeByIndexUrl(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index int, urlOption string) (result emby.PostItemsByIdImagesByTypeByIndexUrlResponse, err error) {
 	var option emby.PostItemsByIdImagesByTypeByIndexUrlOptions
 	option.Url = urlOption
 
@@ -25,7 +25,7 @@ func (c Client) PostItemsByIdImagesByTypeByIndexUrl(ctx context.Context, id stri
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostItemsByIdImagesByTypeByIndexUrl",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Images/%s/%d/Url", url.PathEscape(id), url.PathEscape(string(typeParam)), index),
+		Path:          fmt.Sprintf("/Items/%s/Images/%s/%d/Url", url.PathEscape(string(id)), url.PathEscape(string(typeParam)), index),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -8,13 +8,13 @@ type TvSeriesLatestIdAnswer struct {
 	BackdropPath        string                                      `json:"backdrop_path,omitempty"`
 	CreatedBy           []TvSeriesLatestIdAnswerCreatedBy           `json:"created_by,omitzero"`
 	EpisodeRunTime      []int                                       `json:"episode_run_time,omitzero"`
-	FirstAirDate        string                                      `json:"first_air_date,omitempty"`
+	FirstAirDate        Day                                         `json:"first_air_date,omitzero"`
 	Genres              []TvSeriesLatestIdAnswerGenres              `json:"genres,omitzero"`
 	Homepage            string                                      `json:"homepage,omitempty"`
 	Id                  int                                         `json:"id,omitempty"`
 	InProduction        bool                                        `json:"in_production"`
 	Languages           []string                                    `json:"languages,omitzero"`
-	LastAirDate         string                                      `json:"last_air_date,omitempty"`
+	LastAirDate         Day                                         `json:"last_air_date,omitzero"`
 	LastEpisodeToAir    *TvSeriesLatestIdAnswerLastEpisodeToAir     `json:"last_episode_to_air,omitempty"`
 	Name                string                                      `json:"name,omitempty"`
 	Networks            []TvSeriesLatestIdAnswerNetworks            `json:"networks,omitzero"`

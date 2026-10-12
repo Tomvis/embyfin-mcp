@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemSegments calls GET /MediaSegments/{itemId}. Gets all media segments based on an itemId.
-func (c Client) GetItemSegments(ctx context.Context, itemId string, includeSegmentTypes ...jf.MediaSegmentType) (result jf.GetItemSegmentsResponse, err error) {
+func (c Client) GetItemSegments(ctx context.Context, itemId jf.ItemID, includeSegmentTypes ...jf.MediaSegmentType) (result jf.GetItemSegmentsResponse, err error) {
 	var option jf.GetItemSegmentsOptions
 	if len(includeSegmentTypes) > 0 {
 		option.IncludeSegmentTypes = includeSegmentTypes
@@ -27,7 +27,7 @@ func (c Client) GetItemSegments(ctx context.Context, itemId string, includeSegme
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemSegments",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/MediaSegments/%s", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/MediaSegments/%s", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

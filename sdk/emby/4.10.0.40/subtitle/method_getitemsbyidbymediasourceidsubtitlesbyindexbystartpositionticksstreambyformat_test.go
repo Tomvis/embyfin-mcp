@@ -16,7 +16,7 @@ func TestOperationGetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTick
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "text/plain", "file bytes")
-	result, err := c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), "p/id", "p/mediaSourceId", 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{
+	result, err := c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{
 		EndPositionTicks: new(int64(7)),
 		CopyTimestamps:   new(true),
 	})
@@ -25,7 +25,7 @@ func TestOperationGetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTick
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2Fid/p%2FmediaSourceId/Subtitles/7/7/Stream.p%2Fformat")
+	expectRequest(t, r, http.MethodGet, "/Items/v-id/v-mediaSourceId/Subtitles/7/7/Stream.p%2Fformat")
 	expectQuery(t, r, "EndPositionTicks", "7")
 	expectQuery(t, r, "CopyTimestamps", "true")
 	if got := r.Header.Get("Accept"); !strings.HasPrefix(got, "text/*") {
@@ -41,7 +41,7 @@ func TestOperationGetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTick
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "text/plain", "file bytes")
-	result, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), "p/id", "p/mediaSourceId", 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{
+	result, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{
 		EndPositionTicks: new(int64(7)),
 		CopyTimestamps:   new(true),
 	})
@@ -52,7 +52,7 @@ func TestOperationGetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTick
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "text/plain", "file bytes")
-	result, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), "p/id", "p/mediaSourceId", 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{
+	result, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{
 		EndPositionTicks: new(int64(7)),
 		CopyTimestamps:   new(true),
 	})
@@ -75,7 +75,7 @@ func TestOperationGetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTick
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), "p/id", "p/mediaSourceId", 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{
+	result, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{
 		EndPositionTicks: new(int64(7)),
 		CopyTimestamps:   new(true),
 	})
@@ -85,10 +85,10 @@ func TestOperationGetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTick
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "text/plain", "file bytes")
-	if _, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), "p/id", "p/mediaSourceId", 7, 7, "p/format"); err != nil {
+	if _, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7, 7, "p/format"); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), "p/id", "p/mediaSourceId", 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{}, emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(t.Context(), emby.ItemID("v-id"), emby.MediaSourceID("v-mediaSourceId"), 7, 7, "p/format", emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{}, emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

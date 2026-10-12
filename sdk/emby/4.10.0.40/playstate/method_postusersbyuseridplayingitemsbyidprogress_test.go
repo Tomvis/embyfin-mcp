@@ -15,8 +15,8 @@ func TestOperationPostUsersByUserIdPlayingItemsByIdProgress(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostUsersByUserIdPlayingItemsByIdProgress(t.Context(), "p/userId", "p/id", emby.ApiOnPlaybackProgress{}, emby.PostUsersByUserIdPlayingItemsByIdProgressOptions{
-		MediaSourceId:       "v-MediaSourceId",
+	result, err := c.PostUsersByUserIdPlayingItemsByIdProgress(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.ApiOnPlaybackProgress{}, emby.PostUsersByUserIdPlayingItemsByIdProgressOptions{
+		MediaSourceId:       emby.MediaSourceID("v-MediaSourceId"),
 		PositionTicks:       new(int64(7)),
 		IsPaused:            new(true),
 		IsMuted:             new(true),
@@ -34,7 +34,7 @@ func TestOperationPostUsersByUserIdPlayingItemsByIdProgress(t *testing.T) {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Users/p%2FuserId/PlayingItems/p%2Fid/Progress")
+	expectRequest(t, r, http.MethodPost, "/Users/v-userId/PlayingItems/v-id/Progress")
 	expectQuery(t, r, "MediaSourceId", "v-MediaSourceId")
 	expectQuery(t, r, "PositionTicks", "7")
 	expectQuery(t, r, "IsPaused", "true")
@@ -63,8 +63,8 @@ func TestOperationPostUsersByUserIdPlayingItemsByIdProgress(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostUsersByUserIdPlayingItemsByIdProgress(t.Context(), "p/userId", "p/id", emby.ApiOnPlaybackProgress{}, emby.PostUsersByUserIdPlayingItemsByIdProgressOptions{
-		MediaSourceId:       "v-MediaSourceId",
+	result, err = c.PostUsersByUserIdPlayingItemsByIdProgress(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), emby.ApiOnPlaybackProgress{}, emby.PostUsersByUserIdPlayingItemsByIdProgressOptions{
+		MediaSourceId:       emby.MediaSourceID("v-MediaSourceId"),
 		PositionTicks:       new(int64(7)),
 		IsPaused:            new(true),
 		IsMuted:             new(true),

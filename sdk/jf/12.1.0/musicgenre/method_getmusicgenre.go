@@ -15,7 +15,7 @@ import (
 // GetMusicGenre calls GET /MusicGenres/{genreName}. Gets a music genre, by name.
 //
 // Deprecated: the document marks this operation deprecated.
-func (c Client) GetMusicGenre(ctx context.Context, genreName string, userId ...string) (result jf.GetMusicGenreResponse, err error) {
+func (c Client) GetMusicGenre(ctx context.Context, genreName string, userId ...jf.UserID) (result jf.GetMusicGenreResponse, err error) {
 	var option jf.GetMusicGenreOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetMusicGenre takes one userId at most, not %d", len(userId))

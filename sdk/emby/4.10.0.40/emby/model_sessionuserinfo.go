@@ -4,7 +4,7 @@ package emby
 
 // SessionUserInfo is the "SessionUserInfo" schema.
 type SessionUserInfo struct {
-	UserId         string `json:"UserId,omitempty"`
+	UserId         UserID `json:"UserId,omitempty"`
 	UserInternalId int64  `json:"UserInternalId,omitempty"`
 	UserName       string `json:"UserName,omitempty"`
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdItemsByIdHideFromResume calls POST /Users/{UserId}/Items/{Id}/HideFromResume. Updates a user's hide from resume for an item.
-func (c Client) PostUsersByUserIdItemsByIdHideFromResume(ctx context.Context, userId string, id string, hide bool) (result emby.PostUsersByUserIdItemsByIdHideFromResumeResponse, err error) {
+func (c Client) PostUsersByUserIdItemsByIdHideFromResume(ctx context.Context, userId emby.UserID, id emby.ItemID, hide bool) (result emby.PostUsersByUserIdItemsByIdHideFromResumeResponse, err error) {
 	var option emby.PostUsersByUserIdItemsByIdHideFromResumeOptions
 	option.Hide = &hide
 
@@ -26,7 +26,7 @@ func (c Client) PostUsersByUserIdItemsByIdHideFromResume(ctx context.Context, us
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostUsersByUserIdItemsByIdHideFromResume",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Items/%s/HideFromResume", url.PathEscape(userId), url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/Items/%s/HideFromResume", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

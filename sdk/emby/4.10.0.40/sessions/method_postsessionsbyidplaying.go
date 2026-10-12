@@ -13,7 +13,7 @@ import (
 )
 
 // PostSessionsByIdPlaying calls POST /Sessions/{Id}/Playing. Instructs a session to play an item.
-func (c Client) PostSessionsByIdPlaying(ctx context.Context, id string, input emby.PlayRequest, options emby.PostSessionsByIdPlayingOptions) (result emby.PostSessionsByIdPlayingResponse, err error) {
+func (c Client) PostSessionsByIdPlaying(ctx context.Context, id emby.SessionID, input emby.PlayRequest, options emby.PostSessionsByIdPlayingOptions) (result emby.PostSessionsByIdPlayingResponse, err error) {
 	opts := client.RequestOptions{
 		ContentType: "application/json",
 		ExpectedStatusCodes: []int{
@@ -23,7 +23,7 @@ func (c Client) PostSessionsByIdPlaying(ctx context.Context, id string, input em
 		HTTPMethod:    http.MethodPost,
 		Operation:     "PostSessionsByIdPlaying",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Sessions/%s/Playing", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Sessions/%s/Playing", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

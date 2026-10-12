@@ -11,7 +11,7 @@ import (
 )
 
 // MergeVersions calls POST /Videos/MergeVersions. Merges videos into a single record.
-func (c Client) MergeVersions(ctx context.Context, ids []string) (result jf.MergeVersionsResponse, err error) {
+func (c Client) MergeVersions(ctx context.Context, ids []jf.ItemID) (result jf.MergeVersionsResponse, err error) {
 	var option jf.MergeVersionsOptions
 	option.Ids = ids
 

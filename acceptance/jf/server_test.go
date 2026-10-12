@@ -47,7 +47,7 @@ func TestJFSystem(t *testing.T) {
 		t.Errorf("GetSystemStorage = %+v", storage)
 	}
 	if !slices.ContainsFunc(storage.Libraries, func(l jf.LibraryStorageDto) bool {
-		return l.Id == moviesID && l.Name == sdkacc.SDKMovies.Name && len(l.Folders) == 1 && l.Folders[0].Path == sdkacc.SDKMovies.Folder
+		return l.Id == string(moviesID) && l.Name == sdkacc.SDKMovies.Name && len(l.Folders) == 1 && l.Folders[0].Path == sdkacc.SDKMovies.Folder
 	}) {
 		t.Errorf("GetSystemStorage lists the libraries %+v, want %s over %s", storage.Libraries, sdkacc.SDKMovies.Name, sdkacc.SDKMovies.Folder)
 	}
@@ -61,7 +61,7 @@ func TestJFLogsAndActivity(t *testing.T) {
 	if len(logs) == 0 {
 		t.Fatal("GetServerLogs listed nothing")
 	}
-	if logs[0].Name == "" || logs[0].Size == 0 || logs[0].DateModified == "" {
+	if logs[0].Name == "" || logs[0].Size == 0 || logs[0].DateModified.IsZero() {
 		t.Errorf("log file = %+v", logs[0])
 	}
 	body := sdkacc.Must(jfc.System.GetLogFile(ctx, logs[0].Name)).HttpResponse.Body
@@ -75,7 +75,7 @@ func TestJFLogsAndActivity(t *testing.T) {
 		t.Fatalf("GetLogEntries = %+v", entries)
 	}
 	for _, e := range entries.Items {
-		if e.Id == 0 || e.Name == "" || e.Type == "" || e.Date == "" || e.Severity == "" {
+		if e.Id == 0 || e.Name == "" || e.Type == "" || e.Date.IsZero() || e.Severity == "" {
 			t.Errorf("activity entry did not decode: %+v", e)
 		}
 	}
@@ -87,7 +87,7 @@ func TestJFLogsAndActivity(t *testing.T) {
 	// a device is listed once a user has authenticated from it, which an
 	// API key never does; the testenv script's login is always there
 	if !slices.ContainsFunc(devices.Items, func(d jf.DeviceInfoDto) bool {
-		return d.Id == "testenv" && d.AppName != "" && d.LastUserId == adminID && d.DateLastActivity != ""
+		return d.Id == "testenv" && d.AppName != "" && d.LastUserId == adminID && !d.DateLastActivity.IsZero()
 	}) {
 		t.Errorf("GetDevices does not list the testenv device: %+v", devices.Items)
 	}

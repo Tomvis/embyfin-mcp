@@ -13,7 +13,7 @@ type MediaSegmentDto struct {
 	Id string `json:"Id,omitempty"`
 
 	// Gets or sets the id of the associated item.
-	ItemId string `json:"ItemId,omitempty"`
+	ItemId ItemID `json:"ItemId,omitempty"`
 
 	// Gets or sets the start of the segment.
 	StartTicks int64 `json:"StartTicks,omitempty"`

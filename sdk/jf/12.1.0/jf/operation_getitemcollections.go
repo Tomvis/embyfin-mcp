@@ -40,7 +40,7 @@ func (r GetItemCollectionsResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetItemCollectionsOptions holds the query and header parameters of GetItemCollections.
 type GetItemCollectionsOptions struct {
 	// Optional. Filter by user id, and attach user data.
-	UserId string
+	UserId UserID
 
 	// Optional. The index of the first record in the output.
 	StartIndex *int
@@ -62,7 +62,7 @@ func (o GetItemCollectionsOptions) ToHeaders() *client.Headers {
 func (o GetItemCollectionsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))

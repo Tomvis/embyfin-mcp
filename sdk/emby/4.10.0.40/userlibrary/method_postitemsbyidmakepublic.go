@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdMakePublic calls POST /Items/{Id}/MakePublic. Makes an item public to all users.
-func (c Client) PostItemsByIdMakePublic(ctx context.Context, id string) (result emby.PostItemsByIdMakePublicResponse, err error) {
+func (c Client) PostItemsByIdMakePublic(ctx context.Context, id emby.ItemID) (result emby.PostItemsByIdMakePublicResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostItemsByIdMakePublic(ctx context.Context, id string) (result 
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostItemsByIdMakePublic",
-		Path:       fmt.Sprintf("/Items/%s/MakePublic", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/MakePublic", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

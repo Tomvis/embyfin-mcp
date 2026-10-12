@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByIdConnectLinkDelete calls POST /Users/{Id}/Connect/Link/Delete. Removes a Connect link for a user.
-func (c Client) PostUsersByIdConnectLinkDelete(ctx context.Context, id string) (result emby.PostUsersByIdConnectLinkDeleteResponse, err error) {
+func (c Client) PostUsersByIdConnectLinkDelete(ctx context.Context, id emby.UserID) (result emby.PostUsersByIdConnectLinkDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostUsersByIdConnectLinkDelete(ctx context.Context, id string) (
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByIdConnectLinkDelete",
-		Path:       fmt.Sprintf("/Users/%s/Connect/Link/Delete", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Connect/Link/Delete", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

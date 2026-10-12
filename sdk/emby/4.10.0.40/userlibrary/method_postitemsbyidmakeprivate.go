@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdMakePrivate calls POST /Items/{Id}/MakePrivate. Makes an item private.
-func (c Client) PostItemsByIdMakePrivate(ctx context.Context, id string) (result emby.PostItemsByIdMakePrivateResponse, err error) {
+func (c Client) PostItemsByIdMakePrivate(ctx context.Context, id emby.ItemID) (result emby.PostItemsByIdMakePrivateResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostItemsByIdMakePrivate(ctx context.Context, id string) (result
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostItemsByIdMakePrivate",
-		Path:       fmt.Sprintf("/Items/%s/MakePrivate", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/MakePrivate", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

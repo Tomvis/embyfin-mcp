@@ -31,9 +31,9 @@ func TestOperationGetPersons(t *testing.T) {
 		EnableImageTypes:        []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
 		ExcludePersonTypes:      []string{"a", "b"},
 		PersonTypes:             []string{"a", "b"},
-		ParentId:                "v-ParentId",
-		AppearsInItemId:         "v-AppearsInItemId",
-		UserId:                  "v-UserId",
+		ParentId:                jf.ItemID("v-ParentId"),
+		AppearsInItemId:         jf.ItemID("v-AppearsInItemId"),
+		UserId:                  jf.UserID("v-UserId"),
 		EnableImages:            new(true),
 	})
 	if err != nil {
@@ -90,9 +90,9 @@ func TestOperationGetPersons(t *testing.T) {
 		EnableImageTypes:        []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
 		ExcludePersonTypes:      []string{"a", "b"},
 		PersonTypes:             []string{"a", "b"},
-		ParentId:                "v-ParentId",
-		AppearsInItemId:         "v-AppearsInItemId",
-		UserId:                  "v-UserId",
+		ParentId:                jf.ItemID("v-ParentId"),
+		AppearsInItemId:         jf.ItemID("v-AppearsInItemId"),
+		UserId:                  jf.UserID("v-UserId"),
 		EnableImages:            new(true),
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
@@ -116,9 +116,9 @@ func TestOperationGetPersons(t *testing.T) {
 		EnableImageTypes:        []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
 		ExcludePersonTypes:      []string{"a", "b"},
 		PersonTypes:             []string{"a", "b"},
-		ParentId:                "v-ParentId",
-		AppearsInItemId:         "v-AppearsInItemId",
-		UserId:                  "v-UserId",
+		ParentId:                jf.ItemID("v-ParentId"),
+		AppearsInItemId:         jf.ItemID("v-AppearsInItemId"),
+		UserId:                  jf.UserID("v-UserId"),
 		EnableImages:            new(true),
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {

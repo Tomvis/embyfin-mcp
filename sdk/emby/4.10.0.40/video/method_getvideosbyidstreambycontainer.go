@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdStreamByContainer calls GET /Videos/{Id}/stream.{Container}. Gets a video stream.
-func (c Client) GetVideosByIdStreamByContainer(ctx context.Context, id string, container string, options ...emby.GetVideosByIdStreamByContainerOptions) (result emby.GetVideosByIdStreamByContainerResponse, err error) {
+func (c Client) GetVideosByIdStreamByContainer(ctx context.Context, id emby.ItemID, container string, options ...emby.GetVideosByIdStreamByContainerOptions) (result emby.GetVideosByIdStreamByContainerResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetVideosByIdStreamByContainer takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetVideosByIdStreamByContainer(ctx context.Context, id string, c
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdStreamByContainer",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Videos/%s/stream.%s", url.PathEscape(id), url.PathEscape(container)),
+		Path:           fmt.Sprintf("/Videos/%s/stream.%s", url.PathEscape(string(id)), url.PathEscape(container)),
 		StreamResponse: true,
 	}
 

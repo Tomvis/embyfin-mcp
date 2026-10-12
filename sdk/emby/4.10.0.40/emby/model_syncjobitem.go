@@ -5,16 +5,16 @@ package emby
 // SyncJobItem is the "SyncJobItem" schema.
 type SyncJobItem struct {
 	AdditionalFiles    []ItemFileInfo    `json:"AdditionalFiles,omitzero"`
-	DateCreated        string            `json:"DateCreated,omitempty"`
+	DateCreated        Time              `json:"DateCreated,omitzero"`
 	Id                 int64             `json:"Id,omitempty"`
 	InternalTargetId   int64             `json:"InternalTargetId,omitempty"`
 	ItemId             int64             `json:"ItemId,omitempty"`
 	ItemName           string            `json:"ItemName,omitempty"`
 	JobId              int64             `json:"JobId,omitempty"`
 	MediaSource        *MediaSourceInfo  `json:"MediaSource,omitempty"`
-	MediaSourceId      string            `json:"MediaSourceId,omitempty"`
+	MediaSourceId      MediaSourceID     `json:"MediaSourceId,omitempty"`
 	OutputPath         string            `json:"OutputPath,omitempty"`
-	PrimaryImageItemId string            `json:"PrimaryImageItemId,omitempty"`
+	PrimaryImageItemId ItemID            `json:"PrimaryImageItemId,omitempty"`
 	PrimaryImageTag    string            `json:"PrimaryImageTag,omitempty"`
 	Progress           float64           `json:"Progress,omitempty"`
 	Status             SyncJobItemStatus `json:"Status,omitempty"`

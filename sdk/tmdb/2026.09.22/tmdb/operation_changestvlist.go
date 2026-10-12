@@ -39,9 +39,9 @@ func (r ChangesTvListResponse) Record() (ChangesTvListAnswer, error) {
 
 // ChangesTvListOptions holds the query and header parameters of ChangesTvList.
 type ChangesTvListOptions struct {
-	EndDate   string
+	EndDate   Day
 	Page      *int
-	StartDate string
+	StartDate Day
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -53,14 +53,14 @@ func (o ChangesTvListOptions) ToHeaders() *client.Headers {
 // ToQuery returns the query parameters the options set.
 func (o ChangesTvListOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
-	if o.EndDate != "" {
-		out.Append("end_date", o.EndDate)
+	if !o.EndDate.IsZero() {
+		out.Append("end_date", o.EndDate.As(sendDateAs("ChangesTvList", "end_date")))
 	}
 	if o.Page != nil {
 		out.Append("page", strconv.Itoa(*o.Page))
 	}
-	if o.StartDate != "" {
-		out.Append("start_date", o.StartDate)
+	if !o.StartDate.IsZero() {
+		out.Append("start_date", o.StartDate.As(sendDateAs("ChangesTvList", "start_date")))
 	}
 	return &out
 }

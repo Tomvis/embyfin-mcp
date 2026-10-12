@@ -35,17 +35,17 @@ func lockedFromJF(fields []jf.MetadataField) []string {
 
 func itemFromJF(d *jf.BaseItemDto) Item {
 	it := Item{
-		ID:                d.Id,
+		ID:                string(d.Id),
 		Name:              d.Name,
 		OriginalTitle:     d.OriginalTitle,
 		SortName:          d.SortName,
 		Settings:          settingsOf(d.ForcedSortName, lockedFromJF(d.LockedFields)),
 		Type:              string(d.Type),
 		ProductionYear:    d.ProductionYear,
-		PremiereDate:      d.PremiereDate,
-		DateCreated:       d.DateCreated,
+		PremiereDate:      jfDate(d.PremiereDate),
+		DateCreated:       jfDate(d.DateCreated),
 		Path:              d.Path,
-		ParentID:          d.ParentId,
+		ParentID:          string(d.ParentId),
 		Overview:          d.Overview,
 		Genres:            d.Genres,
 		Tags:              d.Tags,
@@ -57,14 +57,14 @@ func itemFromJF(d *jf.BaseItemDto) Item {
 		Etag:              d.Etag,
 		ImageTags:         d.ImageTags,
 		SeriesName:        d.SeriesName,
-		SeriesID:          d.SeriesId,
+		SeriesID:          string(d.SeriesId),
 		Album:             d.Album,
 		AlbumArtist:       d.AlbumArtist,
 		Artists:           d.Artists,
 		ParentIndexNumber: d.ParentIndexNumber,
 		IndexNumber:       d.IndexNumber,
 		IndexNumberEnd:    d.IndexNumberEnd,
-		PlaylistItemID:    d.PlaylistItemId,
+		PlaylistItemID:    string(d.PlaylistItemId),
 		IsMissing:         d.LocationType == locationVirtual,
 		IsFolder:          pointer.From(d.IsFolder),
 		UserData:          userDataFromJF(d.UserData),
@@ -87,7 +87,7 @@ func itemFromJF(d *jf.BaseItemDto) Item {
 }
 
 func mediaSourceFromJF(d *jf.MediaSourceInfo) MediaSource {
-	ms := MediaSource{ItemID: d.Id, Name: d.Name, Container: d.Container, Size: d.Size, Bitrate: int64(d.Bitrate), Path: d.Path, RunTimeTicks: d.RunTimeTicks}
+	ms := MediaSource{ItemID: string(d.Id), Name: d.Name, Container: d.Container, Size: d.Size, Bitrate: int64(d.Bitrate), Path: d.Path, RunTimeTicks: d.RunTimeTicks}
 	if len(d.MediaStreams) > 0 {
 		ms.MediaStreams = make([]MediaStream, 0, len(d.MediaStreams))
 		for i := range d.MediaStreams {
@@ -122,7 +122,7 @@ func userDataFromJF(d *jf.UserItemDataDto) *UserData {
 
 	return &UserData{
 		Played: pointer.From(d.Played), PlayCount: d.PlayCount, IsFavourite: pointer.From(d.IsFavorite),
-		LastPlayedDate: d.LastPlayedDate, PlaybackPositionTicks: d.PlaybackPositionTicks,
+		LastPlayedDate: jfDate(d.LastPlayedDate), PlaybackPositionTicks: d.PlaybackPositionTicks,
 		PlayedPercentage: d.PlayedPercentage, UnplayedItemCount: d.UnplayedItemCount, Rated: d.Likes != nil || d.Rating != 0,
 	}
 }
@@ -140,7 +140,7 @@ func nameRefsFromJF(pairs []jf.NameGuidPair) []NameRef {
 }
 
 func virtualFolderFromJF(d *jf.VirtualFolderInfo) VirtualFolder {
-	f := VirtualFolder{Name: d.Name, CollectionType: string(d.CollectionType), Locations: d.Locations, ItemID: d.ItemId}
+	f := VirtualFolder{Name: d.Name, CollectionType: string(d.CollectionType), Locations: d.Locations, ItemID: string(d.ItemId)}
 	if o := d.LibraryOptions; o != nil {
 		// no list at all is every saver
 		f.SavesNfo = o.MetadataSavers == nil || slices.Contains(o.MetadataSavers, nfoSaver)
@@ -156,7 +156,7 @@ func virtualFolderFromJF(d *jf.VirtualFolderInfo) VirtualFolder {
 }
 
 func userFromJF(d *jf.UserDto) User {
-	u := User{ID: d.Id, Name: d.Name, LastActivityDate: d.LastActivityDate, LastLoginDate: d.LastLoginDate}
+	u := User{ID: string(d.Id), Name: d.Name, LastActivityDate: jfDate(d.LastActivityDate), LastLoginDate: jfDate(d.LastLoginDate)}
 	if p := d.Policy; p != nil {
 		u.Policy = UserPolicy{
 			IsAdministrator: pointer.From(p.IsAdministrator), IsDisabled: pointer.From(p.IsDisabled), IsHidden: pointer.From(p.IsHidden),
@@ -178,8 +178,8 @@ func userFromJF(d *jf.UserDto) User {
 
 func sessionFromJF(d *jf.SessionInfoDto) Session {
 	s := Session{
-		ID: d.Id, UserName: d.UserName, Client: d.Client, AppVersion: d.ApplicationVersion, DeviceName: d.DeviceName,
-		RemoteEndPoint: d.RemoteEndPoint, LastActivityDate: d.LastActivityDate,
+		ID: string(d.Id), UserName: d.UserName, Client: d.Client, AppVersion: d.ApplicationVersion, DeviceName: d.DeviceName,
+		RemoteEndPoint: d.RemoteEndPoint, LastActivityDate: jfDate(d.LastActivityDate),
 	}
 	if d.NowPlayingItem != nil {
 		it := itemFromJF(d.NowPlayingItem)
@@ -188,7 +188,7 @@ func sessionFromJF(d *jf.SessionInfoDto) Session {
 	if d.PlayState != nil {
 		s.PlayState = PlayState{
 			PositionTicks: d.PlayState.PositionTicks, IsPaused: d.PlayState.IsPaused,
-			PlayMethod: string(d.PlayState.PlayMethod), MediaSourceID: d.PlayState.MediaSourceId,
+			PlayMethod: string(d.PlayState.PlayMethod), MediaSourceID: string(d.PlayState.MediaSourceId),
 		}
 	}
 	if t := d.TranscodingInfo; t != nil {
@@ -209,7 +209,7 @@ func sessionFromJF(d *jf.SessionInfoDto) Session {
 
 func taskFromJF(d *jf.TaskInfo) Task {
 	t := Task{
-		ID: d.Id, Key: d.Key, Name: d.Name, Category: d.Category, Description: d.Description, State: string(d.State),
+		ID: string(d.Id), Key: d.Key, Name: d.Name, Category: d.Category, Description: d.Description, State: string(d.State),
 		Progress: d.CurrentProgressPercentage, Hidden: d.IsHidden,
 	}
 	for i := range d.Triggers {
@@ -221,7 +221,7 @@ func taskFromJF(d *jf.TaskInfo) Task {
 	}
 	if r := d.LastExecutionResult; r != nil {
 		t.LastExecutionResult = &TaskResult{
-			Status: string(r.Status), StartTimeUtc: r.StartTimeUtc, EndTimeUtc: r.EndTimeUtc,
+			Status: string(r.Status), StartTimeUtc: jfDate(r.StartTimeUtc), EndTimeUtc: jfDate(r.EndTimeUtc),
 			ErrorMessage: r.ErrorMessage, LongErrorMessage: r.LongErrorMessage,
 		}
 	}
@@ -231,20 +231,20 @@ func taskFromJF(d *jf.TaskInfo) Task {
 
 func activityFromJF(d *jf.ActivityLogEntry) ActivityEntry {
 	return ActivityEntry{
-		Name: d.Name, Type: d.Type, Date: d.Date, Severity: string(d.Severity),
-		ShortOverview: d.ShortOverview, UserID: d.UserId, ItemID: d.ItemId,
+		Name: d.Name, Type: d.Type, Date: jfDate(d.Date), Severity: string(d.Severity),
+		ShortOverview: d.ShortOverview, UserID: string(d.UserId), ItemID: string(d.ItemId),
 	}
 }
 
 func deviceFromJF(d *jf.DeviceInfoDto) Device {
 	return Device{
 		Name: d.Name, AppName: d.AppName, AppVersion: d.AppVersion,
-		LastUserName: d.LastUserName, DateLastActivity: d.DateLastActivity, ID: d.Id,
+		LastUserName: d.LastUserName, DateLastActivity: jfDate(d.DateLastActivity), ID: d.Id,
 	}
 }
 
 func logFileFromJF(d *jf.LogFile) LogFile {
-	return LogFile{Name: d.Name, Size: d.Size, DateCreated: d.DateCreated, DateModified: d.DateModified}
+	return LogFile{Name: d.Name, Size: d.Size, DateCreated: jfDate(d.DateCreated), DateModified: jfDate(d.DateModified)}
 }
 
 func systemInfoFromJF(d *jf.SystemInfo) *SystemInfo {
@@ -268,14 +268,14 @@ func countsFromJF(d *jf.ItemCounts) *ItemCounts {
 
 func remoteSearchResultFromJF(d *jf.RemoteSearchResult) RemoteSearchResult {
 	return RemoteSearchResult{
-		Name: d.Name, ProductionYear: d.ProductionYear, PremiereDate: d.PremiereDate, Overview: d.Overview,
+		Name: d.Name, ProductionYear: d.ProductionYear, PremiereDate: jfDate(d.PremiereDate), Overview: d.Overview,
 		ProviderIDs: d.ProviderIds, SearchProviderName: d.SearchProviderName, ImageURL: d.ImageUrl,
 	}
 }
 
 func remoteSearchResultToJF(r *RemoteSearchResult) jf.RemoteSearchResult {
 	return jf.RemoteSearchResult{
-		Name: r.Name, ProductionYear: r.ProductionYear, PremiereDate: r.PremiereDate, Overview: r.Overview,
+		Name: r.Name, ProductionYear: r.ProductionYear, PremiereDate: dateOf[jf.Time](r.PremiereDate), Overview: r.Overview,
 		ProviderIds: r.ProviderIDs, SearchProviderName: r.SearchProviderName, ImageUrl: r.ImageURL,
 	}
 }

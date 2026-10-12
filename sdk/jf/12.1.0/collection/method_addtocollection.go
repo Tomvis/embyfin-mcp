@@ -13,7 +13,7 @@ import (
 )
 
 // AddToCollection calls POST /Collections/{collectionId}/Items. Adds items to a collection.
-func (c Client) AddToCollection(ctx context.Context, collectionId string, ids []string) (result jf.AddToCollectionResponse, err error) {
+func (c Client) AddToCollection(ctx context.Context, collectionId jf.ItemID, ids []jf.ItemID) (result jf.AddToCollectionResponse, err error) {
 	var option jf.AddToCollectionOptions
 	option.Ids = ids
 
@@ -24,7 +24,7 @@ func (c Client) AddToCollection(ctx context.Context, collectionId string, ids []
 		HTTPMethod:    http.MethodPost,
 		Operation:     "AddToCollection",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(collectionId)),
+		Path:          fmt.Sprintf("/Collections/%s/Items", url.PathEscape(string(collectionId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

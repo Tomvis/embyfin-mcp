@@ -5,8 +5,8 @@ package jf
 // GuideInfo is the "GuideInfo" schema.
 type GuideInfo struct {
 	// Gets or sets the end date.
-	EndDate string `json:"EndDate,omitempty"`
+	EndDate Time `json:"EndDate,omitzero"`
 
 	// Gets or sets the start date.
-	StartDate string `json:"StartDate,omitempty"`
+	StartDate Time `json:"StartDate,omitzero"`
 }

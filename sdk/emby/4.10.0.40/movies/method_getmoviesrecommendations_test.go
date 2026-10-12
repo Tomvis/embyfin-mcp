@@ -17,8 +17,8 @@ func TestOperationGetMoviesRecommendations(t *testing.T) {
 	result, err := c.GetMoviesRecommendations(t.Context(), emby.GetMoviesRecommendationsOptions{
 		CategoryLimit:    new(7),
 		ItemLimit:        new(7),
-		UserId:           "v-UserId",
-		ParentId:         "v-ParentId",
+		UserId:           emby.UserID("v-UserId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		EnableUserData:   new(true),
 		ImageTypeLimit:   new(7),
@@ -50,8 +50,8 @@ func TestOperationGetMoviesRecommendations(t *testing.T) {
 	result, err = c.GetMoviesRecommendations(t.Context(), emby.GetMoviesRecommendationsOptions{
 		CategoryLimit:    new(7),
 		ItemLimit:        new(7),
-		UserId:           "v-UserId",
-		ParentId:         "v-ParentId",
+		UserId:           emby.UserID("v-UserId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		EnableUserData:   new(true),
 		ImageTypeLimit:   new(7),
@@ -66,8 +66,8 @@ func TestOperationGetMoviesRecommendations(t *testing.T) {
 	result, err = c.GetMoviesRecommendations(t.Context(), emby.GetMoviesRecommendationsOptions{
 		CategoryLimit:    new(7),
 		ItemLimit:        new(7),
-		UserId:           "v-UserId",
-		ParentId:         "v-ParentId",
+		UserId:           emby.UserID("v-UserId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		EnableUserData:   new(true),
 		ImageTypeLimit:   new(7),
@@ -82,8 +82,8 @@ func TestOperationGetMoviesRecommendations(t *testing.T) {
 	result, err = c.GetMoviesRecommendations(t.Context(), emby.GetMoviesRecommendationsOptions{
 		CategoryLimit:    new(7),
 		ItemLimit:        new(7),
-		UserId:           "v-UserId",
-		ParentId:         "v-ParentId",
+		UserId:           emby.UserID("v-UserId"),
+		ParentId:         emby.ItemID("v-ParentId"),
 		EnableImages:     new(true),
 		EnableUserData:   new(true),
 		ImageTypeLimit:   new(7),

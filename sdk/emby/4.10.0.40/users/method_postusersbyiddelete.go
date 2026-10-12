@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByIdDelete calls POST /Users/{Id}/Delete. Deletes a user.
-func (c Client) PostUsersByIdDelete(ctx context.Context, id string) (result emby.PostUsersByIdDeleteResponse, err error) {
+func (c Client) PostUsersByIdDelete(ctx context.Context, id emby.UserID) (result emby.PostUsersByIdDeleteResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostUsersByIdDelete(ctx context.Context, id string) (result emby
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByIdDelete",
-		Path:       fmt.Sprintf("/Users/%s/Delete", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Delete", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

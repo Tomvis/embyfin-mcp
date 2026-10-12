@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,13 +14,13 @@ func TestOperationGetAncestors(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "[{}]")
-	result, err := c.GetAncestors(t.Context(), "p/itemId", "v-UserId")
+	result, err := c.GetAncestors(t.Context(), jf.ItemID("v-itemId"), jf.UserID("v-UserId"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2FitemId/Ancestors")
+	expectRequest(t, r, http.MethodGet, "/Items/v-itemId/Ancestors")
 	expectQuery(t, r, "userId", "v-UserId")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -30,28 +31,28 @@ func TestOperationGetAncestors(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetAncestors(t.Context(), "p/itemId", "v-UserId")
+	result, err = c.GetAncestors(t.Context(), jf.ItemID("v-itemId"), jf.UserID("v-UserId"))
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetAncestors(t.Context(), "p/itemId", "v-UserId")
+	result, err = c.GetAncestors(t.Context(), jf.ItemID("v-itemId"), jf.UserID("v-UserId"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}
 
 	// the option may be left out, and then nothing is sent for it
 	c, s = newOperationServer(t, 200, "application/json", "[{}]")
-	if _, err = c.GetAncestors(t.Context(), "p/itemId"); err != nil {
+	if _, err = c.GetAncestors(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
 	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("userId") != "" {
 		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("userId"))
 	}
 	// two values are refused before any request
-	if _, err = c.GetAncestors(t.Context(), "p/itemId", "v-UserId", "v-UserId"); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetAncestors(t.Context(), jf.ItemID("v-itemId"), jf.UserID("v-UserId"), jf.UserID("v-UserId")); err == nil || len(s.requests) != 1 {
 		t.Errorf("two values = %v, %d requests", err, len(s.requests))
 	}
 }

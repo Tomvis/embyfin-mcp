@@ -39,7 +39,7 @@ func (r GetRootFolderResponse) Record() (BaseItemDto, error) {
 // GetRootFolderOptions holds the query and header parameters of GetRootFolder.
 type GetRootFolderOptions struct {
 	// User id.
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetRootFolderOptions) ToHeaders() *client.Headers {
 func (o GetRootFolderOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	return &out
 }

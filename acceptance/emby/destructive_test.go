@@ -92,7 +92,7 @@ func TestEmbyDeleteItems(t *testing.T) {
 
 	// two at once, and nothing else
 	a, b, c, d := sdkacc.BulkTitles[0], sdkacc.BulkTitles[1], sdkacc.BulkTitles[2], sdkacc.BulkTitles[3]
-	if _, err := embyc.Library.DeleteItems(ctx, films[a].Id+","+films[b].Id); err != nil {
+	if _, err := embyc.Library.DeleteItems(ctx, []emby.ItemID{films[a].Id, films[b].Id}); err != nil {
 		t.Fatal(err)
 	}
 	if !gone(a) || !gone(b) || gone(c) || gone(d) {
@@ -101,13 +101,13 @@ func TestEmbyDeleteItems(t *testing.T) {
 
 	// an unknown id beside a known one is passed over, before it or after
 	// it: answered 204, and the known one deleted
-	if _, err := embyc.Library.DeleteItems(ctx, films[c].Id+","+unknown); err != nil {
+	if _, err := embyc.Library.DeleteItems(ctx, []emby.ItemID{films[c].Id, unknown}); err != nil {
 		t.Errorf("deleting %s and an unknown id = %v", c, err)
 	}
 	if !gone(c) || gone(d) {
 		t.Errorf("after deleting %s beside an unknown id: %s gone %t, %s gone %t", c, c, gone(c), d, gone(d))
 	}
-	if _, err := embyc.Library.DeleteItems(ctx, unknown+","+films[d].Id); err != nil {
+	if _, err := embyc.Library.DeleteItems(ctx, []emby.ItemID{unknown, films[d].Id}); err != nil {
 		t.Errorf("deleting an unknown id and %s = %v", d, err)
 	}
 	if !gone(d) {
@@ -119,10 +119,10 @@ func TestEmbyDeleteItems(t *testing.T) {
 
 	// an unknown id alone is answered the same, and one that is not a
 	// number at all is a 500
-	if _, err := embyc.Library.DeleteItems(ctx, unknown); err != nil {
+	if _, err := embyc.Library.DeleteItems(ctx, []emby.ItemID{unknown}); err != nil {
 		t.Errorf("deleting only an unknown id = %v", err)
 	}
-	if _, err := embyc.Library.DeleteItems(ctx, "not-an-id"); client.StatusCode(err) != 500 {
+	if _, err := embyc.Library.DeleteItems(ctx, []emby.ItemID{"not-an-id"}); client.StatusCode(err) != 500 {
 		t.Errorf("deleting a malformed id = %v, want a 500", err)
 	}
 }

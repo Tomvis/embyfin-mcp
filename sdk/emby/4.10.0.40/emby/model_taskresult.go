@@ -4,13 +4,13 @@ package emby
 
 // TaskResult is the "TaskResult" schema.
 type TaskResult struct {
-	EndTimeUtc       string               `json:"EndTimeUtc,omitempty"`
+	EndTimeUtc       Time                 `json:"EndTimeUtc,omitzero"`
 	ErrorMessage     string               `json:"ErrorMessage,omitempty"`
 	Id               string               `json:"Id,omitempty"`
 	Key              string               `json:"Key,omitempty"`
 	LongErrorMessage string               `json:"LongErrorMessage,omitempty"`
 	Name             string               `json:"Name,omitempty"`
-	StartTimeUtc     string               `json:"StartTimeUtc,omitempty"`
+	StartTimeUtc     Time                 `json:"StartTimeUtc,omitzero"`
 	Status           TaskCompletionStatus `json:"Status,omitempty"`
 }
 

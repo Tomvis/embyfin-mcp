@@ -10,13 +10,13 @@ type UpdateUserItemDataDto struct {
 	IsFavorite *bool `json:"IsFavorite,omitempty"`
 
 	// Gets or sets the item identifier.
-	ItemId string `json:"ItemId,omitempty"`
+	ItemId ItemID `json:"ItemId,omitempty"`
 
 	// Gets or sets the key.
 	Key string `json:"Key,omitempty"`
 
 	// Gets or sets the last played date.
-	LastPlayedDate string `json:"LastPlayedDate,omitempty"`
+	LastPlayedDate Time `json:"LastPlayedDate,omitzero"`
 
 	// Gets or sets a value indicating whether this MediaBrowser.Model.Dto.UpdateUserItemDataDto is likes.
 	Likes *bool `json:"Likes,omitempty"`

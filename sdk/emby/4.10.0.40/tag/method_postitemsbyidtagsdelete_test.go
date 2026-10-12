@@ -15,12 +15,12 @@ func TestOperationPostItemsByIdTagsDelete(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostItemsByIdTagsDelete(t.Context(), "p/id", emby.UserLibraryRemoveTags{})
+	result, err := c.PostItemsByIdTagsDelete(t.Context(), emby.ItemID("v-id"), emby.UserLibraryRemoveTags{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Items/p%2Fid/Tags/Delete")
+	expectRequest(t, r, http.MethodPost, "/Items/v-id/Tags/Delete")
 	if got := r.Header.Get("Content-Type"); got != "application/json" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/json")
 	}
@@ -36,7 +36,7 @@ func TestOperationPostItemsByIdTagsDelete(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostItemsByIdTagsDelete(t.Context(), "p/id", emby.UserLibraryRemoveTags{})
+	result, err = c.PostItemsByIdTagsDelete(t.Context(), emby.ItemID("v-id"), emby.UserLibraryRemoveTags{})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

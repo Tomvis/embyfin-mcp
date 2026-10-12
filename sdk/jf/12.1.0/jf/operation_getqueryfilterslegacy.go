@@ -39,10 +39,10 @@ func (r GetQueryFiltersLegacyResponse) Record() (QueryFiltersLegacy, error) {
 // GetQueryFiltersLegacyOptions holds the query and header parameters of GetQueryFiltersLegacy.
 type GetQueryFiltersLegacyOptions struct {
 	// Optional. User id.
-	UserId string
+	UserId UserID
 
 	// Optional. Parent id.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
 	IncludeItemTypes []BaseItemKind
@@ -61,10 +61,10 @@ func (o GetQueryFiltersLegacyOptions) ToHeaders() *client.Headers {
 func (o GetQueryFiltersLegacyOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.IncludeItemTypes {
 		out.Append("includeItemTypes", string(v))

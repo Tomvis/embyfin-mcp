@@ -39,9 +39,9 @@ func (r ChangesPeopleListResponse) Record() (ChangesPeopleListAnswer, error) {
 
 // ChangesPeopleListOptions holds the query and header parameters of ChangesPeopleList.
 type ChangesPeopleListOptions struct {
-	EndDate   string
+	EndDate   Day
 	Page      *int
-	StartDate string
+	StartDate Day
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -53,14 +53,14 @@ func (o ChangesPeopleListOptions) ToHeaders() *client.Headers {
 // ToQuery returns the query parameters the options set.
 func (o ChangesPeopleListOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
-	if o.EndDate != "" {
-		out.Append("end_date", o.EndDate)
+	if !o.EndDate.IsZero() {
+		out.Append("end_date", o.EndDate.As(sendDateAs("ChangesPeopleList", "end_date")))
 	}
 	if o.Page != nil {
 		out.Append("page", strconv.Itoa(*o.Page))
 	}
-	if o.StartDate != "" {
-		out.Append("start_date", o.StartDate)
+	if !o.StartDate.IsZero() {
+		out.Append("start_date", o.StartDate.As(sendDateAs("ChangesPeopleList", "start_date")))
 	}
 	return &out
 }

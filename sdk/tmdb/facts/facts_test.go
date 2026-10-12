@@ -11,6 +11,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	tmdbapi "github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 )
 
 // rewrite is a transport that sends every request to a local server in place
@@ -456,14 +458,24 @@ func TestSeriesSpecials(t *testing.T) {
 func TestDatesThatCannotBeRead(t *testing.T) {
 	t.Parallel()
 
+	// read is the day as the SDK reads it out of an answer
+	read := func(date string) tmdbapi.Day {
+		var day tmdbapi.Day
+		if err := day.UnmarshalJSON([]byte(strconv.Quote(date))); err != nil {
+			t.Fatalf("reading %q: %v", date, err)
+		}
+
+		return day
+	}
+
 	for date, want := range map[string]int{"": 0, "1979-05-25": 1979} {
-		if got, err := DateYear("movie 348", date); err != nil || got != want {
+		if got, err := DateYear("movie 348", read(date)); err != nil || got != want {
 			t.Errorf("DateYear(%q) = %d, %v, want %d", date, got, err, want)
 		}
 	}
 	for _, date := range []string{"1979", "25/05/1979", "soon", "1979-13-01"} {
-		if _, err := DateYear("movie 348", date); err == nil || !strings.Contains(err.Error(), "movie 348") {
-			t.Errorf("DateYear(%q) = %v, want an error naming the film", date, err)
+		if _, err := DateYear("movie 348", read(date)); err == nil || !strings.Contains(err.Error(), "movie 348") || !strings.Contains(err.Error(), strconv.Quote(date)) {
+			t.Errorf("DateYear(%q) = %v, want an error naming the film and the date", date, err)
 		}
 	}
 

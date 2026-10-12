@@ -19,7 +19,7 @@ type MovieLatestIdAnswer struct {
 	PosterPath          string                                   `json:"poster_path,omitempty"`
 	ProductionCompanies []MovieLatestIdAnswerProductionCompanies `json:"production_companies,omitzero"`
 	ProductionCountries []MovieLatestIdAnswerProductionCountries `json:"production_countries,omitzero"`
-	ReleaseDate         string                                   `json:"release_date,omitempty"`
+	ReleaseDate         Day                                      `json:"release_date,omitzero"`
 	Revenue             int                                      `json:"revenue,omitempty"`
 	Runtime             int                                      `json:"runtime,omitempty"`
 	SpokenLanguages     []MovieLatestIdAnswerSpokenLanguages     `json:"spoken_languages,omitzero"`

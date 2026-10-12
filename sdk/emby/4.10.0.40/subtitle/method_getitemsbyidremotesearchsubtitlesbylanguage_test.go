@@ -14,8 +14,8 @@ func TestOperationGetItemsByIdRemoteSearchSubtitlesByLanguage(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "[{}]")
-	result, err := c.GetItemsByIdRemoteSearchSubtitlesByLanguage(t.Context(), "p/id", "p/language", emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions{
-		MediaSourceId:     "v-MediaSourceId",
+	result, err := c.GetItemsByIdRemoteSearchSubtitlesByLanguage(t.Context(), emby.ItemID("v-id"), "p/language", emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions{
+		MediaSourceId:     emby.MediaSourceID("v-MediaSourceId"),
 		IsPerfectMatch:    new(true),
 		IsForced:          new(true),
 		IsHearingImpaired: new(true),
@@ -25,7 +25,7 @@ func TestOperationGetItemsByIdRemoteSearchSubtitlesByLanguage(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2Fid/RemoteSearch/Subtitles/p%2Flanguage")
+	expectRequest(t, r, http.MethodGet, "/Items/v-id/RemoteSearch/Subtitles/p%2Flanguage")
 	expectQuery(t, r, "MediaSourceId", "v-MediaSourceId")
 	expectQuery(t, r, "IsPerfectMatch", "true")
 	expectQuery(t, r, "IsForced", "true")
@@ -39,8 +39,8 @@ func TestOperationGetItemsByIdRemoteSearchSubtitlesByLanguage(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.GetItemsByIdRemoteSearchSubtitlesByLanguage(t.Context(), "p/id", "p/language", emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions{
-		MediaSourceId:     "v-MediaSourceId",
+	result, err = c.GetItemsByIdRemoteSearchSubtitlesByLanguage(t.Context(), emby.ItemID("v-id"), "p/language", emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions{
+		MediaSourceId:     emby.MediaSourceID("v-MediaSourceId"),
 		IsPerfectMatch:    new(true),
 		IsForced:          new(true),
 		IsHearingImpaired: new(true),
@@ -51,8 +51,8 @@ func TestOperationGetItemsByIdRemoteSearchSubtitlesByLanguage(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetItemsByIdRemoteSearchSubtitlesByLanguage(t.Context(), "p/id", "p/language", emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions{
-		MediaSourceId:     "v-MediaSourceId",
+	result, err = c.GetItemsByIdRemoteSearchSubtitlesByLanguage(t.Context(), emby.ItemID("v-id"), "p/language", emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions{
+		MediaSourceId:     emby.MediaSourceID("v-MediaSourceId"),
 		IsPerfectMatch:    new(true),
 		IsForced:          new(true),
 		IsHearingImpaired: new(true),
@@ -63,8 +63,8 @@ func TestOperationGetItemsByIdRemoteSearchSubtitlesByLanguage(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetItemsByIdRemoteSearchSubtitlesByLanguage(t.Context(), "p/id", "p/language", emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions{
-		MediaSourceId:     "v-MediaSourceId",
+	result, err = c.GetItemsByIdRemoteSearchSubtitlesByLanguage(t.Context(), emby.ItemID("v-id"), "p/language", emby.GetItemsByIdRemoteSearchSubtitlesByLanguageOptions{
+		MediaSourceId:     emby.MediaSourceID("v-MediaSourceId"),
 		IsPerfectMatch:    new(true),
 		IsForced:          new(true),
 		IsHearingImpaired: new(true),

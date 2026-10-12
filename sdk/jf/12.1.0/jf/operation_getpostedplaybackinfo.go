@@ -42,7 +42,7 @@ type GetPostedPlaybackInfoOptions struct {
 	// The user id.
 	//
 	// Deprecated: the document marks this parameter deprecated.
-	UserId string
+	UserId UserID
 
 	// The maximum streaming bitrate.
 	//
@@ -72,7 +72,7 @@ type GetPostedPlaybackInfoOptions struct {
 	// The media source id.
 	//
 	// Deprecated: the document marks this parameter deprecated.
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// The livestream id.
 	//
@@ -120,7 +120,7 @@ func (o GetPostedPlaybackInfoOptions) ToHeaders() *client.Headers {
 func (o GetPostedPlaybackInfoOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.MaxStreamingBitrate != nil {
 		out.Append("maxStreamingBitrate", strconv.Itoa(*o.MaxStreamingBitrate))
@@ -138,7 +138,7 @@ func (o GetPostedPlaybackInfoOptions) ToQuery() *client.QueryParams {
 		out.Append("maxAudioChannels", strconv.Itoa(*o.MaxAudioChannels))
 	}
 	if o.MediaSourceId != "" {
-		out.Append("mediaSourceId", o.MediaSourceId)
+		out.Append("mediaSourceId", string(o.MediaSourceId))
 	}
 	if o.LiveStreamId != "" {
 		out.Append("liveStreamId", o.LiveStreamId)

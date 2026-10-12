@@ -22,7 +22,7 @@ func (r GetItemsByIdRemoteSearchSubtitlesByLanguageResponse) Answered() bool { r
 // GetItemsByIdRemoteSearchSubtitlesByLanguageOptions holds the query and header parameters of GetItemsByIdRemoteSearchSubtitlesByLanguage.
 type GetItemsByIdRemoteSearchSubtitlesByLanguageOptions struct {
 	// MediaSourceId
-	MediaSourceId string
+	MediaSourceId MediaSourceID
 
 	// IsPerfectMatch
 	IsPerfectMatch *bool
@@ -44,7 +44,7 @@ func (o GetItemsByIdRemoteSearchSubtitlesByLanguageOptions) ToHeaders() *client.
 func (o GetItemsByIdRemoteSearchSubtitlesByLanguageOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.MediaSourceId != "" {
-		out.Append("MediaSourceId", o.MediaSourceId)
+		out.Append("MediaSourceId", string(o.MediaSourceId))
 	}
 	if o.IsPerfectMatch != nil {
 		out.Append("IsPerfectMatch", strconv.FormatBool(*o.IsPerfectMatch))

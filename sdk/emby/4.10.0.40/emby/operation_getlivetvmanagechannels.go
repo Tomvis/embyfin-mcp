@@ -50,6 +50,11 @@ type GetLiveTvManageChannelsOptions struct {
 
 	// Sort Order - Ascending,Descending
 	SortOrder string
+
+	// Optional. Specify one or more sort orders, comma delimeted. Options: Name, StartDate
+	//
+	// As a list, sent joined by commas under the same name; set this or the string, not both.
+	SortByList []string
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -72,6 +77,9 @@ func (o GetLiveTvManageChannelsOptions) ToQuery() *client.QueryParams {
 	}
 	if o.SortOrder != "" {
 		out.Append("SortOrder", o.SortOrder)
+	}
+	if len(o.SortByList) > 0 {
+		out.Append("SortBy", client.CSV(o.SortByList))
 	}
 	return &out
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainer calls GET /Videos/{Id}/hls/{PlaylistId}/{SegmentId}.{SegmentContainer}. Requires authentication as user.
-func (c Client) GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainer(ctx context.Context, id string, playlistId string, segmentId string, segmentContainer string) (result emby.GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainerResponse, err error) {
+func (c Client) GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainer(ctx context.Context, id emby.ItemID, playlistId string, segmentId string, segmentContainer string) (result emby.GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainerResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/octet-stream",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainer(ctx co
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainer",
-		Path:           fmt.Sprintf("/Videos/%s/hls/%s/%s.%s", url.PathEscape(id), url.PathEscape(playlistId), url.PathEscape(segmentId), url.PathEscape(segmentContainer)),
+		Path:           fmt.Sprintf("/Videos/%s/hls/%s/%s.%s", url.PathEscape(string(id)), url.PathEscape(playlistId), url.PathEscape(segmentId), url.PathEscape(segmentContainer)),
 		StreamResponse: true,
 	}
 

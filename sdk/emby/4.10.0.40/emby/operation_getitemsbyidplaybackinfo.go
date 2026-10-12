@@ -39,7 +39,7 @@ func (r GetItemsByIdPlaybackInfoResponse) Record() (PlaybackInfoResponse, error)
 // GetItemsByIdPlaybackInfoOptions holds the query and header parameters of GetItemsByIdPlaybackInfo.
 type GetItemsByIdPlaybackInfoOptions struct {
 	// User Id
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetItemsByIdPlaybackInfoOptions) ToHeaders() *client.Headers {
 func (o GetItemsByIdPlaybackInfoOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

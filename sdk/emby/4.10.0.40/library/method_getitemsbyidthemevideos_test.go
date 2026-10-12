@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
@@ -16,7 +17,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
-	result, err := c.GetItemsByIdThemeVideos(t.Context(), "p/id", emby.GetItemsByIdThemeVideosOptions{
+	result, err := c.GetItemsByIdThemeVideos(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdThemeVideosOptions{
 		InheritFromParent:              new(true),
 		ArtistType:                     "v-ArtistType",
 		MaxOfficialRating:              "v-MaxOfficialRating",
@@ -27,12 +28,12 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		HasTrailer:                     new(true),
 		IsSpecialSeason:                new(true),
 		AdjacentTo:                     "v-AdjacentTo",
-		StartItemId:                    "v-StartItemId",
+		StartItemId:                    emby.ItemID("v-StartItemId"),
 		MinIndexNumber:                 new(7),
-		MinStartDate:                   "v-MinStartDate",
-		MaxStartDate:                   "v-MaxStartDate",
-		MinEndDate:                     "v-MinEndDate",
-		MaxEndDate:                     "v-MaxEndDate",
+		MinStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		MinPlayers:                     new(7),
 		MaxPlayers:                     new(7),
 		ParentIndexNumber:              new(7),
@@ -42,21 +43,21 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		MinCommunityRating:             new(1.5),
 		MinCriticRating:                new(1.5),
 		AiredDuringSeason:              new(7),
-		MinPremiereDate:                "v-MinPremiereDate",
-		MinDateLastSaved:               "v-MinDateLastSaved",
-		MinDateLastSavedForUser:        "v-MinDateLastSavedForUser",
-		MaxPremiereDate:                "v-MaxPremiereDate",
+		MinPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSaved:               emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSavedForUser:        emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasOverview:                    new(true),
 		HasImdbId:                      new(true),
 		HasTmdbId:                      new(true),
 		HasTvdbId:                      new(true),
-		ExcludeItemIds:                 "v-ExcludeItemIds",
+		ExcludeItemIds:                 []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		StartIndex:                     new(7),
 		Limit:                          new(7),
 		Recursive:                      new(true),
 		SearchTerm:                     "v-SearchTerm",
 		SortOrder:                      "v-SortOrder",
-		ParentId:                       "v-ParentId",
+		ParentId:                       emby.ItemID("v-ParentId"),
 		Fields:                         "v-Fields",
 		ExcludeItemTypes:               "v-ExcludeItemTypes",
 		IncludeItemTypes:               "v-IncludeItemTypes",
@@ -95,7 +96,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		Artists:                        "v-Artists",
 		ArtistIds:                      "v-ArtistIds",
 		Albums:                         "v-Albums",
-		Ids:                            "v-Ids",
+		Ids:                            []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		VideoTypes:                     "v-VideoTypes",
 		Containers:                     "v-Containers",
 		AudioCodecs:                    "v-AudioCodecs",
@@ -104,7 +105,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		ExtendedVideoTypes:             "v-ExtendedVideoTypes",
 		SubtitleCodecs:                 "v-SubtitleCodecs",
 		Path:                           "v-Path",
-		UserId:                         "v-UserId",
+		UserId:                         emby.UserID("v-UserId"),
 		MinOfficialRating:              "v-MinOfficialRating",
 		IsLocked:                       new(true),
 		IsPlaceHolder:                  new(true),
@@ -123,7 +124,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Items/p%2Fid/ThemeVideos")
+	expectRequest(t, r, http.MethodGet, "/Items/v-id/ThemeVideos")
 	expectQuery(t, r, "InheritFromParent", "true")
 	expectQuery(t, r, "ArtistType", "v-ArtistType")
 	expectQuery(t, r, "MaxOfficialRating", "v-MaxOfficialRating")
@@ -136,10 +137,10 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 	expectQuery(t, r, "AdjacentTo", "v-AdjacentTo")
 	expectQuery(t, r, "StartItemId", "v-StartItemId")
 	expectQuery(t, r, "MinIndexNumber", "7")
-	expectQuery(t, r, "MinStartDate", "v-MinStartDate")
-	expectQuery(t, r, "MaxStartDate", "v-MaxStartDate")
-	expectQuery(t, r, "MinEndDate", "v-MinEndDate")
-	expectQuery(t, r, "MaxEndDate", "v-MaxEndDate")
+	expectQuery(t, r, "MinStartDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MaxStartDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MinEndDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MaxEndDate", "2024-03-04T05:06:07.0000000Z")
 	expectQuery(t, r, "MinPlayers", "7")
 	expectQuery(t, r, "MaxPlayers", "7")
 	expectQuery(t, r, "ParentIndexNumber", "7")
@@ -149,15 +150,15 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 	expectQuery(t, r, "MinCommunityRating", "1.5")
 	expectQuery(t, r, "MinCriticRating", "1.5")
 	expectQuery(t, r, "AiredDuringSeason", "7")
-	expectQuery(t, r, "MinPremiereDate", "v-MinPremiereDate")
-	expectQuery(t, r, "MinDateLastSaved", "v-MinDateLastSaved")
-	expectQuery(t, r, "MinDateLastSavedForUser", "v-MinDateLastSavedForUser")
-	expectQuery(t, r, "MaxPremiereDate", "v-MaxPremiereDate")
+	expectQuery(t, r, "MinPremiereDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MinDateLastSaved", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MinDateLastSavedForUser", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MaxPremiereDate", "2024-03-04T05:06:07.0000000Z")
 	expectQuery(t, r, "HasOverview", "true")
 	expectQuery(t, r, "HasImdbId", "true")
 	expectQuery(t, r, "HasTmdbId", "true")
 	expectQuery(t, r, "HasTvdbId", "true")
-	expectQuery(t, r, "ExcludeItemIds", "v-ExcludeItemIds")
+	expectQuery(t, r, "ExcludeItemIds", "a,b")
 	expectQuery(t, r, "StartIndex", "7")
 	expectQuery(t, r, "Limit", "7")
 	expectQuery(t, r, "Recursive", "true")
@@ -202,7 +203,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 	expectQuery(t, r, "Artists", "v-Artists")
 	expectQuery(t, r, "ArtistIds", "v-ArtistIds")
 	expectQuery(t, r, "Albums", "v-Albums")
-	expectQuery(t, r, "Ids", "v-Ids")
+	expectQuery(t, r, "Ids", "a,b")
 	expectQuery(t, r, "VideoTypes", "v-VideoTypes")
 	expectQuery(t, r, "Containers", "v-Containers")
 	expectQuery(t, r, "AudioCodecs", "v-AudioCodecs")
@@ -239,7 +240,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.GetItemsByIdThemeVideos(t.Context(), "p/id", emby.GetItemsByIdThemeVideosOptions{
+	result, err = c.GetItemsByIdThemeVideos(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdThemeVideosOptions{
 		InheritFromParent:              new(true),
 		ArtistType:                     "v-ArtistType",
 		MaxOfficialRating:              "v-MaxOfficialRating",
@@ -250,12 +251,12 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		HasTrailer:                     new(true),
 		IsSpecialSeason:                new(true),
 		AdjacentTo:                     "v-AdjacentTo",
-		StartItemId:                    "v-StartItemId",
+		StartItemId:                    emby.ItemID("v-StartItemId"),
 		MinIndexNumber:                 new(7),
-		MinStartDate:                   "v-MinStartDate",
-		MaxStartDate:                   "v-MaxStartDate",
-		MinEndDate:                     "v-MinEndDate",
-		MaxEndDate:                     "v-MaxEndDate",
+		MinStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		MinPlayers:                     new(7),
 		MaxPlayers:                     new(7),
 		ParentIndexNumber:              new(7),
@@ -265,21 +266,21 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		MinCommunityRating:             new(1.5),
 		MinCriticRating:                new(1.5),
 		AiredDuringSeason:              new(7),
-		MinPremiereDate:                "v-MinPremiereDate",
-		MinDateLastSaved:               "v-MinDateLastSaved",
-		MinDateLastSavedForUser:        "v-MinDateLastSavedForUser",
-		MaxPremiereDate:                "v-MaxPremiereDate",
+		MinPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSaved:               emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSavedForUser:        emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasOverview:                    new(true),
 		HasImdbId:                      new(true),
 		HasTmdbId:                      new(true),
 		HasTvdbId:                      new(true),
-		ExcludeItemIds:                 "v-ExcludeItemIds",
+		ExcludeItemIds:                 []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		StartIndex:                     new(7),
 		Limit:                          new(7),
 		Recursive:                      new(true),
 		SearchTerm:                     "v-SearchTerm",
 		SortOrder:                      "v-SortOrder",
-		ParentId:                       "v-ParentId",
+		ParentId:                       emby.ItemID("v-ParentId"),
 		Fields:                         "v-Fields",
 		ExcludeItemTypes:               "v-ExcludeItemTypes",
 		IncludeItemTypes:               "v-IncludeItemTypes",
@@ -318,7 +319,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		Artists:                        "v-Artists",
 		ArtistIds:                      "v-ArtistIds",
 		Albums:                         "v-Albums",
-		Ids:                            "v-Ids",
+		Ids:                            []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		VideoTypes:                     "v-VideoTypes",
 		Containers:                     "v-Containers",
 		AudioCodecs:                    "v-AudioCodecs",
@@ -327,7 +328,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		ExtendedVideoTypes:             "v-ExtendedVideoTypes",
 		SubtitleCodecs:                 "v-SubtitleCodecs",
 		Path:                           "v-Path",
-		UserId:                         "v-UserId",
+		UserId:                         emby.UserID("v-UserId"),
 		MinOfficialRating:              "v-MinOfficialRating",
 		IsLocked:                       new(true),
 		IsPlaceHolder:                  new(true),
@@ -353,7 +354,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetItemsByIdThemeVideos(t.Context(), "p/id", emby.GetItemsByIdThemeVideosOptions{
+	result, err = c.GetItemsByIdThemeVideos(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdThemeVideosOptions{
 		InheritFromParent:              new(true),
 		ArtistType:                     "v-ArtistType",
 		MaxOfficialRating:              "v-MaxOfficialRating",
@@ -364,12 +365,12 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		HasTrailer:                     new(true),
 		IsSpecialSeason:                new(true),
 		AdjacentTo:                     "v-AdjacentTo",
-		StartItemId:                    "v-StartItemId",
+		StartItemId:                    emby.ItemID("v-StartItemId"),
 		MinIndexNumber:                 new(7),
-		MinStartDate:                   "v-MinStartDate",
-		MaxStartDate:                   "v-MaxStartDate",
-		MinEndDate:                     "v-MinEndDate",
-		MaxEndDate:                     "v-MaxEndDate",
+		MinStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		MinPlayers:                     new(7),
 		MaxPlayers:                     new(7),
 		ParentIndexNumber:              new(7),
@@ -379,21 +380,21 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		MinCommunityRating:             new(1.5),
 		MinCriticRating:                new(1.5),
 		AiredDuringSeason:              new(7),
-		MinPremiereDate:                "v-MinPremiereDate",
-		MinDateLastSaved:               "v-MinDateLastSaved",
-		MinDateLastSavedForUser:        "v-MinDateLastSavedForUser",
-		MaxPremiereDate:                "v-MaxPremiereDate",
+		MinPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSaved:               emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSavedForUser:        emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasOverview:                    new(true),
 		HasImdbId:                      new(true),
 		HasTmdbId:                      new(true),
 		HasTvdbId:                      new(true),
-		ExcludeItemIds:                 "v-ExcludeItemIds",
+		ExcludeItemIds:                 []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		StartIndex:                     new(7),
 		Limit:                          new(7),
 		Recursive:                      new(true),
 		SearchTerm:                     "v-SearchTerm",
 		SortOrder:                      "v-SortOrder",
-		ParentId:                       "v-ParentId",
+		ParentId:                       emby.ItemID("v-ParentId"),
 		Fields:                         "v-Fields",
 		ExcludeItemTypes:               "v-ExcludeItemTypes",
 		IncludeItemTypes:               "v-IncludeItemTypes",
@@ -432,7 +433,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		Artists:                        "v-Artists",
 		ArtistIds:                      "v-ArtistIds",
 		Albums:                         "v-Albums",
-		Ids:                            "v-Ids",
+		Ids:                            []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		VideoTypes:                     "v-VideoTypes",
 		Containers:                     "v-Containers",
 		AudioCodecs:                    "v-AudioCodecs",
@@ -441,7 +442,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		ExtendedVideoTypes:             "v-ExtendedVideoTypes",
 		SubtitleCodecs:                 "v-SubtitleCodecs",
 		Path:                           "v-Path",
-		UserId:                         "v-UserId",
+		UserId:                         emby.UserID("v-UserId"),
 		MinOfficialRating:              "v-MinOfficialRating",
 		IsLocked:                       new(true),
 		IsPlaceHolder:                  new(true),
@@ -461,7 +462,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetItemsByIdThemeVideos(t.Context(), "p/id", emby.GetItemsByIdThemeVideosOptions{
+	result, err = c.GetItemsByIdThemeVideos(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdThemeVideosOptions{
 		InheritFromParent:              new(true),
 		ArtistType:                     "v-ArtistType",
 		MaxOfficialRating:              "v-MaxOfficialRating",
@@ -472,12 +473,12 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		HasTrailer:                     new(true),
 		IsSpecialSeason:                new(true),
 		AdjacentTo:                     "v-AdjacentTo",
-		StartItemId:                    "v-StartItemId",
+		StartItemId:                    emby.ItemID("v-StartItemId"),
 		MinIndexNumber:                 new(7),
-		MinStartDate:                   "v-MinStartDate",
-		MaxStartDate:                   "v-MaxStartDate",
-		MinEndDate:                     "v-MinEndDate",
-		MaxEndDate:                     "v-MaxEndDate",
+		MinStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		MinPlayers:                     new(7),
 		MaxPlayers:                     new(7),
 		ParentIndexNumber:              new(7),
@@ -487,21 +488,21 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		MinCommunityRating:             new(1.5),
 		MinCriticRating:                new(1.5),
 		AiredDuringSeason:              new(7),
-		MinPremiereDate:                "v-MinPremiereDate",
-		MinDateLastSaved:               "v-MinDateLastSaved",
-		MinDateLastSavedForUser:        "v-MinDateLastSavedForUser",
-		MaxPremiereDate:                "v-MaxPremiereDate",
+		MinPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSaved:               emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSavedForUser:        emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasOverview:                    new(true),
 		HasImdbId:                      new(true),
 		HasTmdbId:                      new(true),
 		HasTvdbId:                      new(true),
-		ExcludeItemIds:                 "v-ExcludeItemIds",
+		ExcludeItemIds:                 []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		StartIndex:                     new(7),
 		Limit:                          new(7),
 		Recursive:                      new(true),
 		SearchTerm:                     "v-SearchTerm",
 		SortOrder:                      "v-SortOrder",
-		ParentId:                       "v-ParentId",
+		ParentId:                       emby.ItemID("v-ParentId"),
 		Fields:                         "v-Fields",
 		ExcludeItemTypes:               "v-ExcludeItemTypes",
 		IncludeItemTypes:               "v-IncludeItemTypes",
@@ -540,7 +541,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		Artists:                        "v-Artists",
 		ArtistIds:                      "v-ArtistIds",
 		Albums:                         "v-Albums",
-		Ids:                            "v-Ids",
+		Ids:                            []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		VideoTypes:                     "v-VideoTypes",
 		Containers:                     "v-Containers",
 		AudioCodecs:                    "v-AudioCodecs",
@@ -549,7 +550,7 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 		ExtendedVideoTypes:             "v-ExtendedVideoTypes",
 		SubtitleCodecs:                 "v-SubtitleCodecs",
 		Path:                           "v-Path",
-		UserId:                         "v-UserId",
+		UserId:                         emby.UserID("v-UserId"),
 		MinOfficialRating:              "v-MinOfficialRating",
 		IsLocked:                       new(true),
 		IsPlaceHolder:                  new(true),
@@ -569,10 +570,10 @@ func TestOperationGetItemsByIdThemeVideos(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "{}")
-	if _, err = c.GetItemsByIdThemeVideos(t.Context(), "p/id"); err != nil {
+	if _, err = c.GetItemsByIdThemeVideos(t.Context(), emby.ItemID("v-id")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetItemsByIdThemeVideos(t.Context(), "p/id", emby.GetItemsByIdThemeVideosOptions{}, emby.GetItemsByIdThemeVideosOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetItemsByIdThemeVideos(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdThemeVideosOptions{}, emby.GetItemsByIdThemeVideosOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }
@@ -597,7 +598,7 @@ func TestOperationGetItemsByIdThemeVideosComplete(t *testing.T) {
 			t.Parallel()
 
 			c, starts := pagedServer(t, "StartIndex", "{}", tc.total, tc.pages)
-			result, err := c.GetItemsByIdThemeVideosComplete(t.Context(), "p/id", tc.options)
+			result, err := c.GetItemsByIdThemeVideosComplete(t.Context(), emby.ItemID("v-id"), tc.options)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -613,7 +614,7 @@ func TestOperationGetItemsByIdThemeVideosEach(t *testing.T) {
 
 	c, starts := pagedServer(t, "StartIndex", "{}", 0, 2)
 	n := 0
-	for _, err := range c.GetItemsByIdThemeVideosEach(t.Context(), "p/id", emby.GetItemsByIdThemeVideosOptions{Limit: new(1)}) {
+	for _, err := range c.GetItemsByIdThemeVideosEach(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdThemeVideosOptions{Limit: new(1)}) {
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -625,7 +626,7 @@ func TestOperationGetItemsByIdThemeVideosEach(t *testing.T) {
 
 	// stopping after the first result asks for no page more
 	c, starts = pagedServer(t, "StartIndex", "{}", 0, 2)
-	for range c.GetItemsByIdThemeVideosEach(t.Context(), "p/id", emby.GetItemsByIdThemeVideosOptions{Limit: new(1)}) {
+	for range c.GetItemsByIdThemeVideosEach(t.Context(), emby.ItemID("v-id"), emby.GetItemsByIdThemeVideosOptions{Limit: new(1)}) {
 		break
 	}
 	if len(*starts) != 1 {

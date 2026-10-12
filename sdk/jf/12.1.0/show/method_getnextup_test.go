@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
@@ -17,17 +18,17 @@ func TestOperationGetNextUp(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetNextUp(t.Context(), jf.GetNextUpOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
-		SeriesId:               "v-SeriesId",
-		ParentId:               "v-ParentId",
+		SeriesId:               jf.ItemID("v-SeriesId"),
+		ParentId:               jf.ItemID("v-ParentId"),
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
 		EnableUserData:         new(true),
-		NextUpDateCutoff:       "v-NextUpDateCutoff",
+		NextUpDateCutoff:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		EnableTotalRecordCount: new(true),
 		EnableResumable:        new(true),
 		EnableRewatching:       new(true),
@@ -48,7 +49,7 @@ func TestOperationGetNextUp(t *testing.T) {
 	expectQuery(t, r, "imageTypeLimit", "7")
 	expectQuery(t, r, "enableImageTypes", "Primary", "Profile")
 	expectQuery(t, r, "enableUserData", "true")
-	expectQuery(t, r, "nextUpDateCutoff", "v-NextUpDateCutoff")
+	expectQuery(t, r, "nextUpDateCutoff", "2024-03-04T05:06:07.0000000Z")
 	expectQuery(t, r, "enableTotalRecordCount", "true")
 	expectQuery(t, r, "enableResumable", "true")
 	expectQuery(t, r, "enableRewatching", "true")
@@ -68,17 +69,17 @@ func TestOperationGetNextUp(t *testing.T) {
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetNextUp(t.Context(), jf.GetNextUpOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
-		SeriesId:               "v-SeriesId",
-		ParentId:               "v-ParentId",
+		SeriesId:               jf.ItemID("v-SeriesId"),
+		ParentId:               jf.ItemID("v-ParentId"),
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
 		EnableUserData:         new(true),
-		NextUpDateCutoff:       "v-NextUpDateCutoff",
+		NextUpDateCutoff:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		EnableTotalRecordCount: new(true),
 		EnableResumable:        new(true),
 		EnableRewatching:       new(true),
@@ -90,17 +91,17 @@ func TestOperationGetNextUp(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetNextUp(t.Context(), jf.GetNextUpOptions{
-		UserId:                 "v-UserId",
+		UserId:                 jf.UserID("v-UserId"),
 		StartIndex:             new(7),
 		Limit:                  new(7),
 		Fields:                 []jf.ItemFields{jf.ItemFieldsAirTime, jf.ItemFieldsSpecialFeatureCount},
-		SeriesId:               "v-SeriesId",
-		ParentId:               "v-ParentId",
+		SeriesId:               jf.ItemID("v-SeriesId"),
+		ParentId:               jf.ItemID("v-ParentId"),
 		EnableImages:           new(true),
 		ImageTypeLimit:         new(7),
 		EnableImageTypes:       []jf.ImageType{jf.ImageTypePrimary, jf.ImageTypeProfile},
 		EnableUserData:         new(true),
-		NextUpDateCutoff:       "v-NextUpDateCutoff",
+		NextUpDateCutoff:       jf.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		EnableTotalRecordCount: new(true),
 		EnableResumable:        new(true),
 		EnableRewatching:       new(true),

@@ -13,7 +13,7 @@ import (
 )
 
 // PostSessionsByIdUsersByUserId calls POST /Sessions/{Id}/Users/{UserId}. Adds an additional user to a session.
-func (c Client) PostSessionsByIdUsersByUserId(ctx context.Context, id string, userId string) (result emby.PostSessionsByIdUsersByUserIdResponse, err error) {
+func (c Client) PostSessionsByIdUsersByUserId(ctx context.Context, id emby.SessionID, userId emby.UserID) (result emby.PostSessionsByIdUsersByUserIdResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostSessionsByIdUsersByUserId(ctx context.Context, id string, us
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostSessionsByIdUsersByUserId",
-		Path:       fmt.Sprintf("/Sessions/%s/Users/%s", url.PathEscape(id), url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Sessions/%s/Users/%s", url.PathEscape(string(id)), url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

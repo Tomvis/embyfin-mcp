@@ -13,7 +13,7 @@ import (
 )
 
 // PostScheduledTasksRunningById calls POST /ScheduledTasks/Running/{Id}. Starts a scheduled task.
-func (c Client) PostScheduledTasksRunningById(ctx context.Context, id string) (result emby.PostScheduledTasksRunningByIdResponse, err error) {
+func (c Client) PostScheduledTasksRunningById(ctx context.Context, id emby.TaskID) (result emby.PostScheduledTasksRunningByIdResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) PostScheduledTasksRunningById(ctx context.Context, id string) (r
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostScheduledTasksRunningById",
-		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/ScheduledTasks/Running/%s", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

@@ -14,13 +14,13 @@ func TestOperationPostItemsByIdImagesByTypeByIndexUrl(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostItemsByIdImagesByTypeByIndexUrl(t.Context(), "p/id", emby.ImageTypePrimary, 7, "v-Url")
+	result, err := c.PostItemsByIdImagesByTypeByIndexUrl(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, "v-Url")
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodPost, "/Items/p%2Fid/Images/Primary/7/Url")
+	expectRequest(t, r, http.MethodPost, "/Items/v-id/Images/Primary/7/Url")
 	expectQuery(t, r, "Url", "v-Url")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
@@ -28,7 +28,7 @@ func TestOperationPostItemsByIdImagesByTypeByIndexUrl(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostItemsByIdImagesByTypeByIndexUrl(t.Context(), "p/id", emby.ImageTypePrimary, 7, "v-Url")
+	result, err = c.PostItemsByIdImagesByTypeByIndexUrl(t.Context(), emby.ItemID("v-id"), emby.ImageTypePrimary, 7, "v-Url")
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

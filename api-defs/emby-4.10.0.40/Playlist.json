@@ -13,7 +13,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -24,8 +25,13 @@
           "In": "Query",
           "Required": true,
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "PlaylistItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "ExpectedStatusCodes": [
@@ -44,7 +50,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -55,7 +62,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -65,8 +73,13 @@
           "Description": "Item id, comma delimited",
           "Required": true,
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -92,7 +105,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -103,7 +117,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -168,6 +183,19 @@
           "Type": {
             "Type": "String"
           }
+        },
+        {
+          "Name": "Fields",
+          "Field": "FieldsList",
+          "In": "Query",
+          "Description": "Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines\n\nAs a list, sent joined by commas under the same name; set this or the string, not both.",
+          "Type": {
+            "Type": "List",
+            "NestedItem": {
+              "Type": "String"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -214,8 +242,13 @@
           "In": "Query",
           "Description": "Item Ids to add to the playlist",
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         },
         {
           "Name": "MediaType",
@@ -232,7 +265,8 @@
           "In": "Query",
           "Description": "The user who owns the playlist",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -259,7 +293,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -270,7 +305,8 @@
           "In": "Query",
           "Description": "User Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -280,8 +316,13 @@
           "Description": "Item id, comma delimited",
           "Required": true,
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "ItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "Response": {
@@ -307,7 +348,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -341,7 +383,8 @@
           "Name": "Id",
           "Argument": "id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         }
       ],
@@ -352,8 +395,13 @@
           "In": "Query",
           "Required": true,
           "Type": {
-            "Type": "String"
-          }
+            "Type": "List",
+            "NestedItem": {
+              "Type": "ID",
+              "ReferenceName": "PlaylistItemID"
+            }
+          },
+          "CommaSeparated": true
         }
       ],
       "ExpectedStatusCodes": [

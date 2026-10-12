@@ -15,12 +15,12 @@ func TestOperationPostUsersByIdImagesByType(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "", "")
-	result, err := c.PostUsersByIdImagesByType(t.Context(), "p/id", emby.ImageTypePrimary, strings.NewReader("raw bytes"), "application/octet-stream")
+	result, err := c.PostUsersByIdImagesByType(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, strings.NewReader("raw bytes"), "application/octet-stream")
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
-	expectRequest(t, r, http.MethodPost, "/Users/p%2Fid/Images/Primary")
+	expectRequest(t, r, http.MethodPost, "/Users/v-id/Images/Primary")
 	if got := r.Header.Get("Content-Type"); got != "application/octet-stream" {
 		t.Errorf("Content-Type = %q, want %q", got, "application/octet-stream")
 	}
@@ -33,7 +33,7 @@ func TestOperationPostUsersByIdImagesByType(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.PostUsersByIdImagesByType(t.Context(), "p/id", emby.ImageTypePrimary, strings.NewReader("raw bytes"), "application/octet-stream")
+	result, err = c.PostUsersByIdImagesByType(t.Context(), emby.UserID("v-id"), emby.ImageTypePrimary, strings.NewReader("raw bytes"), "application/octet-stream")
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

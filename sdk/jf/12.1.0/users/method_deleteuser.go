@@ -13,14 +13,14 @@ import (
 )
 
 // DeleteUser calls DELETE /Users/{userId}. Deletes a user.
-func (c Client) DeleteUser(ctx context.Context, userId string) (result jf.DeleteUserResponse, err error) {
+func (c Client) DeleteUser(ctx context.Context, userId jf.UserID) (result jf.DeleteUserResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteUser",
-		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(userId)),
+		Path:       fmt.Sprintf("/Users/%s", url.PathEscape(string(userId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

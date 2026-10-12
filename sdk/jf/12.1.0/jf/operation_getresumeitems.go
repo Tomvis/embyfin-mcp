@@ -40,7 +40,7 @@ func (r GetResumeItemsResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetResumeItemsOptions holds the query and header parameters of GetResumeItems.
 type GetResumeItemsOptions struct {
 	// The user id.
-	UserId string
+	UserId UserID
 
 	// The start index.
 	StartIndex *int
@@ -52,7 +52,7 @@ type GetResumeItemsOptions struct {
 	SearchTerm string
 
 	// Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
 	Fields []ItemFields
@@ -95,7 +95,7 @@ func (o GetResumeItemsOptions) ToHeaders() *client.Headers {
 func (o GetResumeItemsOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))
@@ -107,7 +107,7 @@ func (o GetResumeItemsOptions) ToQuery() *client.QueryParams {
 		out.Append("searchTerm", o.SearchTerm)
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.Fields {
 		out.Append("fields", string(v))

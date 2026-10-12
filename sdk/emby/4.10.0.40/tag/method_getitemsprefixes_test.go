@@ -5,6 +5,7 @@ package tag
 import (
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/katbyte/embyfin-mcp/sdk/emby/4.10.0.40/emby"
 	"github.com/katbyte/pandorest/client"
@@ -24,12 +25,12 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		HasTrailer:                     new(true),
 		IsSpecialSeason:                new(true),
 		AdjacentTo:                     "v-AdjacentTo",
-		StartItemId:                    "v-StartItemId",
+		StartItemId:                    emby.ItemID("v-StartItemId"),
 		MinIndexNumber:                 new(7),
-		MinStartDate:                   "v-MinStartDate",
-		MaxStartDate:                   "v-MaxStartDate",
-		MinEndDate:                     "v-MinEndDate",
-		MaxEndDate:                     "v-MaxEndDate",
+		MinStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		MinPlayers:                     new(7),
 		MaxPlayers:                     new(7),
 		ParentIndexNumber:              new(7),
@@ -39,21 +40,21 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		MinCommunityRating:             new(1.5),
 		MinCriticRating:                new(1.5),
 		AiredDuringSeason:              new(7),
-		MinPremiereDate:                "v-MinPremiereDate",
-		MinDateLastSaved:               "v-MinDateLastSaved",
-		MinDateLastSavedForUser:        "v-MinDateLastSavedForUser",
-		MaxPremiereDate:                "v-MaxPremiereDate",
+		MinPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSaved:               emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSavedForUser:        emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasOverview:                    new(true),
 		HasImdbId:                      new(true),
 		HasTmdbId:                      new(true),
 		HasTvdbId:                      new(true),
-		ExcludeItemIds:                 "v-ExcludeItemIds",
+		ExcludeItemIds:                 []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		StartIndex:                     new(7),
 		Limit:                          new(7),
 		Recursive:                      new(true),
 		SearchTerm:                     "v-SearchTerm",
 		SortOrder:                      "v-SortOrder",
-		ParentId:                       "v-ParentId",
+		ParentId:                       emby.ItemID("v-ParentId"),
 		Fields:                         "v-Fields",
 		ExcludeItemTypes:               "v-ExcludeItemTypes",
 		IncludeItemTypes:               "v-IncludeItemTypes",
@@ -92,7 +93,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		Artists:                        "v-Artists",
 		ArtistIds:                      "v-ArtistIds",
 		Albums:                         "v-Albums",
-		Ids:                            "v-Ids",
+		Ids:                            []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		VideoTypes:                     "v-VideoTypes",
 		Containers:                     "v-Containers",
 		AudioCodecs:                    "v-AudioCodecs",
@@ -101,7 +102,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		ExtendedVideoTypes:             "v-ExtendedVideoTypes",
 		SubtitleCodecs:                 "v-SubtitleCodecs",
 		Path:                           "v-Path",
-		UserId:                         "v-UserId",
+		UserId:                         emby.UserID("v-UserId"),
 		MinOfficialRating:              "v-MinOfficialRating",
 		IsLocked:                       new(true),
 		IsPlaceHolder:                  new(true),
@@ -132,10 +133,10 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 	expectQuery(t, r, "AdjacentTo", "v-AdjacentTo")
 	expectQuery(t, r, "StartItemId", "v-StartItemId")
 	expectQuery(t, r, "MinIndexNumber", "7")
-	expectQuery(t, r, "MinStartDate", "v-MinStartDate")
-	expectQuery(t, r, "MaxStartDate", "v-MaxStartDate")
-	expectQuery(t, r, "MinEndDate", "v-MinEndDate")
-	expectQuery(t, r, "MaxEndDate", "v-MaxEndDate")
+	expectQuery(t, r, "MinStartDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MaxStartDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MinEndDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MaxEndDate", "2024-03-04T05:06:07.0000000Z")
 	expectQuery(t, r, "MinPlayers", "7")
 	expectQuery(t, r, "MaxPlayers", "7")
 	expectQuery(t, r, "ParentIndexNumber", "7")
@@ -145,15 +146,15 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 	expectQuery(t, r, "MinCommunityRating", "1.5")
 	expectQuery(t, r, "MinCriticRating", "1.5")
 	expectQuery(t, r, "AiredDuringSeason", "7")
-	expectQuery(t, r, "MinPremiereDate", "v-MinPremiereDate")
-	expectQuery(t, r, "MinDateLastSaved", "v-MinDateLastSaved")
-	expectQuery(t, r, "MinDateLastSavedForUser", "v-MinDateLastSavedForUser")
-	expectQuery(t, r, "MaxPremiereDate", "v-MaxPremiereDate")
+	expectQuery(t, r, "MinPremiereDate", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MinDateLastSaved", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MinDateLastSavedForUser", "2024-03-04T05:06:07.0000000Z")
+	expectQuery(t, r, "MaxPremiereDate", "2024-03-04T05:06:07.0000000Z")
 	expectQuery(t, r, "HasOverview", "true")
 	expectQuery(t, r, "HasImdbId", "true")
 	expectQuery(t, r, "HasTmdbId", "true")
 	expectQuery(t, r, "HasTvdbId", "true")
-	expectQuery(t, r, "ExcludeItemIds", "v-ExcludeItemIds")
+	expectQuery(t, r, "ExcludeItemIds", "a,b")
 	expectQuery(t, r, "StartIndex", "7")
 	expectQuery(t, r, "Limit", "7")
 	expectQuery(t, r, "Recursive", "true")
@@ -198,7 +199,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 	expectQuery(t, r, "Artists", "v-Artists")
 	expectQuery(t, r, "ArtistIds", "v-ArtistIds")
 	expectQuery(t, r, "Albums", "v-Albums")
-	expectQuery(t, r, "Ids", "v-Ids")
+	expectQuery(t, r, "Ids", "a,b")
 	expectQuery(t, r, "VideoTypes", "v-VideoTypes")
 	expectQuery(t, r, "Containers", "v-Containers")
 	expectQuery(t, r, "AudioCodecs", "v-AudioCodecs")
@@ -239,12 +240,12 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		HasTrailer:                     new(true),
 		IsSpecialSeason:                new(true),
 		AdjacentTo:                     "v-AdjacentTo",
-		StartItemId:                    "v-StartItemId",
+		StartItemId:                    emby.ItemID("v-StartItemId"),
 		MinIndexNumber:                 new(7),
-		MinStartDate:                   "v-MinStartDate",
-		MaxStartDate:                   "v-MaxStartDate",
-		MinEndDate:                     "v-MinEndDate",
-		MaxEndDate:                     "v-MaxEndDate",
+		MinStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		MinPlayers:                     new(7),
 		MaxPlayers:                     new(7),
 		ParentIndexNumber:              new(7),
@@ -254,21 +255,21 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		MinCommunityRating:             new(1.5),
 		MinCriticRating:                new(1.5),
 		AiredDuringSeason:              new(7),
-		MinPremiereDate:                "v-MinPremiereDate",
-		MinDateLastSaved:               "v-MinDateLastSaved",
-		MinDateLastSavedForUser:        "v-MinDateLastSavedForUser",
-		MaxPremiereDate:                "v-MaxPremiereDate",
+		MinPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSaved:               emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSavedForUser:        emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasOverview:                    new(true),
 		HasImdbId:                      new(true),
 		HasTmdbId:                      new(true),
 		HasTvdbId:                      new(true),
-		ExcludeItemIds:                 "v-ExcludeItemIds",
+		ExcludeItemIds:                 []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		StartIndex:                     new(7),
 		Limit:                          new(7),
 		Recursive:                      new(true),
 		SearchTerm:                     "v-SearchTerm",
 		SortOrder:                      "v-SortOrder",
-		ParentId:                       "v-ParentId",
+		ParentId:                       emby.ItemID("v-ParentId"),
 		Fields:                         "v-Fields",
 		ExcludeItemTypes:               "v-ExcludeItemTypes",
 		IncludeItemTypes:               "v-IncludeItemTypes",
@@ -307,7 +308,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		Artists:                        "v-Artists",
 		ArtistIds:                      "v-ArtistIds",
 		Albums:                         "v-Albums",
-		Ids:                            "v-Ids",
+		Ids:                            []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		VideoTypes:                     "v-VideoTypes",
 		Containers:                     "v-Containers",
 		AudioCodecs:                    "v-AudioCodecs",
@@ -316,7 +317,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		ExtendedVideoTypes:             "v-ExtendedVideoTypes",
 		SubtitleCodecs:                 "v-SubtitleCodecs",
 		Path:                           "v-Path",
-		UserId:                         "v-UserId",
+		UserId:                         emby.UserID("v-UserId"),
 		MinOfficialRating:              "v-MinOfficialRating",
 		IsLocked:                       new(true),
 		IsPlaceHolder:                  new(true),
@@ -346,12 +347,12 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		HasTrailer:                     new(true),
 		IsSpecialSeason:                new(true),
 		AdjacentTo:                     "v-AdjacentTo",
-		StartItemId:                    "v-StartItemId",
+		StartItemId:                    emby.ItemID("v-StartItemId"),
 		MinIndexNumber:                 new(7),
-		MinStartDate:                   "v-MinStartDate",
-		MaxStartDate:                   "v-MaxStartDate",
-		MinEndDate:                     "v-MinEndDate",
-		MaxEndDate:                     "v-MaxEndDate",
+		MinStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		MinPlayers:                     new(7),
 		MaxPlayers:                     new(7),
 		ParentIndexNumber:              new(7),
@@ -361,21 +362,21 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		MinCommunityRating:             new(1.5),
 		MinCriticRating:                new(1.5),
 		AiredDuringSeason:              new(7),
-		MinPremiereDate:                "v-MinPremiereDate",
-		MinDateLastSaved:               "v-MinDateLastSaved",
-		MinDateLastSavedForUser:        "v-MinDateLastSavedForUser",
-		MaxPremiereDate:                "v-MaxPremiereDate",
+		MinPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSaved:               emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSavedForUser:        emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasOverview:                    new(true),
 		HasImdbId:                      new(true),
 		HasTmdbId:                      new(true),
 		HasTvdbId:                      new(true),
-		ExcludeItemIds:                 "v-ExcludeItemIds",
+		ExcludeItemIds:                 []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		StartIndex:                     new(7),
 		Limit:                          new(7),
 		Recursive:                      new(true),
 		SearchTerm:                     "v-SearchTerm",
 		SortOrder:                      "v-SortOrder",
-		ParentId:                       "v-ParentId",
+		ParentId:                       emby.ItemID("v-ParentId"),
 		Fields:                         "v-Fields",
 		ExcludeItemTypes:               "v-ExcludeItemTypes",
 		IncludeItemTypes:               "v-IncludeItemTypes",
@@ -414,7 +415,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		Artists:                        "v-Artists",
 		ArtistIds:                      "v-ArtistIds",
 		Albums:                         "v-Albums",
-		Ids:                            "v-Ids",
+		Ids:                            []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		VideoTypes:                     "v-VideoTypes",
 		Containers:                     "v-Containers",
 		AudioCodecs:                    "v-AudioCodecs",
@@ -423,7 +424,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		ExtendedVideoTypes:             "v-ExtendedVideoTypes",
 		SubtitleCodecs:                 "v-SubtitleCodecs",
 		Path:                           "v-Path",
-		UserId:                         "v-UserId",
+		UserId:                         emby.UserID("v-UserId"),
 		MinOfficialRating:              "v-MinOfficialRating",
 		IsLocked:                       new(true),
 		IsPlaceHolder:                  new(true),
@@ -453,12 +454,12 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		HasTrailer:                     new(true),
 		IsSpecialSeason:                new(true),
 		AdjacentTo:                     "v-AdjacentTo",
-		StartItemId:                    "v-StartItemId",
+		StartItemId:                    emby.ItemID("v-StartItemId"),
 		MinIndexNumber:                 new(7),
-		MinStartDate:                   "v-MinStartDate",
-		MaxStartDate:                   "v-MaxStartDate",
-		MinEndDate:                     "v-MinEndDate",
-		MaxEndDate:                     "v-MaxEndDate",
+		MinStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxStartDate:                   emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxEndDate:                     emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		MinPlayers:                     new(7),
 		MaxPlayers:                     new(7),
 		ParentIndexNumber:              new(7),
@@ -468,21 +469,21 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		MinCommunityRating:             new(1.5),
 		MinCriticRating:                new(1.5),
 		AiredDuringSeason:              new(7),
-		MinPremiereDate:                "v-MinPremiereDate",
-		MinDateLastSaved:               "v-MinDateLastSaved",
-		MinDateLastSavedForUser:        "v-MinDateLastSavedForUser",
-		MaxPremiereDate:                "v-MaxPremiereDate",
+		MinPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSaved:               emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MinDateLastSavedForUser:        emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
+		MaxPremiereDate:                emby.Time{Time: time.Date(2024, time.March, 4, 5, 6, 7, 0, time.UTC)},
 		HasOverview:                    new(true),
 		HasImdbId:                      new(true),
 		HasTmdbId:                      new(true),
 		HasTvdbId:                      new(true),
-		ExcludeItemIds:                 "v-ExcludeItemIds",
+		ExcludeItemIds:                 []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		StartIndex:                     new(7),
 		Limit:                          new(7),
 		Recursive:                      new(true),
 		SearchTerm:                     "v-SearchTerm",
 		SortOrder:                      "v-SortOrder",
-		ParentId:                       "v-ParentId",
+		ParentId:                       emby.ItemID("v-ParentId"),
 		Fields:                         "v-Fields",
 		ExcludeItemTypes:               "v-ExcludeItemTypes",
 		IncludeItemTypes:               "v-IncludeItemTypes",
@@ -521,7 +522,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		Artists:                        "v-Artists",
 		ArtistIds:                      "v-ArtistIds",
 		Albums:                         "v-Albums",
-		Ids:                            "v-Ids",
+		Ids:                            []emby.ItemID{emby.ItemID("a"), emby.ItemID("b")},
 		VideoTypes:                     "v-VideoTypes",
 		Containers:                     "v-Containers",
 		AudioCodecs:                    "v-AudioCodecs",
@@ -530,7 +531,7 @@ func TestOperationGetItemsPrefixes(t *testing.T) {
 		ExtendedVideoTypes:             "v-ExtendedVideoTypes",
 		SubtitleCodecs:                 "v-SubtitleCodecs",
 		Path:                           "v-Path",
-		UserId:                         "v-UserId",
+		UserId:                         emby.UserID("v-UserId"),
 		MinOfficialRating:              "v-MinOfficialRating",
 		IsLocked:                       new(true),
 		IsPlaceHolder:                  new(true),

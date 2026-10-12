@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteUsersByUserIdItemsByIdRating calls DELETE /Users/{UserId}/Items/{Id}/Rating. Deletes a user's saved personal rating for an item.
-func (c Client) DeleteUsersByUserIdItemsByIdRating(ctx context.Context, userId string, id string) (result emby.DeleteUsersByUserIdItemsByIdRatingResponse, err error) {
+func (c Client) DeleteUsersByUserIdItemsByIdRating(ctx context.Context, userId emby.UserID, id emby.ItemID) (result emby.DeleteUsersByUserIdItemsByIdRatingResponse, err error) {
 	result.UserItemDataDto = &emby.UserItemDataDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) DeleteUsersByUserIdItemsByIdRating(ctx context.Context, userId s
 		},
 		HTTPMethod: http.MethodDelete,
 		Operation:  "DeleteUsersByUserIdItemsByIdRating",
-		Path:       fmt.Sprintf("/Users/%s/Items/%s/Rating", url.PathEscape(userId), url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/Items/%s/Rating", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

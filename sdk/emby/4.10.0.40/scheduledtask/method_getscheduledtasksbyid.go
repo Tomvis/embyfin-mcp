@@ -13,7 +13,7 @@ import (
 )
 
 // GetScheduledTasksById calls GET /ScheduledTasks/{Id}. Gets a scheduled task, by Id.
-func (c Client) GetScheduledTasksById(ctx context.Context, id string) (result emby.GetScheduledTasksByIdResponse, err error) {
+func (c Client) GetScheduledTasksById(ctx context.Context, id emby.TaskID) (result emby.GetScheduledTasksByIdResponse, err error) {
 	result.TaskInfo = &emby.TaskInfo{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetScheduledTasksById(ctx context.Context, id string) (result em
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetScheduledTasksById",
-		Path:       fmt.Sprintf("/ScheduledTasks/%s", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/ScheduledTasks/%s", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

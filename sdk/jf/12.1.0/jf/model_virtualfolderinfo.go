@@ -10,7 +10,7 @@ type VirtualFolderInfo struct {
 	CollectionType CollectionTypeOptions `json:"CollectionType,omitempty"`
 
 	// Gets or sets the item identifier.
-	ItemId         string          `json:"ItemId,omitempty"`
+	ItemId         ItemID          `json:"ItemId,omitempty"`
 	LibraryOptions *LibraryOptions `json:"LibraryOptions,omitempty"`
 
 	// Gets or sets the locations.
@@ -20,7 +20,7 @@ type VirtualFolderInfo struct {
 	Name string `json:"Name,omitempty"`
 
 	// Gets or sets the primary image item identifier.
-	PrimaryImageItemId string  `json:"PrimaryImageItemId,omitempty"`
+	PrimaryImageItemId ItemID  `json:"PrimaryImageItemId,omitempty"`
 	RefreshProgress    float64 `json:"RefreshProgress,omitempty"`
 	RefreshStatus      string  `json:"RefreshStatus,omitempty"`
 }

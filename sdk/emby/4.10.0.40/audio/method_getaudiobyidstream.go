@@ -13,7 +13,7 @@ import (
 )
 
 // GetAudioByIdStream calls GET /Audio/{Id}/stream. Gets an audio stream.
-func (c Client) GetAudioByIdStream(ctx context.Context, id string, options emby.GetAudioByIdStreamOptions) (result emby.GetAudioByIdStreamResponse, err error) {
+func (c Client) GetAudioByIdStream(ctx context.Context, id emby.ItemID, options emby.GetAudioByIdStreamOptions) (result emby.GetAudioByIdStreamResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "audio/*",
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) GetAudioByIdStream(ctx context.Context, id string, options emby.
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetAudioByIdStream",
 		OptionsObject:  options,
-		Path:           fmt.Sprintf("/Audio/%s/stream", url.PathEscape(id)),
+		Path:           fmt.Sprintf("/Audio/%s/stream", url.PathEscape(string(id))),
 		StreamResponse: true,
 	}
 

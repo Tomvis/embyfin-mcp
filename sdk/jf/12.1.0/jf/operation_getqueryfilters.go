@@ -40,10 +40,10 @@ func (r GetQueryFiltersResponse) Record() (QueryFilters, error) {
 // GetQueryFiltersOptions holds the query and header parameters of GetQueryFilters.
 type GetQueryFiltersOptions struct {
 	// Optional. User id.
-	UserId string
+	UserId UserID
 
 	// Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
 	IncludeItemTypes []BaseItemKind
@@ -80,10 +80,10 @@ func (o GetQueryFiltersOptions) ToHeaders() *client.Headers {
 func (o GetQueryFiltersOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	for _, v := range o.IncludeItemTypes {
 		out.Append("includeItemTypes", string(v))

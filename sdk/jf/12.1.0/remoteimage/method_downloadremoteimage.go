@@ -13,7 +13,7 @@ import (
 )
 
 // DownloadRemoteImage calls POST /Items/{itemId}/RemoteImages/Download. Downloads a remote image for an item.
-func (c Client) DownloadRemoteImage(ctx context.Context, itemId string, options jf.DownloadRemoteImageOptions) (result jf.DownloadRemoteImageResponse, err error) {
+func (c Client) DownloadRemoteImage(ctx context.Context, itemId jf.ItemID, options jf.DownloadRemoteImageOptions) (result jf.DownloadRemoteImageResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,
@@ -21,7 +21,7 @@ func (c Client) DownloadRemoteImage(ctx context.Context, itemId string, options 
 		HTTPMethod:    http.MethodPost,
 		Operation:     "DownloadRemoteImage",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/Items/%s/RemoteImages/Download", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Items/%s/RemoteImages/Download", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

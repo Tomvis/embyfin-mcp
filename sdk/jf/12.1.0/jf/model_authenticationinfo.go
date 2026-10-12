@@ -14,11 +14,11 @@ type AuthenticationInfo struct {
 	AppVersion string `json:"AppVersion,omitempty"`
 
 	// Gets or sets the date created.
-	DateCreated      string `json:"DateCreated,omitempty"`
-	DateLastActivity string `json:"DateLastActivity,omitempty"`
+	DateCreated      Time `json:"DateCreated,omitzero"`
+	DateLastActivity Time `json:"DateLastActivity,omitzero"`
 
 	// Gets or sets the date revoked.
-	DateRevoked string `json:"DateRevoked,omitempty"`
+	DateRevoked Time `json:"DateRevoked,omitzero"`
 
 	// Gets or sets the device identifier.
 	DeviceId string `json:"DeviceId,omitempty"`
@@ -33,6 +33,6 @@ type AuthenticationInfo struct {
 	IsActive bool `json:"IsActive"`
 
 	// Gets or sets the user identifier.
-	UserId   string `json:"UserId,omitempty"`
+	UserId   UserID `json:"UserId,omitempty"`
 	UserName string `json:"UserName,omitempty"`
 }

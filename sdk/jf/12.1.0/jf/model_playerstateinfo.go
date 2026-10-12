@@ -20,7 +20,7 @@ type PlayerStateInfo struct {
 	LiveStreamId string `json:"LiveStreamId,omitempty"`
 
 	// Gets or sets the now playing media version identifier.
-	MediaSourceId string `json:"MediaSourceId,omitempty"`
+	MediaSourceId MediaSourceID `json:"MediaSourceId,omitempty"`
 
 	// Gets or sets the play method.
 	PlayMethod PlayMethod `json:"PlayMethod,omitempty"`

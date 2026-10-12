@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdAncestors calls GET /Items/{Id}/Ancestors. Gets all parents of an item.
-func (c Client) GetItemsByIdAncestors(ctx context.Context, id string, userId ...string) (result emby.GetItemsByIdAncestorsResponse, err error) {
+func (c Client) GetItemsByIdAncestors(ctx context.Context, id emby.ItemID, userId ...emby.UserID) (result emby.GetItemsByIdAncestorsResponse, err error) {
 	var option emby.GetItemsByIdAncestorsOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetItemsByIdAncestors takes one userId at most, not %d", len(userId))
@@ -31,7 +31,7 @@ func (c Client) GetItemsByIdAncestors(ctx context.Context, id string, userId ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetItemsByIdAncestors",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Ancestors", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Items/%s/Ancestors", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

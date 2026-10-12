@@ -12,7 +12,7 @@ import (
 )
 
 // UpdateUserConfiguration calls POST /Users/Configuration. Updates a user configuration.
-func (c Client) UpdateUserConfiguration(ctx context.Context, input jf.UserConfiguration, userId ...string) (result jf.UpdateUserConfigurationResponse, err error) {
+func (c Client) UpdateUserConfiguration(ctx context.Context, input jf.UserConfiguration, userId ...jf.UserID) (result jf.UpdateUserConfigurationResponse, err error) {
 	var option jf.UpdateUserConfigurationOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("UpdateUserConfiguration takes one userId at most, not %d", len(userId))

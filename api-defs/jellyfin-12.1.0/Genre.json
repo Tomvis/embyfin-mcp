@@ -24,7 +24,8 @@
           "In": "Query",
           "Description": "The user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ],
@@ -79,7 +80,8 @@
           "In": "Query",
           "Description": "Specify this to localize the search to a specific item or folder. Omit to use the root.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -158,7 +160,8 @@
           "In": "Query",
           "Description": "User id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {

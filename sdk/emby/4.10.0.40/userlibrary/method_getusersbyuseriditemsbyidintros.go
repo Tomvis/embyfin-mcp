@@ -13,7 +13,7 @@ import (
 )
 
 // GetUsersByUserIdItemsByIdIntros calls GET /Users/{UserId}/Items/{Id}/Intros. Gets intros to play before the main media item plays.
-func (c Client) GetUsersByUserIdItemsByIdIntros(ctx context.Context, userId string, id string, options ...emby.GetUsersByUserIdItemsByIdIntrosOptions) (result emby.GetUsersByUserIdItemsByIdIntrosResponse, err error) {
+func (c Client) GetUsersByUserIdItemsByIdIntros(ctx context.Context, userId emby.UserID, id emby.ItemID, options ...emby.GetUsersByUserIdItemsByIdIntrosOptions) (result emby.GetUsersByUserIdItemsByIdIntrosResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetUsersByUserIdItemsByIdIntros takes one options struct at most, not %d", len(options))
 		return
@@ -32,7 +32,7 @@ func (c Client) GetUsersByUserIdItemsByIdIntros(ctx context.Context, userId stri
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetUsersByUserIdItemsByIdIntros",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Users/%s/Items/%s/Intros", url.PathEscape(userId), url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Users/%s/Items/%s/Intros", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

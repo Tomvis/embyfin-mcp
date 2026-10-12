@@ -13,7 +13,7 @@ import (
 )
 
 // PostUsersByUserIdFavoriteItemsById calls POST /Users/{UserId}/FavoriteItems/{Id}. Marks an item as a favorite.
-func (c Client) PostUsersByUserIdFavoriteItemsById(ctx context.Context, userId string, id string) (result emby.PostUsersByUserIdFavoriteItemsByIdResponse, err error) {
+func (c Client) PostUsersByUserIdFavoriteItemsById(ctx context.Context, userId emby.UserID, id emby.ItemID) (result emby.PostUsersByUserIdFavoriteItemsByIdResponse, err error) {
 	result.UserItemDataDto = &emby.UserItemDataDto{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
@@ -22,7 +22,7 @@ func (c Client) PostUsersByUserIdFavoriteItemsById(ctx context.Context, userId s
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "PostUsersByUserIdFavoriteItemsById",
-		Path:       fmt.Sprintf("/Users/%s/FavoriteItems/%s", url.PathEscape(userId), url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Users/%s/FavoriteItems/%s", url.PathEscape(string(userId)), url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

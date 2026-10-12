@@ -15,6 +15,18 @@
     "tmdb-list-ids",
     "tmdb-change-values",
     "tmdb-display-priorities",
-    "tmdb-collection-parts"
-  ]
+    "tmdb-collection-parts",
+    "tmdb-days",
+    "tmdb-date-times"
+  ],
+  "Dates": [
+    "2006-01-02T15:04:05.000Z07:00",
+    "2006-01-02T15:04:05Z07:00",
+    "2006-01-02 15:04:05 MST"
+  ],
+  "Days": [
+    "2006-01-02"
+  ],
+  "DatesKeepUnread": true,
+  "DaysKeepUnread": true
 }

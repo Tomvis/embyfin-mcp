@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemImageByIndex calls GET /Items/{itemId}/Images/{imageType}/{imageIndex}. Gets the item's image.
-func (c Client) GetItemImageByIndex(ctx context.Context, itemId string, imageType jf.ImageType, imageIndex int, options ...jf.GetItemImageByIndexOptions) (result jf.GetItemImageByIndexResponse, err error) {
+func (c Client) GetItemImageByIndex(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex int, options ...jf.GetItemImageByIndexOptions) (result jf.GetItemImageByIndexResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetItemImageByIndex takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetItemImageByIndex(ctx context.Context, itemId string, imageTyp
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetItemImageByIndex",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Items/%s/Images/%s/%d", url.PathEscape(itemId), url.PathEscape(string(imageType)), imageIndex),
+		Path:           fmt.Sprintf("/Items/%s/Images/%s/%d", url.PathEscape(string(itemId)), url.PathEscape(string(imageType)), imageIndex),
 		StreamResponse: true,
 	}
 

@@ -39,7 +39,7 @@ func (r GetGameGenresByNameResponse) Record() (BaseItemDto, error) {
 // GetGameGenresByNameOptions holds the query and header parameters of GetGameGenresByName.
 type GetGameGenresByNameOptions struct {
 	// Optional. Filter by user id, and attach user data
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -52,7 +52,7 @@ func (o GetGameGenresByNameOptions) ToHeaders() *client.Headers {
 func (o GetGameGenresByNameOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

@@ -5,9 +5,9 @@ package emby
 // UserItemDataDto is the "UserItemDataDto" schema.
 type UserItemDataDto struct {
 	IsFavorite            *bool   `json:"IsFavorite,omitempty"`
-	ItemId                string  `json:"ItemId,omitempty"`
+	ItemId                ItemID  `json:"ItemId,omitempty"`
 	Key                   string  `json:"Key,omitempty"`
-	LastPlayedDate        string  `json:"LastPlayedDate,omitempty"`
+	LastPlayedDate        Time    `json:"LastPlayedDate,omitzero"`
 	PlayCount             int     `json:"PlayCount,omitempty"`
 	PlaybackPositionTicks int64   `json:"PlaybackPositionTicks,omitempty"`
 	Played                *bool   `json:"Played,omitempty"`

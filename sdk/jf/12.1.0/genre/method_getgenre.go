@@ -13,7 +13,7 @@ import (
 )
 
 // GetGenre calls GET /Genres/{genreName}. Gets a genre, by name.
-func (c Client) GetGenre(ctx context.Context, genreName string, userId ...string) (result jf.GetGenreResponse, err error) {
+func (c Client) GetGenre(ctx context.Context, genreName string, userId ...jf.UserID) (result jf.GetGenreResponse, err error) {
 	var option jf.GetGenreOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetGenre takes one userId at most, not %d", len(userId))

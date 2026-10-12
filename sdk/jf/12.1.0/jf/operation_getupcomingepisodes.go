@@ -40,7 +40,7 @@ func (r GetUpcomingEpisodesResponse) Record() (BaseItemDtoQueryResult, error) {
 // GetUpcomingEpisodesOptions holds the query and header parameters of GetUpcomingEpisodes.
 type GetUpcomingEpisodesOptions struct {
 	// The user id of the user to get the upcoming episodes for.
-	UserId string
+	UserId UserID
 
 	// Optional. The record index to start at. All items with a lower index will be dropped from the results.
 	StartIndex *int
@@ -52,7 +52,7 @@ type GetUpcomingEpisodesOptions struct {
 	Fields []ItemFields
 
 	// Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
-	ParentId string
+	ParentId ItemID
 
 	// Optional. Include image information in output.
 	EnableImages *bool
@@ -77,7 +77,7 @@ func (o GetUpcomingEpisodesOptions) ToHeaders() *client.Headers {
 func (o GetUpcomingEpisodesOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("userId", o.UserId)
+		out.Append("userId", string(o.UserId))
 	}
 	if o.StartIndex != nil {
 		out.Append("startIndex", strconv.Itoa(*o.StartIndex))
@@ -89,7 +89,7 @@ func (o GetUpcomingEpisodesOptions) ToQuery() *client.QueryParams {
 		out.Append("fields", string(v))
 	}
 	if o.ParentId != "" {
-		out.Append("parentId", o.ParentId)
+		out.Append("parentId", string(o.ParentId))
 	}
 	if o.EnableImages != nil {
 		out.Append("enableImages", strconv.FormatBool(*o.EnableImages))

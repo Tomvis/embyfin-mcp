@@ -7,5 +7,5 @@ package jf
 // Class SetPlaylistItemRequestDto.
 type SetPlaylistItemRequestDto struct {
 	// Gets or sets the playlist identifier of the playing item.
-	PlaylistItemId string `json:"PlaylistItemId,omitempty"`
+	PlaylistItemId PlaylistItemID `json:"PlaylistItemId,omitempty"`
 }

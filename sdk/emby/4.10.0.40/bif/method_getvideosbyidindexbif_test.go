@@ -16,13 +16,13 @@ func TestOperationGetVideosByIdIndexBif(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/octet-stream", "file bytes")
-	result, err := c.GetVideosByIdIndexBif(t.Context(), "p/id", 7)
+	result, err := c.GetVideosByIdIndexBif(t.Context(), emby.ItemID("v-id"), 7)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Videos/p%2Fid/index.bif")
+	expectRequest(t, r, http.MethodGet, "/Videos/v-id/index.bif")
 	expectQuery(t, r, "Width", "7")
 	if got := r.Header.Get("Accept"); !strings.HasPrefix(got, "application/octet-stream") {
 		t.Errorf("Accept = %q, want application/octet-stream asked for first", got)
@@ -37,7 +37,7 @@ func TestOperationGetVideosByIdIndexBif(t *testing.T) {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/octet-stream", "file bytes")
-	result, err = c.GetVideosByIdIndexBif(t.Context(), "p/id", 7)
+	result, err = c.GetVideosByIdIndexBif(t.Context(), emby.ItemID("v-id"), 7)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func TestOperationGetVideosByIdIndexBif(t *testing.T) {
 		t.Errorf("Bytes = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/octet-stream", "file bytes")
-	result, err = c.GetVideosByIdIndexBif(t.Context(), "p/id", 7)
+	result, err = c.GetVideosByIdIndexBif(t.Context(), emby.ItemID("v-id"), 7)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +65,7 @@ func TestOperationGetVideosByIdIndexBif(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetVideosByIdIndexBif(t.Context(), "p/id", 7)
+	result, err = c.GetVideosByIdIndexBif(t.Context(), emby.ItemID("v-id"), 7)
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

@@ -13,7 +13,7 @@ import (
 )
 
 // GetInstantMixFromArtists calls GET /Artists/{itemId}/InstantMix. Creates an instant playlist based on a given artist.
-func (c Client) GetInstantMixFromArtists(ctx context.Context, itemId string, options ...jf.GetInstantMixFromArtistsOptions) (result jf.GetInstantMixFromArtistsResponse, err error) {
+func (c Client) GetInstantMixFromArtists(ctx context.Context, itemId jf.ItemID, options ...jf.GetInstantMixFromArtistsOptions) (result jf.GetInstantMixFromArtistsResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetInstantMixFromArtists takes one options struct at most, not %d", len(options))
 		return
@@ -31,7 +31,7 @@ func (c Client) GetInstantMixFromArtists(ctx context.Context, itemId string, opt
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetInstantMixFromArtists",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Artists/%s/InstantMix", url.PathEscape(itemId)),
+		Path:          fmt.Sprintf("/Artists/%s/InstantMix", url.PathEscape(string(itemId))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

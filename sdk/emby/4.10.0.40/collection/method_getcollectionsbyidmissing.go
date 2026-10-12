@@ -14,7 +14,7 @@ import (
 )
 
 // GetCollectionsByIdMissing calls GET /Collections/{Id}/Missing. Gets a list of missing items.
-func (c Client) GetCollectionsByIdMissing(ctx context.Context, id string, options ...emby.GetCollectionsByIdMissingOptions) (result emby.GetCollectionsByIdMissingResponse, err error) {
+func (c Client) GetCollectionsByIdMissing(ctx context.Context, id emby.ItemID, options ...emby.GetCollectionsByIdMissingOptions) (result emby.GetCollectionsByIdMissingResponse, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetCollectionsByIdMissing takes one options struct at most, not %d", len(options))
 		return
@@ -33,7 +33,7 @@ func (c Client) GetCollectionsByIdMissing(ctx context.Context, id string, option
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GetCollectionsByIdMissing",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Collections/%s/Missing", url.PathEscape(id)),
+		Path:          fmt.Sprintf("/Collections/%s/Missing", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
@@ -67,7 +67,7 @@ func (c Client) GetCollectionsByIdMissing(ctx context.Context, id string, option
 // GetCollectionsByIdMissingComplete calls GetCollectionsByIdMissing page by page from options.StartIndex until every
 // result is loaded. options.Limit is the page size, client.DefaultPageSize when
 // unset.
-func (c Client) GetCollectionsByIdMissingComplete(ctx context.Context, id string, options ...emby.GetCollectionsByIdMissingOptions) (result emby.GetCollectionsByIdMissingCompleteResult, err error) {
+func (c Client) GetCollectionsByIdMissingComplete(ctx context.Context, id emby.ItemID, options ...emby.GetCollectionsByIdMissingOptions) (result emby.GetCollectionsByIdMissingCompleteResult, err error) {
 	if len(options) > 1 {
 		err = fmt.Errorf("GetCollectionsByIdMissingComplete takes one options struct at most, not %d", len(options))
 		return
@@ -121,7 +121,7 @@ func (c Client) GetCollectionsByIdMissingComplete(ctx context.Context, id string
 //	}
 //
 // An error is the last pair handed out, with a zero emby.BaseItemDto. The pages are asked for as GetCollectionsByIdMissingComplete asks for them.
-func (c Client) GetCollectionsByIdMissingEach(ctx context.Context, id string, options ...emby.GetCollectionsByIdMissingOptions) iter.Seq2[emby.BaseItemDto, error] {
+func (c Client) GetCollectionsByIdMissingEach(ctx context.Context, id emby.ItemID, options ...emby.GetCollectionsByIdMissingOptions) iter.Seq2[emby.BaseItemDto, error] {
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {

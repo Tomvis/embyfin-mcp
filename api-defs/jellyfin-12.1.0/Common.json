@@ -44,7 +44,8 @@
           "JsonName": "UserId",
           "Description": "Gets the id of the associated user.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]
@@ -223,7 +224,8 @@
           "JsonName": "AlbumId",
           "Description": "Gets or sets the album id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -501,7 +503,7 @@
           "JsonName": "DateCreated",
           "Description": "Gets or sets the date created.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -509,7 +511,7 @@
           "Name": "DateLastMediaAdded",
           "JsonName": "DateLastMediaAdded",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -544,7 +546,7 @@
           "JsonName": "EndDate",
           "Description": "Gets or sets the end date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -674,7 +676,8 @@
           "JsonName": "Id",
           "Description": "Gets or sets the id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -1037,7 +1040,8 @@
           "JsonName": "ParentArtItemId",
           "Description": "Gets or sets whether the item has fan art, this will hold the Id of the Parent that has one.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -1058,7 +1062,8 @@
           "JsonName": "ParentBackdropItemId",
           "Description": "Gets or sets whether the item has any backdrops, this will hold the Id of the Parent that has one.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -1067,7 +1072,8 @@
           "JsonName": "ParentId",
           "Description": "Gets or sets the parent id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -1095,7 +1101,8 @@
           "JsonName": "ParentLogoItemId",
           "Description": "Gets or sets whether the item has a logo, this will hold the Id of the Parent that has one.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -1104,7 +1111,8 @@
           "JsonName": "ParentPrimaryImageItemId",
           "Description": "Gets or sets the parent primary image item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -1131,7 +1139,8 @@
           "JsonName": "ParentThumbItemId",
           "Description": "Gets or sets the parent thumb item id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -1181,7 +1190,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playlist item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           },
           "Nullable": true
         },
@@ -1206,7 +1216,7 @@
           "JsonName": "PremiereDate",
           "Description": "Gets or sets the premiere date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -1316,7 +1326,8 @@
           "JsonName": "SeasonId",
           "Description": "Gets or sets the season identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -1343,7 +1354,8 @@
           "JsonName": "SeriesId",
           "Description": "Gets or sets the series id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           },
           "Nullable": true
         },
@@ -1458,7 +1470,7 @@
           "JsonName": "StartDate",
           "Description": "Gets or sets the start date of the recording, in UTC.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -2001,7 +2013,7 @@
           "Name": "ImageDateModified",
           "JsonName": "ImageDateModified",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -3725,7 +3737,8 @@
           "Name": "Id",
           "JsonName": "Id",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           },
           "Nullable": true
         },
@@ -5132,7 +5145,7 @@
           "JsonName": "LastUpdate",
           "Description": "Gets the UTC time of the last change to the playing queue.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5210,7 +5223,8 @@
           "JsonName": "ControllingUserId",
           "Description": "Gets or sets the controlling user identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -5220,7 +5234,8 @@
           "Type": {
             "Type": "List",
             "NestedItem": {
-              "Type": "String"
+              "Type": "ID",
+              "ReferenceName": "ItemID"
             }
           },
           "Nullable": true
@@ -5229,7 +5244,8 @@
           "Name": "MediaSourceId",
           "JsonName": "MediaSourceId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           },
           "Nullable": true
         },
@@ -5320,7 +5336,8 @@
           "JsonName": "MediaSourceId",
           "Description": "Gets or sets the now playing media version identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "MediaSourceID"
           },
           "Nullable": true
         },
@@ -5434,7 +5451,8 @@
           "JsonName": "ControllingUserId",
           "Description": "Gets or sets the controlling user identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           },
           "Nullable": true
         },
@@ -5720,7 +5738,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playlist item id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           },
           "Nullable": true
         }
@@ -5950,7 +5969,7 @@
           "JsonName": "EmittedAt",
           "Description": "Gets the UTC time when this command has been emitted.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -5966,7 +5985,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets the playlist identifier of the playing item.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           }
         },
         {
@@ -5983,7 +6003,7 @@
           "JsonName": "When",
           "Description": "Gets or sets the UTC time when to execute the command.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         }
       ]
@@ -6230,7 +6250,8 @@
           "JsonName": "Id",
           "Description": "Gets or sets the id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "SessionID"
           },
           "Nullable": true
         },
@@ -6247,7 +6268,7 @@
           "JsonName": "LastActivityDate",
           "Description": "Gets or sets the last activity date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6255,7 +6276,7 @@
           "JsonName": "LastPausedDate",
           "Description": "Gets or sets the last paused date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -6264,7 +6285,7 @@
           "JsonName": "LastPlaybackCheckIn",
           "Description": "Gets or sets the last playback check in.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           }
         },
         {
@@ -6327,7 +6348,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets or sets the playlist item id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           },
           "Nullable": true
         },
@@ -6392,7 +6414,8 @@
           "JsonName": "UserId",
           "Description": "Gets or sets the user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -6425,7 +6448,8 @@
           "JsonName": "UserId",
           "Description": "Gets or sets the user identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -6834,7 +6858,8 @@
           "JsonName": "ItemId",
           "Description": "Gets the item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -6842,7 +6867,8 @@
           "JsonName": "PlaylistItemId",
           "Description": "Gets the playlist identifier of the item.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "PlaylistItemID"
           }
         }
       ]
@@ -7534,7 +7560,8 @@
           "JsonName": "UserId",
           "Description": "Gets or sets the user id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         }
       ]
@@ -7661,7 +7688,8 @@
           "JsonName": "Id",
           "Description": "Gets or sets the id.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           }
         },
         {
@@ -7669,7 +7697,7 @@
           "JsonName": "LastActivityDate",
           "Description": "Gets or sets the last activity date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -7678,7 +7706,7 @@
           "JsonName": "LastLoginDate",
           "Description": "Gets or sets the last login date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -7757,7 +7785,8 @@
           "JsonName": "ItemId",
           "Description": "Gets or sets the item identifier.",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "ItemID"
           }
         },
         {
@@ -7773,7 +7802,7 @@
           "JsonName": "LastPlayedDate",
           "Description": "Gets or sets the last played date.",
           "Type": {
-            "Type": "String"
+            "Type": "DateTime"
           },
           "Nullable": true
         },
@@ -8371,7 +8400,8 @@
           "Name": "UserId",
           "JsonName": "UserId",
           "Type": {
-            "Type": "String"
+            "Type": "ID",
+            "ReferenceName": "UserID"
           },
           "Nullable": true
         }

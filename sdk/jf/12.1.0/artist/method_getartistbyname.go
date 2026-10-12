@@ -15,7 +15,7 @@ import (
 // GetArtistByName calls GET /Artists/{name}. Gets an artist by name.
 //
 // Deprecated: the document marks this operation deprecated.
-func (c Client) GetArtistByName(ctx context.Context, name string, userId ...string) (result jf.GetArtistByNameResponse, err error) {
+func (c Client) GetArtistByName(ctx context.Context, name string, userId ...jf.UserID) (result jf.GetArtistByNameResponse, err error) {
 	var option jf.GetArtistByNameOptions
 	if len(userId) > 1 {
 		err = fmt.Errorf("GetArtistByName takes one userId at most, not %d", len(userId))

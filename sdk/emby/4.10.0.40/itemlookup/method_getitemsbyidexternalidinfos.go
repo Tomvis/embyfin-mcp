@@ -13,7 +13,7 @@ import (
 )
 
 // GetItemsByIdExternalIdInfos calls GET /Items/{Id}/ExternalIdInfos. Gets external id infos for an item.
-func (c Client) GetItemsByIdExternalIdInfos(ctx context.Context, id string) (result emby.GetItemsByIdExternalIdInfosResponse, err error) {
+func (c Client) GetItemsByIdExternalIdInfos(ctx context.Context, id emby.ItemID) (result emby.GetItemsByIdExternalIdInfosResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusOK,
@@ -21,7 +21,7 @@ func (c Client) GetItemsByIdExternalIdInfos(ctx context.Context, id string) (res
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "GetItemsByIdExternalIdInfos",
-		Path:       fmt.Sprintf("/Items/%s/ExternalIdInfos", url.PathEscape(id)),
+		Path:       fmt.Sprintf("/Items/%s/ExternalIdInfos", url.PathEscape(string(id))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

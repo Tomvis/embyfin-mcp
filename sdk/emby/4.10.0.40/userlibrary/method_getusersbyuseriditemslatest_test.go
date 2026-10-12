@@ -14,9 +14,9 @@ func TestOperationGetUsersByUserIdItemsLatest(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 200, "application/json", "[{}]")
-	result, err := c.GetUsersByUserIdItemsLatest(t.Context(), "p/userId", emby.GetUsersByUserIdItemsLatestOptions{
+	result, err := c.GetUsersByUserIdItemsLatest(t.Context(), emby.UserID("v-userId"), emby.GetUsersByUserIdItemsLatestOptions{
 		Limit:            new(7),
-		ParentId:         "v-ParentId",
+		ParentId:         emby.ItemID("v-ParentId"),
 		Fields:           "v-Fields",
 		IncludeItemTypes: "v-IncludeItemTypes",
 		MediaTypes:       "v-MediaTypes",
@@ -33,7 +33,7 @@ func TestOperationGetUsersByUserIdItemsLatest(t *testing.T) {
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodGet, "/Users/p%2FuserId/Items/Latest")
+	expectRequest(t, r, http.MethodGet, "/Users/v-userId/Items/Latest")
 	expectQuery(t, r, "Limit", "7")
 	expectQuery(t, r, "ParentId", "v-ParentId")
 	expectQuery(t, r, "Fields", "v-Fields")
@@ -55,9 +55,9 @@ func TestOperationGetUsersByUserIdItemsLatest(t *testing.T) {
 
 	// a 204 is a null result, with no model
 	c, _ = newOperationServer(t, http.StatusNoContent, "", "")
-	result, err = c.GetUsersByUserIdItemsLatest(t.Context(), "p/userId", emby.GetUsersByUserIdItemsLatestOptions{
+	result, err = c.GetUsersByUserIdItemsLatest(t.Context(), emby.UserID("v-userId"), emby.GetUsersByUserIdItemsLatestOptions{
 		Limit:            new(7),
-		ParentId:         "v-ParentId",
+		ParentId:         emby.ItemID("v-ParentId"),
 		Fields:           "v-Fields",
 		IncludeItemTypes: "v-IncludeItemTypes",
 		MediaTypes:       "v-MediaTypes",
@@ -75,9 +75,9 @@ func TestOperationGetUsersByUserIdItemsLatest(t *testing.T) {
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
-	result, err = c.GetUsersByUserIdItemsLatest(t.Context(), "p/userId", emby.GetUsersByUserIdItemsLatestOptions{
+	result, err = c.GetUsersByUserIdItemsLatest(t.Context(), emby.UserID("v-userId"), emby.GetUsersByUserIdItemsLatestOptions{
 		Limit:            new(7),
-		ParentId:         "v-ParentId",
+		ParentId:         emby.ItemID("v-ParentId"),
 		Fields:           "v-Fields",
 		IncludeItemTypes: "v-IncludeItemTypes",
 		MediaTypes:       "v-MediaTypes",
@@ -95,9 +95,9 @@ func TestOperationGetUsersByUserIdItemsLatest(t *testing.T) {
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.GetUsersByUserIdItemsLatest(t.Context(), "p/userId", emby.GetUsersByUserIdItemsLatestOptions{
+	result, err = c.GetUsersByUserIdItemsLatest(t.Context(), emby.UserID("v-userId"), emby.GetUsersByUserIdItemsLatestOptions{
 		Limit:            new(7),
-		ParentId:         "v-ParentId",
+		ParentId:         emby.ItemID("v-ParentId"),
 		Fields:           "v-Fields",
 		IncludeItemTypes: "v-IncludeItemTypes",
 		MediaTypes:       "v-MediaTypes",
@@ -115,10 +115,10 @@ func TestOperationGetUsersByUserIdItemsLatest(t *testing.T) {
 
 	// the options may be left out, and two are refused before any request
 	c, s = newOperationServer(t, 200, "application/json", "[{}]")
-	if _, err = c.GetUsersByUserIdItemsLatest(t.Context(), "p/userId"); err != nil {
+	if _, err = c.GetUsersByUserIdItemsLatest(t.Context(), emby.UserID("v-userId")); err != nil {
 		t.Errorf("without options = %v", err)
 	}
-	if _, err = c.GetUsersByUserIdItemsLatest(t.Context(), "p/userId", emby.GetUsersByUserIdItemsLatestOptions{}, emby.GetUsersByUserIdItemsLatestOptions{}); err == nil || len(s.requests) != 1 {
+	if _, err = c.GetUsersByUserIdItemsLatest(t.Context(), emby.UserID("v-userId"), emby.GetUsersByUserIdItemsLatestOptions{}, emby.GetUsersByUserIdItemsLatestOptions{}); err == nil || len(s.requests) != 1 {
 		t.Errorf("two options structs = %v, %d requests", err, len(s.requests))
 	}
 }

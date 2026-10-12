@@ -7,7 +7,7 @@ type TaskInfo struct {
 	Category                  string            `json:"Category,omitempty"`
 	CurrentProgressPercentage float64           `json:"CurrentProgressPercentage,omitempty"`
 	Description               string            `json:"Description,omitempty"`
-	Id                        string            `json:"Id,omitempty"`
+	Id                        TaskID            `json:"Id,omitempty"`
 	IsHidden                  bool              `json:"IsHidden"`
 	Key                       string            `json:"Key,omitempty"`
 	LastExecutionResult       *TaskResult       `json:"LastExecutionResult,omitempty"`
@@ -20,4 +20,4 @@ type TaskInfo struct {
 func (m TaskInfo) GetName() string { return m.Name }
 
 // GetId is the record's Id, for code that handles records of several types alike.
-func (m TaskInfo) GetId() string { return m.Id }
+func (m TaskInfo) GetId() TaskID { return m.Id }

@@ -7,8 +7,8 @@ package jf
 // Class UtcTimeResponse.
 type UtcTimeResponse struct {
 	// Gets the UTC time when request has been received.
-	RequestReceptionTime string `json:"RequestReceptionTime,omitempty"`
+	RequestReceptionTime Time `json:"RequestReceptionTime,omitzero"`
 
 	// Gets the UTC time when response has been sent.
-	ResponseTransmissionTime string `json:"ResponseTransmissionTime,omitempty"`
+	ResponseTransmissionTime Time `json:"ResponseTransmissionTime,omitzero"`
 }

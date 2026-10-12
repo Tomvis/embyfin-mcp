@@ -9,15 +9,15 @@ type SyncJobRequest struct {
 	Category       SyncCategory `json:"Category,omitempty"`
 	Container      string       `json:"Container,omitempty"`
 	Downloaded     *bool        `json:"Downloaded,omitempty"`
-	ItemIds        []string     `json:"ItemIds,omitzero"`
+	ItemIds        []ItemID     `json:"ItemIds,omitzero"`
 	ItemLimit      int          `json:"ItemLimit,omitempty"`
 	Name           string       `json:"Name,omitempty"`
-	ParentId       string       `json:"ParentId,omitempty"`
+	ParentId       ItemID       `json:"ParentId,omitempty"`
 	Profile        string       `json:"Profile,omitempty"`
 	Quality        string       `json:"Quality,omitempty"`
 	SyncNewContent *bool        `json:"SyncNewContent,omitempty"`
 	TargetId       string       `json:"TargetId,omitempty"`
 	UnwatchedOnly  *bool        `json:"UnwatchedOnly,omitempty"`
-	UserId         string       `json:"UserId,omitempty"`
+	UserId         UserID       `json:"UserId,omitempty"`
 	VideoCodec     string       `json:"VideoCodec,omitempty"`
 }

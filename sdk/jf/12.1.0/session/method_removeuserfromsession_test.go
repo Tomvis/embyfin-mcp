@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -13,20 +14,20 @@ func TestOperationRemoveUserFromSession(t *testing.T) {
 	t.Parallel()
 
 	c, s := newOperationServer(t, 204, "", "")
-	result, err := c.RemoveUserFromSession(t.Context(), "p/sessionId", "p/userId")
+	result, err := c.RemoveUserFromSession(t.Context(), jf.SessionID("v-sessionId"), jf.UserID("v-userId"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	r, body := s.only(t)
 	_ = body
-	expectRequest(t, r, http.MethodDelete, "/Sessions/p%2FsessionId/User/p%2FuserId")
+	expectRequest(t, r, http.MethodDelete, "/Sessions/v-sessionId/User/v-userId")
 	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
-	result, err = c.RemoveUserFromSession(t.Context(), "p/sessionId", "p/userId")
+	result, err = c.RemoveUserFromSession(t.Context(), jf.SessionID("v-sessionId"), jf.UserID("v-userId"))
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)
 	}

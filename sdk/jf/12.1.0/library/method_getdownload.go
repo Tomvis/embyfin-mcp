@@ -13,7 +13,7 @@ import (
 )
 
 // GetDownload calls GET /Items/{itemId}/Download. Downloads item media.
-func (c Client) GetDownload(ctx context.Context, itemId string) (result jf.GetDownloadResponse, err error) {
+func (c Client) GetDownload(ctx context.Context, itemId jf.ItemID) (result jf.GetDownloadResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "audio/*",
 		ExpectedStatusCodes: []int{
@@ -21,7 +21,7 @@ func (c Client) GetDownload(ctx context.Context, itemId string) (result jf.GetDo
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetDownload",
-		Path:           fmt.Sprintf("/Items/%s/Download", url.PathEscape(itemId)),
+		Path:           fmt.Sprintf("/Items/%s/Download", url.PathEscape(string(itemId))),
 		StreamResponse: true,
 	}
 

@@ -15,7 +15,7 @@ type PostPlaylistsByIdItemsDeleteResponse struct {
 
 // PostPlaylistsByIdItemsDeleteOptions holds the query and header parameters of PostPlaylistsByIdItemsDelete.
 type PostPlaylistsByIdItemsDeleteOptions struct {
-	EntryIds string
+	EntryIds []PlaylistItemID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -27,8 +27,8 @@ func (o PostPlaylistsByIdItemsDeleteOptions) ToHeaders() *client.Headers {
 // ToQuery returns the query parameters the options set.
 func (o PostPlaylistsByIdItemsDeleteOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
-	if o.EntryIds != "" {
-		out.Append("EntryIds", o.EntryIds)
+	if len(o.EntryIds) > 0 {
+		out.Append("EntryIds", client.Joined(o.EntryIds))
 	}
 	return &out
 }

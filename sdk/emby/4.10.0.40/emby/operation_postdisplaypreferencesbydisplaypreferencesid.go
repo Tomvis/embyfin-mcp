@@ -16,7 +16,7 @@ type PostDisplayPreferencesByDisplayPreferencesIdResponse struct {
 // PostDisplayPreferencesByDisplayPreferencesIdOptions holds the query and header parameters of PostDisplayPreferencesByDisplayPreferencesId.
 type PostDisplayPreferencesByDisplayPreferencesIdOptions struct {
 	// User Id
-	UserId string
+	UserId UserID
 }
 
 // ToHeaders returns the header parameters the options set.
@@ -29,7 +29,7 @@ func (o PostDisplayPreferencesByDisplayPreferencesIdOptions) ToHeaders() *client
 func (o PostDisplayPreferencesByDisplayPreferencesIdOptions) ToQuery() *client.QueryParams {
 	out := client.QueryParams{}
 	if o.UserId != "" {
-		out.Append("UserId", o.UserId)
+		out.Append("UserId", string(o.UserId))
 	}
 	return &out
 }

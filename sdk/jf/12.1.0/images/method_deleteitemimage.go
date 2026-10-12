@@ -13,7 +13,7 @@ import (
 )
 
 // DeleteItemImage calls DELETE /Items/{itemId}/Images/{imageType}. Delete an item's image.
-func (c Client) DeleteItemImage(ctx context.Context, itemId string, imageType jf.ImageType, imageIndex ...int) (result jf.DeleteItemImageResponse, err error) {
+func (c Client) DeleteItemImage(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex ...int) (result jf.DeleteItemImageResponse, err error) {
 	var option jf.DeleteItemImageOptions
 	if len(imageIndex) > 1 {
 		err = fmt.Errorf("DeleteItemImage takes one imageIndex at most, not %d", len(imageIndex))
@@ -30,7 +30,7 @@ func (c Client) DeleteItemImage(ctx context.Context, itemId string, imageType jf
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "DeleteItemImage",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/Items/%s/Images/%s", url.PathEscape(itemId), url.PathEscape(string(imageType))),
+		Path:          fmt.Sprintf("/Items/%s/Images/%s", url.PathEscape(string(itemId)), url.PathEscape(string(imageType))),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)

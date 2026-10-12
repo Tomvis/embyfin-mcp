@@ -170,16 +170,17 @@ type ActivityEntry struct {
 
 // ActivityLog returns activity entries since minDate, newest first.
 func (c *Client) ActivityLog(ctx context.Context, minDate time.Time, limit, offset int) ([]ActivityEntry, int, error) {
-	var since string
-	if !minDate.IsZero() {
-		since = minDate.UTC().Format(time.RFC3339)
+	// to the second and in UTC, as it has always been sent; the zero time is left out of the request
+	since := minDate
+	if !since.IsZero() {
+		since = since.UTC().Truncate(time.Second)
 	}
 	if limit < 0 {
 		limit = 0
 	}
 
 	if c.isEmby() {
-		res, err := c.emby.ActivityLog.GetSystemActivityLogEntries(ctx, emby.GetSystemActivityLogEntriesOptions{MinDate: since, Limit: nz(limit), StartIndex: nz(offset)})
+		res, err := c.emby.ActivityLog.GetSystemActivityLogEntries(ctx, emby.GetSystemActivityLogEntriesOptions{MinDate: emby.Time{Time: since}, Limit: nz(limit), StartIndex: nz(offset)})
 		if err != nil {
 			return nil, 0, err
 		}
@@ -192,7 +193,7 @@ func (c *Client) ActivityLog(ctx context.Context, minDate time.Time, limit, offs
 		return entries, page.TotalRecordCount, nil
 	}
 
-	res, err := c.jf.System.GetLogEntries(ctx, jf.GetLogEntriesOptions{MinDate: since, Limit: nz(limit), StartIndex: nz(offset)})
+	res, err := c.jf.System.GetLogEntries(ctx, jf.GetLogEntriesOptions{MinDate: jf.Time{Time: since}, Limit: nz(limit), StartIndex: nz(offset)})
 	if err != nil {
 		return nil, 0, err
 	}
