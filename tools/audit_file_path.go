@@ -32,13 +32,16 @@ import (
 // one's folder.
 
 // pathChecks are the checks, in the order a row lists what it found.
-var pathChecks = []string{"series", "season", "episode", "title", "year", "lookalike"}
+var pathChecks = []string{"series", "season", "episode", "title", "untitled", "year", "lookalike"}
+
+// pathChecksAsked are the checks run only when checks names them: a library whose files are named without titles is all findings of this one.
+var pathChecksAsked = []string{"untitled"}
 
 type pathIn struct {
 	Library string   `json:"library,omitempty" jsonschema:"one library by name or id"`
 	IDs     []string `json:"ids,omitempty"     jsonschema:"only these items, by id: a handful checked without sweeping a library"`
 	Types   string   `json:"types,omitempty"   jsonschema:"Movie, Series, Episode or several, comma-separated; default all three"`
-	Checks  string   `json:"checks,omitempty"  jsonschema:"comma-separated: title, year (films and series), series, season, episode (a file holding a run of episodes, S01E01E02, is an episode check), lookalike (a name spelled with a letter of another script that only looks Latin); default every check"`
+	Checks  string   `json:"checks,omitempty"  jsonschema:"comma-separated: title, year (films and series), series, season, episode (a file holding a run of episodes, S01E01E02, is an episode check), lookalike (a name spelled with a letter of another script that only looks Latin), untitled (an episode file whose name gives its number and no title); default every check but untitled, which runs only when named"`
 	Limit   int      `json:"limit,omitempty"   jsonschema:"maximum findings, default 100"`
 }
 
@@ -51,13 +54,13 @@ type pathRow struct {
 	Season   *int     `json:"season,omitempty"`
 	Episode  *int     `json:"episode,omitempty"`
 	Path     string   `json:"path,omitempty"`
-	Problems []string `json:"problems"           jsonschema:"each begins with the check that failed: series, season, episode, title, year or lookalike"`
+	Problems []string `json:"problems"           jsonschema:"each begins with the check that failed: series, season, episode, title, untitled, year or lookalike"`
 	Episodes int      `json:"episodes,omitempty" jsonschema:"on a show's own row: how many of its episode files it stands for, which disagree with the server the one way (titles none of the server's, or files named for another series) and have no rows of their own"`
 	Files    []string `json:"files,omitempty"    jsonschema:"on a show's own row: the files it stands for, under its path"`
 	// the two titles when they differ, so a caller reads them without
-	// parsing the problem text
+	// parsing the problem text; an untitled row has the server's alone
 	TitleInFile   string  `json:"title_in_file,omitempty"   jsonschema:"the title the file name claims"`
-	TitleOnServer string  `json:"title_on_server,omitempty" jsonschema:"the title the server holds"`
+	TitleOnServer string  `json:"title_on_server,omitempty" jsonschema:"the title the server holds; on an untitled row, the title to name the file by"`
 	Score         float64 `json:"similarity,omitempty"      jsonschema:"0 to 1: how close the two titles are once case, punctuation and accents are folded"`
 	// where the file's title sits in the provider's own list, which tells a
 	// file numbered another way (a download numbered from TVDB in a library
@@ -73,7 +76,7 @@ type pathRow struct {
 	seriesID   string
 	fileSeries string       // the series an episode's file is named for, when not the one the server holds it under
 	item       embyfin.Item // what the row was made from: the TMDB lookups read its ids and runtime
-	rank       int          // 0 a number or the series disagrees, 1 the title, 2 the year alone
+	rank       int          // 0 a number or the series disagrees, 1 the title, 2 the year alone, 3 a file with no title alone
 	// named is set once TMDB has said the path names the item's own title
 	// and its name is what is wrong, which the search by the path's title
 	// then has nothing to add to
@@ -94,8 +97,8 @@ type pathOut struct {
 	Scanned  int            `json:"items_scanned"`
 	Found    int            `json:"total_findings"`
 	ByCheck  map[string]int `json:"by_check"       jsonschema:"findings by the check that failed; a row failing two counts under both"`
-	Unnamed  int            `json:"unnamed"        jsonschema:"episode files whose name claims no title, so the title check had nothing to compare; not findings"`
-	Findings []pathRow      `json:"findings"       jsonschema:"a number or the series disagreeing first, then titles least alike first, then years; capped at limit"`
+	Unnamed  int            `json:"unnamed"        jsonschema:"episode files whose name claims no title, so the title check had nothing to compare; not findings unless checks names untitled"`
+	Findings []pathRow      `json:"findings"       jsonschema:"a number or the series disagreeing first, then titles least alike first, then years, then files with no title; capped at limit"`
 	Note     string         `json:"note,omitempty" jsonschema:"set when TMDB could not be asked, and what that leaves unsaid, or when the library was seen to change while it was read: items added or removed meanwhile may be missing, or listed though gone. It also says when the read stopped short, the library changing too much to follow, or whether it changed could not be checked. It says nothing of a change when no item was seen to come or go from the read's first page to its last, and an item changed meanwhile is answered as it was read"`
 	// changed is what the reads said of the library changing, apart from
 	// the rest of the note: what audit_all reports
@@ -122,6 +125,7 @@ func registerFilePathAudit(r *registry) {
 			"A file named for its series by the series' original title, its sort name or a title TMDB lists for it is named for its series - that very name, or it written another way as above, never a name with words added, which is how a spin-off's short title reads. " +
 			"A show where five or more files, and at least half, disagree the one way - titles none of the server's that TMDB (asked first) gives to no episode number, or the files naming a series all named for the same other one (the files may be another show's, or the show's match may be wrong) - is one row for the show, episodes saying how many files it stands for and files listing them, rather than a row a file; a file TMDB places at a number, or that gets anything else wrong, keeps its own row. " +
 			"A file holding two episodes (S01E01E02) where the server lists one has the second's content on disk while the server calls it missing, and the reverse means the metadata claims a run the file does not. " +
+			"An episode file whose name gives its season and episode number and no title ('Show - 07x08.mkv') is only counted, in unnamed, since a tidy library is often named so; checks naming untitled lists each as a row, with the server's title in title_on_server to rename the file and what sits beside it (its nfo, thumbnail and subtitles) by. The row says when a dash follows the number all the same ('Show - 07x08 - .mkv': a renamer wrote the separator for a title it did not have), and when the server's title is a placeholder or missing, so it has none to give. A name with no episode number in it is never such a row. " +
 			"A name spelled with a letter of another script that only looks Latin (a Cyrillic A, U+0410, spelling a Latin title) is a lookalike row naming the letter and the plain spelling, because it is not the title it reads as: Emby's search for the plain title does not find it, and Jellyfin's does only from 12.2. " +
 			"The path is what was placed on disk and the metadata what a provider or an edit set, so a row says which to fix by what it holds. item_identify or item_edit set the metadata right; a rename fixes the path. ids checks a handful of items without a sweep.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in pathIn) (*mcp.CallToolResult, pathOut, error) {
@@ -131,12 +135,12 @@ func registerFilePathAudit(r *registry) {
 	})
 }
 
-// pathChecksWanted reads the checks input: every check when empty.
+// pathChecksWanted reads the checks input: when empty, every check but the ones run only when named (pathChecksAsked).
 func pathChecksWanted(s string) (map[string]bool, error) {
 	want := map[string]bool{}
 	if strings.TrimSpace(s) == "" {
 		for _, c := range pathChecks {
-			want[c] = true
+			want[c] = !slices.Contains(pathChecksAsked, c)
 		}
 
 		return want, nil
@@ -579,6 +583,15 @@ func checkPath(it *embyfin.Item, want map[string]bool, backend embyfin.Backend) 
 				problem("title", fmt.Sprintf("the file is named %q, the server holds %q%s", claimed[0], it.Name, detail))
 				row.TitleInFile, row.TitleOnServer, row.Score = claimed[0], it.Name, score
 				row.rank = min(row.rank, 1)
+			}
+		}
+
+		// asked for by name alone: a name with its number and no title is how a tidy library is often named, and only wrong where titles are wanted
+		if want["untitled"] {
+			if untitled, dash := naming.UntitledEpisodeFile(it.Path); untitled {
+				problem("untitled", untitledDetail(dash, it.Name))
+				row.TitleOnServer, unnamed = it.Name, true
+				row.rank = rankOf(row.Problems)
 			}
 		}
 
@@ -1197,19 +1210,38 @@ func (x *episodeTitles) best(title string) (episode tmdb.Episode, score float64,
 }
 
 // rankOf is where a row sorts by the checks it failed: a number or the
-// series first, a title next, a year alone last.
+// series first, a title next, a year alone after, a file with no title alone last.
 func rankOf(problems []string) int {
-	rank := 2
+	rank := 3
 	for _, p := range problems {
 		switch strings.SplitN(p, ":", 2)[0] {
 		case "series", "season", "episode":
 			return 0
 		case "title", "lookalike":
-			rank = 1
+			rank = min(rank, 1)
+		case "year":
+			rank = min(rank, 2)
 		}
 	}
 
 	return rank
+}
+
+// untitledDetail is what an untitled row says: how the file's name leaves its title out, and what the server holds to name it by.
+func untitledDetail(dash bool, held string) string {
+	name := "the file's name gives its episode number and no title"
+	if dash {
+		name = "the file's name has a dash after its episode number and no title after it"
+	}
+
+	switch {
+	case strings.TrimSpace(held) == "":
+		return name + "; the server holds no title for it either"
+	case placeholderTitle(held):
+		return fmt.Sprintf("%s; the server holds %q, a placeholder, so it has no title to name the file by yet", name, held)
+	}
+
+	return fmt.Sprintf("%s; the server holds %q", name, held)
 }
 
 // dropTitle takes a row's title problem away: the path's title is one the

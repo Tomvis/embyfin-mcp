@@ -7,12 +7,14 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/katbyte/go-kt/mcp/acctest"
 	"github.com/katbyte/go-kt/test/env"
 
+	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
 )
 
@@ -323,6 +325,29 @@ func TestAuditFilePathShows(t *testing.T) {
 	// the rest of the library's
 	if acctest.Num(t, out["unnamed"], "unnamed") != showEpisodes()-1 {
 		t.Errorf("unnamed = %v, want the rest of the library's %d episodes", out["unnamed"], showEpisodes()-1)
+	}
+}
+
+// The untitled check is run only when checks names it, and then lists what the title check only counts: every file of the show library whose name
+// gives its number and no title, each beside the title the server holds for it. The one file named for an episode is not among them.
+func TestAuditFilePathUntitledShows(t *testing.T) {
+	out := suite.Call(t, "audit_file_path", map[string]any{"library": "Shows", "checks": "untitled", "limit": 500})
+	findings := acctest.Rows(t, out["findings"], "findings")
+	if len(findings) != showEpisodes()-1 || acctest.Num(t, out["total_findings"], "total_findings") != showEpisodes()-1 {
+		t.Fatalf("%d untitled rows, want the %d files that claim no title: %v", len(findings), showEpisodes()-1, findings)
+	}
+	if n := acctest.Num(t, mediaacc.ObjectOf(out["by_check"])["untitled"], "untitled"); n != showEpisodes()-1 {
+		t.Errorf("by_check counts %d untitled, want %d", n, showEpisodes()-1)
+	}
+	for _, f := range findings {
+		title := acctest.Str(f["title_on_server"])
+		problems := acctest.RowsOfAny(f["problems"])
+		if len(problems) != 1 || title == "" || !strings.HasPrefix(acctest.Str(problems[0]), "untitled: the file's name gives its episode number and no title; the server holds "+strconv.Quote(title)) {
+			t.Errorf("row = %v, want the one problem beside the server's title", f)
+		}
+		if acctest.Str(f["type"]) != "Episode" || strings.Contains(acctest.Str(f["path"]), "Dulcinea") || acctest.Str(f["title_in_file"]) != "" {
+			t.Errorf("row = %v, want an episode whose file claims no title", f)
+		}
 	}
 }
 

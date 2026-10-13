@@ -48,6 +48,9 @@ var releaseMarkers = []*regexp.Regexp{
 	regexp.MustCompile(`(?i)(^|[^a-z0-9])season[. _-]+(\d{1,2})([^a-z0-9]|$)`),
 }
 
+// episodeMarkers is how many of releaseMarkers, from the first, give an episode's number: the rest give a season alone.
+const episodeMarkers = 2
+
 // runNumber is one number of a run as the markers admit them: the season
 // again with its episode (S01E02, 01x02), or an episode on its own after an
 // E, an x, a joiner or nothing.

@@ -304,6 +304,34 @@ func EpisodeTitlesFromFile(path string) (titles []string, story string) {
 	return titles, story
 }
 
+// UntitledEpisodeFile says whether an episode file's name gives a season and episode number and no title after it: "Show - 07x08.mkv", or a scene
+// name that goes from the number straight to the encode's words. dash is set when a dash follows the number all the same, the separator a title
+// was to come after: "Show - 07x08 - .mkv", a renamer writing a title it did not have. A name with no episode number says nothing either way
+// ("01 - Pilot.mkv" is all title to the parser), so it is not one.
+func UntitledEpisodeFile(path string) (untitled, dash bool) {
+	if titles, _ := EpisodeTitlesFromFile(path); len(titles) > 0 {
+		return false, false
+	}
+
+	name := FileExtension.ReplaceAllString(mediapath.Base(path), "")
+	for _, re := range releaseMarkers[:episodeMarkers] {
+		m := re.FindStringSubmatchIndex(name)
+		if m == nil {
+			continue
+		}
+
+		// the marker's last group is the one character that ends it, which can be the dash itself. What is left before the encode's words, a
+		// story's number aside, is the separators a title would have followed
+		rest := name[m[len(m)-2]:]
+		after := strings.TrimLeft(rest, " -_.")
+		after = strings.TrimLeft(storyNumber.ReplaceAllString(after, ""), " -_.")
+
+		return true, strings.Contains(rest[:len(rest)-len(after)], "-")
+	}
+
+	return false, false
+}
+
 var (
 	// storyNumber is a story's or a production number in brackets, set
 	// before an episode's title: "(013)"

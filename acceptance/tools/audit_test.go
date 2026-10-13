@@ -462,7 +462,7 @@ func TestAuditFilePath(t *testing.T) {
 		t.Errorf("types=Series swept %d items of a film library", n)
 	}
 	// a check it does not have is refused rather than running none
-	if msg := suite.CallErr(t, "audit_file_path", map[string]any{"checks": "year,runtime"}); !strings.Contains(msg, `checks must be among series, season, episode, title, year, lookalike, not "runtime"`) {
+	if msg := suite.CallErr(t, "audit_file_path", map[string]any{"checks": "year,runtime"}); !strings.Contains(msg, `checks must be among series, season, episode, title, untitled, year, lookalike, not "runtime"`) {
 		t.Errorf("an unknown check: %s", msg)
 	}
 }

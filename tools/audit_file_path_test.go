@@ -84,6 +84,110 @@ func TestAuditFilePathEpisodes(t *testing.T) {
 	}
 }
 
+// audit_file_path's untitled check: an episode file whose name gives its number and no title is a row only when checks names it, saying whether a
+// dash was written for the title and what the server holds to name the file by. A name with a title, or with no episode number, is never one.
+func TestAuditFilePathUntitled(t *testing.T) {
+	t.Parallel()
+
+	season := "/media/shows/Zzyzx Show/Season 01/"
+	s := &fakeSeries{id: "s1", name: "Zzyzx Show", year: 2020, episodes: []ep{
+		{season: 1, number: 1, name: "Pilot", path: season + "Zzyzx Show - 01x01 - Pilot.mkv"},
+		{season: 1, number: 2, name: "Alpha", path: season + "Zzyzx Show - 01x02 - .mkv"},
+		{season: 1, number: 3, name: "Beta", path: season + "Zzyzx Show - 01x03.mkv"},
+		{season: 1, number: 4, name: "Episode 4", path: season + "Zzyzx.Show.S01E04.1080p.WEB.h264-GRP.mkv"},
+		{season: 1, number: 5, name: "Gamma", path: season + "05 - Gamma.mkv"},
+	}}
+	cs := session(t, tvServer(t, s), Options{})
+
+	// not asked for: counted and no more
+	out := mustCall(t, cs, "audit_file_path", map[string]any{"library": "Shows"})
+	if number(t, out["total_findings"], "total_findings") != 0 || number(t, out["unnamed"], "unnamed") != 4 {
+		t.Fatalf("every check but untitled = %v", out)
+	}
+
+	out = mustCall(t, cs, "audit_file_path", map[string]any{"library": "Shows", "checks": "untitled"})
+	if number(t, out["total_findings"], "total_findings") != 3 || number(t, object(t, out["by_check"], "by_check")["untitled"], "untitled") != 3 || number(t, out["unnamed"], "unnamed") != 3 {
+		t.Fatalf("checks=untitled = %v", out)
+	}
+	rows := map[string]map[string]any{}
+	for _, r := range objects(t, out["findings"], "findings") {
+		rows[mediapath.Base(text(r["path"]))] = r
+	}
+	for file, want := range map[string][2]string{
+		"Zzyzx Show - 01x02 - .mkv":                {"Alpha", `untitled: the file's name has a dash after its episode number and no title after it; the server holds "Alpha"`},
+		"Zzyzx Show - 01x03.mkv":                   {"Beta", `untitled: the file's name gives its episode number and no title; the server holds "Beta"`},
+		"Zzyzx.Show.S01E04.1080p.WEB.h264-GRP.mkv": {"Episode 4", `untitled: the file's name gives its episode number and no title; the server holds "Episode 4", a placeholder, so it has no title to name the file by yet`},
+	} {
+		r := rows[file]
+		if got := texts(r["problems"]); len(got) != 1 || got[0] != want[1] || text(r["title_on_server"]) != want[0] || r["title_in_file"] != nil {
+			t.Errorf("%s = %v, want %q beside the server's %q", file, r, want[1], want[0])
+		}
+	}
+
+	// beside the title check, the two run together, and a number the file gets wrong still comes first
+	wrong := &fakeSeries{id: "s1", name: "Zzyzx Show", year: 2020, episodes: []ep{
+		{season: 1, number: 1, name: "Alpha", path: season + "Zzyzx Show - 01x01 - .mkv"},
+		{season: 2, number: 2, name: "Beta", path: season + "Zzyzx Show - 01x02 - .mkv"},
+		{season: 1, number: 3, name: "Real Title", path: season + "Zzyzx Show - 01x03 - Some Other Title.mkv"},
+	}}
+	out = mustCall(t, session(t, tvServer(t, wrong), Options{}), "audit_file_path", map[string]any{"library": "Shows", "checks": "season,title,untitled"})
+	got := objects(t, out["findings"], "findings")
+	if len(got) != 3 {
+		t.Fatalf("season, title and untitled = %v", out)
+	}
+	if p := texts(got[0]["problems"]); len(p) != 2 || !strings.HasPrefix(p[0], "season:") || !strings.HasPrefix(p[1], "untitled:") {
+		t.Errorf("first = %v, want the file with its season wrong, untitled after it", got[0])
+	}
+	if p := texts(got[1]["problems"]); len(p) != 1 || !strings.HasPrefix(p[0], "title:") {
+		t.Errorf("second = %v, want the title that differs", got[1])
+	}
+	if p := texts(got[2]["problems"]); len(p) != 1 || !strings.HasPrefix(p[0], "untitled:") {
+		t.Errorf("last = %v, want the file with no title alone", got[2])
+	}
+
+	// the server holding no title either says so
+	row, _ := checkPath(&embyfin.Item{Type: typeEpisode, SeriesName: "Zzyzx Show", ParentIndexNumber: new(1), IndexNumber: new(2), Path: season + "Zzyzx Show - 01x02 - .mkv"}, map[string]bool{"untitled": true}, embyfin.Emby)
+	if len(row.Problems) != 1 || row.Problems[0] != "untitled: the file's name has a dash after its episode number and no title after it; the server holds no title for it either" {
+		t.Errorf("no title on the server = %q", row.Problems)
+	}
+}
+
+// Which names give an episode's number and no title, and which of them write a dash for one all the same.
+func TestUntitledEpisodeFileReadsEveryShape(t *testing.T) {
+	t.Parallel()
+
+	for _, tc := range []struct {
+		path           string
+		untitled, dash bool
+	}{
+		{"/s/Zzyzx - 07x08 - .mkv", true, true},
+		{"/s/Zzyzx - 07x08 -.mkv", true, true},
+		{"/s/Zzyzx - 07x08-.mkv", true, true},
+		{"/s/Zzyzx - S07E08 - .mkv", true, true},
+		{"/s/Zzyzx - 07x08-09 - .mkv", true, true},
+		// the dash is there though the encode's words follow it
+		{"/s/Zzyzx - 07x08 - 1080p.mkv", true, true},
+		{"/s/Zzyzx - 07x08 - [WEBDL-1080p].mkv", true, true},
+		// a story's number is no title
+		{"/s/Zzyzx - 02x18 (013) - .avi", true, true},
+		{"/s/Zzyzx - 07x08.mkv", true, false},
+		{"/s/Zzyzx - 07x08 .mkv", true, false},
+		{"/s/Zzyzx.S07E08.1080p.WEB.h264-GRP.mkv", true, false},
+		{"/s/S01E10.mkv", true, false},
+		// a title, however short
+		{"/s/Zzyzx - 07x08 - Max.mkv", false, false},
+		{"/s/Zzyzx.S01E02.The.Web.Planet.1080p.WEB.H264-GRP.mkv", false, false},
+		// no episode number to follow: all title to the parser, or a season alone
+		{"/s/08 - Alpha.mkv", false, false},
+		{"/s/Zzyzx - Season 07 - .mkv", false, false},
+		{"/s/Zzyzx S07 - .mkv", false, false},
+	} {
+		if untitled, dash := naming.UntitledEpisodeFile(tc.path); untitled != tc.untitled || dash != tc.dash {
+			t.Errorf("%s = untitled %v dash %v, want %v %v", tc.path, untitled, dash, tc.untitled, tc.dash)
+		}
+	}
+}
+
 // audit_file_path over films: the year in the folder against the metadata,
 // the title before the year against the name, and the shapes that are not
 // mismatches: an edition after the year, a title that ends in a year, a

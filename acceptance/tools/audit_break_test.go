@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -269,6 +270,94 @@ func TestAuditFilePathAgainstTMDB(t *testing.T) {
 	}
 	if n := auditRow(t, "Messy Shows", "audit_file_path"); n != before+2 {
 		t.Errorf("audit_all's row = %d, want %d", n, before+2)
+	}
+}
+
+// A renamer that wrote the separator for a title it did not have: Severance's third file named "Severance S01E03 - ". It was an untitled row
+// before and is one after, and now the row says the dash is there, beside the title the server holds for the episode.
+func TestAuditFilePathUntitledDash(t *testing.T) {
+	if testenv.DataDir() == "" {
+		t.Skip("EMBYFIN_TEST_DATA is not set")
+	}
+	season := filepath.Join("messy-shows", "Severance", "Season 01")
+	byFile := func() map[string]map[string]any {
+		got := map[string]map[string]any{}
+		for _, f := range acctest.Rows(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Shows", "checks": "untitled", "limit": 500})["findings"], "findings") {
+			got[filepath.Base(acctest.Str(f["path"]))] = f
+		}
+
+		return got
+	}
+	problemOf := func(f map[string]any) string {
+		problems := acctest.RowsOfAny(f["problems"])
+		if len(problems) != 1 {
+			t.Fatalf("row = %v, want one problem", f)
+		}
+
+		return acctest.Str(problems[0])
+	}
+
+	from, to := "Severance S01E03", "Severance S01E03 - "
+	before := byFile()
+	if f, ok := before[from+".mp4"]; !ok || !strings.HasPrefix(problemOf(f), "untitled: the file's name gives its episode number and no title; ") {
+		t.Fatalf("the messy shows do not list %s.mp4 as a file with no title: %v", from, before)
+	}
+
+	held := map[string][]byte{}
+	for _, ext := range []string{".mp4", ".nfo"} {
+		held[ext] = fixture(t, filepath.Join(season, from+ext))
+	}
+	t.Cleanup(func() {
+		for ext, raw := range held {
+			env.WriteFile(t, filepath.Join(testenv.DataDir(), season, from+ext), raw)
+		}
+		// the two files written, and whatever a server saved beside them under the new name
+		left, _ := filepath.Glob(filepath.Join(testenv.DataDir(), season, to+"*"))
+		for _, path := range left {
+			_ = os.Remove(path)
+		}
+		rescanUntil(t, "Severance's third file named as it was", func() bool {
+			got := byFile()
+			_, back := got[from+".mp4"]
+			_, still := got[to+".mp4"]
+
+			return back && !still
+		})
+	})
+	for ext, raw := range held {
+		env.WriteFile(t, filepath.Join(testenv.DataDir(), season, to+ext), raw)
+		if err := os.Remove(filepath.Join(testenv.DataDir(), season, from+ext)); err != nil {
+			t.Fatal(err)
+		}
+	}
+	rescanUntil(t, "the file named with a dash and no title", func() bool {
+		got := byFile()
+		_, there := got[to+".mp4"]
+		_, old := got[from+".mp4"]
+
+		return there && !old
+	})
+
+	got := byFile()
+	f := got[to+".mp4"]
+	title := acctest.Str(suite.Call(t, "item_get", map[string]any{"id": acctest.Str(f["id"])})["name"])
+	if title == "" || acctest.Str(f["title_on_server"]) != title || !strings.HasPrefix(problemOf(f), "untitled: the file's name has a dash after its episode number and no title after it; the server holds "+strconv.Quote(title)) {
+		t.Errorf("row = %v, want the dash said beside the server's title %q", f, title)
+	}
+	if acctest.Num(t, f["season"], "season") != 1 || acctest.Num(t, f["episode"], "episode") != 3 {
+		t.Errorf("row names the wrong episode: %v", f)
+	}
+	// every other file is the row it was
+	if len(got) != len(before) {
+		t.Errorf("%d untitled rows, want the %d there were: %v", len(got), len(before), got)
+	}
+	// and the audit as it runs by default still lists none of them
+	for _, row := range acctest.Rows(t, suite.Call(t, "audit_file_path", map[string]any{"library": "Messy Shows", "limit": 500})["findings"], "findings") {
+		for _, p := range acctest.RowsOfAny(row["problems"]) {
+			if strings.HasPrefix(acctest.Str(p), "untitled:") {
+				t.Errorf("the default checks list an untitled row: %v", row)
+			}
+		}
 	}
 }
 
