@@ -232,7 +232,7 @@ repeated keys), Emby's comma-separated.
     removal asks for that scan (on its own, as above).
   - The genre lists (`/Genres`) lag item edits: Jellyfin lists a new genre
     only after a scan, and both keep one no item carries any more, so
-    `library_genres` reads the genres off the items.
+    `library_filters` reads the genres off the items.
   - A collection deleted while a metadata refresh of it is still queued
     (Emby queues one on creating it and on each change to its members, and
     the queue waits behind a library scan) is refreshed after the delete,
@@ -296,7 +296,7 @@ repeated keys), Emby's comma-separated.
   - Timestamps are RFC 3339 with seven fractional digits, sometimes with no
     zone (Emby); the generated clients keep them as strings. Runtime is
     `RunTimeTicks` in 100 ns units.
-- Every GET in each document is called against a real server by the read sweep (`lib/sdkacc`, run from `acceptance/emby` and `acceptance/jf`), which also fails an answer with nothing in it and one whose model drops an object whole. Each GET that does not answer with something is classified in `emby_sweep_test.go` / `jf_sweep_test.go`: the feature needs something the container lacks (a tuner, a DLNA client, a transcoding session), an API key is not the user the route needs, or what it reads is not there on a fresh server. A classified GET that starts answering fails the sweep, the way a stale workaround fails the import.
+- Every GET in each document is called against a real server by the read sweep (`lib/sdkacc`, run from `acceptance/emby` and `acceptance/jf`), which also fails an answer with nothing in it and one whose model drops an object whole. Each GET that does not answer with something is classified in `acceptance/emby/sweep_test.go` / `acceptance/jf/sweep_test.go`: the feature needs something the container lacks (a tuner, a DLNA client, a transcoding session), an API key is not the user the route needs, or what it reads is not there on a fresh server. A classified GET that starts answering fails the sweep, the way a stale workaround fails the import.
   `TotalRecordCount` is 0 on Emby's device and API key lists whatever they
   hold, which is why the generated `Complete` pagers stop on a short page as
   well as on the total.
