@@ -41,6 +41,9 @@ const undocumentedStatus = http.StatusTeapot
 // operation tests share, the paged one a service with lists has, and New's
 // validation.
 func (g *gen) testHelpersFile() string {
+	if g.calls() {
+		return g.callTestHelpersFile()
+	}
 	helpers := operationServerHelpers
 	if g.opts.Grouped {
 		// a tag's client is made on a base client, not by New
@@ -243,6 +246,9 @@ const newTest = `func TestNew(t *testing.T) {
 
 // testFile renders the test of one operation.
 func (g *gen) testFile(o *definitions.Operation) string {
+	if o.Call != nil {
+		return g.callTestFile(o)
+	}
 	var b strings.Builder
 	call := g.testCall(o)
 
@@ -536,6 +542,12 @@ func (g *gen) sampleList(item definitions.TypeRef) (items string, values []strin
 	switch item.Type {
 	case definitions.ID:
 		kind := g.typeName(item.ReferenceName)
+		// a kind with a shape refuses "a" or 1 before the call is sent, so a list of it is its example twice over
+		if k := g.svc.IDKind(item.ReferenceName); k != nil && k.Example != "" {
+			expr, wire := g.sampleID(item.ReferenceName, "")
+
+			return expr + ", " + expr, []string{wire, wire}
+		}
 		if g.idBase(item.ReferenceName) == definitions.String {
 			return kind + `("a"), ` + kind + `("b")`, []string{"a", "b"}
 		}
@@ -566,7 +578,7 @@ func (g *gen) sampleBody(t definitions.TypeRef) string {
 		if c := g.constants[t.ReferenceName]; c != nil && len(c.Values) > 0 {
 			return g.typeName(c.Values[0].Name)
 		}
-		if m := g.models[t.ReferenceName]; m != nil && len(m.Union) > 0 {
+		if m := g.models[t.ReferenceName]; m != nil && len(m.Union) > 0 && len(m.Members) == 0 {
 			return g.typeName(t.ReferenceName) + `("{}")`
 		}
 		return g.typeName(t.ReferenceName) + "{}"
@@ -617,6 +629,10 @@ func (g *gen) sampleJSON(t definitions.TypeRef) string {
 	case definitions.String:
 		return `"s"`
 	case definitions.DateTime:
+		if g.svc.Dates[0] == dateObjectMillis {
+			return fmt.Sprintf(`{"$date":%d}`, sampleTime.UnixMilli())
+		}
+
 		return strconv.Quote(sampleTime.Format(g.svc.Dates[0]))
 	case definitions.Date:
 		return strconv.Quote(sampleTime.Format(g.svc.Days[0]))
@@ -712,7 +728,9 @@ func (g *gen) completeTest(o *definitions.Operation, call testCallInfo) string {
 	// has; one by page asks for the first page and then the next
 	starts := []string{`"", "1"`, `"", "1", "2"`, `""`}
 	if p.ByPage {
-		starts = []string{`"1", "2"`, `"1", "2", "3"`, `"1"`}
+		first := p.First()
+		page := func(n int) string { return strconv.Itoa(first + n) }
+		starts = []string{`"` + page(0) + `", "` + page(1) + `"`, `"` + page(0) + `", "` + page(1) + `", "` + page(2) + `"`, `"` + page(0) + `"`}
 	}
 	fmt.Fprintf(&b, "\t\t{\"total reached\", 2, 9, %s, 2, []string{%s}},\n", options(1), starts[0])
 	fmt.Fprintf(&b, "\t\t{\"empty page\", 0, 2, %s, 2, []string{%s}},\n", options(1), starts[1])

@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/katbyte/go-kt/chttp"
+	"github.com/katbyte/go-kt/httpc"
 	"github.com/katbyte/pandorest/client"
 )
 
@@ -74,7 +74,7 @@ func newFake(t *testing.T, backend Backend, routes map[string]route) (*Client, *
 	// through the server's own transport, so closing another test's server
 	// cannot close this one's connections, and with this layer's rule for
 	// sending a read again, waiting hardly at all
-	c, err := New(backend, srv.URL, "tok", client.WithTransport(srv.Client().Transport), client.WithRetry(chttp.Retry{Tries: readRetry.Tries, Wait: func(int) time.Duration { return time.Millisecond }}))
+	c, err := New(backend, srv.URL, "tok", client.WithTransport(srv.Client().Transport), client.WithRetry(httpc.Retry{Tries: readRetry.Tries, Wait: func(int) time.Duration { return time.Millisecond }}))
 	if err != nil {
 		t.Fatal(err)
 	}
