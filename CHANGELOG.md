@@ -12,6 +12,10 @@
 - the eleven audits that named nothing to fix what they find now say what does: `quality_compare` for copies, `item_identify` for a wrong match, the subtitle tools for a missing language, and a scan of the library once a file is replaced on disk
 - built on pandorest 0.12.0, which changes only the SDKs' generated tests
 
+### Fixed
+
+- built on golang.org/x/text 0.41.0, which fixes CVE-2026-56851 (a panic in its Nickname text profile); embyfin's code never reaches that profile
+
 ## 0.9.0 (2026-10-15)
 
 ### Added
