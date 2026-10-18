@@ -926,12 +926,17 @@ fixtures() {
 }
 
 # proxy_ca mints the certificate authority the tests' provider proxy signs
-# with, once, so every container started here trusts the same one. The tests
+# with, so every container started here trusts the same one. The tests
 # load these files (replayproxy.Options.CACert/CAKey) rather than minting
-# their own.
+# their own. It lasts 30 days and is minted again when it has two days or
+# fewer left, so a run never starts on one about to expire: the servers
+# refuse an expired one, and every provider call then fails.
 proxy_ca() {
-  [ -f "${PROXY_CA}/ca.pem" ] && [ -f "${PROXY_CA}/ca.key" ] && return 0
   command -v openssl >/dev/null || { echo "openssl is required to mint the provider proxy CA" >&2; exit 1; }
+  if [ -f "${PROXY_CA}/ca.pem" ] && [ -f "${PROXY_CA}/ca.key" ]; then
+    openssl x509 -in "${PROXY_CA}/ca.pem" -noout -checkend 172800 >/dev/null 2>&1 && return 0
+    log "the provider proxy CA under ${PROXY_CA} expires within two days"
+  fi
   log "minting the provider proxy CA under ${PROXY_CA}"
   mkdir -p "${PROXY_CA}"
   openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -nodes -days 30 \
