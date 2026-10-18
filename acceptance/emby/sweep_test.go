@@ -232,7 +232,17 @@ func TestEmbyReadSweep(t *testing.T) {
 	// a playlist's sharing is answered only to a user session
 	cases["GetUsersItemAccess"] = sweep.Case{Status: 400, Options: map[string]any{"ItemId": playlist}, Why: embyNoUserOfKey}
 
-	sdkacc.RunSweep(t, "emby", embyc, fixtures, cases)
+	sdkacc.RunSweep(t, "emby", embyc, fixtures, cases, embyMissingIDs)
+}
+
+// embyMissingIDs are ids of each kind that nothing on a test server has, in the form Emby gives that kind, and what Emby answers each. An
+// item is read the way the neutral client reads one in a user's view, and a gone one is a 404 there, which is how a deleted item is told
+// from an error; a task is a 404 too. A user and a media source are only noted: nothing of embyfin's reads either by its id.
+var embyMissingIDs = map[string]sweep.Missing{
+	"ItemID":        {ID: "987654321", Operation: "GetUsersByUserIdItemsById", Want: "404"},
+	"TaskID":        {ID: "0123456789abcdef0123456789abcdef", Want: "404"},
+	"UserID":        {ID: "0123456789abcdef0123456789abcdef"},
+	"MediaSourceID": {ID: "mediasource_987654321"},
 }
 
 // Why an Emby GET does not simply answer in the sweep.

@@ -17,7 +17,6 @@ import (
 	"github.com/katbyte/go-kt/test/env"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
-	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
 )
 
 // What a removed library leaves behind, and removing it.
@@ -477,10 +476,7 @@ func TestDeleteItemsInOneRequest(t *testing.T) {
 		return err != nil && strings.Contains(err.Error(), "no item")
 	}
 
-	client, err := embyfin.New(backend, os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"))
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := newClient(t)
 	if err := os.Remove(filepath.Join(root, films[0], films[0]+".mp4")); err != nil {
 		t.Fatal(err)
 	}

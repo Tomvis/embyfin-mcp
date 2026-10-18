@@ -227,7 +227,7 @@ func (b binary) refusesToStart(t *testing.T, env []string, want string, args ...
 
 	cmd, stderr := b.command(t, env, args...)
 	cmd.Stdin = strings.NewReader("")
-	ctx, cancel := context.WithTimeout(t.Context(), 30*time.Second)
+	wait, cancel := context.WithTimeout(t.Context(), 30*time.Second)
 	defer cancel()
 	if err := cmd.Start(); err != nil {
 		t.Fatal(err)
@@ -240,7 +240,7 @@ func (b binary) refusesToStart(t *testing.T, env []string, want string, args ...
 		if said := strings.ReplaceAll(stderr.String(), `\"`, `"`); err == nil || !strings.Contains(said, want) {
 			t.Errorf("exit %v, stderr %q: want a failure saying %q", err, stderr, want)
 		}
-	case <-ctx.Done():
+	case <-wait.Done():
 		_ = cmd.Process.Kill()
 		t.Errorf("still running after 30s: want it to refuse to start, saying %q", want)
 	}

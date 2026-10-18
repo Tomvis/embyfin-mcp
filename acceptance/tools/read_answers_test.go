@@ -460,10 +460,7 @@ func TestReadAllOnTheServer(t *testing.T) {
 	if testenv.DataDir() == "" {
 		t.Skip("EMBYFIN_TEST_DATA is not set")
 	}
-	client, err := embyfin.New(backend, os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"))
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := newClient(t)
 	opts := embyfin.SearchOptions{ParentID: acctest.Str(suite.Call(t, "library_get", map[string]any{"library": "Messy Movies"})["id"]), IncludeItemTypes: "Movie", Fields: "Path"}
 	ids := func(pageSize int, during func(page int)) ([]string, embyfin.ReadResult) {
 		t.Helper()
@@ -559,10 +556,7 @@ func TestReadAllSeesOneOutAndOneInBehindIt(t *testing.T) {
 	if testenv.DataDir() == "" {
 		t.Skip("EMBYFIN_TEST_DATA is not set")
 	}
-	client, err := embyfin.New(backend, os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"))
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := newClient(t)
 	library := acctest.Str(suite.Call(t, "library_get", map[string]any{"library": "Messy Movies"})["id"])
 	out := filepath.Join(testenv.DataDir(), "messy-movies", "The Thirteenth Floor (1999)")
 	in := filepath.Join(testenv.DataDir(), "messy-movies", "Triangle (2009)")

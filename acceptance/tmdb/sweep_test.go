@@ -110,7 +110,7 @@ func TestTMDBSweep(t *testing.T) {
 	}
 	c.Client.HTTPClient = &http.Client{Timeout: time.Minute, Transport: p.Transport()}
 
-	sdkacc.RunSweep(t, "tmdb", c, tmdbFixtures(t, c), tmdbCases)
+	sdkacc.RunSweep(t, "tmdb", c, tmdbFixtures(t, c), tmdbCases, nil)
 }
 
 // tmdbFixtures resolves the ids no example in the document gives: the fixed

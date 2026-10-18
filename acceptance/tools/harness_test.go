@@ -19,10 +19,12 @@ import (
 
 	mediaacc "github.com/katbyte/embyfin-mcp/lib/acceptance"
 
+	"github.com/katbyte/embyfin-mcp/lib/sdkacc"
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
 	"github.com/katbyte/embyfin-mcp/tools"
 	"github.com/katbyte/go-kt/mcp/acctest"
+	"github.com/katbyte/pandorest/client"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -298,6 +300,9 @@ var (
 	session *mcp.ClientSession
 	proxy   *testenv.Proxy
 	backend embyfin.Backend
+	// sdkCalls is every request the tools, and the tests that call sdk/embyfin themselves (newClient), sent to the server, for the check
+	// that each write embyfin's code sends was reached
+	sdkCalls client.Calls
 	// suite drives the tools through session; until start connects it, every
 	// call skips
 	suite = mediaacc.New("EMBYFIN_BACKEND, EMBYFIN_SERVER and EMBYFIN_TOKEN are not set; run: eval \"$(EMBYFIN_TEST_BACKEND=jellyfin .scripts/testenv.sh up)\"")
@@ -364,9 +369,41 @@ func runSuite(m *testing.M) int {
 			fmt.Fprint(os.Stderr, report)
 			code = 1
 		}
+
+		// every write embyfin's code sends must have been sent above, or by the sdk/embyfin suite where it is left to that one; the SDK
+		// suites' sweep calls every GET
+		for _, line := range sdkCoverage() {
+			fmt.Fprintln(os.Stderr, "sdk coverage:", line)
+			code = 1
+		}
 	}
 
 	return code
+}
+
+// sdkCoverage is the writes embyfin's code sends to this server that the run never sent, each a line, with the ones left to the
+// sdk/embyfin suite excused.
+func sdkCoverage() []string {
+	service := string(backend)
+	used, err := sdkacc.UsedOperations(service)
+	if err != nil {
+		return []string{err.Error()}
+	}
+
+	return sdkacc.Unreached(sdkacc.Writes(used), sdkCalls.Seen(), sdkacc.LeftToNeutralSuite[service])
+}
+
+// newClient is a neutral client on the suite's server whose requests count towards the SDK coverage check, for a test that calls
+// sdk/embyfin itself.
+func newClient(t *testing.T) *embyfin.Client {
+	t.Helper()
+
+	c, err := embyfin.New(backend, os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"), client.WithCalls(&sdkCalls))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return c
 }
 
 // cannotAnswer are the tools a throwaway server gives nothing to answer
@@ -399,14 +436,14 @@ func tmdbKey() string {
 var animeList = filepath.Join("testdata", "anime-list.xml")
 
 func start() error {
-	client, err := embyfin.New(backend, os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"))
+	media, err := embyfin.New(backend, os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"), client.WithCalls(&sdkCalls))
 	if err != nil {
 		return err
 	}
 
 	ctx = context.Background()
 	srv := mcp.NewServer(&mcp.Implementation{Name: "embyfin-mcp", Version: "test"}, nil)
-	if _, err := tools.RegisterAll(srv, client, tools.Options{EnableDelete: true, TMDBKey: tmdbKey(), ProviderTransport: providerTransport(), AnimeList: animeList}); err != nil {
+	if _, err := tools.RegisterAll(srv, media, tools.Options{EnableDelete: true, TMDBKey: tmdbKey(), ProviderTransport: providerTransport(), AnimeList: animeList}); err != nil {
 		return err
 	}
 	connected, err := acctest.Connect(ctx, srv)

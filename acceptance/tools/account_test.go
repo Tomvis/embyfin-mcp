@@ -8,6 +8,8 @@ import (
 	"strings"
 	"testing"
 
+	jfclient "github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/client"
+	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/go-kt/mcp/acctest"
 )
 
@@ -39,6 +41,16 @@ func TestADeletedAccountsPlaylistStaysAndItsMarksGo(t *testing.T) {
 	first := acctest.Str(suite.Call(t, "user_create", map[string]any{"name": account, "password": password, "libraries": []any{"Movies"}})["id"])
 	playlist := acctest.Str(suite.Call(t, "playlist_create", map[string]any{"name": list, "user": account, "item_ids": []any{arrival}})["id"])
 	suite.Call(t, "item_set_state", map[string]any{"id": arrival, "user": account, "watched": true, "favourite": true})
+	// a like as well, which no tool gives, so that the clearing on Jellyfin takes a rating off too
+	if isJellyfin() {
+		jfc, err := jfclient.New(os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := jfc.UserData.UpdateUserItemRating(ctx, jf.ItemID(arrival), jf.UpdateUserItemRatingOptions{UserId: jf.UserID(first), Likes: new(true)}); err != nil {
+			t.Fatal(err)
+		}
+	}
 	if stats := suite.Call(t, "user_stats", map[string]any{"user": account}); acctest.Num(t, stats["movies_watched"], "movies_watched") != 1 || acctest.Num(t, stats["favourites"], "favourites") != 1 {
 		t.Fatalf("user_stats before the delete = %v, want one film watched and favourited", stats)
 	}

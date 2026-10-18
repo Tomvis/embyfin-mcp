@@ -16,6 +16,9 @@ import (
 	"github.com/katbyte/embyfin-mcp/lib/sdkacc"
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
 	"github.com/katbyte/embyfin-mcp/sdk/embyfin"
+	"github.com/katbyte/go-kt/mcp/acctest"
+	apiclient "github.com/katbyte/pandorest/client"
+	"github.com/katbyte/pandorest/definitions"
 )
 
 // The libraries the suite creates: the clean films and the clean shows, read from their files and nfo sidecars alone.
@@ -27,6 +30,8 @@ var (
 var (
 	// client is set when a server is up; without it every test skips
 	client *embyfin.Client
+	// calls is every request client sent, for the check that each write the tool suite leaves to this one was reached
+	calls apiclient.Calls
 
 	adminID, aliceID = sdkacc.AdminID(), sdkacc.UserID()
 
@@ -41,13 +46,36 @@ func runSuite(m *testing.M) int {
 	}
 
 	var err error
-	if client, err = embyfin.New(embyfin.Backend(testenv.Backend()), os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN")); err != nil {
+	if client, err = embyfin.New(embyfin.Backend(testenv.Backend()), os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"), apiclient.WithCalls(&calls)); err != nil {
 		fmt.Fprintln(os.Stderr, "embyfin client:", err)
 
 		return 1
 	}
 
-	return sdkacc.Run(m, testenv.Backend(), removeLibraries)
+	code := sdkacc.Run(m, testenv.Backend(), removeLibraries)
+
+	// the writes the tool suite leaves to this one must have been sent above; only a whole run can say so
+	if acctest.WholeRun() {
+		service := testenv.Backend()
+		used, err := sdkacc.UsedOperations(service)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "sdk coverage:", err)
+
+			return 1
+		}
+		left := map[string]*definitions.Operation{}
+		for name := range sdkacc.LeftToNeutralSuite[service] {
+			if used[name] != nil { // the tool suite says when one names nothing sent
+				left[name] = used[name]
+			}
+		}
+		for _, line := range sdkacc.Unreached(left, calls.Seen(), nil) {
+			fmt.Fprintln(os.Stderr, "sdk coverage:", line)
+			code = 1
+		}
+	}
+
+	return code
 }
 
 // removeLibraries deletes the libraries the suite created, after the last test. EMBYFIN_TEST_KEEP=1 leaves them in place, to look at what a run

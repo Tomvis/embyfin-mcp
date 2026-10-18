@@ -179,7 +179,17 @@ func TestJFReadSweep(t *testing.T) {
 	cases["GetDirectoryContents"] = sweep.Case{Options: map[string]any{"IncludeDirectories": true}}
 	cases["GetQueryFiltersLegacy"] = sweep.Case{Options: map[string]any{"ParentId": moviesID}}
 
-	sdkacc.RunSweep(t, "jellyfin", jfc, fixtures, cases)
+	sdkacc.RunSweep(t, "jellyfin", jfc, fixtures, cases, jfMissingIDs)
+}
+
+// jfMissingIDs are ids of each kind that nothing on a test server has, all 32 hex digits, and what Jellyfin answers each. An item is read
+// the way the neutral client reads one, and a gone one is a 404, which is how a deleted item is told from an error; a task is a 404 too. A
+// user and a media source are only noted: nothing of embyfin's reads either by its id.
+var jfMissingIDs = map[string]sweep.Missing{
+	"ItemID":        {ID: "0123456789abcdef0123456789abcdef", Operation: "GetItem", Want: "404"},
+	"TaskID":        {ID: "0123456789abcdef0123456789abcdef", Want: "404"},
+	"UserID":        {ID: "0123456789abcdef0123456789abcdef"},
+	"MediaSourceID": {ID: "0123456789abcdef0123456789abcdef"},
 }
 
 // Why a Jellyfin GET does not simply answer in the sweep.

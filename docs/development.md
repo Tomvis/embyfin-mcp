@@ -46,6 +46,7 @@ The suites skip when `EMBYFIN_SERVER` and `EMBYFIN_TOKEN` are unset, so they nev
 
 - Bespoke tests that the calls the tools rely on decode with their fields filled in, and do what they say.
 - A sweep that calls every GET in each document against the server, and classifies the ones that cannot answer in a container.
+- The sweep also asks for an item and a task that nothing has, and fails unless the server answers 404. That is how a deleted item is told from an error, so a server that changes it is caught.
 - `sdk/tmdb` gets the same sweep against the real TMDB API, recorded once with a token and replayed with none: `make test-tmdb` and `make record-tmdb`.
 
 **The `sdk/embyfin` suite.** Its promise is the same answer from either server. Each test is written once and must pass on both, over libraries, items, watch state, collections, playlists, episodes, accounts and tasks.
@@ -60,6 +61,12 @@ The suites skip when `EMBYFIN_SERVER` and `EMBYFIN_TOKEN` are unset, so they nev
 ### Every tool is exercised on both servers
 
 Tool coverage is enforced, not claimed. The tool suite records every tool it calls, and fails if the server registered one that nothing called. So a new tool cannot ship untested.
+
+### Every write embyfin sends is exercised
+
+The SDK suites' sweep calls every read, but nothing sends a write unless a test does. So the tool suite records every request it sends, and at the end of a whole run fails if a write that embyfin's own code sends was never among them. What counts as sent by embyfin's code is every generated method `sdk/embyfin` names through its clients.
+
+A write the tool suite cannot reach goes in `LeftToNeutralSuite` in `lib/sdkacc`, with why. The `sdk/embyfin` suite then fails unless it reaches every one.
 
 ### Shared test pieces
 

@@ -13,12 +13,9 @@ import (
 	"time"
 
 	"github.com/katbyte/pandorest/client"
-	"github.com/katbyte/pandorest/config"
-	"github.com/katbyte/pandorest/definitions"
 	"github.com/katbyte/pandorest/sweep"
 
 	"github.com/katbyte/embyfin-mcp/lib/testenv"
-	"github.com/katbyte/embyfin-mcp/sdk/zservices"
 )
 
 // What is deliberately not exercised, and why:
@@ -402,24 +399,17 @@ func IsScanTask(key, name string) bool {
 	return key == "RefreshLibrary" || strings.Contains(strings.ToLower(name), "scan media library")
 }
 
-// RunSweep calls every GET operation of the service on sdk.
-func RunSweep(t *testing.T, service string, sdk any, fixtures sweep.Fixtures, cases map[string]sweep.Case) {
+// RunSweep calls every GET operation of the service on sdk. missing is, per kind of id, a value of its form that nothing on the server
+// has: the sweep asks a GET with each, and fails when the server answers other than it is said to.
+func RunSweep(t *testing.T, service string, sdk any, fixtures sweep.Fixtures, cases map[string]sweep.Case, missing map[string]sweep.Missing) {
 	t.Helper()
 
-	cfg, ok := config.Find(zservices.All, service)
-	if !ok {
-		t.Fatalf("no service %q", service)
-	}
-	cfg, err := cfg.In(repoRoot).Resolve()
-	if err != nil {
-		t.Fatal(err)
-	}
-	svc, err := definitions.Load(cfg.Path(cfg.Definitions))
+	svc, err := loadDefinitions(service)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	sweep.Sweep{Definitions: svc, Client: sdk, StatusCode: client.StatusCode, Fixtures: fixtures, Cases: cases}.Run(t)
+	sweep.Sweep{Definitions: svc, Client: sdk, StatusCode: client.StatusCode, Fixtures: fixtures, Cases: cases, MissingIDs: missing}.Run(t)
 }
 
 // TypesFor is the item types a library of a kind holds, which is what its settings name fetchers for.

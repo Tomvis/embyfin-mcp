@@ -682,10 +682,7 @@ func TestEmbyVersionsArePlacedAsItsSingleReadsSay(t *testing.T) {
 	if testenv.DataDir() == "" {
 		t.Skip("EMBYFIN_TEST_DATA is not set")
 	}
-	client, err := embyfin.New(backend, os.Getenv("EMBYFIN_SERVER"), os.Getenv("EMBYFIN_TOKEN"))
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := newClient(t)
 	movies, shows := filepath.Join(testenv.DataDir(), "messy-movies"), filepath.Join(testenv.DataDir(), "messy-shows")
 	movieNfo := func(title string, year int, tmdb, imdb string) []byte {
 		ids := ""
