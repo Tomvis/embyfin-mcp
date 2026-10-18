@@ -104,10 +104,10 @@ There are 92 tools: 62 read, 24 write and 6 delete. `embyfin-mcp tools --toolset
 
 - `playlist_list`, `playlist_get`, `playlist_create`.
 - `playlist_edit`: rename, `add_items`, `remove_entries`, or move an entry. A removal and a move name an entry by its entry id and the item it holds, plus the playlist's `fingerprint` when an item is held twice.
-- `playlist_delete`: the items stay in the library and only the list goes.
+- `playlist_delete`: the items stay in the library and only the list goes. Without `confirm` it says what the list holds.
 - `collection_list`, `collection_get`, `collection_create`.
 - `collection_edit`: rename, sort name, overview, `add_items`, `remove_items`.
-- `collection_delete`: the items stay in the library and only the grouping goes.
+- `collection_delete`: the items stay in the library and only the grouping goes. Without `confirm` it says what the collection holds.
 
 ## Provider answers
 
@@ -124,7 +124,7 @@ Six tools delete, and none of them can be undone. They load only when `--enable-
   - It refuses collections, playlists, libraries, genres, studios, people and artists, naming the tool that removes each.
 - `item_orphans_delete` removes what a removed library left behind, once its folder is gone. The steps are in [recovery.md](recovery.md).
 - `library_delete` removes a library.
-- `playlist_delete` and `collection_delete` remove the list or the grouping, never the items.
+- `playlist_delete` and `collection_delete` remove the list or the grouping, never the items. Without `confirm` they say what it holds.
 - `user_delete` removes an account.
   - It never removes the last administrator.
   - The account's playlists stay.

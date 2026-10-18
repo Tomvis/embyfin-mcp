@@ -77,7 +77,7 @@ func settleScan(t *testing.T, wait func() error) {
 // deleteLater removes what a test created once it ends.
 func deleteLater(t *testing.T, tool, field, id string) {
 	t.Helper()
-	suite.PutBack(t, tool, map[string]any{field: id})
+	suite.PutBack(t, tool, map[string]any{field: id, "confirm": true})
 }
 
 // unmarkLater clears a user's watched mark and favourite on items once the
@@ -353,7 +353,7 @@ func TestEditsDuringAScan(t *testing.T) {
 		if pl == "" {
 			return
 		}
-		if err := suite.Retried("playlist_delete", map[string]any{"playlist": pl}); err != nil {
+		if err := suite.Retried("playlist_delete", map[string]any{"playlist": pl, "confirm": true}); err != nil {
 			t.Errorf("deleting the playlist: %v", err)
 		}
 	})
@@ -403,7 +403,7 @@ func TestEditsDuringAScan(t *testing.T) {
 		if err := suite.WaitForScan(); err != nil {
 			t.Fatal(err)
 		}
-		if err := suite.Retried("playlist_delete", map[string]any{"playlist": pl}); err != nil {
+		if err := suite.Retried("playlist_delete", map[string]any{"playlist": pl, "confirm": true}); err != nil {
 			t.Fatalf("deleting the try's playlist: %v", err)
 		}
 		pl = ""
@@ -1251,7 +1251,7 @@ func TestResolveByIDAndName(t *testing.T) {
 	// deleted at once, while the refresh Jellyfin starts on a new collection
 	// is still running: collection_delete answers only once it stays gone
 	t.Cleanup(func() {
-		if _, err := suite.Invoke("collection_delete", map[string]any{"collection": empty}); err != nil {
+		if _, err := suite.Invoke("collection_delete", map[string]any{"collection": empty, "confirm": true}); err != nil {
 			t.Errorf("deleting the empty collection: %v", err)
 		}
 		if _, err := suite.Invoke("collection_get", map[string]any{"collection": empty}); err == nil {

@@ -1634,7 +1634,10 @@ func TestCollectionFamily(t *testing.T) {
 		t.Errorf("after the put-back the collection holds %v, want [9]", members)
 	}
 
-	out = mustCall(t, cs, "collection_delete", map[string]any{"collection": "Zzyzx Cycle"})
+	if msg := mustRefuse(t, cs, "collection_delete", map[string]any{"collection": "Zzyzx Cycle"}); !strings.Contains(msg, "without confirm=true: nothing was deleted. It holds 1 item: Film 9 (9)") {
+		t.Errorf("a delete without confirm: %s", msg)
+	}
+	out = mustCall(t, cs, "collection_delete", map[string]any{"collection": "Zzyzx Cycle", "confirm": true})
 	if held := objects(t, out["held"], "held"); out["deleted"] != "Zzyzx Cycle" || out["id"] != "c1" || len(held) != 1 || held[0]["id"] != "9" || held[0]["name"] != "Film 9" {
 		t.Errorf("delete = %v, want what it held named", out)
 	}
@@ -1974,7 +1977,10 @@ func TestPlaylistFamily(t *testing.T) {
 		t.Errorf("a remove with the fingerprint from before: %s", msg)
 	}
 
-	out = mustCall(t, cs, "playlist_delete", map[string]any{"playlist": "pl1"})
+	if msg := mustRefuse(t, cs, "playlist_delete", map[string]any{"playlist": "pl1"}); !strings.Contains(msg, "without confirm=true: nothing was deleted. It holds 2 entries: Film 9 (9), Film 11 (11)") {
+		t.Errorf("a delete without confirm: %s", msg)
+	}
+	out = mustCall(t, cs, "playlist_delete", map[string]any{"playlist": "pl1", "confirm": true})
 	held := objects(t, out["held"], "held")
 	if out["deleted"] != "Zzyzx Day" || out["id"] != "pl1" || len(held) != 2 || held[0]["id"] != "9" || held[1]["id"] != "11" {
 		t.Errorf("delete = %v, want its entries in order to make it again", out)

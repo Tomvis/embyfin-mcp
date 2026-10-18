@@ -52,6 +52,18 @@ func membersSaid(rows []memberRow) string {
 	return listed(names, 50)
 }
 
+// holdsSaid says what a playlist or collection holds, for a refusal to delete it: how many and which, or that it is empty.
+func holdsSaid(rows []memberRow, one, many string) string {
+	switch len(rows) {
+	case 0:
+		return "It is empty"
+	case 1:
+		return "It holds 1 " + one + ": " + membersSaid(rows)
+	}
+
+	return fmt.Sprintf("It holds %d %s: %s", len(rows), many, membersSaid(rows))
+}
+
 // collectionNow is a collection as it was before a create: its name, the name
 // its folder keeps - the one it was first made with, "" where the server does
 // not list the folder - and, where it does not, which of the items asked for
@@ -433,7 +445,8 @@ func registerCollectionTools(r *registry) {
 	})
 
 	type deleteIn struct {
-		Collection string `json:"collection" jsonschema:"collection name or id"`
+		Collection string `json:"collection"        jsonschema:"collection name or id"`
+		Confirm    bool   `json:"confirm,omitempty" jsonschema:"must be true to delete; without it the call is refused with what the collection holds"`
 	}
 	type deleteOut struct {
 		Deleted  string      `json:"deleted"`
@@ -444,7 +457,7 @@ func registerCollectionTools(r *registry) {
 	}
 	add(r, deleteTool, &mcp.Tool{
 		Name: "collection_delete",
-		Description: "Delete a collection, which cannot be undone: the items stay in the library and only the grouping goes, with its name, sort name, description and images. held in the answer lists what it held, by id and name, to make it again with collection_create, which gives it a new id. " +
+		Description: "Delete a collection, which cannot be undone: the items stay in the library and only the grouping goes, with its name, sort name, description and images. held in the answer lists what it held, by id and name, to make it again with collection_create, which gives it a new id. Without confirm=true it refuses, saying what the collection holds. " +
 			"On Emby, a collection deleted while a refresh of it was still queued (behind a library scan, say) leaves its name unusable for a new collection until Emby restarts. " +
 			"It answers once the collection has stayed gone, deleting it again if it comes back: Jellyfin refreshes a collection it has made or whose members changed, and saves it back when that refresh ends - a second or so later, or a minute when the provider fails - so there a collection changed in the last 75 seconds is watched a few seconds when the provider that refresh asks answers at once, and until 75 seconds after the change when it is slow or failing; anything else for a few seconds.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in deleteIn) (*mcp.CallToolResult, deleteOut, error) {
@@ -455,6 +468,9 @@ func registerCollectionTools(r *registry) {
 		held, err := membersOf(ctx, client, col.ID)
 		if err != nil {
 			return nil, deleteOut{}, fmt.Errorf("could not read what %s holds, so it was not deleted: %w", col.Name, err)
+		}
+		if !in.Confirm {
+			return nil, deleteOut{}, fmt.Errorf("refusing to delete %s without confirm=true: nothing was deleted. %s. The items stay in the library either way", col.Name, holdsSaid(held, "item", "items"))
 		}
 
 		// read back until it stays gone: Jellyfin saves a collection it is

@@ -22,7 +22,7 @@ func TestCollections(t *testing.T) {
 	}
 	id := acctest.Str(out["id"])
 	// the test deletes it itself; this is for one that stops short
-	suite.DeleteLaterIfThere(t, "collection_delete", map[string]any{"collection": id}, "no collection named")
+	suite.DeleteLaterIfThere(t, "collection_delete", map[string]any{"collection": id, "confirm": true}, "no collection named")
 
 	list := suite.Call(t, "collection_list", nil)
 	var names []string
@@ -84,7 +84,13 @@ func TestCollections(t *testing.T) {
 		t.Errorf("an edit without fields: %s", msg)
 	}
 
-	del := suite.Call(t, "collection_delete", map[string]any{"collection": "Zzyzx Anthology"})
+	if msg := suite.CallErr(t, "collection_delete", map[string]any{"collection": "Zzyzx Anthology"}); !strings.Contains(msg, "without confirm=true: nothing was deleted. It holds 2 items") {
+		t.Errorf("a delete without confirm: %s", msg)
+	}
+	if !slices.ContainsFunc(acctest.Rows(t, suite.Call(t, "collection_list", nil)["collections"], "collections"), func(r map[string]any) bool { return acctest.Str(r["name"]) == "Zzyzx Anthology" }) {
+		t.Error("Zzyzx Anthology went on a delete without confirm")
+	}
+	del := suite.Call(t, "collection_delete", map[string]any{"collection": "Zzyzx Anthology", "confirm": true})
 	if acctest.Str(del["deleted"]) != "Zzyzx Anthology" {
 		t.Errorf("collection_delete = %v", del)
 	}
@@ -172,7 +178,7 @@ func TestPlaylists(t *testing.T) {
 		t.Fatalf("playlist_create = %v", out)
 	}
 	// the test deletes it itself; this is for one that stops short
-	suite.DeleteLaterIfThere(t, "playlist_delete", map[string]any{"playlist": acctest.Str(out["id"])}, "no playlist named")
+	suite.DeleteLaterIfThere(t, "playlist_delete", map[string]any{"playlist": acctest.Str(out["id"]), "confirm": true}, "no playlist named")
 
 	list := suite.Call(t, "playlist_list", nil)
 	var names []string
@@ -260,7 +266,13 @@ func TestPlaylists(t *testing.T) {
 		t.Errorf("a move without a position: %s", msg)
 	}
 
-	del := suite.Call(t, "playlist_delete", map[string]any{"playlist": "denis"})
+	if msg := suite.CallErr(t, "playlist_delete", map[string]any{"playlist": "denis"}); !strings.Contains(msg, "without confirm=true: nothing was deleted. It holds 2 entries") {
+		t.Errorf("a delete without confirm: %s", msg)
+	}
+	if !slices.ContainsFunc(acctest.Rows(t, suite.Call(t, "playlist_list", nil)["playlists"], "playlists"), func(r map[string]any) bool { return acctest.Str(r["name"]) == "Denis" }) {
+		t.Error("Denis went on a delete without confirm")
+	}
+	del := suite.Call(t, "playlist_delete", map[string]any{"playlist": "denis", "confirm": true})
 	if acctest.Str(del["deleted"]) != "Denis" {
 		t.Errorf("playlist_delete = %v", del)
 	}

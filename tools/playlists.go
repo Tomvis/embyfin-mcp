@@ -277,7 +277,8 @@ func registerPlaylistTools(r *registry) {
 	})
 
 	type deleteIn struct {
-		Playlist string `json:"playlist" jsonschema:"playlist name or id"`
+		Playlist string `json:"playlist"          jsonschema:"playlist name or id"`
+		Confirm  bool   `json:"confirm,omitempty" jsonschema:"must be true to delete; without it the call is refused with what the playlist holds"`
 	}
 	type deleteOut struct {
 		Deleted string      `json:"deleted"`
@@ -286,7 +287,7 @@ func registerPlaylistTools(r *registry) {
 	}
 	add(r, deleteTool, &mcp.Tool{
 		Name:        "playlist_delete",
-		Description: "Delete a playlist, which cannot be undone: the items stay in the library and only the list goes, with its order and name. held in the answer lists every entry in order, each item by id and name, to make it again with playlist_create, which gives it a new id and new entry ids; on Jellyfin, which lists a playlist only in a user's view, one that cannot be read whole - no administrator sees every library - is not deleted.",
+		Description: "Delete a playlist, which cannot be undone: the items stay in the library and only the list goes, with its order and name. held in the answer lists every entry in order, each item by id and name, to make it again with playlist_create, which gives it a new id and new entry ids; on Jellyfin, which lists a playlist only in a user's view, one that cannot be read whole - no administrator sees every library - is not deleted. Without confirm=true it refuses, saying what the playlist holds.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in deleteIn) (*mcp.CallToolResult, deleteOut, error) {
 		pl, err := client.ResolveByType(ctx, "Playlist", in.Playlist)
 		if err != nil {
@@ -298,6 +299,9 @@ func registerPlaylistTools(r *registry) {
 			return nil, deleteOut{}, fmt.Errorf("could not read everything %s holds, so it was not deleted: %w", pl.Name, err)
 		}
 		held := memberRows(entries)
+		if !in.Confirm {
+			return nil, deleteOut{}, fmt.Errorf("refusing to delete %s without confirm=true: nothing was deleted. %s. The items stay in the library either way", pl.Name, holdsSaid(held, "entry", "entries"))
+		}
 
 		if err := client.DeleteItem(ctx, pl.ID); err != nil {
 			still := "it is still there, read back"

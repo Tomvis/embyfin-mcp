@@ -24,13 +24,13 @@ func TestDeletingACollectionJustMade(t *testing.T) {
 	id := acctest.Str(suite.Call(t, "collection_create", map[string]any{"name": "Zzyzx Just Made", "item_ids": []any{alien}})["id"])
 	t.Cleanup(func() {
 		if _, err := suite.Invoke("collection_get", map[string]any{"collection": id}); err == nil {
-			suite.Undo(t, "collection_delete", map[string]any{"collection": id})
+			suite.Undo(t, "collection_delete", map[string]any{"collection": id, "confirm": true})
 		} else if !strings.Contains(err.Error(), "no collection named") {
 			t.Errorf("reading whether the collection %s is still there: %v", id, err)
 		}
 	})
 
-	out := suite.Call(t, "collection_delete", map[string]any{"collection": id})
+	out := suite.Call(t, "collection_delete", map[string]any{"collection": id, "confirm": true})
 	watched, note := acctest.Num(t, out["watched_s"], "watched_s"), acctest.Str(out["note"])
 	if acctest.Str(out["deleted"]) != "Zzyzx Just Made" {
 		t.Errorf("collection_delete = %v", out)

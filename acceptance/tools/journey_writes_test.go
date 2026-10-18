@@ -474,7 +474,7 @@ func TestACollectionOfASeries(t *testing.T) {
 	deleted := false
 	t.Cleanup(func() {
 		if !deleted {
-			if _, err := suite.Invoke("collection_delete", map[string]any{"collection": col}); err != nil {
+			if _, err := suite.Invoke("collection_delete", map[string]any{"collection": col, "confirm": true}); err != nil {
 				t.Errorf("deleting the collection: %v", err)
 			}
 		}
@@ -496,7 +496,7 @@ func TestACollectionOfASeries(t *testing.T) {
 		t.Errorf("item_delete of a collection: %s", msg)
 	}
 
-	del := suite.Call(t, "collection_delete", map[string]any{"collection": col})
+	del := suite.Call(t, "collection_delete", map[string]any{"collection": col, "confirm": true})
 	deleted = true
 	held := names(t, del["held"], "held")
 	slices.Sort(held)
@@ -746,7 +746,7 @@ func TestListsReadWholeWhenTheAdminIsNarrowed(t *testing.T) {
 		for tool, args := range map[string]map[string]any{
 			"collection_get":  {"collection": col},
 			"playlist_get":    {"playlist": pl},
-			"playlist_delete": {"playlist": pl},
+			"playlist_delete": {"playlist": pl, "confirm": true},
 			"item_delete":     {"id": alien},
 		} {
 			if msg := suite.CallErr(t, tool, args); !strings.Contains(msg, "no administrator sees every library") {

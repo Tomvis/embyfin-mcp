@@ -31,7 +31,7 @@ func TestADeletedAccountsPlaylistStaysAndItsMarksGo(t *testing.T) {
 		}
 		for _, p := range acctest.RowsOf(suite.Call(t, "playlist_list", nil)["playlists"]) {
 			if acctest.Str(p["name"]) == list {
-				suite.Call(t, "playlist_delete", map[string]any{"playlist": acctest.Str(p["id"])})
+				suite.Call(t, "playlist_delete", map[string]any{"playlist": acctest.Str(p["id"]), "confirm": true})
 			}
 		}
 	})

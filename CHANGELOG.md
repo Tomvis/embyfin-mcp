@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Breaking
+
+- `playlist_delete` and `collection_delete` take `confirm`, as `item_delete` does: without `confirm=true` they refuse, saying what the list holds, and delete nothing
+
+### Changed
+
+- the help for `--enable-delete` names accounts among what the tools it loads delete
+
 ## 0.9.0 (2026-10-15)
 
 ### Added

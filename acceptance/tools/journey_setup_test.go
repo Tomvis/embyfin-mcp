@@ -135,12 +135,12 @@ func TestFromNothingToAuditToFix(t *testing.T) {
 	t.Cleanup(func() {
 		for _, c := range acctest.RowsOf(suite.Call(t, "collection_list", nil)["collections"]) {
 			if acctest.Str(c["name"]) == journeyCollection {
-				suite.Call(t, "collection_delete", map[string]any{"collection": acctest.Str(c["id"])})
+				suite.Call(t, "collection_delete", map[string]any{"collection": acctest.Str(c["id"]), "confirm": true})
 			}
 		}
 		for _, p := range acctest.RowsOf(suite.Call(t, "playlist_list", nil)["playlists"]) {
 			if acctest.Str(p["name"]) == journeyPlaylist {
-				suite.Call(t, "playlist_delete", map[string]any{"playlist": acctest.Str(p["id"])})
+				suite.Call(t, "playlist_delete", map[string]any{"playlist": acctest.Str(p["id"]), "confirm": true})
 			}
 		}
 		if removeLibraryIfThere(t, journeyLibrary) {
@@ -364,8 +364,8 @@ func TestFromNothingToAuditToFix(t *testing.T) {
 
 	// --- and back: each thing in the order that lets it go
 
-	suite.Call(t, "playlist_delete", map[string]any{"playlist": acctest.Str(playlist["id"])})
-	suite.Call(t, "collection_delete", map[string]any{"collection": journeyCollection})
+	suite.Call(t, "playlist_delete", map[string]any{"playlist": acctest.Str(playlist["id"]), "confirm": true})
+	suite.Call(t, "collection_delete", map[string]any{"collection": journeyCollection, "confirm": true})
 	if msg := suite.CallErr(t, "library_delete", map[string]any{"library": journeyLibrary}); !strings.Contains(msg, "without confirm=true") {
 		t.Errorf("library_delete without confirm = %q", msg)
 	}
