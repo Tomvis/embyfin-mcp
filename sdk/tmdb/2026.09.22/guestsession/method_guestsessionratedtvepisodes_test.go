@@ -93,7 +93,7 @@ func TestOperationGuestSessionRatedTvEpisodesComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "page", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "page", "results", "total_results", "{}", tc.total, tc.pages)
 			result, err := c.GuestSessionRatedTvEpisodesComplete(t.Context(), "p/guestSessionId", tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -108,7 +108,7 @@ func TestOperationGuestSessionRatedTvEpisodesComplete(t *testing.T) {
 func TestOperationGuestSessionRatedTvEpisodesEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "page", "{}", 0, 2)
+	c, starts := pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	n := 0
 	for _, err := range c.GuestSessionRatedTvEpisodesEach(t.Context(), "p/guestSessionId", tmdb.GuestSessionRatedTvEpisodesOptions{}) {
 		if err != nil {
@@ -121,7 +121,7 @@ func TestOperationGuestSessionRatedTvEpisodesEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "page", "{}", 0, 2)
+	c, starts = pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	for range c.GuestSessionRatedTvEpisodesEach(t.Context(), "p/guestSessionId", tmdb.GuestSessionRatedTvEpisodesOptions{}) {
 		break
 	}

@@ -89,7 +89,7 @@ func TestOperationTvSeriesRecommendationsComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "page", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "page", "results", "total_results", "{}", tc.total, tc.pages)
 			result, err := c.TvSeriesRecommendationsComplete(t.Context(), 7, tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -104,7 +104,7 @@ func TestOperationTvSeriesRecommendationsComplete(t *testing.T) {
 func TestOperationTvSeriesRecommendationsEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "page", "{}", 0, 2)
+	c, starts := pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	n := 0
 	for _, err := range c.TvSeriesRecommendationsEach(t.Context(), 7, tmdb.TvSeriesRecommendationsOptions{}) {
 		if err != nil {
@@ -117,7 +117,7 @@ func TestOperationTvSeriesRecommendationsEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "page", "{}", 0, 2)
+	c, starts = pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	for range c.TvSeriesRecommendationsEach(t.Context(), 7, tmdb.TvSeriesRecommendationsOptions{}) {
 		break
 	}

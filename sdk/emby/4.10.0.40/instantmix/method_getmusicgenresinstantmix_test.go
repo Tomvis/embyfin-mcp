@@ -597,7 +597,7 @@ func TestOperationGetMusicGenresInstantMixComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "StartIndex", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", tc.total, tc.pages)
 			result, err := c.GetMusicGenresInstantMixComplete(t.Context(), tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -612,7 +612,7 @@ func TestOperationGetMusicGenresInstantMixComplete(t *testing.T) {
 func TestOperationGetMusicGenresInstantMixEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "StartIndex", "{}", 0, 2)
+	c, starts := pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	n := 0
 	for _, err := range c.GetMusicGenresInstantMixEach(t.Context(), emby.GetMusicGenresInstantMixOptions{Limit: new(1)}) {
 		if err != nil {
@@ -625,7 +625,7 @@ func TestOperationGetMusicGenresInstantMixEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "StartIndex", "{}", 0, 2)
+	c, starts = pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	for range c.GetMusicGenresInstantMixEach(t.Context(), emby.GetMusicGenresInstantMixOptions{Limit: new(1)}) {
 		break
 	}

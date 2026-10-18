@@ -11,7 +11,6 @@ type param = pandorest.Param
 
 var (
 	operation     = pandorest.Operation
-	jsonResponse  = pandorest.JSONResponse
 	addParameters = pandorest.AddParameters
 	property      = pandorest.Property
 )
@@ -34,7 +33,8 @@ var All = []pandorest.Workaround{
 	embyCodecDisplayText{},
 	embyPropertyConditionValue{},
 	embyUndeclaredQuery{},
-	embyToneMapOptions{},
+	embyToneMapOptionsEditor,
+	embyToneMapOptions,
 	embySavedSinceText{},
 	embyJoinedLists,
 }

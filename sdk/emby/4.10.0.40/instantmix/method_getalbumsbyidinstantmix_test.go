@@ -592,7 +592,7 @@ func TestOperationGetAlbumsByIdInstantMixComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "StartIndex", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", tc.total, tc.pages)
 			result, err := c.GetAlbumsByIdInstantMixComplete(t.Context(), emby.ItemID("v-id"), tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -607,7 +607,7 @@ func TestOperationGetAlbumsByIdInstantMixComplete(t *testing.T) {
 func TestOperationGetAlbumsByIdInstantMixEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "StartIndex", "{}", 0, 2)
+	c, starts := pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	n := 0
 	for _, err := range c.GetAlbumsByIdInstantMixEach(t.Context(), emby.ItemID("v-id"), emby.GetAlbumsByIdInstantMixOptions{Limit: new(1)}) {
 		if err != nil {
@@ -620,7 +620,7 @@ func TestOperationGetAlbumsByIdInstantMixEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "StartIndex", "{}", 0, 2)
+	c, starts = pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	for range c.GetAlbumsByIdInstantMixEach(t.Context(), emby.ItemID("v-id"), emby.GetAlbumsByIdInstantMixOptions{Limit: new(1)}) {
 		break
 	}

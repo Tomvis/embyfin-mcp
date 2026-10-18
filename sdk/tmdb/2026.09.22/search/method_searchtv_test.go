@@ -96,7 +96,7 @@ func TestOperationSearchTvComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "page", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "page", "results", "total_results", "{}", tc.total, tc.pages)
 			result, err := c.SearchTvComplete(t.Context(), tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -111,7 +111,7 @@ func TestOperationSearchTvComplete(t *testing.T) {
 func TestOperationSearchTvEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "page", "{}", 0, 2)
+	c, starts := pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	n := 0
 	for _, err := range c.SearchTvEach(t.Context(), tmdb.SearchTvOptions{}) {
 		if err != nil {
@@ -124,7 +124,7 @@ func TestOperationSearchTvEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "page", "{}", 0, 2)
+	c, starts = pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	for range c.SearchTvEach(t.Context(), tmdb.SearchTvOptions{}) {
 		break
 	}

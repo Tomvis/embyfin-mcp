@@ -80,7 +80,7 @@ func TestOperationSearchKeywordComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "page", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "page", "results", "total_results", "{}", tc.total, tc.pages)
 			result, err := c.SearchKeywordComplete(t.Context(), tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -95,7 +95,7 @@ func TestOperationSearchKeywordComplete(t *testing.T) {
 func TestOperationSearchKeywordEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "page", "{}", 0, 2)
+	c, starts := pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	n := 0
 	for _, err := range c.SearchKeywordEach(t.Context(), tmdb.SearchKeywordOptions{}) {
 		if err != nil {
@@ -108,7 +108,7 @@ func TestOperationSearchKeywordEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "page", "{}", 0, 2)
+	c, starts = pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	for range c.SearchKeywordEach(t.Context(), tmdb.SearchKeywordOptions{}) {
 		break
 	}

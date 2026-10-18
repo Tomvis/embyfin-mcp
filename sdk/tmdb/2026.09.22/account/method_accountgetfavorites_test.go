@@ -97,7 +97,7 @@ func TestOperationAccountGetFavoritesComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "page", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "page", "results", "total_results", "{}", tc.total, tc.pages)
 			result, err := c.AccountGetFavoritesComplete(t.Context(), 7, tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -112,7 +112,7 @@ func TestOperationAccountGetFavoritesComplete(t *testing.T) {
 func TestOperationAccountGetFavoritesEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "page", "{}", 0, 2)
+	c, starts := pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	n := 0
 	for _, err := range c.AccountGetFavoritesEach(t.Context(), 7, tmdb.AccountGetFavoritesOptions{}) {
 		if err != nil {
@@ -125,7 +125,7 @@ func TestOperationAccountGetFavoritesEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "page", "{}", 0, 2)
+	c, starts = pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	for range c.AccountGetFavoritesEach(t.Context(), 7, tmdb.AccountGetFavoritesOptions{}) {
 		break
 	}

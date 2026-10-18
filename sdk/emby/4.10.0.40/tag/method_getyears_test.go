@@ -592,7 +592,7 @@ func TestOperationGetYearsComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "StartIndex", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", tc.total, tc.pages)
 			result, err := c.GetYearsComplete(t.Context(), tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -607,7 +607,7 @@ func TestOperationGetYearsComplete(t *testing.T) {
 func TestOperationGetYearsEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "StartIndex", "{}", 0, 2)
+	c, starts := pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	n := 0
 	for _, err := range c.GetYearsEach(t.Context(), emby.GetYearsOptions{Limit: new(1)}) {
 		if err != nil {
@@ -620,7 +620,7 @@ func TestOperationGetYearsEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "StartIndex", "{}", 0, 2)
+	c, starts = pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	for range c.GetYearsEach(t.Context(), emby.GetYearsOptions{Limit: new(1)}) {
 		break
 	}

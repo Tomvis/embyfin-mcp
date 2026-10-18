@@ -97,7 +97,7 @@ func TestOperationAccountRatedTvComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "page", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "page", "results", "total_results", "{}", tc.total, tc.pages)
 			result, err := c.AccountRatedTvComplete(t.Context(), 7, tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -112,7 +112,7 @@ func TestOperationAccountRatedTvComplete(t *testing.T) {
 func TestOperationAccountRatedTvEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "page", "{}", 0, 2)
+	c, starts := pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	n := 0
 	for _, err := range c.AccountRatedTvEach(t.Context(), 7, tmdb.AccountRatedTvOptions{}) {
 		if err != nil {
@@ -125,7 +125,7 @@ func TestOperationAccountRatedTvEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "page", "{}", 0, 2)
+	c, starts = pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	for range c.AccountRatedTvEach(t.Context(), 7, tmdb.AccountRatedTvOptions{}) {
 		break
 	}

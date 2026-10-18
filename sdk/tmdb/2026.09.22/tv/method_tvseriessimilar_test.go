@@ -89,7 +89,7 @@ func TestOperationTvSeriesSimilarComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "page", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "page", "results", "total_results", "{}", tc.total, tc.pages)
 			result, err := c.TvSeriesSimilarComplete(t.Context(), 7, tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -104,7 +104,7 @@ func TestOperationTvSeriesSimilarComplete(t *testing.T) {
 func TestOperationTvSeriesSimilarEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "page", "{}", 0, 2)
+	c, starts := pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	n := 0
 	for _, err := range c.TvSeriesSimilarEach(t.Context(), 7, tmdb.TvSeriesSimilarOptions{}) {
 		if err != nil {
@@ -117,7 +117,7 @@ func TestOperationTvSeriesSimilarEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "page", "{}", 0, 2)
+	c, starts = pagedServer(t, "page", "results", "total_results", "{}", 0, 2)
 	for range c.TvSeriesSimilarEach(t.Context(), 7, tmdb.TvSeriesSimilarOptions{}) {
 		break
 	}

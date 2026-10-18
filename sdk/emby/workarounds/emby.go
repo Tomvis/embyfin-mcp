@@ -220,55 +220,32 @@ func (embyUndeclaredQuery) Apply(spec *openapi.Spec) error {
 	return nil
 }
 
-type embyToneMapOptions struct{}
-
 // embyToneMapOptionsSchema is the tone mapping editor the server answers: the
 // visibility the document declares, under OptionsVisibility, beside the
 // settings and the editor's own text.
 const embyToneMapOptionsSchema = "Configuration.ToneMapping.ToneMapOptions"
 
-func (embyToneMapOptions) Name() string    { return "emby-tone-map-options" }
-func (embyToneMapOptions) Service() string { return emby }
-func (embyToneMapOptions) Bug() string {
-	return "GET /Encoding/ToneMapOptions declares a ToneMapOptionsVisibility; the server answers the tone mapping editor, which holds one under OptionsVisibility beside the settings (EnableSoftwareToneMapping, the software and hardware options) and the editor's title and description"
-}
+const embyToneMapOptionsBug = "GET /Encoding/ToneMapOptions declares a ToneMapOptionsVisibility; the server answers the tone mapping editor, which holds one under OptionsVisibility beside the settings (EnableSoftwareToneMapping, the software and hardware options) and the editor's title and description"
 
-func (embyToneMapOptions) Apply(spec *openapi.Spec) error {
-	op, err := operation(spec, http.MethodGet, "/Encoding/ToneMapOptions")
-	if err != nil {
-		return err
-	}
-	media, err := jsonResponse(op, "GET /Encoding/ToneMapOptions")
-	if err != nil {
-		return err
-	}
-	visibility := "Configuration.ToneMapping.ToneMapOptionsVisibility"
-	if media.Schema == nil || media.Schema.RefName() != visibility {
-		return errors.New("it no longer declares a " + visibility)
-	}
-	if spec.Components.Schemas[embyToneMapOptionsSchema] != nil {
-		return errors.New("the document declares " + embyToneMapOptionsSchema)
-	}
-	str, boolean := &openapi.Schema{Type: openapi.TypeString}, &openapi.Schema{Type: openapi.TypeBoolean}
-	spec.Components.Schemas[embyToneMapOptionsSchema] = &openapi.Schema{Type: openapi.TypeObject, Properties: map[string]*openapi.Schema{
-		"OptionsVisibility":         {Ref: openapi.SchemaRefPrefix + visibility},
-		"EditorTitle":               str,
-		"EditorDescription":         str,
-		"FeatureRequiresPremiere":   boolean,
-		"EnableSoftwareToneMapping": boolean,
-		"EnableHardwareToneMapping": boolean,
-		"IsNewItem":                 boolean,
+// embyToneMapOptionsEditor declares the editor, which embyToneMapOptions then says the operation answers.
+var embyToneMapOptionsEditor = pandorest.DeclaredSchemas(pandorest.About{Name: "emby-tone-map-options-editor", Service: emby, Bug: embyToneMapOptionsBug}, map[string]*openapi.Schema{
+	embyToneMapOptionsSchema: {Type: openapi.TypeObject, Properties: map[string]*openapi.Schema{
+		"OptionsVisibility":         {Ref: openapi.SchemaRefPrefix + "Configuration.ToneMapping.ToneMapOptionsVisibility"},
+		"EditorTitle":               {Type: openapi.TypeString},
+		"EditorDescription":         {Type: openapi.TypeString},
+		"FeatureRequiresPremiere":   {Type: openapi.TypeBoolean},
+		"EnableSoftwareToneMapping": {Type: openapi.TypeBoolean},
+		"EnableHardwareToneMapping": {Type: openapi.TypeBoolean},
+		"IsNewItem":                 {Type: openapi.TypeBoolean},
 		// editors of their own, whose shape depends on the hardware found
 		"SoftwareToneMapOptions": {Type: openapi.TypeObject},
 		"HardwareToneMapOptions": {Type: openapi.TypeObject},
-	}}
-	ref := &openapi.Schema{Ref: openapi.SchemaRefPrefix + embyToneMapOptionsSchema}
-	for _, m := range op.Responses["200"].Content {
-		m.Schema = ref
-	}
+	}},
+})
 
-	return nil
-}
+var embyToneMapOptions = pandorest.WrongAnswers(pandorest.About{Name: "emby-tone-map-options", Service: emby, Bug: embyToneMapOptionsBug}, map[string]pandorest.Correction{
+	"GET /Encoding/ToneMapOptions": {Declared: pandorest.Model("Configuration.ToneMapping.ToneMapOptionsVisibility"), Answers: pandorest.Model(embyToneMapOptionsSchema)},
+})
 
 type embyPlaystateSeekQuery struct{}
 

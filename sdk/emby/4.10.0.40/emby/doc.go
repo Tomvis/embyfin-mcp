@@ -79,6 +79,7 @@
 //   - emby-codec-display-text
 //   - emby-property-condition-value
 //   - emby-undeclared-query
+//   - emby-tone-map-options-editor
 //   - emby-tone-map-options
 //   - emby-saved-since-text
 //   - emby-joined-lists

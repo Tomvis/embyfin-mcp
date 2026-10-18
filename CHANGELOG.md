@@ -10,6 +10,7 @@
 
 - the help for `--enable-delete` names accounts among what the tools it loads delete
 - the eleven audits that named nothing to fix what they find now say what does: `quality_compare` for copies, `item_identify` for a wrong match, the subtitle tools for a missing language, and a scan of the library once a file is replaced on disk
+- built on pandorest 0.12.0, which changes only the SDKs' generated tests
 
 ## 0.9.0 (2026-10-15)
 

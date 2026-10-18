@@ -137,7 +137,7 @@ func TestOperationGetAudioBooksNextUpComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "StartIndex", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", tc.total, tc.pages)
 			result, err := c.GetAudioBooksNextUpComplete(t.Context(), tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -152,7 +152,7 @@ func TestOperationGetAudioBooksNextUpComplete(t *testing.T) {
 func TestOperationGetAudioBooksNextUpEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "StartIndex", "{}", 0, 2)
+	c, starts := pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	n := 0
 	for _, err := range c.GetAudioBooksNextUpEach(t.Context(), emby.GetAudioBooksNextUpOptions{Limit: new(1)}) {
 		if err != nil {
@@ -165,7 +165,7 @@ func TestOperationGetAudioBooksNextUpEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "StartIndex", "{}", 0, 2)
+	c, starts = pagedServer(t, "StartIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	for range c.GetAudioBooksNextUpEach(t.Context(), emby.GetAudioBooksNextUpOptions{Limit: new(1)}) {
 		break
 	}

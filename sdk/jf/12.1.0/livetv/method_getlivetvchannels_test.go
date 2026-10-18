@@ -166,7 +166,7 @@ func TestOperationGetLiveTvChannelsComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "startIndex", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "startIndex", "Items", "TotalRecordCount", "{}", tc.total, tc.pages)
 			result, err := c.GetLiveTvChannelsComplete(t.Context(), tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -181,7 +181,7 @@ func TestOperationGetLiveTvChannelsComplete(t *testing.T) {
 func TestOperationGetLiveTvChannelsEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "startIndex", "{}", 0, 2)
+	c, starts := pagedServer(t, "startIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	n := 0
 	for _, err := range c.GetLiveTvChannelsEach(t.Context(), jf.GetLiveTvChannelsOptions{Limit: new(1)}) {
 		if err != nil {
@@ -194,7 +194,7 @@ func TestOperationGetLiveTvChannelsEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "startIndex", "{}", 0, 2)
+	c, starts = pagedServer(t, "startIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	for range c.GetLiveTvChannelsEach(t.Context(), jf.GetLiveTvChannelsOptions{Limit: new(1)}) {
 		break
 	}

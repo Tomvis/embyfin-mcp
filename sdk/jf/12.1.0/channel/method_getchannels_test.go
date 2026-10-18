@@ -106,7 +106,7 @@ func TestOperationGetChannelsComplete(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			c, starts := pagedServer(t, "startIndex", "{}", tc.total, tc.pages)
+			c, starts := pagedServer(t, "startIndex", "Items", "TotalRecordCount", "{}", tc.total, tc.pages)
 			result, err := c.GetChannelsComplete(t.Context(), tc.options)
 			if err != nil {
 				t.Fatal(err)
@@ -121,7 +121,7 @@ func TestOperationGetChannelsComplete(t *testing.T) {
 func TestOperationGetChannelsEach(t *testing.T) {
 	t.Parallel()
 
-	c, starts := pagedServer(t, "startIndex", "{}", 0, 2)
+	c, starts := pagedServer(t, "startIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	n := 0
 	for _, err := range c.GetChannelsEach(t.Context(), jf.GetChannelsOptions{Limit: new(1)}) {
 		if err != nil {
@@ -134,7 +134,7 @@ func TestOperationGetChannelsEach(t *testing.T) {
 	}
 
 	// stopping after the first result asks for no page more
-	c, starts = pagedServer(t, "startIndex", "{}", 0, 2)
+	c, starts = pagedServer(t, "startIndex", "Items", "TotalRecordCount", "{}", 0, 2)
 	for range c.GetChannelsEach(t.Context(), jf.GetChannelsOptions{Limit: new(1)}) {
 		break
 	}
