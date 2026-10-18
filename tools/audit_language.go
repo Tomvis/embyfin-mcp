@@ -259,7 +259,7 @@ func registerLanguageAudit(r *registry) {
 	add(r, readTool, &mcp.Tool{
 		Name: "audit_language",
 		Description: "Find films and episodes by the language of their audio or subtitles: what has audio or subtitles in a language, what has no audio in it, or what cannot be watched in it at all (neither audio nor subtitles). Any version of an item counts, every version the server shows it in read together (Emby stores each as an item of its own and merges them only in what it shows people, so on Emby this reads the library as the first administrator is shown it). " +
-			"A track with no language tag is never taken as lacking the language, nor as having it: an item whose answer turns on one is counted in untagged instead of reported. Nor is a file with no audio track at all, which as often means the server never probed it as that it is silent: those are counted in no_audio_track. A forced subtitle track (signs and foreign lines only) is not subtitles in its language. A record of an episode with no file is left out.",
+			"A track with no language tag is never taken as lacking the language, nor as having it: an item whose answer turns on one is counted in untagged instead of reported. Nor is a file with no audio track at all, which as often means the server never probed it as that it is silent: those are counted in no_audio_track. A forced subtitle track (signs and foreign lines only) is not subtitles in its language. A record of an episode with no file is left out. Subtitles in a language are found with item_subtitle_search and fetched with item_subtitle_download.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in languageIn) (*mcp.CallToolResult, languageOut, error) {
 		out, err := auditLanguage(ctx, client, in)
 

@@ -111,7 +111,7 @@ func registerDiscAudit(r *registry) {
 		Name: "audit_disc_folders",
 		Description: "Find discs copied in as their own files rather than as a film: a Blu-ray's numbered streams (00000.m2ts) or a DVD's VOBs sitting in a film's folder with no BDMV or VIDEO_TS structure around them. " +
 			"The server makes an item of each stream, so one disc becomes several films - the menu, the trailers and the feature - each matched on its own, which puts short clips in the library under the names of films the disc has nothing to do with. " +
-			"Each folder lists what the server built from it, with the runtime and the ids it matched, so the wrong ones are plain. Remuxing the feature to one file and removing the rest is the cure; deleting the items is not, because they are the disc.",
+			"Each folder lists what the server built from it, with the runtime and the ids it matched, so the wrong ones are plain. Remuxing the feature to one file and removing the rest is the cure; deleting the items is not, because they are the disc. A scan of the library then drops the stream items and reads the one file.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in discIn) (*mcp.CallToolResult, discOut, error) {
 		out, err := auditDiscFolders(ctx, client, in)
 

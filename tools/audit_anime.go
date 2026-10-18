@@ -192,7 +192,7 @@ func registerAnimeAudit(r *registry) {
 		Name: "audit_anime_ids",
 		Description: "Check anime series against Anime-Lists, the community mapping of every AniDB entry to where TVDB and TMDB hold it. AniDB gives an OVA or a film an entry of its own where TVDB and TMDB often fold it into another series' specials. " +
 			"Reports series whose ids disagree (a TMDB or TVDB id that is the whole show beside an AniDB id that is one of its specials), specials that are an AniDB entry of their own and could be split out into a series, and series already kept apart, with the entry that justifies it. " +
-			"Reads the specials of each series the list says holds another entry's episodes; the list is fetched once a day.",
+			"Reads the specials of each series the list says holds another entry's episodes; the list is fetched once a day. A series matched to the wrong show is matched again with item_identify and item_identify_apply; a special split into a series of its own is a move of its files into a folder of their own, which a scan of the library then reads.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in animeIn) (*mcp.CallToolResult, animeOut, error) {
 		limit := in.Limit
 		if limit <= 0 {

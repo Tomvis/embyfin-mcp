@@ -2,7 +2,7 @@
 
 The default is `core`: six read-only tools, about 2,000 tokens.
 
-Every tool's definition takes room in the client's context before anyone asks a question. The whole surface is about 36,800 tokens, which is a poor way to spend a client's context by default. So a session loads the groups it needs.
+Every tool's definition takes room in the client's context before anyone asks a question. The whole surface is about 37,200 tokens, which is a poor way to spend a client's context by default. So a session loads the groups it needs.
 
 ## Toolsets
 
@@ -14,9 +14,9 @@ Every tool's definition takes room in the client's context before anyone asks a 
 | `remote` | 4 | 10 | 2,800 |
 | `admin` | 25 | 31 | 10,400 |
 | `watching` | 8 | 14 | 3,800 |
-| `organise` | 10 | 16 | 5,100 |
-| `curation` | 39 | 45 | 22,700 |
-| `all` | 92 | 92 | 36,800 |
+| `organise` | 10 | 16 | 5,200 |
+| `curation` | 39 | 45 | 23,000 |
+| `all` | 92 | 92 | 37,200 |
 
 - **`curation`** is for curating a library: every audit but `audit_orphans`, and everything that fixes what they find.
 - **`admin`** holds cleaning up after a removed library; see [recovery.md](recovery.md).

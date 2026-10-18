@@ -100,7 +100,7 @@ func registerProviderCheckAudit(r *registry) {
 
 	desc := "Check films and episodes against their metadata provider. A film, one request each: the ids it holds agree with each other and exist there (a TMDB id whose film carries a different IMDb id, a TMDB id TMDB no longer has, an IMDb id that is a series or an episode rather than a film), and the file's runtime is the provider's (a truncated download, a wrong file, a wrong match). " +
 		"An episode: the file's runtime against TMDB's for that episode, read once for its whole series by the series' TMDB id; a file holding several episodes (S01E01E02) against their lengths together. TMDB numbers episodes in the order they aired, so a show numbered another way is compared with other episodes than its own: each finding names the TMDB episode it was compared with beside the file's own title. " +
-		"The item reads as matched on the server either way. Paged, every film and then every episode once in the same order on every call: pass next_offset back as offset to go on; ids checks a handful without a sweep. What could not be judged, for want of a length on either side, is counted in runtime_not_judged. TMDB is the only provider yet."
+		"The item reads as matched on the server either way. Paged, every film and then every episode once in the same order on every call: pass next_offset back as offset to go on; ids checks a handful without a sweep. What could not be judged, for want of a length on either side, is counted in runtime_not_judged. A wrong match is set right with item_identify and item_identify_apply; a file cut short or the wrong file is replaced on disk. TMDB is the only provider yet."
 	if provider == nil {
 		desc += " Disabled: set EMBYFIN_TMDB_TOKEN to enable."
 	}
