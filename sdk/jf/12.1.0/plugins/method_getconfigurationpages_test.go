@@ -21,7 +21,7 @@ func TestOperationGetConfigurationPages(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/web/ConfigurationPages")
 	expectQuery(t, r, "enableInMainMenu", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -47,8 +47,8 @@ func TestOperationGetConfigurationPages(t *testing.T) {
 	if _, err = c.GetConfigurationPages(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("enableInMainMenu") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("enableInMainMenu"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Enableinmainmenu") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Enableinmainmenu"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetConfigurationPages(t.Context(), true, true); err == nil || len(s.requests) != 1 {

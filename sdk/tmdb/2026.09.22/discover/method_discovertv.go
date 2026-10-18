@@ -15,8 +15,7 @@ import (
 // DiscoverTv calls GET /3/discover/tv. TV.
 func (c Client) DiscoverTv(ctx context.Context, options ...tmdb.DiscoverTvOptions) (result tmdb.DiscoverTvResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("DiscoverTv takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("DiscoverTv takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.DiscoverTvOptions
 	if len(options) == 1 {
@@ -36,7 +35,7 @@ func (c Client) DiscoverTv(ctx context.Context, options ...tmdb.DiscoverTvOption
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,17 +44,17 @@ func (c Client) DiscoverTv(ctx context.Context, options ...tmdb.DiscoverTvOption
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.DiscoverTvAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.DiscoverTvAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // DiscoverTvComplete calls DiscoverTv page by page, from the
@@ -63,8 +62,7 @@ func (c Client) DiscoverTv(ctx context.Context, options ...tmdb.DiscoverTvOption
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) DiscoverTvComplete(ctx context.Context, options ...tmdb.DiscoverTvOptions) (result tmdb.DiscoverTvCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("DiscoverTvComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("DiscoverTvComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.DiscoverTvOptions
 	if len(options) == 1 {
@@ -82,11 +80,10 @@ func (c Client) DiscoverTvComplete(ctx context.Context, options ...tmdb.Discover
 		page, err = c.DiscoverTv(ctx, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -95,7 +92,7 @@ func (c Client) DiscoverTvComplete(ctx context.Context, options ...tmdb.Discover
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -142,8 +139,8 @@ func (c Client) DiscoverTvEach(ctx context.Context, options ...tmdb.DiscoverTvOp
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}

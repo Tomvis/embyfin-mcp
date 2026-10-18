@@ -14,8 +14,7 @@ import (
 // WatchProviderTvList calls GET /3/watch/providers/tv. TV Providers.
 func (c Client) WatchProviderTvList(ctx context.Context, options ...tmdb.WatchProviderTvListOptions) (result tmdb.WatchProviderTvListResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("WatchProviderTvList takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("WatchProviderTvList takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.WatchProviderTvListOptions
 	if len(options) == 1 {
@@ -35,7 +34,7 @@ func (c Client) WatchProviderTvList(ctx context.Context, options ...tmdb.WatchPr
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +43,15 @@ func (c Client) WatchProviderTvList(ctx context.Context, options ...tmdb.WatchPr
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.WatchProviderTvListAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.WatchProviderTvListAnswer = result.Answer
 
-	return
+	return result, nil
 }

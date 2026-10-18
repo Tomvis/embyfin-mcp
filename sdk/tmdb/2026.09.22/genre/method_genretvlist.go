@@ -15,8 +15,7 @@ import (
 func (c Client) GenreTvList(ctx context.Context, language ...string) (result tmdb.GenreTvListResponse, err error) {
 	var option tmdb.GenreTvListOptions
 	if len(language) > 1 {
-		err = fmt.Errorf("GenreTvList takes one language at most, not %d", len(language))
-		return
+		return result, fmt.Errorf("GenreTvList takes one language at most, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]
@@ -35,7 +34,7 @@ func (c Client) GenreTvList(ctx context.Context, language ...string) (result tmd
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +43,15 @@ func (c Client) GenreTvList(ctx context.Context, language ...string) (result tmd
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.GenreTvListAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.GenreTvListAnswer = result.Answer
 
-	return
+	return result, nil
 }

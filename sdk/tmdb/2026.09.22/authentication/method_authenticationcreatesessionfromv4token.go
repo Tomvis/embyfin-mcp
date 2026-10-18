@@ -25,11 +25,11 @@ func (c Client) AuthenticationCreateSessionFromV4Token(ctx context.Context, inpu
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
-	if err = req.Marshal(input); err != nil {
-		return
+	if err := req.Marshal(input); err != nil {
+		return result, err
 	}
 
 	var resp *client.Response
@@ -38,15 +38,15 @@ func (c Client) AuthenticationCreateSessionFromV4Token(ctx context.Context, inpu
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.AuthenticationCreateSessionFromV4TokenAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.AuthenticationCreateSessionFromV4TokenAnswer = result.Answer
 
-	return
+	return result, nil
 }

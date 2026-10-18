@@ -4,8 +4,8 @@ package person
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) Translations(ctx context.Context, personId int) (result tmdb.Tra
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "Translations",
-		Path:       fmt.Sprintf("/3/person/%d/translations", personId),
+		Path:       "/3/person/" + strconv.Itoa(personId) + "/translations",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) Translations(ctx context.Context, personId int) (result tmdb.Tra
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TranslationsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TranslationsAnswer = result.Answer
 
-	return
+	return result, nil
 }

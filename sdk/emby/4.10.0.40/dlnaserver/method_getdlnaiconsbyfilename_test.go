@@ -27,13 +27,13 @@ func TestOperationGetDlnaIconsByFilename(t *testing.T) {
 	if got := r.Header.Get("Accept"); !strings.HasPrefix(got, "image/*") {
 		t.Errorf("Accept = %q, want image/* asked for first", got)
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if _, contentType := result.Reader(); contentType == "" || result.ContentLength() != 10 || result.Filename() != "answer.bin" {
 		t.Errorf("Reader = %q, length %d, filename %q", contentType, result.ContentLength(), result.Filename())
 	}
-	if data, err := result.Bytes(9); err == nil || string(data) != "" {
+	if data, err := result.Bytes(9); err == nil || len(data) != 0 {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "image/png", "file bytes")
@@ -75,8 +75,8 @@ func TestOperationGetDlnaIconsByFilename(t *testing.T) {
 	if _, err = c.GetDlnaIconsByFilename(t.Context(), "p/filename"); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("UuId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("UuId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Uuid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Uuid"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetDlnaIconsByFilename(t.Context(), "p/filename", "v-UuId", "v-UuId"); err == nil || len(s.requests) != 1 {

@@ -4,7 +4,6 @@ package dynamichls
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -21,13 +20,13 @@ func (c Client) GetAudioByIdHls1ByPlaylistIdBySegmentIdBySegmentContainer(ctx co
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetAudioByIdHls1ByPlaylistIdBySegmentIdBySegmentContainer",
-		Path:           fmt.Sprintf("/Audio/%s/hls1/%s/%s.%s", url.PathEscape(string(id)), url.PathEscape(playlistId), url.PathEscape(segmentId), url.PathEscape(segmentContainer)),
+		Path:           "/Audio/" + url.PathEscape(string(id)) + "/hls1/" + url.PathEscape(playlistId) + "/" + url.PathEscape(segmentId) + "." + url.PathEscape(segmentContainer),
 		StreamResponse: true,
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -36,8 +35,8 @@ func (c Client) GetAudioByIdHls1ByPlaylistIdBySegmentIdBySegmentContainer(ctx co
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
-	return
+	return result, nil
 }

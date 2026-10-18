@@ -32,7 +32,7 @@ func TestOperationAccountAddFavorite(t *testing.T) {
 	if body != "{}" {
 		t.Errorf("an empty record sent %q, want %q: a field never set went out", body, "{}")
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -41,7 +41,7 @@ func TestOperationAccountAddFavorite(t *testing.T) {
 	if result.AccountAddFavoriteAnswer != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
@@ -64,8 +64,8 @@ func TestOperationAccountAddFavorite(t *testing.T) {
 	if _, err = c.AccountAddFavorite(t.Context(), 7, tmdb.AccountAddFavoriteRequest{}); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("session_id") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("session_id"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Session_id") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Session_id"))
 	}
 	// two values are refused before any request
 	if _, err = c.AccountAddFavorite(t.Context(), 7, tmdb.AccountAddFavoriteRequest{}, "v-SessionId", "v-SessionId"); err == nil || len(s.requests) != 1 {

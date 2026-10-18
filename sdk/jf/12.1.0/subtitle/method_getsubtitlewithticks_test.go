@@ -17,11 +17,11 @@ func TestOperationGetSubtitleWithTicks(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "text/plain", "file bytes")
 	result, err := c.GetSubtitleWithTicks(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, 7, "p/routeFormat", jf.GetSubtitleWithTicksOptions{
-		ItemId:             jf.ItemID("v-ItemId"),
-		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"),
-		Index:              new(7),
-		StartPositionTicks: new(int64(7)),
-		Format:             "v-Format",
+		ItemId:             jf.ItemID("v-ItemId"),               //nolint:staticcheck // the test sets every option, deprecated ones too
+		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"), //nolint:staticcheck // the test sets every option, deprecated ones too
+		Index:              new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		StartPositionTicks: new(int64(7)),                       //nolint:staticcheck // the test sets every option, deprecated ones too
+		Format:             "v-Format",                          //nolint:staticcheck // the test sets every option, deprecated ones too
 		EndPositionTicks:   new(int64(7)),
 		CopyTimestamps:     new(true),
 		AddVttTimeMap:      new(true),
@@ -43,22 +43,22 @@ func TestOperationGetSubtitleWithTicks(t *testing.T) {
 	if got := r.Header.Get("Accept"); !strings.HasPrefix(got, "text/*") {
 		t.Errorf("Accept = %q, want text/* asked for first", got)
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if _, contentType := result.Reader(); contentType == "" || result.ContentLength() != 10 || result.Filename() != "answer.bin" {
 		t.Errorf("Reader = %q, length %d, filename %q", contentType, result.ContentLength(), result.Filename())
 	}
-	if data, err := result.Bytes(9); err == nil || string(data) != "" {
+	if data, err := result.Bytes(9); err == nil || len(data) != 0 {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "text/plain", "file bytes")
 	result, err = c.GetSubtitleWithTicks(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, 7, "p/routeFormat", jf.GetSubtitleWithTicksOptions{
-		ItemId:             jf.ItemID("v-ItemId"),
-		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"),
-		Index:              new(7),
-		StartPositionTicks: new(int64(7)),
-		Format:             "v-Format",
+		ItemId:             jf.ItemID("v-ItemId"),               //nolint:staticcheck // the test sets every option, deprecated ones too
+		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"), //nolint:staticcheck // the test sets every option, deprecated ones too
+		Index:              new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		StartPositionTicks: new(int64(7)),                       //nolint:staticcheck // the test sets every option, deprecated ones too
+		Format:             "v-Format",                          //nolint:staticcheck // the test sets every option, deprecated ones too
 		EndPositionTicks:   new(int64(7)),
 		CopyTimestamps:     new(true),
 		AddVttTimeMap:      new(true),
@@ -71,11 +71,11 @@ func TestOperationGetSubtitleWithTicks(t *testing.T) {
 	}
 	c, _ = newOperationServer(t, 200, "text/plain", "file bytes")
 	result, err = c.GetSubtitleWithTicks(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, 7, "p/routeFormat", jf.GetSubtitleWithTicksOptions{
-		ItemId:             jf.ItemID("v-ItemId"),
-		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"),
-		Index:              new(7),
-		StartPositionTicks: new(int64(7)),
-		Format:             "v-Format",
+		ItemId:             jf.ItemID("v-ItemId"),               //nolint:staticcheck // the test sets every option, deprecated ones too
+		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"), //nolint:staticcheck // the test sets every option, deprecated ones too
+		Index:              new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		StartPositionTicks: new(int64(7)),                       //nolint:staticcheck // the test sets every option, deprecated ones too
+		Format:             "v-Format",                          //nolint:staticcheck // the test sets every option, deprecated ones too
 		EndPositionTicks:   new(int64(7)),
 		CopyTimestamps:     new(true),
 		AddVttTimeMap:      new(true),
@@ -100,11 +100,11 @@ func TestOperationGetSubtitleWithTicks(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetSubtitleWithTicks(t.Context(), jf.ItemID("v-routeItemId"), jf.MediaSourceID("v-routeMediaSourceId"), 7, 7, "p/routeFormat", jf.GetSubtitleWithTicksOptions{
-		ItemId:             jf.ItemID("v-ItemId"),
-		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"),
-		Index:              new(7),
-		StartPositionTicks: new(int64(7)),
-		Format:             "v-Format",
+		ItemId:             jf.ItemID("v-ItemId"),               //nolint:staticcheck // the test sets every option, deprecated ones too
+		MediaSourceId:      jf.MediaSourceID("v-MediaSourceId"), //nolint:staticcheck // the test sets every option, deprecated ones too
+		Index:              new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		StartPositionTicks: new(int64(7)),                       //nolint:staticcheck // the test sets every option, deprecated ones too
+		Format:             "v-Format",                          //nolint:staticcheck // the test sets every option, deprecated ones too
 		EndPositionTicks:   new(int64(7)),
 		CopyTimestamps:     new(true),
 		AddVttTimeMap:      new(true),

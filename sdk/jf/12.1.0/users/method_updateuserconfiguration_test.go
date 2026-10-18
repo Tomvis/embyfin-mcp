@@ -31,7 +31,7 @@ func TestOperationUpdateUserConfiguration(t *testing.T) {
 	if body != "{}" {
 		t.Errorf("an empty record sent %q, want %q: a field never set went out", body, "{}")
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -47,8 +47,8 @@ func TestOperationUpdateUserConfiguration(t *testing.T) {
 	if _, err = c.UpdateUserConfiguration(t.Context(), jf.UserConfiguration{}); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("userId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("userId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Userid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Userid"))
 	}
 	// two values are refused before any request
 	if _, err = c.UpdateUserConfiguration(t.Context(), jf.UserConfiguration{}, jf.UserID("v-UserId"), jf.UserID("v-UserId")); err == nil || len(s.requests) != 1 {

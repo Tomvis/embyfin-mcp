@@ -20,7 +20,7 @@ func TestOperationRevokeKey(t *testing.T) {
 	r, body := s.only(t)
 	_ = body
 	expectRequest(t, r, http.MethodDelete, "/Auth/Keys/p%2Fkey")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

@@ -16,8 +16,7 @@ import (
 func (c Client) TrendingTv(ctx context.Context, timeWindow string, language ...string) (result tmdb.TrendingTvResponse, err error) {
 	var option tmdb.TrendingTvOptions
 	if len(language) > 1 {
-		err = fmt.Errorf("TrendingTv takes one language at most, not %d", len(language))
-		return
+		return result, fmt.Errorf("TrendingTv takes one language at most, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]
@@ -31,12 +30,12 @@ func (c Client) TrendingTv(ctx context.Context, timeWindow string, language ...s
 		HTTPMethod:    http.MethodGet,
 		Operation:     "TrendingTv",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/trending/tv/%s", url.PathEscape(timeWindow)),
+		Path:          "/3/trending/tv/" + url.PathEscape(timeWindow),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,15 +44,15 @@ func (c Client) TrendingTv(ctx context.Context, timeWindow string, language ...s
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TrendingTvAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TrendingTvAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -56,6 +56,5 @@ func (o PostUsersAuthenticateByNameOptions) ToHeaders() *client.Headers {
 
 // ToQuery returns the query parameters the options set.
 func (o PostUsersAuthenticateByNameOptions) ToQuery() *client.QueryParams {
-	out := client.QueryParams{}
-	return &out
+	return &client.QueryParams{}
 }

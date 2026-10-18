@@ -22,7 +22,7 @@ func TestOperationUpdateItemContentType(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/ContentType")
 	expectQuery(t, r, "contentType", "v-ContentType")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -38,8 +38,8 @@ func TestOperationUpdateItemContentType(t *testing.T) {
 	if _, err = c.UpdateItemContentType(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("contentType") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("contentType"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Contenttype") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Contenttype"))
 	}
 	// two values are refused before any request
 	if _, err = c.UpdateItemContentType(t.Context(), jf.ItemID("v-itemId"), "v-ContentType", "v-ContentType"); err == nil || len(s.requests) != 1 {

@@ -28,7 +28,7 @@ func TestOperationPostSessionsByIdViewing(t *testing.T) {
 	expectQuery(t, r, "ItemType", "v-ItemType")
 	expectQuery(t, r, "ItemId", "v-ItemId")
 	expectQuery(t, r, "ItemName", "v-ItemName")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

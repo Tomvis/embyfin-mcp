@@ -4,7 +4,6 @@ package dlnaserver
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -21,13 +20,13 @@ func (c Client) GetDlnaByUuIdIconsByFilename(ctx context.Context, uuId string, f
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetDlnaByUuIdIconsByFilename",
-		Path:           fmt.Sprintf("/Dlna/%s/icons/%s", url.PathEscape(uuId), url.PathEscape(filename)),
+		Path:           "/Dlna/" + url.PathEscape(uuId) + "/icons/" + url.PathEscape(filename),
 		StreamResponse: true,
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -36,8 +35,8 @@ func (c Client) GetDlnaByUuIdIconsByFilename(ctx context.Context, uuId string, f
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
-	return
+	return result, nil
 }

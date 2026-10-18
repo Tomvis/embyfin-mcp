@@ -4,9 +4,9 @@ package playlist
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/jf/12.1.0/jf"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) MoveItem(ctx context.Context, playlistId jf.ItemID, itemId jf.It
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "MoveItem",
-		Path:       fmt.Sprintf("/Playlists/%s/Items/%s/Move/%d", url.PathEscape(string(playlistId)), url.PathEscape(string(itemId)), newIndex),
+		Path:       "/Playlists/" + url.PathEscape(string(playlistId)) + "/Items/" + url.PathEscape(string(itemId)) + "/Move/" + strconv.Itoa(newIndex),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,8 +34,8 @@ func (c Client) MoveItem(ctx context.Context, playlistId jf.ItemID, itemId jf.It
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
-	return
+	return result, nil
 }

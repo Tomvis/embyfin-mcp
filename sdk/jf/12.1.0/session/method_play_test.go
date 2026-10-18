@@ -36,7 +36,7 @@ func TestOperationPlay(t *testing.T) {
 	expectQuery(t, r, "audioStreamIndex", "7")
 	expectQuery(t, r, "subtitleStreamIndex", "7")
 	expectQuery(t, r, "startIndex", "7")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

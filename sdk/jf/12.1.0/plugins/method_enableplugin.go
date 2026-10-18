@@ -4,7 +4,6 @@ package plugins
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -20,12 +19,12 @@ func (c Client) EnablePlugin(ctx context.Context, pluginId string, version strin
 		},
 		HTTPMethod: http.MethodPost,
 		Operation:  "EnablePlugin",
-		Path:       fmt.Sprintf("/Plugins/%s/%s/Enable", url.PathEscape(pluginId), url.PathEscape(version)),
+		Path:       "/Plugins/" + url.PathEscape(pluginId) + "/" + url.PathEscape(version) + "/Enable",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,8 +33,8 @@ func (c Client) EnablePlugin(ctx context.Context, pluginId string, version strin
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
-	return
+	return result, nil
 }

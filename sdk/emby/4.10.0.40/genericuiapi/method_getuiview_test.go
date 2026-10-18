@@ -27,7 +27,7 @@ func TestOperationGetUIView(t *testing.T) {
 	expectRequest(t, r, http.MethodGet, "/UI/View")
 	expectQuery(t, r, "PageId", "v-PageId")
 	expectQuery(t, r, "ClientLocale", "v-ClientLocale")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -36,7 +36,7 @@ func TestOperationGetUIView(t *testing.T) {
 	if result.UIViewInfo != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 

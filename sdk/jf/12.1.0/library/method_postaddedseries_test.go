@@ -21,7 +21,7 @@ func TestOperationPostAddedSeries(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Library/Series/Added")
 	expectQuery(t, r, "tvdbId", "v-TvdbId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -37,8 +37,8 @@ func TestOperationPostAddedSeries(t *testing.T) {
 	if _, err = c.PostAddedSeries(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("tvdbId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("tvdbId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Tvdbid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Tvdbid"))
 	}
 	// two values are refused before any request
 	if _, err = c.PostAddedSeries(t.Context(), "v-TvdbId", "v-TvdbId"); err == nil || len(s.requests) != 1 {

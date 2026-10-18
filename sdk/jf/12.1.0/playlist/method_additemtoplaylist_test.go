@@ -28,7 +28,7 @@ func TestOperationAddItemToPlaylist(t *testing.T) {
 	expectQuery(t, r, "ids", "a", "b")
 	expectQuery(t, r, "position", "7")
 	expectQuery(t, r, "userId", "v-UserId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

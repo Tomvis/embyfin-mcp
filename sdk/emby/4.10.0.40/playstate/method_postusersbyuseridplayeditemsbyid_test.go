@@ -23,7 +23,7 @@ func TestOperationPostUsersByUserIdPlayedItemsById(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Users/v-userId/PlayedItems/v-id")
 	expectQuery(t, r, "DatePlayed", "v-DatePlayed")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -32,7 +32,7 @@ func TestOperationPostUsersByUserIdPlayedItemsById(t *testing.T) {
 	if result.UserItemDataDto != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
@@ -68,8 +68,8 @@ func TestOperationPostUsersByUserIdPlayedItemsById(t *testing.T) {
 	if _, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("DatePlayed") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("DatePlayed"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Dateplayed") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Dateplayed"))
 	}
 	// two values are refused before any request
 	if _, err = c.PostUsersByUserIdPlayedItemsById(t.Context(), emby.UserID("v-userId"), emby.ItemID("v-id"), "v-DatePlayed", "v-DatePlayed"); err == nil || len(s.requests) != 1 {

@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // TvEpisodeAddRating calls POST /3/tv/{series_id}/season/{season_number}/episode/{episode_number}/rating. Add Rating.
 func (c Client) TvEpisodeAddRating(ctx context.Context, seriesId int, seasonNumber int, episodeNumber int, input tmdb.TvEpisodeAddRatingRequest, options ...tmdb.TvEpisodeAddRatingOptions) (result tmdb.TvEpisodeAddRatingResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvEpisodeAddRating takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvEpisodeAddRating takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvEpisodeAddRatingOptions
 	if len(options) == 1 {
@@ -31,16 +31,16 @@ func (c Client) TvEpisodeAddRating(ctx context.Context, seriesId int, seasonNumb
 		HTTPMethod:    http.MethodPost,
 		Operation:     "TvEpisodeAddRating",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/%d/season/%d/episode/%d/rating", seriesId, seasonNumber, episodeNumber),
+		Path:          "/3/tv/" + strconv.Itoa(seriesId) + "/season/" + strconv.Itoa(seasonNumber) + "/episode/" + strconv.Itoa(episodeNumber) + "/rating",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
-	if err = req.Marshal(input); err != nil {
-		return
+	if err := req.Marshal(input); err != nil {
+		return result, err
 	}
 
 	var resp *client.Response
@@ -49,15 +49,15 @@ func (c Client) TvEpisodeAddRating(ctx context.Context, seriesId int, seasonNumb
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvEpisodeAddRatingAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvEpisodeAddRatingAnswer = result.Answer
 
-	return
+	return result, nil
 }

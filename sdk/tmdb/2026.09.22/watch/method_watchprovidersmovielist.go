@@ -14,8 +14,7 @@ import (
 // WatchProvidersMovieList calls GET /3/watch/providers/movie. Movie Providers.
 func (c Client) WatchProvidersMovieList(ctx context.Context, options ...tmdb.WatchProvidersMovieListOptions) (result tmdb.WatchProvidersMovieListResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("WatchProvidersMovieList takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("WatchProvidersMovieList takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.WatchProvidersMovieListOptions
 	if len(options) == 1 {
@@ -35,7 +34,7 @@ func (c Client) WatchProvidersMovieList(ctx context.Context, options ...tmdb.Wat
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +43,15 @@ func (c Client) WatchProvidersMovieList(ctx context.Context, options ...tmdb.Wat
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.WatchProvidersMovieListAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.WatchProvidersMovieListAnswer = result.Answer
 
-	return
+	return result, nil
 }

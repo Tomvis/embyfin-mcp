@@ -4,8 +4,8 @@ package list
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -21,12 +21,12 @@ func (c Client) ListClear(ctx context.Context, listId int, options tmdb.ListClea
 		HTTPMethod:    http.MethodPost,
 		Operation:     "ListClear",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/3/list/%d/clear", listId),
+		Path:          "/3/list/" + strconv.Itoa(listId) + "/clear",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -35,15 +35,15 @@ func (c Client) ListClear(ctx context.Context, listId int, options tmdb.ListClea
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.ListClearAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.ListClearAnswer = result.Answer
 
-	return
+	return result, nil
 }

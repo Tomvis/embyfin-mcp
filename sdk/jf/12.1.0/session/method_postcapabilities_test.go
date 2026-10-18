@@ -32,7 +32,7 @@ func TestOperationPostCapabilities(t *testing.T) {
 	expectQuery(t, r, "supportedCommands", "MoveUp", "SetPlaybackOrder")
 	expectQuery(t, r, "supportsMediaControl", "true")
 	expectQuery(t, r, "supportsPersistentIdentifier", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

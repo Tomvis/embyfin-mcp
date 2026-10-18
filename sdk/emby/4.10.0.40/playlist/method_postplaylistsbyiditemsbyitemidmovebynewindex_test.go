@@ -21,7 +21,7 @@ func TestOperationPostPlaylistsByIdItemsByItemIdMoveByNewIndex(t *testing.T) {
 	r, body := s.only(t)
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Playlists/v-id/Items/7/Move/7")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

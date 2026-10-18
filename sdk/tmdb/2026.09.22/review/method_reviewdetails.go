@@ -4,7 +4,6 @@ package review
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -21,12 +20,12 @@ func (c Client) ReviewDetails(ctx context.Context, reviewId string) (result tmdb
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "ReviewDetails",
-		Path:       fmt.Sprintf("/3/review/%s", url.PathEscape(reviewId)),
+		Path:       "/3/review/" + url.PathEscape(reviewId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -35,15 +34,15 @@ func (c Client) ReviewDetails(ctx context.Context, reviewId string) (result tmdb
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.ReviewDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.ReviewDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

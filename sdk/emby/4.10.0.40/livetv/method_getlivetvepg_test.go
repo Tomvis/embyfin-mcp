@@ -235,7 +235,7 @@ func TestOperationGetLiveTvEPG(t *testing.T) {
 	expectQuery(t, r, "AlbumArtistStartsWithOrGreater", "v-AlbumArtistStartsWithOrGreater")
 	expectQuery(t, r, "NameStartsWith", "v-NameStartsWith")
 	expectQuery(t, r, "NameLessThan", "v-NameLessThan")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -244,7 +244,7 @@ func TestOperationGetLiveTvEPG(t *testing.T) {
 	if result.QueryResultApiEpgRow != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 

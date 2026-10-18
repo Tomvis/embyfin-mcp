@@ -28,7 +28,7 @@ func TestOperationGetSystemLogsQuery(t *testing.T) {
 	expectRequest(t, r, http.MethodGet, "/System/Logs/Query")
 	expectQuery(t, r, "StartIndex", "7")
 	expectQuery(t, r, "Limit", "7")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -37,7 +37,7 @@ func TestOperationGetSystemLogsQuery(t *testing.T) {
 	if result.QueryResultLogFile != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 

@@ -26,7 +26,7 @@ func TestOperationGetScheduledTasks(t *testing.T) {
 	expectRequest(t, r, http.MethodGet, "/ScheduledTasks")
 	expectQuery(t, r, "IsHidden", "true")
 	expectQuery(t, r, "IsEnabled", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {

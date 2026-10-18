@@ -16,8 +16,7 @@ import (
 func (c Client) CreditDetails(ctx context.Context, creditId string, language ...string) (result tmdb.CreditDetailsResponse, err error) {
 	var option tmdb.CreditDetailsOptions
 	if len(language) > 1 {
-		err = fmt.Errorf("CreditDetails takes one language at most, not %d", len(language))
-		return
+		return result, fmt.Errorf("CreditDetails takes one language at most, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]
@@ -31,12 +30,12 @@ func (c Client) CreditDetails(ctx context.Context, creditId string, language ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "CreditDetails",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/credit/%s", url.PathEscape(creditId)),
+		Path:          "/3/credit/" + url.PathEscape(creditId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,15 +44,15 @@ func (c Client) CreditDetails(ctx context.Context, creditId string, language ...
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.CreditDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.CreditDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -28,7 +28,7 @@ func TestOperationGetSessions(t *testing.T) {
 	expectQuery(t, r, "ControllableByUserId", "v-ControllableByUserId")
 	expectQuery(t, r, "DeviceId", "v-DeviceId")
 	expectQuery(t, r, "Id", "v-Id")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {

@@ -63,8 +63,7 @@ type GetUsersItemAccessOptions struct {
 
 // ToHeaders returns the header parameters the options set.
 func (o GetUsersItemAccessOptions) ToHeaders() *client.Headers {
-	out := client.Headers{}
-	return &out
+	return &client.Headers{}
 }
 
 // ToQuery returns the query parameters the options set.

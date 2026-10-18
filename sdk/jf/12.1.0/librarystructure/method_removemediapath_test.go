@@ -28,7 +28,7 @@ func TestOperationRemoveMediaPath(t *testing.T) {
 	expectQuery(t, r, "name", "v-Name")
 	expectQuery(t, r, "path", "v-Path")
 	expectQuery(t, r, "refreshLibrary", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

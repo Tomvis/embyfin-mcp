@@ -21,7 +21,7 @@ func TestOperationCreateKey(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Auth/Keys")
 	expectQuery(t, r, "app", "v-App")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

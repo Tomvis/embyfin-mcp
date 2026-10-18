@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // TvSeriesAddRating calls POST /3/tv/{series_id}/rating. Add Rating.
 func (c Client) TvSeriesAddRating(ctx context.Context, seriesId int, input tmdb.TvSeriesAddRatingRequest, options ...tmdb.TvSeriesAddRatingOptions) (result tmdb.TvSeriesAddRatingResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeriesAddRating takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeriesAddRating takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeriesAddRatingOptions
 	if len(options) == 1 {
@@ -31,16 +31,16 @@ func (c Client) TvSeriesAddRating(ctx context.Context, seriesId int, input tmdb.
 		HTTPMethod:    http.MethodPost,
 		Operation:     "TvSeriesAddRating",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/%d/rating", seriesId),
+		Path:          "/3/tv/" + strconv.Itoa(seriesId) + "/rating",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
-	if err = req.Marshal(input); err != nil {
-		return
+	if err := req.Marshal(input); err != nil {
+		return result, err
 	}
 
 	var resp *client.Response
@@ -49,15 +49,15 @@ func (c Client) TvSeriesAddRating(ctx context.Context, seriesId int, input tmdb.
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeriesAddRatingAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeriesAddRatingAnswer = result.Answer
 
-	return
+	return result, nil
 }

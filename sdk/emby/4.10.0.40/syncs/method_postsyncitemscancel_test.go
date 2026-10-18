@@ -22,7 +22,7 @@ func TestOperationPostSyncItemsCancel(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Sync/Items/Cancel")
 	expectQuery(t, r, "ItemIds", "a,b")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -38,7 +38,7 @@ func TestOperationPostSyncItemsCancel(t *testing.T) {
 	if _, err = c.PostSyncItemsCancel(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("ItemIds") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("ItemIds"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Itemids") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Itemids"))
 	}
 }

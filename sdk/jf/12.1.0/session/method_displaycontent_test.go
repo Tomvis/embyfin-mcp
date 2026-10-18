@@ -28,7 +28,7 @@ func TestOperationDisplayContent(t *testing.T) {
 	expectQuery(t, r, "itemType", "AggregateFolder")
 	expectQuery(t, r, "itemId", "v-ItemId")
 	expectQuery(t, r, "itemName", "v-ItemName")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

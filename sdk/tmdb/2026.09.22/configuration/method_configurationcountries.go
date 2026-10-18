@@ -15,8 +15,7 @@ import (
 func (c Client) ConfigurationCountries(ctx context.Context, language ...string) (result tmdb.ConfigurationCountriesResponse, err error) {
 	var option tmdb.ConfigurationCountriesOptions
 	if len(language) > 1 {
-		err = fmt.Errorf("ConfigurationCountries takes one language at most, not %d", len(language))
-		return
+		return result, fmt.Errorf("ConfigurationCountries takes one language at most, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]
@@ -34,7 +33,7 @@ func (c Client) ConfigurationCountries(ctx context.Context, language ...string) 
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -43,12 +42,12 @@ func (c Client) ConfigurationCountries(ctx context.Context, language ...string) 
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
-	if err = resp.Unmarshal(&result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(&result.Answer); err != nil {
+		return result, err
 	}
 
-	return
+	return result, nil
 }

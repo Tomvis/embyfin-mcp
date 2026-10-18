@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 func (c Client) AccountAddFavorite(ctx context.Context, accountId int, input tmdb.AccountAddFavoriteRequest, sessionId ...string) (result tmdb.AccountAddFavoriteResponse, err error) {
 	var option tmdb.AccountAddFavoriteOptions
 	if len(sessionId) > 1 {
-		err = fmt.Errorf("AccountAddFavorite takes one sessionId at most, not %d", len(sessionId))
-		return
+		return result, fmt.Errorf("AccountAddFavorite takes one sessionId at most, not %d", len(sessionId))
 	}
 	if len(sessionId) == 1 {
 		option.SessionId = sessionId[0]
@@ -31,16 +31,16 @@ func (c Client) AccountAddFavorite(ctx context.Context, accountId int, input tmd
 		HTTPMethod:    http.MethodPost,
 		Operation:     "AccountAddFavorite",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/account/%d/favorite", accountId),
+		Path:          "/3/account/" + strconv.Itoa(accountId) + "/favorite",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
-	if err = req.Marshal(input); err != nil {
-		return
+	if err := req.Marshal(input); err != nil {
+		return result, err
 	}
 
 	var resp *client.Response
@@ -49,15 +49,15 @@ func (c Client) AccountAddFavorite(ctx context.Context, accountId int, input tmd
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.AccountAddFavoriteAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.AccountAddFavoriteAnswer = result.Answer
 
-	return
+	return result, nil
 }

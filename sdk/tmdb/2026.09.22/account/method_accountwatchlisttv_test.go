@@ -32,7 +32,7 @@ func TestOperationAccountWatchlistTv(t *testing.T) {
 	expectQuery(t, r, "page", "7")
 	expectQuery(t, r, "session_id", "v-SessionId")
 	expectQuery(t, r, "sort_by", "v-SortBy")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -41,7 +41,7 @@ func TestOperationAccountWatchlistTv(t *testing.T) {
 	if result.AccountWatchlistTvAnswer != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 

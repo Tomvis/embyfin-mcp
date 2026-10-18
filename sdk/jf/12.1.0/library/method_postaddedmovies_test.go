@@ -26,7 +26,7 @@ func TestOperationPostAddedMovies(t *testing.T) {
 	expectRequest(t, r, http.MethodPost, "/Library/Movies/Added")
 	expectQuery(t, r, "tmdbId", "v-TmdbId")
 	expectQuery(t, r, "imdbId", "v-ImdbId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

@@ -22,7 +22,7 @@ func TestOperationDeleteItemsByIdSubtitlesByIndex(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodDelete, "/Items/v-id/Subtitles/7")
 	expectQuery(t, r, "MediaSourceId", "v-MediaSourceId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

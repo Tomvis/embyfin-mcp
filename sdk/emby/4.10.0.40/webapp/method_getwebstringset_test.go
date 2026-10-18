@@ -21,7 +21,7 @@ func TestOperationGetWebStringset(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/web/stringset")
 	expectQuery(t, r, "PluginId", "v-PluginId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -54,8 +54,8 @@ func TestOperationGetWebStringset(t *testing.T) {
 	if _, err = c.GetWebStringset(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("PluginId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("PluginId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Pluginid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Pluginid"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetWebStringset(t.Context(), "v-PluginId", "v-PluginId"); err == nil || len(s.requests) != 1 {

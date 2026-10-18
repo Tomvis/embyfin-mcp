@@ -22,7 +22,7 @@ func TestOperationUpdateItemImageIndex(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/Images/Primary/7/Index")
 	expectQuery(t, r, "newIndex", "7")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

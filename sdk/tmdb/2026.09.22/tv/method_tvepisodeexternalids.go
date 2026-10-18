@@ -4,8 +4,8 @@ package tv
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) TvEpisodeExternalIds(ctx context.Context, seriesId int, seasonNu
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "TvEpisodeExternalIds",
-		Path:       fmt.Sprintf("/3/tv/%d/season/%d/episode/%d/external_ids", seriesId, seasonNumber, episodeNumber),
+		Path:       "/3/tv/" + strconv.Itoa(seriesId) + "/season/" + strconv.Itoa(seasonNumber) + "/episode/" + strconv.Itoa(episodeNumber) + "/external_ids",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) TvEpisodeExternalIds(ctx context.Context, seriesId int, seasonNu
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvEpisodeExternalIdsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvEpisodeExternalIdsAnswer = result.Answer
 
-	return
+	return result, nil
 }

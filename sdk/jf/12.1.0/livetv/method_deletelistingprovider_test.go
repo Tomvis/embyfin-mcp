@@ -21,7 +21,7 @@ func TestOperationDeleteListingProvider(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodDelete, "/LiveTv/ListingProviders")
 	expectQuery(t, r, "id", "v-Id")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -37,8 +37,8 @@ func TestOperationDeleteListingProvider(t *testing.T) {
 	if _, err = c.DeleteListingProvider(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("id") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("id"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Id") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Id"))
 	}
 	// two values are refused before any request
 	if _, err = c.DeleteListingProvider(t.Context(), "v-Id", "v-Id"); err == nil || len(s.requests) != 1 {

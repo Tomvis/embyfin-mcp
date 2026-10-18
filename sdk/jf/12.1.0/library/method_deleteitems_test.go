@@ -22,7 +22,7 @@ func TestOperationDeleteItems(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodDelete, "/Items")
 	expectQuery(t, r, "ids", "a", "b")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -38,7 +38,7 @@ func TestOperationDeleteItems(t *testing.T) {
 	if _, err = c.DeleteItems(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("ids") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("ids"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Ids") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Ids"))
 	}
 }

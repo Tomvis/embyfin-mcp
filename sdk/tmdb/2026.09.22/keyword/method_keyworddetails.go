@@ -4,8 +4,8 @@ package keyword
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) KeywordDetails(ctx context.Context, keywordId int) (result tmdb.
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "KeywordDetails",
-		Path:       fmt.Sprintf("/3/keyword/%d", keywordId),
+		Path:       "/3/keyword/" + strconv.Itoa(keywordId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) KeywordDetails(ctx context.Context, keywordId int) (result tmdb.
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.KeywordDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.KeywordDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

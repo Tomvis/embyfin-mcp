@@ -23,7 +23,7 @@ func TestOperationGetItemSegments(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/MediaSegments/v-itemId")
 	expectQuery(t, r, "includeSegmentTypes", "Unknown", "Intro")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -32,7 +32,7 @@ func TestOperationGetItemSegments(t *testing.T) {
 	if result.MediaSegmentDtoQueryResult != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
@@ -55,7 +55,7 @@ func TestOperationGetItemSegments(t *testing.T) {
 	if _, err = c.GetItemSegments(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("includeSegmentTypes") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("includeSegmentTypes"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Includesegmenttypes") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Includesegmenttypes"))
 	}
 }

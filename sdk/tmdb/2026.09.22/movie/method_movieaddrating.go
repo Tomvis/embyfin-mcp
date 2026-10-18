@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // MovieAddRating calls POST /3/movie/{movie_id}/rating. Add Rating.
 func (c Client) MovieAddRating(ctx context.Context, movieId int, input tmdb.MovieAddRatingRequest, options ...tmdb.MovieAddRatingOptions) (result tmdb.MovieAddRatingResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("MovieAddRating takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("MovieAddRating takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.MovieAddRatingOptions
 	if len(options) == 1 {
@@ -31,16 +31,16 @@ func (c Client) MovieAddRating(ctx context.Context, movieId int, input tmdb.Movi
 		HTTPMethod:    http.MethodPost,
 		Operation:     "MovieAddRating",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/movie/%d/rating", movieId),
+		Path:          "/3/movie/" + strconv.Itoa(movieId) + "/rating",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
-	if err = req.Marshal(input); err != nil {
-		return
+	if err := req.Marshal(input); err != nil {
+		return result, err
 	}
 
 	var resp *client.Response
@@ -49,15 +49,15 @@ func (c Client) MovieAddRating(ctx context.Context, movieId int, input tmdb.Movi
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.MovieAddRatingAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.MovieAddRatingAnswer = result.Answer
 
-	return
+	return result, nil
 }

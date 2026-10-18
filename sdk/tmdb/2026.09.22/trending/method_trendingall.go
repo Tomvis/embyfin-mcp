@@ -16,8 +16,7 @@ import (
 func (c Client) TrendingAll(ctx context.Context, timeWindow string, language ...string) (result tmdb.TrendingAllResponse, err error) {
 	var option tmdb.TrendingAllOptions
 	if len(language) > 1 {
-		err = fmt.Errorf("TrendingAll takes one language at most, not %d", len(language))
-		return
+		return result, fmt.Errorf("TrendingAll takes one language at most, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]
@@ -31,12 +30,12 @@ func (c Client) TrendingAll(ctx context.Context, timeWindow string, language ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "TrendingAll",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/trending/all/%s", url.PathEscape(timeWindow)),
+		Path:          "/3/trending/all/" + url.PathEscape(timeWindow),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,15 +44,15 @@ func (c Client) TrendingAll(ctx context.Context, timeWindow string, language ...
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TrendingAllAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TrendingAllAnswer = result.Answer
 
-	return
+	return result, nil
 }

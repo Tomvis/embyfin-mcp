@@ -31,7 +31,7 @@ func TestOperationAddMediaPath(t *testing.T) {
 	if body != "{}" {
 		t.Errorf("an empty record sent %q, want %q: a field never set went out", body, "{}")
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -47,8 +47,8 @@ func TestOperationAddMediaPath(t *testing.T) {
 	if _, err = c.AddMediaPath(t.Context(), jf.MediaPathDto{}); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("refreshLibrary") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("refreshLibrary"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Refreshlibrary") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Refreshlibrary"))
 	}
 	// two values are refused before any request
 	if _, err = c.AddMediaPath(t.Context(), jf.MediaPathDto{}, true, true); err == nil || len(s.requests) != 1 {

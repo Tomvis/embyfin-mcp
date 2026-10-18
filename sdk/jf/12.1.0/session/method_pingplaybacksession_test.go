@@ -21,7 +21,7 @@ func TestOperationPingPlaybackSession(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Sessions/Playing/Ping")
 	expectQuery(t, r, "playSessionId", "v-PlaySessionId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

@@ -4,7 +4,6 @@ package plugins
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -21,13 +20,13 @@ func (c Client) GetPluginImage(ctx context.Context, pluginId string, version str
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetPluginImage",
-		Path:           fmt.Sprintf("/Plugins/%s/%s/Image", url.PathEscape(pluginId), url.PathEscape(version)),
+		Path:           "/Plugins/" + url.PathEscape(pluginId) + "/" + url.PathEscape(version) + "/Image",
 		StreamResponse: true,
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -36,8 +35,8 @@ func (c Client) GetPluginImage(ctx context.Context, pluginId string, version str
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
-	return
+	return result, nil
 }

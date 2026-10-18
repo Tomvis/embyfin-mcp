@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // CollectionImages calls GET /3/collection/{collection_id}/images. Images.
 func (c Client) CollectionImages(ctx context.Context, collectionId int, options ...tmdb.CollectionImagesOptions) (result tmdb.CollectionImagesResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("CollectionImages takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("CollectionImages takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.CollectionImagesOptions
 	if len(options) == 1 {
@@ -30,12 +30,12 @@ func (c Client) CollectionImages(ctx context.Context, collectionId int, options 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "CollectionImages",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/collection/%d/images", collectionId),
+		Path:          "/3/collection/" + strconv.Itoa(collectionId) + "/images",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) CollectionImages(ctx context.Context, collectionId int, options 
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.CollectionImagesAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.CollectionImagesAnswer = result.Answer
 
-	return
+	return result, nil
 }

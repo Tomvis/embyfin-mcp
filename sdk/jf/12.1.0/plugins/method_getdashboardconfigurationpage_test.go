@@ -27,13 +27,13 @@ func TestOperationGetDashboardConfigurationPage(t *testing.T) {
 	if got := r.Header.Get("Accept"); !strings.HasPrefix(got, "application/x-javascript") {
 		t.Errorf("Accept = %q, want application/x-javascript asked for first", got)
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if _, contentType := result.Reader(); contentType == "" || result.ContentLength() != 10 || result.Filename() != "answer.bin" {
 		t.Errorf("Reader = %q, length %d, filename %q", contentType, result.ContentLength(), result.Filename())
 	}
-	if data, err := result.Bytes(9); err == nil || string(data) != "" {
+	if data, err := result.Bytes(9); err == nil || len(data) != 0 {
 		t.Errorf("Bytes over the size = %q, %v", data, err)
 	}
 	c, _ = newOperationServer(t, 200, "application/x-javascript", "file bytes")
@@ -75,8 +75,8 @@ func TestOperationGetDashboardConfigurationPage(t *testing.T) {
 	if _, err = c.GetDashboardConfigurationPage(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("name") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("name"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Name") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Name"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetDashboardConfigurationPage(t.Context(), "v-Name", "v-Name"); err == nil || len(s.requests) != 1 {

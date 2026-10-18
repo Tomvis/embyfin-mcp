@@ -22,7 +22,7 @@ func TestOperationDeleteUserImage(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodDelete, "/UserImage")
 	expectQuery(t, r, "userId", "v-UserId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -38,8 +38,8 @@ func TestOperationDeleteUserImage(t *testing.T) {
 	if _, err = c.DeleteUserImage(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("userId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("userId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Userid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Userid"))
 	}
 	// two values are refused before any request
 	if _, err = c.DeleteUserImage(t.Context(), jf.UserID("v-UserId"), jf.UserID("v-UserId")); err == nil || len(s.requests) != 1 {

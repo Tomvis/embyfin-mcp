@@ -21,7 +21,7 @@ func TestOperationDiscvoverTuners(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/LiveTv/Tuners/Discvover")
 	expectQuery(t, r, "newDevicesOnly", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -47,8 +47,8 @@ func TestOperationDiscvoverTuners(t *testing.T) {
 	if _, err = c.DiscvoverTuners(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("newDevicesOnly") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("newDevicesOnly"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Newdevicesonly") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Newdevicesonly"))
 	}
 	// two values are refused before any request
 	if _, err = c.DiscvoverTuners(t.Context(), true, true); err == nil || len(s.requests) != 1 {

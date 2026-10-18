@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 func (c Client) TvSeasonWatchProviders(ctx context.Context, seriesId int, seasonNumber int, language ...string) (result tmdb.TvSeasonWatchProvidersResponse, err error) {
 	var option tmdb.TvSeasonWatchProvidersOptions
 	if len(language) > 1 {
-		err = fmt.Errorf("TvSeasonWatchProviders takes one language at most, not %d", len(language))
-		return
+		return result, fmt.Errorf("TvSeasonWatchProviders takes one language at most, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]
@@ -30,12 +30,12 @@ func (c Client) TvSeasonWatchProviders(ctx context.Context, seriesId int, season
 		HTTPMethod:    http.MethodGet,
 		Operation:     "TvSeasonWatchProviders",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/%d/season/%d/watch/providers", seriesId, seasonNumber),
+		Path:          "/3/tv/" + strconv.Itoa(seriesId) + "/season/" + strconv.Itoa(seasonNumber) + "/watch/providers",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) TvSeasonWatchProviders(ctx context.Context, seriesId int, season
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeasonWatchProvidersAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeasonWatchProvidersAnswer = result.Answer
 
-	return
+	return result, nil
 }

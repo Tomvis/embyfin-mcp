@@ -32,7 +32,7 @@ func TestOperationRefreshItem(t *testing.T) {
 	expectQuery(t, r, "replaceAllMetadata", "true")
 	expectQuery(t, r, "replaceAllImages", "true")
 	expectQuery(t, r, "regenerateTrickplay", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

@@ -15,8 +15,7 @@ import (
 // ChangesPeopleList calls GET /3/person/changes. People List.
 func (c Client) ChangesPeopleList(ctx context.Context, options ...tmdb.ChangesPeopleListOptions) (result tmdb.ChangesPeopleListResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("ChangesPeopleList takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("ChangesPeopleList takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.ChangesPeopleListOptions
 	if len(options) == 1 {
@@ -36,7 +35,7 @@ func (c Client) ChangesPeopleList(ctx context.Context, options ...tmdb.ChangesPe
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,17 +44,17 @@ func (c Client) ChangesPeopleList(ctx context.Context, options ...tmdb.ChangesPe
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.ChangesPeopleListAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.ChangesPeopleListAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // ChangesPeopleListComplete calls ChangesPeopleList page by page, from the
@@ -63,8 +62,7 @@ func (c Client) ChangesPeopleList(ctx context.Context, options ...tmdb.ChangesPe
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) ChangesPeopleListComplete(ctx context.Context, options ...tmdb.ChangesPeopleListOptions) (result tmdb.ChangesPeopleListCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("ChangesPeopleListComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("ChangesPeopleListComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.ChangesPeopleListOptions
 	if len(options) == 1 {
@@ -82,11 +80,10 @@ func (c Client) ChangesPeopleListComplete(ctx context.Context, options ...tmdb.C
 		page, err = c.ChangesPeopleList(ctx, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -95,7 +92,7 @@ func (c Client) ChangesPeopleListComplete(ctx context.Context, options ...tmdb.C
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -142,8 +139,8 @@ func (c Client) ChangesPeopleListEach(ctx context.Context, options ...tmdb.Chang
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}

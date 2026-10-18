@@ -22,7 +22,7 @@ func TestOperationGetDevices(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/Devices")
 	expectQuery(t, r, "SortOrder", "v-SortOrder")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -31,7 +31,7 @@ func TestOperationGetDevices(t *testing.T) {
 	if result.QueryResultDevicesDeviceInfo != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
@@ -67,8 +67,8 @@ func TestOperationGetDevices(t *testing.T) {
 	if _, err = c.GetDevices(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("SortOrder") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("SortOrder"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Sortorder") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Sortorder"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetDevices(t.Context(), "v-SortOrder", "v-SortOrder"); err == nil || len(s.requests) != 1 {

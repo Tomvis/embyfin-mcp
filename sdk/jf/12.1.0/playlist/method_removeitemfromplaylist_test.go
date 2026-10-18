@@ -22,7 +22,7 @@ func TestOperationRemoveItemFromPlaylist(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodDelete, "/Playlists/v-playlistId/Items")
 	expectQuery(t, r, "entryIds", "a", "b")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -38,7 +38,7 @@ func TestOperationRemoveItemFromPlaylist(t *testing.T) {
 	if _, err = c.RemoveItemFromPlaylist(t.Context(), jf.ItemID("v-playlistId")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("entryIds") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("entryIds"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Entryids") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Entryids"))
 	}
 }

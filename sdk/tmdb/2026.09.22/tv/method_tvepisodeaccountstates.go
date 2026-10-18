@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // TvEpisodeAccountStates calls GET /3/tv/{series_id}/season/{season_number}/episode/{episode_number}/account_states. Account States.
 func (c Client) TvEpisodeAccountStates(ctx context.Context, seriesId int, seasonNumber int, episodeNumber int, options ...tmdb.TvEpisodeAccountStatesOptions) (result tmdb.TvEpisodeAccountStatesResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvEpisodeAccountStates takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvEpisodeAccountStates takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvEpisodeAccountStatesOptions
 	if len(options) == 1 {
@@ -30,12 +30,12 @@ func (c Client) TvEpisodeAccountStates(ctx context.Context, seriesId int, season
 		HTTPMethod:    http.MethodGet,
 		Operation:     "TvEpisodeAccountStates",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/%d/season/%d/episode/%d/account_states", seriesId, seasonNumber, episodeNumber),
+		Path:          "/3/tv/" + strconv.Itoa(seriesId) + "/season/" + strconv.Itoa(seasonNumber) + "/episode/" + strconv.Itoa(episodeNumber) + "/account_states",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) TvEpisodeAccountStates(ctx context.Context, seriesId int, season
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvEpisodeAccountStatesAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvEpisodeAccountStatesAnswer = result.Answer
 
-	return
+	return result, nil
 }

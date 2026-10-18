@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // TvSeasonChangesById calls GET /3/tv/season/{season_id}/changes. Changes.
 func (c Client) TvSeasonChangesById(ctx context.Context, seasonId int, options ...tmdb.TvSeasonChangesByIdOptions) (result tmdb.TvSeasonChangesByIdResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeasonChangesById takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeasonChangesById takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeasonChangesByIdOptions
 	if len(options) == 1 {
@@ -30,12 +30,12 @@ func (c Client) TvSeasonChangesById(ctx context.Context, seasonId int, options .
 		HTTPMethod:    http.MethodGet,
 		Operation:     "TvSeasonChangesById",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/season/%d/changes", seasonId),
+		Path:          "/3/tv/season/" + strconv.Itoa(seasonId) + "/changes",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) TvSeasonChangesById(ctx context.Context, seasonId int, options .
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeasonChangesByIdAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeasonChangesByIdAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -15,8 +15,7 @@ import (
 // TvSeriesTopRatedList calls GET /3/tv/top_rated. Top Rated.
 func (c Client) TvSeriesTopRatedList(ctx context.Context, options ...tmdb.TvSeriesTopRatedListOptions) (result tmdb.TvSeriesTopRatedListResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeriesTopRatedList takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeriesTopRatedList takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeriesTopRatedListOptions
 	if len(options) == 1 {
@@ -36,7 +35,7 @@ func (c Client) TvSeriesTopRatedList(ctx context.Context, options ...tmdb.TvSeri
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,17 +44,17 @@ func (c Client) TvSeriesTopRatedList(ctx context.Context, options ...tmdb.TvSeri
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeriesTopRatedListAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeriesTopRatedListAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // TvSeriesTopRatedListComplete calls TvSeriesTopRatedList page by page, from the
@@ -63,8 +62,7 @@ func (c Client) TvSeriesTopRatedList(ctx context.Context, options ...tmdb.TvSeri
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) TvSeriesTopRatedListComplete(ctx context.Context, options ...tmdb.TvSeriesTopRatedListOptions) (result tmdb.TvSeriesTopRatedListCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeriesTopRatedListComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeriesTopRatedListComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeriesTopRatedListOptions
 	if len(options) == 1 {
@@ -82,11 +80,10 @@ func (c Client) TvSeriesTopRatedListComplete(ctx context.Context, options ...tmd
 		page, err = c.TvSeriesTopRatedList(ctx, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -95,7 +92,7 @@ func (c Client) TvSeriesTopRatedListComplete(ctx context.Context, options ...tmd
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -142,8 +139,8 @@ func (c Client) TvSeriesTopRatedListEach(ctx context.Context, options ...tmdb.Tv
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}

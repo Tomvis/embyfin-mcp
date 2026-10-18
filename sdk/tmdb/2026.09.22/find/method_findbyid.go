@@ -4,7 +4,6 @@ package find
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -22,12 +21,12 @@ func (c Client) FindById(ctx context.Context, externalId string, options tmdb.Fi
 		HTTPMethod:    http.MethodGet,
 		Operation:     "FindById",
 		OptionsObject: options,
-		Path:          fmt.Sprintf("/3/find/%s", url.PathEscape(externalId)),
+		Path:          "/3/find/" + url.PathEscape(externalId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -36,15 +35,15 @@ func (c Client) FindById(ctx context.Context, externalId string, options tmdb.Fi
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.FindByIdAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.FindByIdAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -4,8 +4,8 @@ package list
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -25,16 +25,16 @@ func (c Client) ListAddMovie(ctx context.Context, listId int, input tmdb.ListAdd
 		HTTPMethod:    http.MethodPost,
 		Operation:     "ListAddMovie",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/list/%d/add_item", listId),
+		Path:          "/3/list/" + strconv.Itoa(listId) + "/add_item",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
-	if err = req.Marshal(input); err != nil {
-		return
+	if err := req.Marshal(input); err != nil {
+		return result, err
 	}
 
 	var resp *client.Response
@@ -43,15 +43,15 @@ func (c Client) ListAddMovie(ctx context.Context, listId int, input tmdb.ListAdd
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.ListAddMovieAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.ListAddMovieAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 func (c Client) AccountAddToWatchlist(ctx context.Context, accountId int, input tmdb.AccountAddToWatchlistRequest, sessionId ...string) (result tmdb.AccountAddToWatchlistResponse, err error) {
 	var option tmdb.AccountAddToWatchlistOptions
 	if len(sessionId) > 1 {
-		err = fmt.Errorf("AccountAddToWatchlist takes one sessionId at most, not %d", len(sessionId))
-		return
+		return result, fmt.Errorf("AccountAddToWatchlist takes one sessionId at most, not %d", len(sessionId))
 	}
 	if len(sessionId) == 1 {
 		option.SessionId = sessionId[0]
@@ -31,16 +31,16 @@ func (c Client) AccountAddToWatchlist(ctx context.Context, accountId int, input 
 		HTTPMethod:    http.MethodPost,
 		Operation:     "AccountAddToWatchlist",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/account/%d/watchlist", accountId),
+		Path:          "/3/account/" + strconv.Itoa(accountId) + "/watchlist",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
-	if err = req.Marshal(input); err != nil {
-		return
+	if err := req.Marshal(input); err != nil {
+		return result, err
 	}
 
 	var resp *client.Response
@@ -49,15 +49,15 @@ func (c Client) AccountAddToWatchlist(ctx context.Context, accountId int, input 
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.AccountAddToWatchlistAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.AccountAddToWatchlistAnswer = result.Answer
 
-	return
+	return result, nil
 }

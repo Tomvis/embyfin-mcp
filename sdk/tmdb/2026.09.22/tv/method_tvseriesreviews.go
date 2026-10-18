@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"iter"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 // TvSeriesReviews calls GET /3/tv/{series_id}/reviews. Reviews.
 func (c Client) TvSeriesReviews(ctx context.Context, seriesId int, options ...tmdb.TvSeriesReviewsOptions) (result tmdb.TvSeriesReviewsResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeriesReviews takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeriesReviews takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeriesReviewsOptions
 	if len(options) == 1 {
@@ -31,12 +31,12 @@ func (c Client) TvSeriesReviews(ctx context.Context, seriesId int, options ...tm
 		HTTPMethod:    http.MethodGet,
 		Operation:     "TvSeriesReviews",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/%d/reviews", seriesId),
+		Path:          "/3/tv/" + strconv.Itoa(seriesId) + "/reviews",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,17 +45,17 @@ func (c Client) TvSeriesReviews(ctx context.Context, seriesId int, options ...tm
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeriesReviewsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeriesReviewsAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // TvSeriesReviewsComplete calls TvSeriesReviews page by page, from the
@@ -63,8 +63,7 @@ func (c Client) TvSeriesReviews(ctx context.Context, seriesId int, options ...tm
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) TvSeriesReviewsComplete(ctx context.Context, seriesId int, options ...tmdb.TvSeriesReviewsOptions) (result tmdb.TvSeriesReviewsCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeriesReviewsComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeriesReviewsComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeriesReviewsOptions
 	if len(options) == 1 {
@@ -82,11 +81,10 @@ func (c Client) TvSeriesReviewsComplete(ctx context.Context, seriesId int, optio
 		page, err = c.TvSeriesReviews(ctx, seriesId, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -95,7 +93,7 @@ func (c Client) TvSeriesReviewsComplete(ctx context.Context, seriesId int, optio
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -142,8 +140,8 @@ func (c Client) TvSeriesReviewsEach(ctx context.Context, seriesId int, options .
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}

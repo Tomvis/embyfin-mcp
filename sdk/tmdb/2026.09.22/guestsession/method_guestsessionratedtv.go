@@ -16,8 +16,7 @@ import (
 // GuestSessionRatedTv calls GET /3/guest_session/{guest_session_id}/rated/tv. Rated TV.
 func (c Client) GuestSessionRatedTv(ctx context.Context, guestSessionId string, options ...tmdb.GuestSessionRatedTvOptions) (result tmdb.GuestSessionRatedTvResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("GuestSessionRatedTv takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("GuestSessionRatedTv takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.GuestSessionRatedTvOptions
 	if len(options) == 1 {
@@ -32,12 +31,12 @@ func (c Client) GuestSessionRatedTv(ctx context.Context, guestSessionId string, 
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GuestSessionRatedTv",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/guest_session/%s/rated/tv", url.PathEscape(guestSessionId)),
+		Path:          "/3/guest_session/" + url.PathEscape(guestSessionId) + "/rated/tv",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -46,17 +45,17 @@ func (c Client) GuestSessionRatedTv(ctx context.Context, guestSessionId string, 
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.GuestSessionRatedTvAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.GuestSessionRatedTvAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // GuestSessionRatedTvComplete calls GuestSessionRatedTv page by page, from the
@@ -64,8 +63,7 @@ func (c Client) GuestSessionRatedTv(ctx context.Context, guestSessionId string, 
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) GuestSessionRatedTvComplete(ctx context.Context, guestSessionId string, options ...tmdb.GuestSessionRatedTvOptions) (result tmdb.GuestSessionRatedTvCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("GuestSessionRatedTvComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("GuestSessionRatedTvComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.GuestSessionRatedTvOptions
 	if len(options) == 1 {
@@ -83,11 +81,10 @@ func (c Client) GuestSessionRatedTvComplete(ctx context.Context, guestSessionId 
 		page, err = c.GuestSessionRatedTv(ctx, guestSessionId, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -96,7 +93,7 @@ func (c Client) GuestSessionRatedTvComplete(ctx context.Context, guestSessionId 
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -143,8 +140,8 @@ func (c Client) GuestSessionRatedTvEach(ctx context.Context, guestSessionId stri
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}

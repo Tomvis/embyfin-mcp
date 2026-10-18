@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // MovieDetails calls GET /3/movie/{movie_id}. Details.
 func (c Client) MovieDetails(ctx context.Context, movieId int, options ...tmdb.MovieDetailsOptions) (result tmdb.MovieDetailsResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("MovieDetails takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("MovieDetails takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.MovieDetailsOptions
 	if len(options) == 1 {
@@ -30,12 +30,12 @@ func (c Client) MovieDetails(ctx context.Context, movieId int, options ...tmdb.M
 		HTTPMethod:    http.MethodGet,
 		Operation:     "MovieDetails",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/movie/%d", movieId),
+		Path:          "/3/movie/" + strconv.Itoa(movieId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) MovieDetails(ctx context.Context, movieId int, options ...tmdb.M
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.MovieDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.MovieDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

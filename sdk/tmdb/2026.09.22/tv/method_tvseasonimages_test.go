@@ -27,7 +27,7 @@ func TestOperationTvSeasonImages(t *testing.T) {
 	expectRequest(t, r, http.MethodGet, "/3/tv/7/season/7/images")
 	expectQuery(t, r, "include_image_language", "v-IncludeImageLanguage")
 	expectQuery(t, r, "language", "v-Language")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -36,7 +36,7 @@ func TestOperationTvSeasonImages(t *testing.T) {
 	if result.TvSeasonImagesAnswer != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 

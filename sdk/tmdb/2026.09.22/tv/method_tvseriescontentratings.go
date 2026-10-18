@@ -4,8 +4,8 @@ package tv
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) TvSeriesContentRatings(ctx context.Context, seriesId int) (resul
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "TvSeriesContentRatings",
-		Path:       fmt.Sprintf("/3/tv/%d/content_ratings", seriesId),
+		Path:       "/3/tv/" + strconv.Itoa(seriesId) + "/content_ratings",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) TvSeriesContentRatings(ctx context.Context, seriesId int) (resul
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeriesContentRatingsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeriesContentRatingsAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // TvSeriesDeleteRating calls DELETE /3/tv/{series_id}/rating. Delete Rating.
 func (c Client) TvSeriesDeleteRating(ctx context.Context, seriesId int, options ...tmdb.TvSeriesDeleteRatingOptions) (result tmdb.TvSeriesDeleteRatingResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeriesDeleteRating takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeriesDeleteRating takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeriesDeleteRatingOptions
 	if len(options) == 1 {
@@ -30,12 +30,12 @@ func (c Client) TvSeriesDeleteRating(ctx context.Context, seriesId int, options 
 		HTTPMethod:    http.MethodDelete,
 		Operation:     "TvSeriesDeleteRating",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/%d/rating", seriesId),
+		Path:          "/3/tv/" + strconv.Itoa(seriesId) + "/rating",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) TvSeriesDeleteRating(ctx context.Context, seriesId int, options 
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeriesDeleteRatingAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeriesDeleteRatingAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -4,7 +4,6 @@ package syncs
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -25,13 +24,13 @@ func (c Client) GetSyncJobItemsByIdAdditionalFiles(ctx context.Context, id strin
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetSyncJobItemsByIdAdditionalFiles",
 		OptionsObject:  option,
-		Path:           fmt.Sprintf("/Sync/JobItems/%s/AdditionalFiles", url.PathEscape(id)),
+		Path:           "/Sync/JobItems/" + url.PathEscape(id) + "/AdditionalFiles",
 		StreamResponse: true,
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -40,8 +39,8 @@ func (c Client) GetSyncJobItemsByIdAdditionalFiles(ctx context.Context, id strin
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
-	return
+	return result, nil
 }

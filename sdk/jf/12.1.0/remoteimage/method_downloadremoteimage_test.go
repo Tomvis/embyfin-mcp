@@ -26,7 +26,7 @@ func TestOperationDownloadRemoteImage(t *testing.T) {
 	expectRequest(t, r, http.MethodPost, "/Items/v-itemId/RemoteImages/Download")
 	expectQuery(t, r, "type", "Primary")
 	expectQuery(t, r, "imageUrl", "v-ImageUrl")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

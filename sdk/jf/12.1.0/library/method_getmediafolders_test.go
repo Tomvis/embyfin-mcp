@@ -22,7 +22,7 @@ func TestOperationGetMediaFolders(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/Library/MediaFolders")
 	expectQuery(t, r, "isHidden", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -31,7 +31,7 @@ func TestOperationGetMediaFolders(t *testing.T) {
 	if result.BaseItemDtoQueryResult != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
@@ -54,8 +54,8 @@ func TestOperationGetMediaFolders(t *testing.T) {
 	if _, err = c.GetMediaFolders(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("isHidden") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("isHidden"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Ishidden") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Ishidden"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetMediaFolders(t.Context(), true, true); err == nil || len(s.requests) != 1 {

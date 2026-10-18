@@ -4,8 +4,8 @@ package network
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) NetworkDetails(ctx context.Context, networkId int) (result tmdb.
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "NetworkDetails",
-		Path:       fmt.Sprintf("/3/network/%d", networkId),
+		Path:       "/3/network/" + strconv.Itoa(networkId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) NetworkDetails(ctx context.Context, networkId int) (result tmdb.
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.NetworkDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.NetworkDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

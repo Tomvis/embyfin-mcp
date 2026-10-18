@@ -22,7 +22,7 @@ func TestOperationPostItemsByIdImagesByTypeByIndexUrl(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Items/v-id/Images/Primary/7/Url")
 	expectQuery(t, r, "Url", "v-Url")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

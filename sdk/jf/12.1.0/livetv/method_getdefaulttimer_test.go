@@ -22,7 +22,7 @@ func TestOperationGetDefaultTimer(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/LiveTv/Timers/Defaults")
 	expectQuery(t, r, "programId", "v-ProgramId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -31,7 +31,7 @@ func TestOperationGetDefaultTimer(t *testing.T) {
 	if result.SeriesTimerInfoDto != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
@@ -54,8 +54,8 @@ func TestOperationGetDefaultTimer(t *testing.T) {
 	if _, err = c.GetDefaultTimer(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("programId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("programId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Programid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Programid"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetDefaultTimer(t.Context(), "v-ProgramId", "v-ProgramId"); err == nil || len(s.requests) != 1 {

@@ -21,7 +21,7 @@ func TestOperationPostSessionsPlayingPing(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodPost, "/Sessions/Playing/Ping")
 	expectQuery(t, r, "PlaySessionId", "v-PlaySessionId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -37,8 +37,8 @@ func TestOperationPostSessionsPlayingPing(t *testing.T) {
 	if _, err = c.PostSessionsPlayingPing(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("PlaySessionId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("PlaySessionId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Playsessionid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Playsessionid"))
 	}
 	// two values are refused before any request
 	if _, err = c.PostSessionsPlayingPing(t.Context(), "v-PlaySessionId", "v-PlaySessionId"); err == nil || len(s.requests) != 1 {

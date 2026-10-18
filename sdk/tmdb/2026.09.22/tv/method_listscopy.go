@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"iter"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 // ListsCopy calls GET /3/tv/{series_id}/lists. Lists.
 func (c Client) ListsCopy(ctx context.Context, seriesId int, options ...tmdb.ListsCopyOptions) (result tmdb.ListsCopyResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("ListsCopy takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("ListsCopy takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.ListsCopyOptions
 	if len(options) == 1 {
@@ -31,12 +31,12 @@ func (c Client) ListsCopy(ctx context.Context, seriesId int, options ...tmdb.Lis
 		HTTPMethod:    http.MethodGet,
 		Operation:     "ListsCopy",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/%d/lists", seriesId),
+		Path:          "/3/tv/" + strconv.Itoa(seriesId) + "/lists",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,17 +45,17 @@ func (c Client) ListsCopy(ctx context.Context, seriesId int, options ...tmdb.Lis
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.ListsCopyAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.ListsCopyAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // ListsCopyComplete calls ListsCopy page by page, from the
@@ -63,8 +63,7 @@ func (c Client) ListsCopy(ctx context.Context, seriesId int, options ...tmdb.Lis
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) ListsCopyComplete(ctx context.Context, seriesId int, options ...tmdb.ListsCopyOptions) (result tmdb.ListsCopyCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("ListsCopyComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("ListsCopyComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.ListsCopyOptions
 	if len(options) == 1 {
@@ -82,11 +81,10 @@ func (c Client) ListsCopyComplete(ctx context.Context, seriesId int, options ...
 		page, err = c.ListsCopy(ctx, seriesId, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -95,7 +93,7 @@ func (c Client) ListsCopyComplete(ctx context.Context, seriesId int, options ...
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -142,8 +140,8 @@ func (c Client) ListsCopyEach(ctx context.Context, seriesId int, options ...tmdb
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}

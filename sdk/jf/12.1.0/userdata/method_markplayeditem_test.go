@@ -28,7 +28,7 @@ func TestOperationMarkPlayedItem(t *testing.T) {
 	expectRequest(t, r, http.MethodPost, "/UserPlayedItems/v-itemId")
 	expectQuery(t, r, "userId", "v-UserId")
 	expectQuery(t, r, "datePlayed", "2024-03-04T05:06:07.0000000Z")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -37,7 +37,7 @@ func TestOperationMarkPlayedItem(t *testing.T) {
 	if result.UserItemDataDto != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 

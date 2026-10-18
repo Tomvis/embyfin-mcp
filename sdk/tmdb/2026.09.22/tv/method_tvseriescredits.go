@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 func (c Client) TvSeriesCredits(ctx context.Context, seriesId int, language ...string) (result tmdb.TvSeriesCreditsResponse, err error) {
 	var option tmdb.TvSeriesCreditsOptions
 	if len(language) > 1 {
-		err = fmt.Errorf("TvSeriesCredits takes one language at most, not %d", len(language))
-		return
+		return result, fmt.Errorf("TvSeriesCredits takes one language at most, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]
@@ -30,12 +30,12 @@ func (c Client) TvSeriesCredits(ctx context.Context, seriesId int, language ...s
 		HTTPMethod:    http.MethodGet,
 		Operation:     "TvSeriesCredits",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/tv/%d/credits", seriesId),
+		Path:          "/3/tv/" + strconv.Itoa(seriesId) + "/credits",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) TvSeriesCredits(ctx context.Context, seriesId int, language ...s
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeriesCreditsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeriesCreditsAnswer = result.Answer
 
-	return
+	return result, nil
 }

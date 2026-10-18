@@ -26,7 +26,7 @@ func TestOperationUpdateNamedConfiguration(t *testing.T) {
 	if !json.Valid([]byte(body)) {
 		t.Errorf("body = %q, want JSON", body)
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

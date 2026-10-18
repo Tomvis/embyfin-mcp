@@ -28,7 +28,7 @@ func TestOperationPostUserImage(t *testing.T) {
 	if body != "raw bytes" {
 		t.Errorf("body = %q, want the raw bytes", body)
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -44,8 +44,8 @@ func TestOperationPostUserImage(t *testing.T) {
 	if _, err = c.PostUserImage(t.Context(), strings.NewReader("raw bytes"), "image/png"); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("userId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("userId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Userid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Userid"))
 	}
 	// two values are refused before any request
 	if _, err = c.PostUserImage(t.Context(), strings.NewReader("raw bytes"), "image/png", jf.UserID("v-UserId"), jf.UserID("v-UserId")); err == nil || len(s.requests) != 1 {

@@ -38,7 +38,7 @@ func TestOperationGetMoviesRecommendations(t *testing.T) {
 	expectQuery(t, r, "EnableUserData", "true")
 	expectQuery(t, r, "ImageTypeLimit", "7")
 	expectQuery(t, r, "EnableImageTypes", "v-EnableImageTypes")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {

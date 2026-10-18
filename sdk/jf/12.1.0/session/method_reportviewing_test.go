@@ -26,7 +26,7 @@ func TestOperationReportViewing(t *testing.T) {
 	expectRequest(t, r, http.MethodPost, "/Sessions/Viewing")
 	expectQuery(t, r, "sessionId", "v-SessionId")
 	expectQuery(t, r, "itemId", "v-ItemId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

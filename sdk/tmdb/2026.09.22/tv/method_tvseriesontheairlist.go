@@ -15,8 +15,7 @@ import (
 // TvSeriesOnTheAirList calls GET /3/tv/on_the_air. On The Air.
 func (c Client) TvSeriesOnTheAirList(ctx context.Context, options ...tmdb.TvSeriesOnTheAirListOptions) (result tmdb.TvSeriesOnTheAirListResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeriesOnTheAirList takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeriesOnTheAirList takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeriesOnTheAirListOptions
 	if len(options) == 1 {
@@ -36,7 +35,7 @@ func (c Client) TvSeriesOnTheAirList(ctx context.Context, options ...tmdb.TvSeri
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,17 +44,17 @@ func (c Client) TvSeriesOnTheAirList(ctx context.Context, options ...tmdb.TvSeri
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvSeriesOnTheAirListAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvSeriesOnTheAirListAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // TvSeriesOnTheAirListComplete calls TvSeriesOnTheAirList page by page, from the
@@ -63,8 +62,7 @@ func (c Client) TvSeriesOnTheAirList(ctx context.Context, options ...tmdb.TvSeri
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) TvSeriesOnTheAirListComplete(ctx context.Context, options ...tmdb.TvSeriesOnTheAirListOptions) (result tmdb.TvSeriesOnTheAirListCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("TvSeriesOnTheAirListComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("TvSeriesOnTheAirListComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.TvSeriesOnTheAirListOptions
 	if len(options) == 1 {
@@ -82,11 +80,10 @@ func (c Client) TvSeriesOnTheAirListComplete(ctx context.Context, options ...tmd
 		page, err = c.TvSeriesOnTheAirList(ctx, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -95,7 +92,7 @@ func (c Client) TvSeriesOnTheAirListComplete(ctx context.Context, options ...tmd
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -142,8 +139,8 @@ func (c Client) TvSeriesOnTheAirListEach(ctx context.Context, options ...tmdb.Tv
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}

@@ -4,6 +4,7 @@ package tmdb
 
 import (
 	"errors"
+	"slices"
 
 	"github.com/katbyte/pandorest/client"
 )
@@ -30,5 +31,5 @@ func New(baseURL, token string, opts ...client.Option) (*client.Client, error) {
 	}
 
 	// the credential is a secret whatever the authorizer makes of it, so no error repeats it
-	return service.New(baseURL, credential(token), append(opts[:len(opts):len(opts)], client.WithSecrets(token))...)
+	return service.New(baseURL, credential(token), append(slices.Clip(opts), client.WithSecrets(token))...)
 }

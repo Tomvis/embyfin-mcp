@@ -4,8 +4,8 @@ package movie
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) MovieKeywords(ctx context.Context, movieId int) (result tmdb.Mov
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "MovieKeywords",
-		Path:       fmt.Sprintf("/3/movie/%d/keywords", movieId),
+		Path:       "/3/movie/" + strconv.Itoa(movieId) + "/keywords",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) MovieKeywords(ctx context.Context, movieId int) (result tmdb.Mov
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.MovieKeywordsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.MovieKeywordsAnswer = result.Answer
 
-	return
+	return result, nil
 }

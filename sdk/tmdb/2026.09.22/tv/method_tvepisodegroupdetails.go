@@ -4,7 +4,6 @@ package tv
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -21,12 +20,12 @@ func (c Client) TvEpisodeGroupDetails(ctx context.Context, tvEpisodeGroupId stri
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "TvEpisodeGroupDetails",
-		Path:       fmt.Sprintf("/3/tv/episode_group/%s", url.PathEscape(tvEpisodeGroupId)),
+		Path:       "/3/tv/episode_group/" + url.PathEscape(tvEpisodeGroupId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -35,15 +34,15 @@ func (c Client) TvEpisodeGroupDetails(ctx context.Context, tvEpisodeGroupId stri
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.TvEpisodeGroupDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.TvEpisodeGroupDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

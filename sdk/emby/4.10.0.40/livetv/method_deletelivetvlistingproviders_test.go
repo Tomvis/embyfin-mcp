@@ -21,7 +21,7 @@ func TestOperationDeleteLiveTvListingProviders(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodDelete, "/LiveTv/ListingProviders")
 	expectQuery(t, r, "Id", "v-Id")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

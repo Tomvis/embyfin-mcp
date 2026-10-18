@@ -4,7 +4,6 @@ package livetv
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -21,13 +20,13 @@ func (c Client) GetLiveStreamFile(ctx context.Context, streamId string, containe
 		},
 		HTTPMethod:     http.MethodGet,
 		Operation:      "GetLiveStreamFile",
-		Path:           fmt.Sprintf("/LiveTv/LiveStreamFiles/%s/stream.%s", url.PathEscape(streamId), url.PathEscape(container)),
+		Path:           "/LiveTv/LiveStreamFiles/" + url.PathEscape(streamId) + "/stream." + url.PathEscape(container),
 		StreamResponse: true,
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -36,8 +35,8 @@ func (c Client) GetLiveStreamFile(ctx context.Context, streamId string, containe
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
-	return
+	return result, nil
 }

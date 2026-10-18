@@ -22,7 +22,7 @@ func TestOperationGetGroupingOptions(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/UserViews/GroupingOptions")
 	expectQuery(t, r, "userId", "v-UserId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -48,8 +48,8 @@ func TestOperationGetGroupingOptions(t *testing.T) {
 	if _, err = c.GetGroupingOptions(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("userId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("userId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Userid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Userid"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetGroupingOptions(t.Context(), jf.UserID("v-UserId"), jf.UserID("v-UserId")); err == nil || len(s.requests) != 1 {

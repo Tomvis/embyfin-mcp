@@ -225,7 +225,7 @@ func TestOperationGetMusicGenresInstantMix(t *testing.T) {
 	expectQuery(t, r, "NameStartsWith", "v-NameStartsWith")
 	expectQuery(t, r, "NameLessThan", "v-NameLessThan")
 	expectQuery(t, r, "Id", "v-Id")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -234,7 +234,7 @@ func TestOperationGetMusicGenresInstantMix(t *testing.T) {
 	if result.QueryResultBaseItemDto != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 

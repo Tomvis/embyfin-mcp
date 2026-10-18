@@ -22,7 +22,7 @@ func TestOperationSearchRemoteSubtitles(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/Items/v-itemId/RemoteSearch/Subtitles/p%2Flanguage")
 	expectQuery(t, r, "isPerfectMatch", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -48,8 +48,8 @@ func TestOperationSearchRemoteSubtitles(t *testing.T) {
 	if _, err = c.SearchRemoteSubtitles(t.Context(), jf.ItemID("v-itemId"), "p/language"); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("isPerfectMatch") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("isPerfectMatch"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Isperfectmatch") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Isperfectmatch"))
 	}
 	// two values are refused before any request
 	if _, err = c.SearchRemoteSubtitles(t.Context(), jf.ItemID("v-itemId"), "p/language", true, true); err == nil || len(s.requests) != 1 {

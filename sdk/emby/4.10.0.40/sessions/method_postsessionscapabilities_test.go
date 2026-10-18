@@ -32,7 +32,7 @@ func TestOperationPostSessionsCapabilities(t *testing.T) {
 	expectQuery(t, r, "SupportedCommands", "v-SupportedCommands")
 	expectQuery(t, r, "SupportsMediaControl", "true")
 	expectQuery(t, r, "SupportsSync", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

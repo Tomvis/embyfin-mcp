@@ -26,7 +26,7 @@ func TestOperationSendPlaystateCommand(t *testing.T) {
 	expectRequest(t, r, http.MethodPost, "/Sessions/v-sessionId/Playing/Stop")
 	expectQuery(t, r, "seekPositionTicks", "7")
 	expectQuery(t, r, "controllingUserId", "v-ControllingUserId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

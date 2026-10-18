@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 func (c Client) AccountDetails(ctx context.Context, accountId int, sessionId ...string) (result tmdb.AccountDetailsResponse, err error) {
 	var option tmdb.AccountDetailsOptions
 	if len(sessionId) > 1 {
-		err = fmt.Errorf("AccountDetails takes one sessionId at most, not %d", len(sessionId))
-		return
+		return result, fmt.Errorf("AccountDetails takes one sessionId at most, not %d", len(sessionId))
 	}
 	if len(sessionId) == 1 {
 		option.SessionId = sessionId[0]
@@ -30,12 +30,12 @@ func (c Client) AccountDetails(ctx context.Context, accountId int, sessionId ...
 		HTTPMethod:    http.MethodGet,
 		Operation:     "AccountDetails",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/account/%d", accountId),
+		Path:          "/3/account/" + strconv.Itoa(accountId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) AccountDetails(ctx context.Context, accountId int, sessionId ...
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.AccountDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.AccountDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

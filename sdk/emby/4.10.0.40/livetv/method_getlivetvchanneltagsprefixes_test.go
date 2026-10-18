@@ -221,7 +221,7 @@ func TestOperationGetLiveTvChannelTagsPrefixes(t *testing.T) {
 	expectQuery(t, r, "AlbumArtistStartsWithOrGreater", "v-AlbumArtistStartsWithOrGreater")
 	expectQuery(t, r, "NameStartsWith", "v-NameStartsWith")
 	expectQuery(t, r, "NameLessThan", "v-NameLessThan")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {

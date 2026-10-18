@@ -27,7 +27,7 @@ func TestOperationPostUserSettingsByUserIdPartial(t *testing.T) {
 	if body != "raw bytes" {
 		t.Errorf("body = %q, want the raw bytes", body)
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

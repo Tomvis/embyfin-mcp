@@ -22,7 +22,7 @@ func TestOperationGetChannelMappingOptions(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/LiveTv/ChannelMappingOptions")
 	expectQuery(t, r, "providerId", "v-ProviderId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -31,7 +31,7 @@ func TestOperationGetChannelMappingOptions(t *testing.T) {
 	if result.ChannelMappingOptionsDto != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
@@ -54,8 +54,8 @@ func TestOperationGetChannelMappingOptions(t *testing.T) {
 	if _, err = c.GetChannelMappingOptions(t.Context()); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("providerId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("providerId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Providerid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Providerid"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetChannelMappingOptions(t.Context(), "v-ProviderId", "v-ProviderId"); err == nil || len(s.requests) != 1 {

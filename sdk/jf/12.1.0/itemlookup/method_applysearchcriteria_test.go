@@ -31,7 +31,7 @@ func TestOperationApplySearchCriteria(t *testing.T) {
 	if body != "{}" {
 		t.Errorf("an empty record sent %q, want %q: a field never set went out", body, "{}")
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 204 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusNoContent {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 
@@ -47,8 +47,8 @@ func TestOperationApplySearchCriteria(t *testing.T) {
 	if _, err = c.ApplySearchCriteria(t.Context(), jf.ItemID("v-itemId"), jf.RemoteSearchResult{}); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("replaceAllImages") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("replaceAllImages"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Replaceallimages") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Replaceallimages"))
 	}
 	// two values are refused before any request
 	if _, err = c.ApplySearchCriteria(t.Context(), jf.ItemID("v-itemId"), jf.RemoteSearchResult{}, true, true); err == nil || len(s.requests) != 1 {

@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 func (c Client) MovieAlternativeTitles(ctx context.Context, movieId int, country ...string) (result tmdb.MovieAlternativeTitlesResponse, err error) {
 	var option tmdb.MovieAlternativeTitlesOptions
 	if len(country) > 1 {
-		err = fmt.Errorf("MovieAlternativeTitles takes one country at most, not %d", len(country))
-		return
+		return result, fmt.Errorf("MovieAlternativeTitles takes one country at most, not %d", len(country))
 	}
 	if len(country) == 1 {
 		option.Country = country[0]
@@ -30,12 +30,12 @@ func (c Client) MovieAlternativeTitles(ctx context.Context, movieId int, country
 		HTTPMethod:    http.MethodGet,
 		Operation:     "MovieAlternativeTitles",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/movie/%d/alternative_titles", movieId),
+		Path:          "/3/movie/" + strconv.Itoa(movieId) + "/alternative_titles",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) MovieAlternativeTitles(ctx context.Context, movieId int, country
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.MovieAlternativeTitlesAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.MovieAlternativeTitlesAnswer = result.Answer
 
-	return
+	return result, nil
 }

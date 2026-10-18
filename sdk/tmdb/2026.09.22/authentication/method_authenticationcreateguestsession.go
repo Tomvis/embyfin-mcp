@@ -24,7 +24,7 @@ func (c Client) AuthenticationCreateGuestSession(ctx context.Context) (result tm
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -33,15 +33,15 @@ func (c Client) AuthenticationCreateGuestSession(ctx context.Context) (result tm
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.AuthenticationCreateGuestSessionAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.AuthenticationCreateGuestSessionAnswer = result.Answer
 
-	return
+	return result, nil
 }

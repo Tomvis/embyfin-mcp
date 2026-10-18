@@ -30,7 +30,7 @@ func TestOperationGetLiveTvListingProvidersLineups(t *testing.T) {
 	expectQuery(t, r, "Type", "v-Type")
 	expectQuery(t, r, "Location", "v-Location")
 	expectQuery(t, r, "Country", "v-Country")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {

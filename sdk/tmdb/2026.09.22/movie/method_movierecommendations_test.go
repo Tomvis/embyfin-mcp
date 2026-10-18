@@ -26,7 +26,7 @@ func TestOperationMovieRecommendations(t *testing.T) {
 	expectRequest(t, r, http.MethodGet, "/3/movie/7/recommendations")
 	expectQuery(t, r, "language", "v-Language")
 	expectQuery(t, r, "page", "7")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {

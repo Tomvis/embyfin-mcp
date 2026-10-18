@@ -15,8 +15,7 @@ import (
 // MovieUpcomingList calls GET /3/movie/upcoming. Upcoming.
 func (c Client) MovieUpcomingList(ctx context.Context, options ...tmdb.MovieUpcomingListOptions) (result tmdb.MovieUpcomingListResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("MovieUpcomingList takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("MovieUpcomingList takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.MovieUpcomingListOptions
 	if len(options) == 1 {
@@ -36,7 +35,7 @@ func (c Client) MovieUpcomingList(ctx context.Context, options ...tmdb.MovieUpco
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -45,17 +44,17 @@ func (c Client) MovieUpcomingList(ctx context.Context, options ...tmdb.MovieUpco
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.MovieUpcomingListAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.MovieUpcomingListAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // MovieUpcomingListComplete calls MovieUpcomingList page by page, from the
@@ -63,8 +62,7 @@ func (c Client) MovieUpcomingList(ctx context.Context, options ...tmdb.MovieUpco
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) MovieUpcomingListComplete(ctx context.Context, options ...tmdb.MovieUpcomingListOptions) (result tmdb.MovieUpcomingListCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("MovieUpcomingListComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("MovieUpcomingListComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.MovieUpcomingListOptions
 	if len(options) == 1 {
@@ -82,11 +80,10 @@ func (c Client) MovieUpcomingListComplete(ctx context.Context, options ...tmdb.M
 		page, err = c.MovieUpcomingList(ctx, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -95,7 +92,7 @@ func (c Client) MovieUpcomingListComplete(ctx context.Context, options ...tmdb.M
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -142,8 +139,8 @@ func (c Client) MovieUpcomingListEach(ctx context.Context, options ...tmdb.Movie
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}

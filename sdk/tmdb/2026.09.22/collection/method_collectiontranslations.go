@@ -4,8 +4,8 @@ package collection
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) CollectionTranslations(ctx context.Context, collectionId int) (r
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "CollectionTranslations",
-		Path:       fmt.Sprintf("/3/collection/%d/translations", collectionId),
+		Path:       "/3/collection/" + strconv.Itoa(collectionId) + "/translations",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) CollectionTranslations(ctx context.Context, collectionId int) (r
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.CollectionTranslationsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.CollectionTranslationsAnswer = result.Answer
 
-	return
+	return result, nil
 }

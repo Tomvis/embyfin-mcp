@@ -4,8 +4,8 @@ package network
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) AlternativeNamesCopy(ctx context.Context, networkId int) (result
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "AlternativeNamesCopy",
-		Path:       fmt.Sprintf("/3/network/%d/images", networkId),
+		Path:       "/3/network/" + strconv.Itoa(networkId) + "/images",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) AlternativeNamesCopy(ctx context.Context, networkId int) (result
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.AlternativeNamesCopyAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.AlternativeNamesCopyAnswer = result.Answer
 
-	return
+	return result, nil
 }

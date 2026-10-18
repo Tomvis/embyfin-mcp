@@ -4,8 +4,8 @@ package company
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) CompanyAlternativeNames(ctx context.Context, companyId int) (res
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "CompanyAlternativeNames",
-		Path:       fmt.Sprintf("/3/company/%d/alternative_names", companyId),
+		Path:       "/3/company/" + strconv.Itoa(companyId) + "/alternative_names",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) CompanyAlternativeNames(ctx context.Context, companyId int) (res
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.CompanyAlternativeNamesAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.CompanyAlternativeNamesAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -15,8 +16,7 @@ import (
 func (c Client) CollectionDetails(ctx context.Context, collectionId int, language ...string) (result tmdb.CollectionDetailsResponse, err error) {
 	var option tmdb.CollectionDetailsOptions
 	if len(language) > 1 {
-		err = fmt.Errorf("CollectionDetails takes one language at most, not %d", len(language))
-		return
+		return result, fmt.Errorf("CollectionDetails takes one language at most, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]
@@ -30,12 +30,12 @@ func (c Client) CollectionDetails(ctx context.Context, collectionId int, languag
 		HTTPMethod:    http.MethodGet,
 		Operation:     "CollectionDetails",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/collection/%d", collectionId),
+		Path:          "/3/collection/" + strconv.Itoa(collectionId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) CollectionDetails(ctx context.Context, collectionId int, languag
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.CollectionDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.CollectionDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

@@ -26,7 +26,7 @@ func TestOperationDeleteLibraryVirtualFolders(t *testing.T) {
 	expectRequest(t, r, http.MethodDelete, "/Library/VirtualFolders")
 	expectQuery(t, r, "Id", "v-Id")
 	expectQuery(t, r, "RefreshLibrary", "true")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 

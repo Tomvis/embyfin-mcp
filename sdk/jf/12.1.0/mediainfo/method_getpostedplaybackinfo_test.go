@@ -17,20 +17,20 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 
 	c, s := newOperationServer(t, 200, "application/json", "{}")
 	result, err := c.GetPostedPlaybackInfo(t.Context(), jf.ItemID("v-itemId"), jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
-		UserId:               jf.UserID("v-UserId"),
-		MaxStreamingBitrate:  new(7),
-		StartTimeTicks:       new(int64(7)),
-		AudioStreamIndex:     new(7),
-		SubtitleStreamIndex:  new(7),
-		MaxAudioChannels:     new(7),
-		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"),
-		LiveStreamId:         "v-LiveStreamId",
-		AutoOpenLiveStream:   new(true),
-		EnableDirectPlay:     new(true),
-		EnableDirectStream:   new(true),
-		EnableTranscoding:    new(true),
-		AllowVideoStreamCopy: new(true),
-		AllowAudioStreamCopy: new(true),
+		UserId:               jf.UserID("v-UserId"),               //nolint:staticcheck // the test sets every option, deprecated ones too
+		MaxStreamingBitrate:  new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		StartTimeTicks:       new(int64(7)),                       //nolint:staticcheck // the test sets every option, deprecated ones too
+		AudioStreamIndex:     new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		SubtitleStreamIndex:  new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		MaxAudioChannels:     new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"), //nolint:staticcheck // the test sets every option, deprecated ones too
+		LiveStreamId:         "v-LiveStreamId",                    //nolint:staticcheck // the test sets every option, deprecated ones too
+		AutoOpenLiveStream:   new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableDirectPlay:     new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableDirectStream:   new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableTranscoding:    new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		AllowVideoStreamCopy: new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		AllowAudioStreamCopy: new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -60,7 +60,7 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 	if body != "{}" {
 		t.Errorf("an empty record sent %q, want %q: a field never set went out", body, "{}")
 	}
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -69,27 +69,27 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 	if result.PlaybackInfoResponse != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
 	// an answer that does not decode is an error, with the response
 	c, _ = newOperationServer(t, 200, "application/json", "<html>")
 	result, err = c.GetPostedPlaybackInfo(t.Context(), jf.ItemID("v-itemId"), jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
-		UserId:               jf.UserID("v-UserId"),
-		MaxStreamingBitrate:  new(7),
-		StartTimeTicks:       new(int64(7)),
-		AudioStreamIndex:     new(7),
-		SubtitleStreamIndex:  new(7),
-		MaxAudioChannels:     new(7),
-		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"),
-		LiveStreamId:         "v-LiveStreamId",
-		AutoOpenLiveStream:   new(true),
-		EnableDirectPlay:     new(true),
-		EnableDirectStream:   new(true),
-		EnableTranscoding:    new(true),
-		AllowVideoStreamCopy: new(true),
-		AllowAudioStreamCopy: new(true),
+		UserId:               jf.UserID("v-UserId"),               //nolint:staticcheck // the test sets every option, deprecated ones too
+		MaxStreamingBitrate:  new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		StartTimeTicks:       new(int64(7)),                       //nolint:staticcheck // the test sets every option, deprecated ones too
+		AudioStreamIndex:     new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		SubtitleStreamIndex:  new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		MaxAudioChannels:     new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"), //nolint:staticcheck // the test sets every option, deprecated ones too
+		LiveStreamId:         "v-LiveStreamId",                    //nolint:staticcheck // the test sets every option, deprecated ones too
+		AutoOpenLiveStream:   new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableDirectPlay:     new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableDirectStream:   new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableTranscoding:    new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		AllowVideoStreamCopy: new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		AllowAudioStreamCopy: new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
 	})
 	if err == nil || client.StatusCode(err) != 0 || result.HttpResponse == nil {
 		t.Errorf("an answer that does not decode = %v", err)
@@ -98,20 +98,20 @@ func TestOperationGetPostedPlaybackInfo(t *testing.T) {
 	// a status the operation does not document is an error, with the response
 	c, _ = newOperationServer(t, 418, "text/plain", "no")
 	result, err = c.GetPostedPlaybackInfo(t.Context(), jf.ItemID("v-itemId"), jf.PlaybackInfoDto{}, jf.GetPostedPlaybackInfoOptions{
-		UserId:               jf.UserID("v-UserId"),
-		MaxStreamingBitrate:  new(7),
-		StartTimeTicks:       new(int64(7)),
-		AudioStreamIndex:     new(7),
-		SubtitleStreamIndex:  new(7),
-		MaxAudioChannels:     new(7),
-		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"),
-		LiveStreamId:         "v-LiveStreamId",
-		AutoOpenLiveStream:   new(true),
-		EnableDirectPlay:     new(true),
-		EnableDirectStream:   new(true),
-		EnableTranscoding:    new(true),
-		AllowVideoStreamCopy: new(true),
-		AllowAudioStreamCopy: new(true),
+		UserId:               jf.UserID("v-UserId"),               //nolint:staticcheck // the test sets every option, deprecated ones too
+		MaxStreamingBitrate:  new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		StartTimeTicks:       new(int64(7)),                       //nolint:staticcheck // the test sets every option, deprecated ones too
+		AudioStreamIndex:     new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		SubtitleStreamIndex:  new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		MaxAudioChannels:     new(7),                              //nolint:staticcheck // the test sets every option, deprecated ones too
+		MediaSourceId:        jf.MediaSourceID("v-MediaSourceId"), //nolint:staticcheck // the test sets every option, deprecated ones too
+		LiveStreamId:         "v-LiveStreamId",                    //nolint:staticcheck // the test sets every option, deprecated ones too
+		AutoOpenLiveStream:   new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableDirectPlay:     new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableDirectStream:   new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		EnableTranscoding:    new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		AllowVideoStreamCopy: new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
+		AllowAudioStreamCopy: new(true),                           //nolint:staticcheck // the test sets every option, deprecated ones too
 	})
 	if client.StatusCode(err) != 418 || result.HttpResponse == nil {
 		t.Errorf("an undocumented status = %v, %+v", err, result.HttpResponse)

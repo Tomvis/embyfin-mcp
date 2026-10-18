@@ -21,7 +21,7 @@ func TestOperationGetLiveTvListingProviders(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/LiveTv/ListingProviders")
 	expectQuery(t, r, "ChannelId", "v-ChannelId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {

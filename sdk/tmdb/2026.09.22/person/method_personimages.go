@@ -4,8 +4,8 @@ package person
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -20,12 +20,12 @@ func (c Client) PersonImages(ctx context.Context, personId int) (result tmdb.Per
 		},
 		HTTPMethod: http.MethodGet,
 		Operation:  "PersonImages",
-		Path:       fmt.Sprintf("/3/person/%d/images", personId),
+		Path:       "/3/person/" + strconv.Itoa(personId) + "/images",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -34,15 +34,15 @@ func (c Client) PersonImages(ctx context.Context, personId int) (result tmdb.Per
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.PersonImagesAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.PersonImagesAnswer = result.Answer
 
-	return
+	return result, nil
 }

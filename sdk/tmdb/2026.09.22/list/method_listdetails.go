@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/katbyte/embyfin-mcp/sdk/tmdb/2026.09.22/tmdb"
 	"github.com/katbyte/pandorest/client"
@@ -14,8 +15,7 @@ import (
 // ListDetails calls GET /3/list/{list_id}. Details.
 func (c Client) ListDetails(ctx context.Context, listId int, options ...tmdb.ListDetailsOptions) (result tmdb.ListDetailsResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("ListDetails takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("ListDetails takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.ListDetailsOptions
 	if len(options) == 1 {
@@ -30,12 +30,12 @@ func (c Client) ListDetails(ctx context.Context, listId int, options ...tmdb.Lis
 		HTTPMethod:    http.MethodGet,
 		Operation:     "ListDetails",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/list/%d", listId),
+		Path:          "/3/list/" + strconv.Itoa(listId),
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -44,15 +44,15 @@ func (c Client) ListDetails(ctx context.Context, listId int, options ...tmdb.Lis
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.ListDetailsAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.ListDetailsAnswer = result.Answer
 
-	return
+	return result, nil
 }

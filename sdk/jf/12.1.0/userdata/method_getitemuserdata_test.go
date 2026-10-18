@@ -23,7 +23,7 @@ func TestOperationGetItemUserData(t *testing.T) {
 	_ = body
 	expectRequest(t, r, http.MethodGet, "/UserItems/v-itemId/UserData")
 	expectQuery(t, r, "userId", "v-UserId")
-	if result.HttpResponse == nil || result.HttpResponse.StatusCode != 200 {
+	if result.HttpResponse == nil || result.HttpResponse.StatusCode != http.StatusOK {
 		t.Fatalf("HttpResponse = %+v", result.HttpResponse)
 	}
 	if result.Answer == nil || !result.Answered() {
@@ -32,7 +32,7 @@ func TestOperationGetItemUserData(t *testing.T) {
 	if result.UserItemDataDto != result.Answer {
 		t.Error("the embedded answer is not the answer")
 	}
-	if record, err := result.Record(); err != nil || !reflect.DeepEqual(record, *result.Answer) {
+	if record, err := result.Record(); err != nil || !reflect.DeepEqual(&record, result.Answer) {
 		t.Errorf("Record = %+v, %v", record, err)
 	}
 
@@ -55,8 +55,8 @@ func TestOperationGetItemUserData(t *testing.T) {
 	if _, err = c.GetItemUserData(t.Context(), jf.ItemID("v-itemId")); err != nil {
 		t.Errorf("without the option = %v", err)
 	}
-	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("userId") != "" {
-		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("userId"))
+	if r, _ := s.only(t); r.URL.RawQuery != "" || r.Header.Get("Userid") != "" {
+		t.Errorf("without the option, sent %q and %q", r.URL.RawQuery, r.Header.Get("Userid"))
 	}
 	// two values are refused before any request
 	if _, err = c.GetItemUserData(t.Context(), jf.ItemID("v-itemId"), jf.UserID("v-UserId"), jf.UserID("v-UserId")); err == nil || len(s.requests) != 1 {

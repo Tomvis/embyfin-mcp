@@ -16,8 +16,7 @@ import (
 // GuestSessionRatedMovies calls GET /3/guest_session/{guest_session_id}/rated/movies. Rated Movies.
 func (c Client) GuestSessionRatedMovies(ctx context.Context, guestSessionId string, options ...tmdb.GuestSessionRatedMoviesOptions) (result tmdb.GuestSessionRatedMoviesResponse, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("GuestSessionRatedMovies takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("GuestSessionRatedMovies takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.GuestSessionRatedMoviesOptions
 	if len(options) == 1 {
@@ -32,12 +31,12 @@ func (c Client) GuestSessionRatedMovies(ctx context.Context, guestSessionId stri
 		HTTPMethod:    http.MethodGet,
 		Operation:     "GuestSessionRatedMovies",
 		OptionsObject: option,
-		Path:          fmt.Sprintf("/3/guest_session/%s/rated/movies", url.PathEscape(guestSessionId)),
+		Path:          "/3/guest_session/" + url.PathEscape(guestSessionId) + "/rated/movies",
 	}
 
 	req, err := c.Client.NewRequest(ctx, opts)
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var resp *client.Response
@@ -46,17 +45,17 @@ func (c Client) GuestSessionRatedMovies(ctx context.Context, guestSessionId stri
 		result.HttpResponse = resp.Response
 	}
 	if err != nil {
-		return
+		return result, err
 	}
 
 	var answer tmdb.GuestSessionRatedMoviesAnswer
 	result.Answer = &answer
-	if err = resp.Unmarshal(result.Answer); err != nil {
-		return
+	if err := resp.Unmarshal(result.Answer); err != nil {
+		return result, err
 	}
 	result.GuestSessionRatedMoviesAnswer = result.Answer
 
-	return
+	return result, nil
 }
 
 // GuestSessionRatedMoviesComplete calls GuestSessionRatedMovies page by page, from the
@@ -64,8 +63,7 @@ func (c Client) GuestSessionRatedMovies(ctx context.Context, guestSessionId stri
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) GuestSessionRatedMoviesComplete(ctx context.Context, guestSessionId string, options ...tmdb.GuestSessionRatedMoviesOptions) (result tmdb.GuestSessionRatedMoviesCompleteResult, err error) {
 	if len(options) > 1 {
-		err = fmt.Errorf("GuestSessionRatedMoviesComplete takes one options struct at most, not %d", len(options))
-		return
+		return result, fmt.Errorf("GuestSessionRatedMoviesComplete takes one options struct at most, not %d", len(options))
 	}
 	var option tmdb.GuestSessionRatedMoviesOptions
 	if len(options) == 1 {
@@ -83,11 +81,10 @@ func (c Client) GuestSessionRatedMoviesComplete(ctx context.Context, guestSessio
 		page, err = c.GuestSessionRatedMovies(ctx, guestSessionId, option)
 		result.LatestHttpResponse = page.HttpResponse
 		if err != nil {
-			err = fmt.Errorf("loading results: %w", err)
-			return
+			return result, fmt.Errorf("loading results: %w", err)
 		}
 		if page.Answer == nil || len(page.Answer.Results) == 0 {
-			return
+			return result, nil
 		}
 		result.Items = append(result.Items, page.Answer.Results...)
 		// the first page says how long a page is; a shorter one is the last, and
@@ -96,7 +93,7 @@ func (c Client) GuestSessionRatedMoviesComplete(ctx context.Context, guestSessio
 			limit = len(page.Answer.Results)
 		}
 		if len(page.Answer.Results) < limit || page.Answer.TotalResults > 0 && len(result.Items) >= page.Answer.TotalResults {
-			return
+			return result, nil
 		}
 		number++
 	}
@@ -143,8 +140,8 @@ func (c Client) GuestSessionRatedMoviesEach(ctx context.Context, guestSessionId 
 			if page.Answer == nil || len(page.Answer.Results) == 0 {
 				return
 			}
-			for _, item := range page.Answer.Results {
-				if !yield(item, nil) {
+			for i := range page.Answer.Results {
+				if !yield(page.Answer.Results[i], nil) {
 					return
 				}
 			}
