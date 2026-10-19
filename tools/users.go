@@ -29,6 +29,9 @@ func registerUserTools(r *registry) {
 		if err != nil {
 			return nil, usersOut{}, err
 		}
+		if users, err = r.visibleUsers(ctx, users); err != nil {
+			return nil, usersOut{}, err
+		}
 
 		out := usersOut{}
 		for _, u := range users {
@@ -70,7 +73,7 @@ func registerUserTools(r *registry) {
 		Description: "What a user has played recently (from the activity log), most recent first: the last 60 days, or as many as the server keeps if fewer (Jellyfin deletes activity older than its retention, 30 days out of the box). " +
 			"A period asked for past what the server keeps comes back complete false, saying how far back can be seen. A play of an item since removed from the library is a row marked removed, with the log's line about it.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in historyIn) (*mcp.CallToolResult, historyOut, error) {
-		user, err := client.ResolveUser(ctx, in.User)
+		user, err := r.resolveUser(ctx, in.User)
 		if err != nil {
 			return nil, historyOut{}, err
 		}
@@ -166,7 +169,7 @@ func registerUserTools(r *registry) {
 		Name:        "user_next_up",
 		Description: "What a user should watch next - the next episode of each series they are watching - and everything they are part way through (the continue watching row), with where each resumes and how far through it is. Each list stops at limit, and says so (next_up_more, in_progress_more) when there was more. item_set_state moves a resume point, or finishes or clears one.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in nextUpIn) (*mcp.CallToolResult, nextUpOut, error) {
-		user, err := client.ResolveUser(ctx, in.User)
+		user, err := r.resolveUser(ctx, in.User)
 		if err != nil {
 			return nil, nextUpOut{}, err
 		}

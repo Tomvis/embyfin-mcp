@@ -13,6 +13,7 @@ package tools
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"sync"
@@ -53,6 +54,12 @@ type Options struct {
 	// AnimeList is where audit_anime_ids reads the Anime-Lists mapping: a
 	// URL, or a file on disk. Empty is the list its maintainers publish.
 	AnimeList string
+	// User, when set, is the account the tools that act for a user default
+	// to, in place of the first administrator.
+	User string
+	// UserOnly refuses every account but User, and narrows the tools that
+	// list accounts to it.
+	UserOnly bool
 	// ProviderTransport, when set, carries the calls embyfin-mcp itself
 	// makes to metadata providers (TMDB). The tests point it at a
 	// record/replay proxy; nil is the default transport.
@@ -324,6 +331,9 @@ func add[In, Out any](r *registry, kind mcpregistry.Kind, t *mcp.Tool, h mcp.Too
 // the names registered. It fails when an allow/deny pattern matches no tool,
 // so a typo cannot silently hide one.
 func RegisterAll(server *mcp.Server, client *embyfin.Client, opts Options) ([]string, error) {
+	if opts.UserOnly && opts.User == "" {
+		return nil, errors.New("user-only needs a user to act for (--user / EMBYFIN_USER)")
+	}
 	r := &registry{client: client, opts: opts}
 	queueTools(r)
 

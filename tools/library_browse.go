@@ -160,8 +160,8 @@ func changedNote(reads ...embyfin.ReadResult) string {
 // every library). Jellyfin lists a library's items for a user who may not see
 // it when the library is named as the parent, so the check is made here for
 // both servers.
-func userInLibrary(ctx context.Context, client *embyfin.Client, nameOrID string, folder *embyfin.VirtualFolder) (*embyfin.User, error) {
-	user, err := client.ResolveUser(ctx, nameOrID)
+func userInLibrary(ctx context.Context, r *registry, nameOrID string, folder *embyfin.VirtualFolder) (*embyfin.User, error) {
+	user, err := r.resolveUser(ctx, nameOrID)
 	if err != nil {
 		return nil, err
 	}
@@ -448,7 +448,7 @@ func registerLibraryBrowseTools(r *registry) {
 			opts.ParentID = folder.ItemID
 		}
 		if watched != "" || sort == "played" || in.User != "" {
-			user, uerr := userInLibrary(ctx, client, in.User, folder)
+			user, uerr := userInLibrary(ctx, r, in.User, folder)
 			if uerr != nil {
 				return nil, itemsOut{}, uerr
 			}

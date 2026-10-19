@@ -32,6 +32,8 @@ type FlagData struct {
 	TMDBToken    string   `mapstructure:"tmdb-token"`
 	TMDBKey      string   `mapstructure:"tmdb-key"`
 	AnimeList    string   `mapstructure:"anime-list"`
+	User         string   `mapstructure:"user"`
+	UserOnly     bool     `mapstructure:"user-only"`
 }
 
 // envNames binds each flag to its environment variable.
@@ -50,6 +52,8 @@ var envNames = map[string]string{ //nolint:gosec // G101: these are env var name
 	"tmdb-token":    "EMBYFIN_TMDB_TOKEN",
 	"tmdb-key":      "EMBYFIN_TMDB_KEY",
 	"anime-list":    "EMBYFIN_ANIME_LIST",
+	"user":          "EMBYFIN_USER",
+	"user-only":     "EMBYFIN_USER_ONLY",
 }
 
 // persistent is the flag set configureFlags bound, for the settings that
@@ -73,6 +77,8 @@ func configureFlags(root *cobra.Command) error {
 	pflags.String("tmdb-token", "", "TMDB API Read Access Token, or the older API Key, enables the provider-backed audits and show_missing's fallback (consider exporting to EMBYFIN_TMDB_TOKEN instead)")
 	pflags.String("tmdb-key", "", "the same as --tmdb-token, by its older name")
 	pflags.String("anime-list", "", "where audit_anime_ids reads the Anime-Lists mapping from: a URL or a file (default the list on GitHub)")
+	pflags.String("user", "", "the account, by name or id, that tools acting for a user default to, in place of the first administrator")
+	pflags.Bool("user-only", false, "act only for --user: naming another account is refused, and account lists show only it")
 	pflags.String("config", "", "read settings from this file and no other, in place of ./.embyfin-mcp or ~/.embyfin-mcp: how a second instance serves a second server (or export EMBYFIN_CONFIG)")
 
 	persistent = pflags
@@ -234,5 +240,7 @@ func (f *FlagData) ToolOptions() tools.Options {
 		Deny:         f.DenyTools,
 		TMDBKey:      cmp.Or(f.TMDBToken, f.TMDBKey),
 		AnimeList:    f.AnimeList,
+		User:         f.User,
+		UserOnly:     f.UserOnly,
 	}
 }

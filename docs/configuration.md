@@ -14,6 +14,8 @@ Every option can be passed as a command-line flag, as an environment variable, o
 | `EMBYFIN_TOOLSETS` | `--toolsets` | Groups of tools to load, `core` by default; see [toolsets.md](toolsets.md) |
 | `EMBYFIN_ALLOW_TOOLS` | `--allow-tools` | Load these tools by name; see [toolsets.md](toolsets.md#allow-and-deny-lists) |
 | `EMBYFIN_DENY_TOOLS` | `--deny-tools` | Never load these tools |
+| `EMBYFIN_USER` | `--user` | The account tools acting for a user default to; see below |
+| `EMBYFIN_USER_ONLY` | `--user-only` | Act only for `EMBYFIN_USER`; see below |
 | `EMBYFIN_TMDB_TOKEN` | `--tmdb-token` | A TMDB key; see below |
 | `EMBYFIN_ANIME_LIST` | `--anime-list` | Where `audit_anime_ids` reads the Anime-Lists mapping: a URL or a file |
 | `EMBYFIN_LOG` | | How much to log; see below |
@@ -27,6 +29,8 @@ Every option can be passed as a command-line flag, as an environment variable, o
 Make the key in the server's dashboard: under Advanced, API Keys on Emby, and under API Keys on Jellyfin.
 
 An API key acts as the server, not as a user. So the tools that read or change watch state take a `user`, by name or id, and default to the first administrator.
+
+`EMBYFIN_USER` sets that default to another account. `EMBYFIN_USER_ONLY` also refuses any other account and narrows `user_list` and `item_last_watched` to it, for an instance that serves one person. Lookups the server answers only for an administrator still use the first one.
 
 ### Deleting
 

@@ -89,7 +89,7 @@ func registerUserDetailTools(r *registry) {
 		Name:        "user_get",
 		Description: "One account in depth: whether it is an administrator, disabled or hidden, what it may do, which libraries it sees, when it last logged in, and its playback preferences (audio and subtitle language, subtitle mode). What it has watched is user_stats.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in userRef) (*mcp.CallToolResult, getOut, error) {
-		u, err := client.ResolveUser(ctx, in.User)
+		u, err := r.resolveUser(ctx, in.User)
 		if err != nil {
 			return nil, getOut{}, err
 		}
@@ -152,7 +152,7 @@ func registerUserDetailTools(r *registry) {
 		if err != nil {
 			return nil, statsOut{}, err
 		}
-		u, err := userInLibrary(ctx, client, in.User, folder)
+		u, err := userInLibrary(ctx, r, in.User, folder)
 		if err != nil {
 			return nil, statsOut{}, err
 		}

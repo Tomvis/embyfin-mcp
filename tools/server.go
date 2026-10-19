@@ -249,7 +249,7 @@ func registerServerTools(r *registry) {
 			}
 		}
 		if in.User != "" {
-			user, uerr := client.ResolveUser(ctx, in.User)
+			user, uerr := r.resolveUser(ctx, in.User)
 			if uerr != nil {
 				return nil, activityOut{}, uerr
 			}

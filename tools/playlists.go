@@ -84,7 +84,7 @@ func registerPlaylistTools(r *registry) {
 		default:
 			out.Fingerprint = embyfin.PlaylistFingerprint(held)
 		}
-		user, err := client.ResolveUser(ctx, in.User)
+		user, err := r.resolveUser(ctx, in.User)
 		if err != nil {
 			return nil, getOut{}, err
 		}
@@ -114,7 +114,7 @@ func registerPlaylistTools(r *registry) {
 		Description: "Create a new playlist for a user, optionally pre-filled with items, of which the user must be able to see every one. A series, season, album or artist given as an item puts every item under it in the playlist, an entry each, rather than itself. " +
 			"On Emby the first playlist made on a server starts a library scan, which drops items whose files are gone and re-reads changed files. It checks a moment later that the playlist still holds what it was made with, sending what it lost once more, and answers how many entries it holds.",
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, in createIn) (*mcp.CallToolResult, createOut, error) {
-		user, err := client.ResolveUser(ctx, in.User)
+		user, err := r.resolveUser(ctx, in.User)
 		if err != nil {
 			return nil, createOut{}, err
 		}
@@ -196,7 +196,7 @@ func registerPlaylistTools(r *registry) {
 		if err != nil {
 			return nil, editOut{}, err
 		}
-		user, err := client.ResolveUser(ctx, in.User)
+		user, err := r.resolveUser(ctx, in.User)
 		if err != nil {
 			return nil, editOut{}, err
 		}

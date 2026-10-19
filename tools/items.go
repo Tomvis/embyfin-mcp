@@ -282,7 +282,7 @@ func registerItemTools(r *registry) {
 			limit = 10
 		}
 
-		user, err := client.ResolveUser(ctx, in.User)
+		user, err := r.resolveUser(ctx, in.User)
 		if err != nil {
 			return nil, similarOut{}, err
 		}
@@ -432,6 +432,9 @@ func registerItemTools(r *registry) {
 		if err != nil {
 			return nil, lastWatchedOut{}, err
 		}
+		if users, err = r.visibleUsers(ctx, users); err != nil {
+			return nil, lastWatchedOut{}, err
+		}
 		// the item's library, read the first time an account cannot see it
 		var folder *embyfin.VirtualFolder
 		folderRead := false
@@ -526,7 +529,7 @@ func registerItemTools(r *registry) {
 		if in.PositionS != nil && in.Watched != nil && *in.Watched {
 			return nil, setStateOut{}, errors.New("position_s and watched true contradict: a resume point is part way through, watched is the end")
 		}
-		user, err := client.ResolveUser(ctx, in.User)
+		user, err := r.resolveUser(ctx, in.User)
 		if err != nil {
 			return nil, setStateOut{}, err
 		}
