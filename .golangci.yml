@@ -93,13 +93,6 @@ linters:
       - path: 'sdk/(emby|jf|tmdb)/[0-9]'
         linters:
           - goconst
-      # pandorest's output still trips these three: adjacent parameters of one type written apart, Emby's own "Deprecated, use ..." descriptions
-      # copied into comments, and one error message that opens with a capitalized operation name; drop this once a pandorest release fixes them
-      - path: 'sdk/(emby|jf|tmdb)/[0-9]'
-        text: '(paramTypeCombine|deprecatedComment|ST1005)'
-        linters:
-          - gocritic
-          - staticcheck
       # media types, type names and HTTP methods are the vocabulary of the documents' workarounds, and the services list repeats its settings
       - path: 'sdk/(zservices|(emby|jf|tmdb)/workarounds)/.*\.go'
         linters:

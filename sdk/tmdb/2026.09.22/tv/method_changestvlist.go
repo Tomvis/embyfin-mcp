@@ -15,7 +15,7 @@ import (
 // ChangesTvList calls GET /3/tv/changes. TV List.
 func (c Client) ChangesTvList(ctx context.Context, options ...tmdb.ChangesTvListOptions) (result tmdb.ChangesTvListResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ChangesTvList takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ChangesTvList, not %d", len(options))
 	}
 	var option tmdb.ChangesTvListOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) ChangesTvList(ctx context.Context, options ...tmdb.ChangesTvList
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) ChangesTvListComplete(ctx context.Context, options ...tmdb.ChangesTvListOptions) (result tmdb.ChangesTvListCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ChangesTvListComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ChangesTvListComplete, not %d", len(options))
 	}
 	var option tmdb.ChangesTvListOptions
 	if len(options) == 1 {
@@ -115,7 +115,7 @@ func (c Client) ChangesTvListEach(ctx context.Context, options ...tmdb.ChangesTv
 	return func(yield func(tmdb.ChangesTvListAnswerResults, error) bool) {
 		var zero tmdb.ChangesTvListAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("ChangesTvListEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for ChangesTvListEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.ChangesTvListOptions

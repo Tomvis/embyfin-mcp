@@ -28,7 +28,7 @@ func (r AuthenticationCreateSessionFromV4TokenResponse) Answered() bool { return
 // error when the server answered none.
 func (r AuthenticationCreateSessionFromV4TokenResponse) Record() (AuthenticationCreateSessionFromV4TokenAnswer, error) {
 	if r.Answer == nil {
-		return AuthenticationCreateSessionFromV4TokenAnswer{}, errors.New("AuthenticationCreateSessionFromV4Token answered no AuthenticationCreateSessionFromV4TokenAnswer")
+		return AuthenticationCreateSessionFromV4TokenAnswer{}, errors.New("no AuthenticationCreateSessionFromV4TokenAnswer answered by AuthenticationCreateSessionFromV4Token")
 	}
 
 	return *r.Answer, nil

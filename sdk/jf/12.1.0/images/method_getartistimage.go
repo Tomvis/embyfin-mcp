@@ -16,7 +16,7 @@ import (
 // GetArtistImage calls GET /Artists/{name}/Images/{imageType}/{imageIndex}. Get artist image by name.
 func (c Client) GetArtistImage(ctx context.Context, name string, imageType jf.ImageType, imageIndex int, options ...jf.GetArtistImageOptions) (result jf.GetArtistImageResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetArtistImage takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetArtistImage, not %d", len(options))
 	}
 	var option jf.GetArtistImageOptions
 	if len(options) == 1 {

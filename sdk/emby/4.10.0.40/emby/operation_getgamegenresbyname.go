@@ -30,7 +30,7 @@ func (r GetGameGenresByNameResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetGameGenresByNameResponse) Record() (BaseItemDto, error) {
 	if r.Answer == nil {
-		return BaseItemDto{}, errors.New("GetGameGenresByName answered no BaseItemDto")
+		return BaseItemDto{}, errors.New("no BaseItemDto answered by GetGameGenresByName")
 	}
 
 	return *r.Answer, nil

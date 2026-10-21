@@ -15,7 +15,7 @@ import (
 // GetUsersByUserIdItemsByIdIntros calls GET /Users/{UserId}/Items/{Id}/Intros. Gets intros to play before the main media item plays.
 func (c Client) GetUsersByUserIdItemsByIdIntros(ctx context.Context, userId emby.UserID, id emby.ItemID, options ...emby.GetUsersByUserIdItemsByIdIntrosOptions) (result emby.GetUsersByUserIdItemsByIdIntrosResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByUserIdItemsByIdIntros takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByUserIdItemsByIdIntros, not %d", len(options))
 	}
 	var option emby.GetUsersByUserIdItemsByIdIntrosOptions
 	if len(options) == 1 {

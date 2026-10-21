@@ -15,7 +15,7 @@ import (
 // GetYears calls GET /Years. Get years.
 func (c Client) GetYears(ctx context.Context, options ...jf.GetYearsOptions) (result jf.GetYearsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetYears takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetYears, not %d", len(options))
 	}
 	var option jf.GetYearsOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetYears(ctx context.Context, options ...jf.GetYearsOptions) (re
 // unset.
 func (c Client) GetYearsComplete(ctx context.Context, options ...jf.GetYearsOptions) (result jf.GetYearsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetYearsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetYearsComplete, not %d", len(options))
 	}
 	var option jf.GetYearsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetYearsEach(ctx context.Context, options ...jf.GetYearsOptions)
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetYearsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetYearsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetYearsOptions

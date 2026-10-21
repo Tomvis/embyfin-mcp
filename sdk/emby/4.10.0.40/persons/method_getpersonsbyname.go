@@ -16,7 +16,7 @@ import (
 func (c Client) GetPersonsByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetPersonsByNameResponse, err error) {
 	var option emby.GetPersonsByNameOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetPersonsByName takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetPersonsByName, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

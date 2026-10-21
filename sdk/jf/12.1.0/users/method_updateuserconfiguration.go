@@ -15,7 +15,7 @@ import (
 func (c Client) UpdateUserConfiguration(ctx context.Context, input jf.UserConfiguration, userId ...jf.UserID) (result jf.UpdateUserConfigurationResponse, err error) {
 	var option jf.UpdateUserConfigurationOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("UpdateUserConfiguration takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for UpdateUserConfiguration, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

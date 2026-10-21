@@ -15,7 +15,7 @@ import (
 // GetPostedPlaybackInfo calls POST /Items/{itemId}/PlaybackInfo. Gets live playback media info for an item.
 func (c Client) GetPostedPlaybackInfo(ctx context.Context, itemId jf.ItemID, input jf.PlaybackInfoDto, options ...jf.GetPostedPlaybackInfoOptions) (result jf.GetPostedPlaybackInfoResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPostedPlaybackInfo takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPostedPlaybackInfo, not %d", len(options))
 	}
 	var option jf.GetPostedPlaybackInfoOptions
 	if len(options) == 1 {

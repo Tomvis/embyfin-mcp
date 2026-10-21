@@ -15,7 +15,7 @@ import (
 // GetUsersByUserIdItemsByIdLocalTrailers calls GET /Users/{UserId}/Items/{Id}/LocalTrailers. Gets local trailers for an item.
 func (c Client) GetUsersByUserIdItemsByIdLocalTrailers(ctx context.Context, userId emby.UserID, id emby.ItemID, options ...emby.GetUsersByUserIdItemsByIdLocalTrailersOptions) (result emby.GetUsersByUserIdItemsByIdLocalTrailersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByUserIdItemsByIdLocalTrailers takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByUserIdItemsByIdLocalTrailers, not %d", len(options))
 	}
 	var option emby.GetUsersByUserIdItemsByIdLocalTrailersOptions
 	if len(options) == 1 {

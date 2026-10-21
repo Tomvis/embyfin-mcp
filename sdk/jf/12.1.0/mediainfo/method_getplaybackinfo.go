@@ -16,7 +16,7 @@ import (
 func (c Client) GetPlaybackInfo(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetPlaybackInfoResponse, err error) {
 	var option jf.GetPlaybackInfoOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetPlaybackInfo takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetPlaybackInfo, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

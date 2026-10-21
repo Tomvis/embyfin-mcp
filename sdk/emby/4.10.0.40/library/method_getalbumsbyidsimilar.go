@@ -16,7 +16,7 @@ import (
 // GetAlbumsByIdSimilar calls GET /Albums/{Id}/Similar. Finds albums similar to a given album.
 func (c Client) GetAlbumsByIdSimilar(ctx context.Context, id emby.ItemID, options ...emby.GetAlbumsByIdSimilarOptions) (result emby.GetAlbumsByIdSimilarResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetAlbumsByIdSimilar takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetAlbumsByIdSimilar, not %d", len(options))
 	}
 	var option emby.GetAlbumsByIdSimilarOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetAlbumsByIdSimilar(ctx context.Context, id emby.ItemID, option
 // unset.
 func (c Client) GetAlbumsByIdSimilarComplete(ctx context.Context, id emby.ItemID, options ...emby.GetAlbumsByIdSimilarOptions) (result emby.GetAlbumsByIdSimilarCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetAlbumsByIdSimilarComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetAlbumsByIdSimilarComplete, not %d", len(options))
 	}
 	var option emby.GetAlbumsByIdSimilarOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetAlbumsByIdSimilarEach(ctx context.Context, id emby.ItemID, op
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetAlbumsByIdSimilarEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetAlbumsByIdSimilarEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetAlbumsByIdSimilarOptions

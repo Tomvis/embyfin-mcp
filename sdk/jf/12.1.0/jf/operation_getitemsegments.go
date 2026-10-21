@@ -30,7 +30,7 @@ func (r GetItemSegmentsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetItemSegmentsResponse) Record() (MediaSegmentDtoQueryResult, error) {
 	if r.Answer == nil {
-		return MediaSegmentDtoQueryResult{}, errors.New("GetItemSegments answered no MediaSegmentDtoQueryResult")
+		return MediaSegmentDtoQueryResult{}, errors.New("no MediaSegmentDtoQueryResult answered by GetItemSegments")
 	}
 
 	return *r.Answer, nil

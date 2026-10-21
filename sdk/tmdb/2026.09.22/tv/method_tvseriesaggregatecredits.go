@@ -16,7 +16,7 @@ import (
 func (c Client) TvSeriesAggregateCredits(ctx context.Context, seriesId int, language ...string) (result tmdb.TvSeriesAggregateCreditsResponse, err error) {
 	var option tmdb.TvSeriesAggregateCreditsOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("TvSeriesAggregateCredits takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for TvSeriesAggregateCredits, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

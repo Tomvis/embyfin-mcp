@@ -31,7 +31,7 @@ func (r ListsCopyResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r ListsCopyResponse) Record() (ListsCopyAnswer, error) {
 	if r.Answer == nil {
-		return ListsCopyAnswer{}, errors.New("ListsCopy answered no ListsCopyAnswer")
+		return ListsCopyAnswer{}, errors.New("no ListsCopyAnswer answered by ListsCopy")
 	}
 
 	return *r.Answer, nil

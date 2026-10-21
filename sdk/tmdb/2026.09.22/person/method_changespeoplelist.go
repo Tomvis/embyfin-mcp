@@ -15,7 +15,7 @@ import (
 // ChangesPeopleList calls GET /3/person/changes. People List.
 func (c Client) ChangesPeopleList(ctx context.Context, options ...tmdb.ChangesPeopleListOptions) (result tmdb.ChangesPeopleListResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ChangesPeopleList takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ChangesPeopleList, not %d", len(options))
 	}
 	var option tmdb.ChangesPeopleListOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) ChangesPeopleList(ctx context.Context, options ...tmdb.ChangesPe
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) ChangesPeopleListComplete(ctx context.Context, options ...tmdb.ChangesPeopleListOptions) (result tmdb.ChangesPeopleListCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ChangesPeopleListComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ChangesPeopleListComplete, not %d", len(options))
 	}
 	var option tmdb.ChangesPeopleListOptions
 	if len(options) == 1 {
@@ -115,7 +115,7 @@ func (c Client) ChangesPeopleListEach(ctx context.Context, options ...tmdb.Chang
 	return func(yield func(tmdb.ChangesPeopleListAnswerResults, error) bool) {
 		var zero tmdb.ChangesPeopleListAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("ChangesPeopleListEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for ChangesPeopleListEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.ChangesPeopleListOptions

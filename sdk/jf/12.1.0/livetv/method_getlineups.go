@@ -14,7 +14,7 @@ import (
 // GetLineups calls GET /LiveTv/ListingProviders/Lineups. Gets available lineups.
 func (c Client) GetLineups(ctx context.Context, options ...jf.GetLineupsOptions) (result jf.GetLineupsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLineups takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLineups, not %d", len(options))
 	}
 	var option jf.GetLineupsOptions
 	if len(options) == 1 {

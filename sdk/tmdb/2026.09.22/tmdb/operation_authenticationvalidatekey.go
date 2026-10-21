@@ -28,7 +28,7 @@ func (r AuthenticationValidateKeyResponse) Answered() bool { return r.Answer != 
 // error when the server answered none.
 func (r AuthenticationValidateKeyResponse) Record() (AuthenticationValidateKeyAnswer, error) {
 	if r.Answer == nil {
-		return AuthenticationValidateKeyAnswer{}, errors.New("AuthenticationValidateKey answered no AuthenticationValidateKeyAnswer")
+		return AuthenticationValidateKeyAnswer{}, errors.New("no AuthenticationValidateKeyAnswer answered by AuthenticationValidateKey")
 	}
 
 	return *r.Answer, nil

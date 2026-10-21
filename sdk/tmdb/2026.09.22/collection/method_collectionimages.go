@@ -15,7 +15,7 @@ import (
 // CollectionImages calls GET /3/collection/{collection_id}/images. Images.
 func (c Client) CollectionImages(ctx context.Context, collectionId int, options ...tmdb.CollectionImagesOptions) (result tmdb.CollectionImagesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("CollectionImages takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for CollectionImages, not %d", len(options))
 	}
 	var option tmdb.CollectionImagesOptions
 	if len(options) == 1 {

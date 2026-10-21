@@ -16,7 +16,7 @@ import (
 func (c Client) GetArtistsByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetArtistsByNameResponse, err error) {
 	var option emby.GetArtistsByNameOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetArtistsByName takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetArtistsByName, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

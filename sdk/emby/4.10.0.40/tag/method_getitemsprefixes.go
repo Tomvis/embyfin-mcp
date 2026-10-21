@@ -14,7 +14,7 @@ import (
 // GetItemsPrefixes calls GET /Items/Prefixes. Gets items based on a query.
 func (c Client) GetItemsPrefixes(ctx context.Context, options ...emby.GetItemsPrefixesOptions) (result emby.GetItemsPrefixesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsPrefixes takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsPrefixes, not %d", len(options))
 	}
 	var option emby.GetItemsPrefixesOptions
 	if len(options) == 1 {

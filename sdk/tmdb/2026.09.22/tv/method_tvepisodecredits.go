@@ -13,10 +13,10 @@ import (
 )
 
 // TvEpisodeCredits calls GET /3/tv/{series_id}/season/{season_number}/episode/{episode_number}/credits. Credits.
-func (c Client) TvEpisodeCredits(ctx context.Context, seriesId int, seasonNumber int, episodeNumber int, language ...string) (result tmdb.TvEpisodeCreditsResponse, err error) {
+func (c Client) TvEpisodeCredits(ctx context.Context, seriesId, seasonNumber, episodeNumber int, language ...string) (result tmdb.TvEpisodeCreditsResponse, err error) {
 	var option tmdb.TvEpisodeCreditsOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("TvEpisodeCredits takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for TvEpisodeCredits, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

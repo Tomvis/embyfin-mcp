@@ -14,7 +14,7 @@ import (
 // GetNotificationsServicesDefaults calls GET /Notifications/Services/Defaults. Gets default notification info.
 func (c Client) GetNotificationsServicesDefaults(ctx context.Context, options ...emby.GetNotificationsServicesDefaultsOptions) (result emby.GetNotificationsServicesDefaultsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetNotificationsServicesDefaults takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetNotificationsServicesDefaults, not %d", len(options))
 	}
 	var option emby.GetNotificationsServicesDefaultsOptions
 	if len(options) == 1 {

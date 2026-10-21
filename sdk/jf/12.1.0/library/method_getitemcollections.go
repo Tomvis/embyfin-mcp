@@ -16,7 +16,7 @@ import (
 // GetItemCollections calls GET /Items/{itemId}/Collections. Gets the collections that include the specified item.
 func (c Client) GetItemCollections(ctx context.Context, itemId jf.ItemID, options ...jf.GetItemCollectionsOptions) (result jf.GetItemCollectionsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemCollections takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemCollections, not %d", len(options))
 	}
 	var option jf.GetItemCollectionsOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) GetItemCollections(ctx context.Context, itemId jf.ItemID, option
 // unset.
 func (c Client) GetItemCollectionsComplete(ctx context.Context, itemId jf.ItemID, options ...jf.GetItemCollectionsOptions) (result jf.GetItemCollectionsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemCollectionsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemCollectionsComplete, not %d", len(options))
 	}
 	var option jf.GetItemCollectionsOptions
 	if len(options) == 1 {
@@ -117,7 +117,7 @@ func (c Client) GetItemCollectionsEach(ctx context.Context, itemId jf.ItemID, op
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetItemCollectionsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetItemCollectionsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetItemCollectionsOptions

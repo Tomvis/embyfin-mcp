@@ -31,7 +31,7 @@ func (r SearchMultiResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r SearchMultiResponse) Record() (SearchMultiAnswer, error) {
 	if r.Answer == nil {
-		return SearchMultiAnswer{}, errors.New("SearchMulti answered no SearchMultiAnswer")
+		return SearchMultiAnswer{}, errors.New("no SearchMultiAnswer answered by SearchMulti")
 	}
 
 	return *r.Answer, nil

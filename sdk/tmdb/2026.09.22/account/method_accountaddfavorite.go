@@ -16,7 +16,7 @@ import (
 func (c Client) AccountAddFavorite(ctx context.Context, accountId int, input tmdb.AccountAddFavoriteRequest, sessionId ...string) (result tmdb.AccountAddFavoriteResponse, err error) {
 	var option tmdb.AccountAddFavoriteOptions
 	if len(sessionId) > 1 {
-		return result, fmt.Errorf("AccountAddFavorite takes one sessionId at most, not %d", len(sessionId))
+		return result, fmt.Errorf("at most one sessionId for AccountAddFavorite, not %d", len(sessionId))
 	}
 	if len(sessionId) == 1 {
 		option.SessionId = sessionId[0]

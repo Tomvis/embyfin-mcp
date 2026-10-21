@@ -30,7 +30,7 @@ func (r GetUIViewResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetUIViewResponse) Record() (UIViewInfo, error) {
 	if r.Answer == nil {
-		return UIViewInfo{}, errors.New("GetUIView answered no UIViewInfo")
+		return UIViewInfo{}, errors.New("no UIViewInfo answered by GetUIView")
 	}
 
 	return *r.Answer, nil

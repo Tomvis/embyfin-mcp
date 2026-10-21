@@ -15,7 +15,7 @@ import (
 func (c Client) AddMediaPath(ctx context.Context, input jf.MediaPathDto, refreshLibrary ...bool) (result jf.AddMediaPathResponse, err error) {
 	var option jf.AddMediaPathOptions
 	if len(refreshLibrary) > 1 {
-		return result, fmt.Errorf("AddMediaPath takes one refreshLibrary at most, not %d", len(refreshLibrary))
+		return result, fmt.Errorf("at most one refreshLibrary for AddMediaPath, not %d", len(refreshLibrary))
 	}
 	if len(refreshLibrary) == 1 {
 		option.RefreshLibrary = &refreshLibrary[0]

@@ -16,7 +16,7 @@ import (
 // GetUsersByUserIdItems calls GET /Users/{UserId}/Items. Gets items based on a query.
 func (c Client) GetUsersByUserIdItems(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsOptions) (result emby.GetUsersByUserIdItemsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByUserIdItems takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByUserIdItems, not %d", len(options))
 	}
 	var option emby.GetUsersByUserIdItemsOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetUsersByUserIdItems(ctx context.Context, userId emby.UserID, o
 // unset.
 func (c Client) GetUsersByUserIdItemsComplete(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsOptions) (result emby.GetUsersByUserIdItemsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByUserIdItemsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByUserIdItemsComplete, not %d", len(options))
 	}
 	var option emby.GetUsersByUserIdItemsOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetUsersByUserIdItemsEach(ctx context.Context, userId emby.UserI
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetUsersByUserIdItemsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetUsersByUserIdItemsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetUsersByUserIdItemsOptions

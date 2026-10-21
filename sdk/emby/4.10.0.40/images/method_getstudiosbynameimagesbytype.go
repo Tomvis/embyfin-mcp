@@ -15,7 +15,7 @@ import (
 // GetStudiosByNameImagesByType calls GET /Studios/{Name}/Images/{Type}. Requires authentication as user.
 func (c Client) GetStudiosByNameImagesByType(ctx context.Context, name string, typeParam emby.ImageType, options ...emby.GetStudiosByNameImagesByTypeOptions) (result emby.GetStudiosByNameImagesByTypeResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetStudiosByNameImagesByType takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetStudiosByNameImagesByType, not %d", len(options))
 	}
 	var option emby.GetStudiosByNameImagesByTypeOptions
 	if len(options) == 1 {

@@ -16,7 +16,7 @@ import (
 func (c Client) SearchRemoteSubtitles(ctx context.Context, itemId jf.ItemID, language string, isPerfectMatch ...bool) (result jf.SearchRemoteSubtitlesResponse, err error) {
 	var option jf.SearchRemoteSubtitlesOptions
 	if len(isPerfectMatch) > 1 {
-		return result, fmt.Errorf("SearchRemoteSubtitles takes one isPerfectMatch at most, not %d", len(isPerfectMatch))
+		return result, fmt.Errorf("at most one isPerfectMatch for SearchRemoteSubtitles, not %d", len(isPerfectMatch))
 	}
 	if len(isPerfectMatch) == 1 {
 		option.IsPerfectMatch = &isPerfectMatch[0]

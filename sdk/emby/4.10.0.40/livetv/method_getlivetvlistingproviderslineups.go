@@ -14,7 +14,7 @@ import (
 // GetLiveTvListingProvidersLineups calls GET /LiveTv/ListingProviders/Lineups. Gets available lineups.
 func (c Client) GetLiveTvListingProvidersLineups(ctx context.Context, options ...emby.GetLiveTvListingProvidersLineupsOptions) (result emby.GetLiveTvListingProvidersLineupsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvListingProvidersLineups takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvListingProvidersLineups, not %d", len(options))
 	}
 	var option emby.GetLiveTvListingProvidersLineupsOptions
 	if len(options) == 1 {

@@ -31,7 +31,7 @@ func (r AccountListsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r AccountListsResponse) Record() (AccountListsAnswer, error) {
 	if r.Answer == nil {
-		return AccountListsAnswer{}, errors.New("AccountLists answered no AccountListsAnswer")
+		return AccountListsAnswer{}, errors.New("no AccountListsAnswer answered by AccountLists")
 	}
 
 	return *r.Answer, nil

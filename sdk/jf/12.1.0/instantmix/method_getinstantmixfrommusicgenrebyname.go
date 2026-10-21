@@ -17,7 +17,7 @@ import (
 // Deprecated: the document marks this operation deprecated.
 func (c Client) GetInstantMixFromMusicGenreByName(ctx context.Context, name string, options ...jf.GetInstantMixFromMusicGenreByNameOptions) (result jf.GetInstantMixFromMusicGenreByNameResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetInstantMixFromMusicGenreByName takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetInstantMixFromMusicGenreByName, not %d", len(options))
 	}
 	var option jf.GetInstantMixFromMusicGenreByNameOptions
 	if len(options) == 1 {

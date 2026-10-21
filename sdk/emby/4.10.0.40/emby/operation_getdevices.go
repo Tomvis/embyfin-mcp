@@ -30,7 +30,7 @@ func (r GetDevicesResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetDevicesResponse) Record() (QueryResultDevicesDeviceInfo, error) {
 	if r.Answer == nil {
-		return QueryResultDevicesDeviceInfo{}, errors.New("GetDevices answered no QueryResultDevicesDeviceInfo")
+		return QueryResultDevicesDeviceInfo{}, errors.New("no QueryResultDevicesDeviceInfo answered by GetDevices")
 	}
 
 	return *r.Answer, nil

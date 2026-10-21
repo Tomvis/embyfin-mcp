@@ -15,7 +15,7 @@ import (
 // TvSeriesImages calls GET /3/tv/{series_id}/images. Images.
 func (c Client) TvSeriesImages(ctx context.Context, seriesId int, options ...tmdb.TvSeriesImagesOptions) (result tmdb.TvSeriesImagesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeriesImages takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeriesImages, not %d", len(options))
 	}
 	var option tmdb.TvSeriesImagesOptions
 	if len(options) == 1 {

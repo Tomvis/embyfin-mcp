@@ -15,7 +15,7 @@ import (
 // GetVideosByIdStreamByContainer calls GET /Videos/{Id}/stream.{Container}. Gets a video stream.
 func (c Client) GetVideosByIdStreamByContainer(ctx context.Context, id emby.ItemID, container string, options ...emby.GetVideosByIdStreamByContainerOptions) (result emby.GetVideosByIdStreamByContainerResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetVideosByIdStreamByContainer takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetVideosByIdStreamByContainer, not %d", len(options))
 	}
 	var option emby.GetVideosByIdStreamByContainerOptions
 	if len(options) == 1 {

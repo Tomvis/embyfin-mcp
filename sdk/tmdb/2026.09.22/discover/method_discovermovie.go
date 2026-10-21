@@ -15,7 +15,7 @@ import (
 // DiscoverMovie calls GET /3/discover/movie. Movie.
 func (c Client) DiscoverMovie(ctx context.Context, options ...tmdb.DiscoverMovieOptions) (result tmdb.DiscoverMovieResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("DiscoverMovie takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for DiscoverMovie, not %d", len(options))
 	}
 	var option tmdb.DiscoverMovieOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) DiscoverMovie(ctx context.Context, options ...tmdb.DiscoverMovie
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) DiscoverMovieComplete(ctx context.Context, options ...tmdb.DiscoverMovieOptions) (result tmdb.DiscoverMovieCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("DiscoverMovieComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for DiscoverMovieComplete, not %d", len(options))
 	}
 	var option tmdb.DiscoverMovieOptions
 	if len(options) == 1 {
@@ -115,7 +115,7 @@ func (c Client) DiscoverMovieEach(ctx context.Context, options ...tmdb.DiscoverM
 	return func(yield func(tmdb.DiscoverMovieAnswerResults, error) bool) {
 		var zero tmdb.DiscoverMovieAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("DiscoverMovieEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for DiscoverMovieEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.DiscoverMovieOptions

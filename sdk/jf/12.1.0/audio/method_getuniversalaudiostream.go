@@ -15,7 +15,7 @@ import (
 // GetUniversalAudioStream calls GET /Audio/{itemId}/universal. Gets an audio stream.
 func (c Client) GetUniversalAudioStream(ctx context.Context, itemId jf.ItemID, options ...jf.GetUniversalAudioStreamOptions) (result jf.GetUniversalAudioStreamResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUniversalAudioStream takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUniversalAudioStream, not %d", len(options))
 	}
 	var option jf.GetUniversalAudioStreamOptions
 	if len(options) == 1 {

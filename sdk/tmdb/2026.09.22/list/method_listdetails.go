@@ -15,7 +15,7 @@ import (
 // ListDetails calls GET /3/list/{list_id}. Details.
 func (c Client) ListDetails(ctx context.Context, listId int, options ...tmdb.ListDetailsOptions) (result tmdb.ListDetailsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ListDetails takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ListDetails, not %d", len(options))
 	}
 	var option tmdb.ListDetailsOptions
 	if len(options) == 1 {

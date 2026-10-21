@@ -16,7 +16,7 @@ import (
 func (c Client) PostItemsRemoteSearchApplyById(ctx context.Context, id emby.ItemID, input emby.RemoteSearchResult, replaceAllImages ...bool) (result emby.PostItemsRemoteSearchApplyByIdResponse, err error) {
 	var option emby.PostItemsRemoteSearchApplyByIdOptions
 	if len(replaceAllImages) > 1 {
-		return result, fmt.Errorf("PostItemsRemoteSearchApplyById takes one replaceAllImages at most, not %d", len(replaceAllImages))
+		return result, fmt.Errorf("at most one replaceAllImages for PostItemsRemoteSearchApplyById, not %d", len(replaceAllImages))
 	}
 	if len(replaceAllImages) == 1 {
 		option.ReplaceAllImages = &replaceAllImages[0]

@@ -31,7 +31,7 @@ func (r AccountWatchlistMoviesResponse) Answered() bool { return r.Answer != nil
 // error when the server answered none.
 func (r AccountWatchlistMoviesResponse) Record() (AccountWatchlistMoviesAnswer, error) {
 	if r.Answer == nil {
-		return AccountWatchlistMoviesAnswer{}, errors.New("AccountWatchlistMovies answered no AccountWatchlistMoviesAnswer")
+		return AccountWatchlistMoviesAnswer{}, errors.New("no AccountWatchlistMoviesAnswer answered by AccountWatchlistMovies")
 	}
 
 	return *r.Answer, nil

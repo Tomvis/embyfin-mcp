@@ -15,7 +15,7 @@ import (
 // GetChannels calls GET /Channels. Gets available channels.
 func (c Client) GetChannels(ctx context.Context, options ...emby.GetChannelsOptions) (result emby.GetChannelsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetChannels takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetChannels, not %d", len(options))
 	}
 	var option emby.GetChannelsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetChannels(ctx context.Context, options ...emby.GetChannelsOpti
 // unset.
 func (c Client) GetChannelsComplete(ctx context.Context, options ...emby.GetChannelsOptions) (result emby.GetChannelsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetChannelsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetChannelsComplete, not %d", len(options))
 	}
 	var option emby.GetChannelsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetChannelsEach(ctx context.Context, options ...emby.GetChannels
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetChannelsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetChannelsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetChannelsOptions

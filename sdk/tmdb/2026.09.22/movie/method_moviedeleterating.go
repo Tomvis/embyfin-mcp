@@ -15,7 +15,7 @@ import (
 // MovieDeleteRating calls DELETE /3/movie/{movie_id}/rating. Delete Rating.
 func (c Client) MovieDeleteRating(ctx context.Context, movieId int, options ...tmdb.MovieDeleteRatingOptions) (result tmdb.MovieDeleteRatingResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MovieDeleteRating takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MovieDeleteRating, not %d", len(options))
 	}
 	var option tmdb.MovieDeleteRatingOptions
 	if len(options) == 1 {

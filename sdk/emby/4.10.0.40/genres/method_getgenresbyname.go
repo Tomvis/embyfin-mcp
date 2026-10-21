@@ -16,7 +16,7 @@ import (
 func (c Client) GetGenresByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetGenresByNameResponse, err error) {
 	var option emby.GetGenresByNameOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetGenresByName takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetGenresByName, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

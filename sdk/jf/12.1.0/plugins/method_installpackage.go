@@ -15,7 +15,7 @@ import (
 // InstallPackage calls POST /Packages/Installed/{name}. Installs a package.
 func (c Client) InstallPackage(ctx context.Context, name string, options ...jf.InstallPackageOptions) (result jf.InstallPackageResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("InstallPackage takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for InstallPackage, not %d", len(options))
 	}
 	var option jf.InstallPackageOptions
 	if len(options) == 1 {

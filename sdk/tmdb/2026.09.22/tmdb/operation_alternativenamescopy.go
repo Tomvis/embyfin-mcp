@@ -28,7 +28,7 @@ func (r AlternativeNamesCopyResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r AlternativeNamesCopyResponse) Record() (AlternativeNamesCopyAnswer, error) {
 	if r.Answer == nil {
-		return AlternativeNamesCopyAnswer{}, errors.New("AlternativeNamesCopy answered no AlternativeNamesCopyAnswer")
+		return AlternativeNamesCopyAnswer{}, errors.New("no AlternativeNamesCopyAnswer answered by AlternativeNamesCopy")
 	}
 
 	return *r.Answer, nil

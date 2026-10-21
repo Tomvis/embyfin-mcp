@@ -15,7 +15,7 @@ import (
 // GetResumeItems calls GET /UserItems/Resume. Gets items based on a query.
 func (c Client) GetResumeItems(ctx context.Context, options ...jf.GetResumeItemsOptions) (result jf.GetResumeItemsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetResumeItems takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetResumeItems, not %d", len(options))
 	}
 	var option jf.GetResumeItemsOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetResumeItems(ctx context.Context, options ...jf.GetResumeItems
 // unset.
 func (c Client) GetResumeItemsComplete(ctx context.Context, options ...jf.GetResumeItemsOptions) (result jf.GetResumeItemsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetResumeItemsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetResumeItemsComplete, not %d", len(options))
 	}
 	var option jf.GetResumeItemsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetResumeItemsEach(ctx context.Context, options ...jf.GetResumeI
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetResumeItemsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetResumeItemsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetResumeItemsOptions

@@ -16,7 +16,7 @@ import (
 func (c Client) GetPerson(ctx context.Context, name string, userId ...jf.UserID) (result jf.GetPersonResponse, err error) {
 	var option jf.GetPersonOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetPerson takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetPerson, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

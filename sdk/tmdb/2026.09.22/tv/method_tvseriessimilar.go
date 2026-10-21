@@ -16,7 +16,7 @@ import (
 // TvSeriesSimilar calls GET /3/tv/{series_id}/similar. Similar.
 func (c Client) TvSeriesSimilar(ctx context.Context, seriesId int, options ...tmdb.TvSeriesSimilarOptions) (result tmdb.TvSeriesSimilarResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeriesSimilar takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeriesSimilar, not %d", len(options))
 	}
 	var option tmdb.TvSeriesSimilarOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) TvSeriesSimilar(ctx context.Context, seriesId int, options ...tm
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) TvSeriesSimilarComplete(ctx context.Context, seriesId int, options ...tmdb.TvSeriesSimilarOptions) (result tmdb.TvSeriesSimilarCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeriesSimilarComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeriesSimilarComplete, not %d", len(options))
 	}
 	var option tmdb.TvSeriesSimilarOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) TvSeriesSimilarEach(ctx context.Context, seriesId int, options .
 	return func(yield func(tmdb.TvSeriesSimilarAnswerResults, error) bool) {
 		var zero tmdb.TvSeriesSimilarAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("TvSeriesSimilarEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for TvSeriesSimilarEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.TvSeriesSimilarOptions

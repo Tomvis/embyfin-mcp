@@ -16,7 +16,7 @@ import (
 func (c Client) AccountDetails(ctx context.Context, accountId int, sessionId ...string) (result tmdb.AccountDetailsResponse, err error) {
 	var option tmdb.AccountDetailsOptions
 	if len(sessionId) > 1 {
-		return result, fmt.Errorf("AccountDetails takes one sessionId at most, not %d", len(sessionId))
+		return result, fmt.Errorf("at most one sessionId for AccountDetails, not %d", len(sessionId))
 	}
 	if len(sessionId) == 1 {
 		option.SessionId = sessionId[0]

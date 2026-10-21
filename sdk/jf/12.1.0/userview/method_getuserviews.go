@@ -14,7 +14,7 @@ import (
 // GetUserViews calls GET /UserViews. Get user views.
 func (c Client) GetUserViews(ctx context.Context, options ...jf.GetUserViewsOptions) (result jf.GetUserViewsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUserViews takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUserViews, not %d", len(options))
 	}
 	var option jf.GetUserViewsOptions
 	if len(options) == 1 {

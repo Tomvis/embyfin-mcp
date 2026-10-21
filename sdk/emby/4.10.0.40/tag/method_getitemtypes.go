@@ -15,7 +15,7 @@ import (
 // GetItemTypes calls GET /ItemTypes. Gets items based on a query.
 func (c Client) GetItemTypes(ctx context.Context, options ...emby.GetItemTypesOptions) (result emby.GetItemTypesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemTypes takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemTypes, not %d", len(options))
 	}
 	var option emby.GetItemTypesOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetItemTypes(ctx context.Context, options ...emby.GetItemTypesOp
 // unset.
 func (c Client) GetItemTypesComplete(ctx context.Context, options ...emby.GetItemTypesOptions) (result emby.GetItemTypesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemTypesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemTypesComplete, not %d", len(options))
 	}
 	var option emby.GetItemTypesOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetItemTypesEach(ctx context.Context, options ...emby.GetItemTyp
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetItemTypesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetItemTypesEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetItemTypesOptions

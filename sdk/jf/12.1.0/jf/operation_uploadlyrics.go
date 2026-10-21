@@ -30,7 +30,7 @@ func (r UploadLyricsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r UploadLyricsResponse) Record() (LyricDto, error) {
 	if r.Answer == nil {
-		return LyricDto{}, errors.New("UploadLyrics answered no LyricDto")
+		return LyricDto{}, errors.New("no LyricDto answered by UploadLyrics")
 	}
 
 	return *r.Answer, nil

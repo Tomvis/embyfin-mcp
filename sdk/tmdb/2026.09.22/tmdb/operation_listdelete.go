@@ -30,7 +30,7 @@ func (r ListDeleteResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r ListDeleteResponse) Record() (ListDeleteAnswer, error) {
 	if r.Answer == nil {
-		return ListDeleteAnswer{}, errors.New("ListDelete answered no ListDeleteAnswer")
+		return ListDeleteAnswer{}, errors.New("no ListDeleteAnswer answered by ListDelete")
 	}
 
 	return *r.Answer, nil

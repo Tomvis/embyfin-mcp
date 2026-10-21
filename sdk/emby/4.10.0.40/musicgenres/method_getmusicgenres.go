@@ -15,7 +15,7 @@ import (
 // GetMusicGenres calls GET /MusicGenres. Gets all music genres from a given item, folder, or the entire library.
 func (c Client) GetMusicGenres(ctx context.Context, options ...emby.GetMusicGenresOptions) (result emby.GetMusicGenresResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetMusicGenres takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetMusicGenres, not %d", len(options))
 	}
 	var option emby.GetMusicGenresOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetMusicGenres(ctx context.Context, options ...emby.GetMusicGenr
 // unset.
 func (c Client) GetMusicGenresComplete(ctx context.Context, options ...emby.GetMusicGenresOptions) (result emby.GetMusicGenresCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetMusicGenresComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetMusicGenresComplete, not %d", len(options))
 	}
 	var option emby.GetMusicGenresOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetMusicGenresEach(ctx context.Context, options ...emby.GetMusic
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetMusicGenresEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetMusicGenresEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetMusicGenresOptions

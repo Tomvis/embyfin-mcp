@@ -28,7 +28,7 @@ func (r CollectionTranslationsResponse) Answered() bool { return r.Answer != nil
 // error when the server answered none.
 func (r CollectionTranslationsResponse) Record() (CollectionTranslationsAnswer, error) {
 	if r.Answer == nil {
-		return CollectionTranslationsAnswer{}, errors.New("CollectionTranslations answered no CollectionTranslationsAnswer")
+		return CollectionTranslationsAnswer{}, errors.New("no CollectionTranslationsAnswer answered by CollectionTranslations")
 	}
 
 	return *r.Answer, nil

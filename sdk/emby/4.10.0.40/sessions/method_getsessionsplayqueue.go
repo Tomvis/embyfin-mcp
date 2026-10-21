@@ -14,7 +14,7 @@ import (
 // GetSessionsPlayQueue calls GET /Sessions/PlayQueue. Gets a the current play queue from a session.
 func (c Client) GetSessionsPlayQueue(ctx context.Context, options ...emby.GetSessionsPlayQueueOptions) (result emby.GetSessionsPlayQueueResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSessionsPlayQueue takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSessionsPlayQueue, not %d", len(options))
 	}
 	var option emby.GetSessionsPlayQueueOptions
 	if len(options) == 1 {

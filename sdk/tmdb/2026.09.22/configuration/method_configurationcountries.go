@@ -15,7 +15,7 @@ import (
 func (c Client) ConfigurationCountries(ctx context.Context, language ...string) (result tmdb.ConfigurationCountriesResponse, err error) {
 	var option tmdb.ConfigurationCountriesOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("ConfigurationCountries takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for ConfigurationCountries, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

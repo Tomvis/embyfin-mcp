@@ -16,7 +16,7 @@ import (
 func (c Client) GetIntros(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetIntrosResponse, err error) {
 	var option jf.GetIntrosOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetIntros takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetIntros, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

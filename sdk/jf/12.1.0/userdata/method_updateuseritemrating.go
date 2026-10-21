@@ -15,7 +15,7 @@ import (
 // UpdateUserItemRating calls POST /UserItems/{itemId}/Rating. Updates a user's rating for an item.
 func (c Client) UpdateUserItemRating(ctx context.Context, itemId jf.ItemID, options ...jf.UpdateUserItemRatingOptions) (result jf.UpdateUserItemRatingResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("UpdateUserItemRating takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for UpdateUserItemRating, not %d", len(options))
 	}
 	var option jf.UpdateUserItemRatingOptions
 	if len(options) == 1 {

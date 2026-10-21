@@ -15,7 +15,7 @@ import (
 // GetShowsUpcoming calls GET /Shows/Upcoming. Gets a list of upcoming episodes.
 func (c Client) GetShowsUpcoming(ctx context.Context, options ...emby.GetShowsUpcomingOptions) (result emby.GetShowsUpcomingResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetShowsUpcoming takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetShowsUpcoming, not %d", len(options))
 	}
 	var option emby.GetShowsUpcomingOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetShowsUpcoming(ctx context.Context, options ...emby.GetShowsUp
 // unset.
 func (c Client) GetShowsUpcomingComplete(ctx context.Context, options ...emby.GetShowsUpcomingOptions) (result emby.GetShowsUpcomingCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetShowsUpcomingComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetShowsUpcomingComplete, not %d", len(options))
 	}
 	var option emby.GetShowsUpcomingOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetShowsUpcomingEach(ctx context.Context, options ...emby.GetSho
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetShowsUpcomingEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetShowsUpcomingEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetShowsUpcomingOptions

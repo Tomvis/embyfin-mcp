@@ -16,7 +16,7 @@ import (
 // AccountWatchlistMovies calls GET /3/account/{account_id}/watchlist/movies. Watchlist Movies.
 func (c Client) AccountWatchlistMovies(ctx context.Context, accountId int, options ...tmdb.AccountWatchlistMoviesOptions) (result tmdb.AccountWatchlistMoviesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("AccountWatchlistMovies takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for AccountWatchlistMovies, not %d", len(options))
 	}
 	var option tmdb.AccountWatchlistMoviesOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) AccountWatchlistMovies(ctx context.Context, accountId int, optio
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) AccountWatchlistMoviesComplete(ctx context.Context, accountId int, options ...tmdb.AccountWatchlistMoviesOptions) (result tmdb.AccountWatchlistMoviesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("AccountWatchlistMoviesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for AccountWatchlistMoviesComplete, not %d", len(options))
 	}
 	var option tmdb.AccountWatchlistMoviesOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) AccountWatchlistMoviesEach(ctx context.Context, accountId int, o
 	return func(yield func(tmdb.AccountWatchlistMoviesAnswerResults, error) bool) {
 		var zero tmdb.AccountWatchlistMoviesAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("AccountWatchlistMoviesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for AccountWatchlistMoviesEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.AccountWatchlistMoviesOptions

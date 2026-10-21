@@ -14,7 +14,7 @@ import (
 // GetLiveTvTimers calls GET /LiveTv/Timers. Gets live tv timers.
 func (c Client) GetLiveTvTimers(ctx context.Context, options ...emby.GetLiveTvTimersOptions) (result emby.GetLiveTvTimersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvTimers takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvTimers, not %d", len(options))
 	}
 	var option emby.GetLiveTvTimersOptions
 	if len(options) == 1 {

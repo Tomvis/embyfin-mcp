@@ -14,9 +14,9 @@ import (
 )
 
 // GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount calls GET /Items/{Id}/Images/{Type}/{Index}/{Tag}/{Format}/{MaxWidth}/{MaxHeight}/{PercentPlayed}/{UnPlayedCount}. Requires authentication as user.
-func (c Client) GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index int, tag string, format string, maxWidth int, maxHeight int, percentPlayed int, unPlayedCount int, options ...emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions) (result emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountResponse, err error) {
+func (c Client) GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index int, tag, format string, maxWidth, maxHeight, percentPlayed, unPlayedCount int, options ...emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions) (result emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCount, not %d", len(options))
 	}
 	var option emby.GetItemsByIdImagesByTypeByIndexByTagByFormatByMaxWidthByMaxHeightByPercentPlayedByUnPlayedCountOptions
 	if len(options) == 1 {

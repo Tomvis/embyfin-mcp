@@ -12,7 +12,7 @@ import (
 )
 
 // TvEpisodeExternalIds calls GET /3/tv/{series_id}/season/{season_number}/episode/{episode_number}/external_ids. External IDs.
-func (c Client) TvEpisodeExternalIds(ctx context.Context, seriesId int, seasonNumber int, episodeNumber int) (result tmdb.TvEpisodeExternalIdsResponse, err error) {
+func (c Client) TvEpisodeExternalIds(ctx context.Context, seriesId, seasonNumber, episodeNumber int) (result tmdb.TvEpisodeExternalIdsResponse, err error) {
 	result.TvEpisodeExternalIdsAnswer = &tmdb.TvEpisodeExternalIdsAnswer{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{

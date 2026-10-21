@@ -15,7 +15,7 @@ import (
 // GetSubtitleCodecs calls GET /SubtitleCodecs. Gets items based on a query.
 func (c Client) GetSubtitleCodecs(ctx context.Context, options ...emby.GetSubtitleCodecsOptions) (result emby.GetSubtitleCodecsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSubtitleCodecs takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSubtitleCodecs, not %d", len(options))
 	}
 	var option emby.GetSubtitleCodecsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetSubtitleCodecs(ctx context.Context, options ...emby.GetSubtit
 // unset.
 func (c Client) GetSubtitleCodecsComplete(ctx context.Context, options ...emby.GetSubtitleCodecsOptions) (result emby.GetSubtitleCodecsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSubtitleCodecsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSubtitleCodecsComplete, not %d", len(options))
 	}
 	var option emby.GetSubtitleCodecsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetSubtitleCodecsEach(ctx context.Context, options ...emby.GetSu
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetSubtitleCodecsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetSubtitleCodecsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetSubtitleCodecsOptions

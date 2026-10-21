@@ -31,7 +31,7 @@ func (r GetAudioLayoutsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetAudioLayoutsResponse) Record() (QueryResultUserLibraryTagItem, error) {
 	if r.Answer == nil {
-		return QueryResultUserLibraryTagItem{}, errors.New("GetAudioLayouts answered no QueryResultUserLibraryTagItem")
+		return QueryResultUserLibraryTagItem{}, errors.New("no QueryResultUserLibraryTagItem answered by GetAudioLayouts")
 	}
 
 	return *r.Answer, nil

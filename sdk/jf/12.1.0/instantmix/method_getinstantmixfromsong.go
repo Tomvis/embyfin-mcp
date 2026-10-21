@@ -15,7 +15,7 @@ import (
 // GetInstantMixFromSong calls GET /Songs/{itemId}/InstantMix. Creates an instant playlist based on a given song.
 func (c Client) GetInstantMixFromSong(ctx context.Context, itemId jf.ItemID, options ...jf.GetInstantMixFromSongOptions) (result jf.GetInstantMixFromSongResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetInstantMixFromSong takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetInstantMixFromSong, not %d", len(options))
 	}
 	var option jf.GetInstantMixFromSongOptions
 	if len(options) == 1 {

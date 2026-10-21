@@ -30,7 +30,7 @@ func (r PersonMovieCreditsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r PersonMovieCreditsResponse) Record() (PersonMovieCreditsAnswer, error) {
 	if r.Answer == nil {
-		return PersonMovieCreditsAnswer{}, errors.New("PersonMovieCredits answered no PersonMovieCreditsAnswer")
+		return PersonMovieCreditsAnswer{}, errors.New("no PersonMovieCreditsAnswer answered by PersonMovieCredits")
 	}
 
 	return *r.Answer, nil

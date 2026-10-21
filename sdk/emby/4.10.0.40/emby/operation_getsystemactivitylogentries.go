@@ -31,7 +31,7 @@ func (r GetSystemActivityLogEntriesResponse) Answered() bool { return r.Answer !
 // error when the server answered none.
 func (r GetSystemActivityLogEntriesResponse) Record() (QueryResultActivityLogEntry, error) {
 	if r.Answer == nil {
-		return QueryResultActivityLogEntry{}, errors.New("GetSystemActivityLogEntries answered no QueryResultActivityLogEntry")
+		return QueryResultActivityLogEntry{}, errors.New("no QueryResultActivityLogEntry answered by GetSystemActivityLogEntries")
 	}
 
 	return *r.Answer, nil

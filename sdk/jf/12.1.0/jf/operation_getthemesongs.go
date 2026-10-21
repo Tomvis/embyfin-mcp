@@ -31,7 +31,7 @@ func (r GetThemeSongsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetThemeSongsResponse) Record() (ThemeMediaResult, error) {
 	if r.Answer == nil {
-		return ThemeMediaResult{}, errors.New("GetThemeSongs answered no ThemeMediaResult")
+		return ThemeMediaResult{}, errors.New("no ThemeMediaResult answered by GetThemeSongs")
 	}
 
 	return *r.Answer, nil

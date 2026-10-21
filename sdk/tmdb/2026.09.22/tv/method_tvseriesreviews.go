@@ -16,7 +16,7 @@ import (
 // TvSeriesReviews calls GET /3/tv/{series_id}/reviews. Reviews.
 func (c Client) TvSeriesReviews(ctx context.Context, seriesId int, options ...tmdb.TvSeriesReviewsOptions) (result tmdb.TvSeriesReviewsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeriesReviews takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeriesReviews, not %d", len(options))
 	}
 	var option tmdb.TvSeriesReviewsOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) TvSeriesReviews(ctx context.Context, seriesId int, options ...tm
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) TvSeriesReviewsComplete(ctx context.Context, seriesId int, options ...tmdb.TvSeriesReviewsOptions) (result tmdb.TvSeriesReviewsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeriesReviewsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeriesReviewsComplete, not %d", len(options))
 	}
 	var option tmdb.TvSeriesReviewsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) TvSeriesReviewsEach(ctx context.Context, seriesId int, options .
 	return func(yield func(tmdb.TvSeriesReviewsAnswerResults, error) bool) {
 		var zero tmdb.TvSeriesReviewsAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("TvSeriesReviewsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for TvSeriesReviewsEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.TvSeriesReviewsOptions

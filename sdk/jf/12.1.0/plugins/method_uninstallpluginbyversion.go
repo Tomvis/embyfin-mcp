@@ -12,7 +12,7 @@ import (
 )
 
 // UninstallPluginByVersion calls DELETE /Plugins/{pluginId}/{version}. Uninstalls a plugin by version.
-func (c Client) UninstallPluginByVersion(ctx context.Context, pluginId string, version string) (result jf.UninstallPluginByVersionResponse, err error) {
+func (c Client) UninstallPluginByVersion(ctx context.Context, pluginId, version string) (result jf.UninstallPluginByVersionResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,

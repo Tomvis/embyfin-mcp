@@ -30,7 +30,7 @@ func (r FindByIdResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r FindByIdResponse) Record() (FindByIdAnswer, error) {
 	if r.Answer == nil {
-		return FindByIdAnswer{}, errors.New("FindById answered no FindByIdAnswer")
+		return FindByIdAnswer{}, errors.New("no FindByIdAnswer answered by FindById")
 	}
 
 	return *r.Answer, nil

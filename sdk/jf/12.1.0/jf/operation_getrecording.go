@@ -30,7 +30,7 @@ func (r GetRecordingResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetRecordingResponse) Record() (BaseItemDto, error) {
 	if r.Answer == nil {
-		return BaseItemDto{}, errors.New("GetRecording answered no BaseItemDto")
+		return BaseItemDto{}, errors.New("no BaseItemDto answered by GetRecording")
 	}
 
 	return *r.Answer, nil

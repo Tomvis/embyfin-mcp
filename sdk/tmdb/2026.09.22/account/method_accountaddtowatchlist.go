@@ -16,7 +16,7 @@ import (
 func (c Client) AccountAddToWatchlist(ctx context.Context, accountId int, input tmdb.AccountAddToWatchlistRequest, sessionId ...string) (result tmdb.AccountAddToWatchlistResponse, err error) {
 	var option tmdb.AccountAddToWatchlistOptions
 	if len(sessionId) > 1 {
-		return result, fmt.Errorf("AccountAddToWatchlist takes one sessionId at most, not %d", len(sessionId))
+		return result, fmt.Errorf("at most one sessionId for AccountAddToWatchlist, not %d", len(sessionId))
 	}
 	if len(sessionId) == 1 {
 		option.SessionId = sessionId[0]

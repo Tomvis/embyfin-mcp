@@ -16,7 +16,7 @@ import (
 // GetPlaylistItems calls GET /Playlists/{playlistId}/Items. Gets the original items of a playlist.
 func (c Client) GetPlaylistItems(ctx context.Context, playlistId jf.ItemID, options ...jf.GetPlaylistItemsOptions) (result jf.GetPlaylistItemsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPlaylistItems takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPlaylistItems, not %d", len(options))
 	}
 	var option jf.GetPlaylistItemsOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) GetPlaylistItems(ctx context.Context, playlistId jf.ItemID, opti
 // unset.
 func (c Client) GetPlaylistItemsComplete(ctx context.Context, playlistId jf.ItemID, options ...jf.GetPlaylistItemsOptions) (result jf.GetPlaylistItemsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPlaylistItemsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPlaylistItemsComplete, not %d", len(options))
 	}
 	var option jf.GetPlaylistItemsOptions
 	if len(options) == 1 {
@@ -117,7 +117,7 @@ func (c Client) GetPlaylistItemsEach(ctx context.Context, playlistId jf.ItemID, 
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetPlaylistItemsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetPlaylistItemsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetPlaylistItemsOptions

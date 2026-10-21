@@ -15,7 +15,7 @@ import (
 // GetMusicGenresInstantMix calls GET /MusicGenres/InstantMix. Creates an instant playlist based on a music genre.
 func (c Client) GetMusicGenresInstantMix(ctx context.Context, options ...emby.GetMusicGenresInstantMixOptions) (result emby.GetMusicGenresInstantMixResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetMusicGenresInstantMix takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetMusicGenresInstantMix, not %d", len(options))
 	}
 	var option emby.GetMusicGenresInstantMixOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetMusicGenresInstantMix(ctx context.Context, options ...emby.Ge
 // unset.
 func (c Client) GetMusicGenresInstantMixComplete(ctx context.Context, options ...emby.GetMusicGenresInstantMixOptions) (result emby.GetMusicGenresInstantMixCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetMusicGenresInstantMixComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetMusicGenresInstantMixComplete, not %d", len(options))
 	}
 	var option emby.GetMusicGenresInstantMixOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetMusicGenresInstantMixEach(ctx context.Context, options ...emb
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetMusicGenresInstantMixEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetMusicGenresInstantMixEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetMusicGenresInstantMixOptions

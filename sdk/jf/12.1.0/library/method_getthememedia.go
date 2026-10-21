@@ -15,7 +15,7 @@ import (
 // GetThemeMedia calls GET /Items/{itemId}/ThemeMedia. Get theme songs and videos for an item.
 func (c Client) GetThemeMedia(ctx context.Context, itemId jf.ItemID, options ...jf.GetThemeMediaOptions) (result jf.GetThemeMediaResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetThemeMedia takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetThemeMedia, not %d", len(options))
 	}
 	var option jf.GetThemeMediaOptions
 	if len(options) == 1 {

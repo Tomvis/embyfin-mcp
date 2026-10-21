@@ -16,7 +16,7 @@ import (
 func (c Client) MarkUnplayedItem(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.MarkUnplayedItemResponse, err error) {
 	var option jf.MarkUnplayedItemOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("MarkUnplayedItem takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for MarkUnplayedItem, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

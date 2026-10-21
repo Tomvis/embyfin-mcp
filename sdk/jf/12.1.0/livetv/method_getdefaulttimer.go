@@ -15,7 +15,7 @@ import (
 func (c Client) GetDefaultTimer(ctx context.Context, programId ...string) (result jf.GetDefaultTimerResponse, err error) {
 	var option jf.GetDefaultTimerOptions
 	if len(programId) > 1 {
-		return result, fmt.Errorf("GetDefaultTimer takes one programId at most, not %d", len(programId))
+		return result, fmt.Errorf("at most one programId for GetDefaultTimer, not %d", len(programId))
 	}
 	if len(programId) == 1 {
 		option.ProgramId = programId[0]

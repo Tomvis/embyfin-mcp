@@ -15,7 +15,7 @@ import (
 func (c Client) GetDevices(ctx context.Context, sortOrder ...string) (result emby.GetDevicesResponse, err error) {
 	var option emby.GetDevicesOptions
 	if len(sortOrder) > 1 {
-		return result, fmt.Errorf("GetDevices takes one sortOrder at most, not %d", len(sortOrder))
+		return result, fmt.Errorf("at most one sortOrder for GetDevices, not %d", len(sortOrder))
 	}
 	if len(sortOrder) == 1 {
 		option.SortOrder = sortOrder[0]

@@ -13,7 +13,7 @@ import (
 )
 
 // GetSubtitlePlaylist calls GET /Videos/{itemId}/{mediaSourceId}/Subtitles/{index}/subtitles.m3u8. Gets an HLS subtitle playlist.
-func (c Client) GetSubtitlePlaylist(ctx context.Context, itemId jf.ItemID, mediaSourceId jf.MediaSourceID, index int, segmentLength int) (result jf.GetSubtitlePlaylistResponse, err error) {
+func (c Client) GetSubtitlePlaylist(ctx context.Context, itemId jf.ItemID, mediaSourceId jf.MediaSourceID, index, segmentLength int) (result jf.GetSubtitlePlaylistResponse, err error) {
 	var option jf.GetSubtitlePlaylistOptions
 	option.SegmentLength = &segmentLength
 

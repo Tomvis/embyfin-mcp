@@ -15,7 +15,7 @@ import (
 // PostItemsByIdRefresh calls POST /Items/{Id}/Refresh. Refreshes metadata for an item.
 func (c Client) PostItemsByIdRefresh(ctx context.Context, id emby.ItemID, input emby.BaseRefreshRequest, options ...emby.PostItemsByIdRefreshOptions) (result emby.PostItemsByIdRefreshResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PostItemsByIdRefresh takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PostItemsByIdRefresh, not %d", len(options))
 	}
 	var option emby.PostItemsByIdRefreshOptions
 	if len(options) == 1 {

@@ -14,7 +14,7 @@ import (
 // GetItemsCounts calls GET /Items/Counts. Requires authentication as user.
 func (c Client) GetItemsCounts(ctx context.Context, options ...emby.GetItemsCountsOptions) (result emby.GetItemsCountsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsCounts takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsCounts, not %d", len(options))
 	}
 	var option emby.GetItemsCountsOptions
 	if len(options) == 1 {

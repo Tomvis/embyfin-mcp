@@ -15,7 +15,7 @@ import (
 // GetThemeSongs calls GET /Items/{itemId}/ThemeSongs. Get theme songs for an item.
 func (c Client) GetThemeSongs(ctx context.Context, itemId jf.ItemID, options ...jf.GetThemeSongsOptions) (result jf.GetThemeSongsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetThemeSongs takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetThemeSongs, not %d", len(options))
 	}
 	var option jf.GetThemeSongsOptions
 	if len(options) == 1 {

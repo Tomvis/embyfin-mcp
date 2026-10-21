@@ -15,7 +15,7 @@ import (
 // GetPersons calls GET /Persons. Gets all persons.
 func (c Client) GetPersons(ctx context.Context, options ...jf.GetPersonsOptions) (result jf.GetPersonsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPersons takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPersons, not %d", len(options))
 	}
 	var option jf.GetPersonsOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetPersons(ctx context.Context, options ...jf.GetPersonsOptions)
 // unset.
 func (c Client) GetPersonsComplete(ctx context.Context, options ...jf.GetPersonsOptions) (result jf.GetPersonsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPersonsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPersonsComplete, not %d", len(options))
 	}
 	var option jf.GetPersonsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetPersonsEach(ctx context.Context, options ...jf.GetPersonsOpti
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetPersonsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetPersonsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetPersonsOptions

@@ -16,7 +16,7 @@ import (
 // GetEpisodes calls GET /Shows/{seriesId}/Episodes. Gets episodes for a tv season.
 func (c Client) GetEpisodes(ctx context.Context, seriesId jf.ItemID, options ...jf.GetEpisodesOptions) (result jf.GetEpisodesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetEpisodes takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetEpisodes, not %d", len(options))
 	}
 	var option jf.GetEpisodesOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) GetEpisodes(ctx context.Context, seriesId jf.ItemID, options ...
 // unset.
 func (c Client) GetEpisodesComplete(ctx context.Context, seriesId jf.ItemID, options ...jf.GetEpisodesOptions) (result jf.GetEpisodesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetEpisodesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetEpisodesComplete, not %d", len(options))
 	}
 	var option jf.GetEpisodesOptions
 	if len(options) == 1 {
@@ -117,7 +117,7 @@ func (c Client) GetEpisodesEach(ctx context.Context, seriesId jf.ItemID, options
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetEpisodesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetEpisodesEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetEpisodesOptions

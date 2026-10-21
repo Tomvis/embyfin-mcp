@@ -31,7 +31,7 @@ func (r GetUsersByUserIdItemsByIdIntrosResponse) Answered() bool { return r.Answ
 // error when the server answered none.
 func (r GetUsersByUserIdItemsByIdIntrosResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetUsersByUserIdItemsByIdIntros answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetUsersByUserIdItemsByIdIntros")
 	}
 
 	return *r.Answer, nil

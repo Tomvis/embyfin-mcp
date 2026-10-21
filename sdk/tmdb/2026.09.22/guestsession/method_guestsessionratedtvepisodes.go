@@ -16,7 +16,7 @@ import (
 // GuestSessionRatedTvEpisodes calls GET /3/guest_session/{guest_session_id}/rated/tv/episodes. Rated TV Episodes.
 func (c Client) GuestSessionRatedTvEpisodes(ctx context.Context, guestSessionId string, options ...tmdb.GuestSessionRatedTvEpisodesOptions) (result tmdb.GuestSessionRatedTvEpisodesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GuestSessionRatedTvEpisodes takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GuestSessionRatedTvEpisodes, not %d", len(options))
 	}
 	var option tmdb.GuestSessionRatedTvEpisodesOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) GuestSessionRatedTvEpisodes(ctx context.Context, guestSessionId 
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) GuestSessionRatedTvEpisodesComplete(ctx context.Context, guestSessionId string, options ...tmdb.GuestSessionRatedTvEpisodesOptions) (result tmdb.GuestSessionRatedTvEpisodesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GuestSessionRatedTvEpisodesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GuestSessionRatedTvEpisodesComplete, not %d", len(options))
 	}
 	var option tmdb.GuestSessionRatedTvEpisodesOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GuestSessionRatedTvEpisodesEach(ctx context.Context, guestSessio
 	return func(yield func(tmdb.GuestSessionRatedTvEpisodesAnswerResults, error) bool) {
 		var zero tmdb.GuestSessionRatedTvEpisodesAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GuestSessionRatedTvEpisodesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GuestSessionRatedTvEpisodesEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.GuestSessionRatedTvEpisodesOptions

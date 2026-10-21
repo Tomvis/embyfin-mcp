@@ -15,7 +15,7 @@ import (
 // GetLiveTvEPG calls GET /LiveTv/EPG. Gets the epg.
 func (c Client) GetLiveTvEPG(ctx context.Context, options ...emby.GetLiveTvEPGOptions) (result emby.GetLiveTvEPGResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvEPG takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvEPG, not %d", len(options))
 	}
 	var option emby.GetLiveTvEPGOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetLiveTvEPG(ctx context.Context, options ...emby.GetLiveTvEPGOp
 // unset.
 func (c Client) GetLiveTvEPGComplete(ctx context.Context, options ...emby.GetLiveTvEPGOptions) (result emby.GetLiveTvEPGCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvEPGComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvEPGComplete, not %d", len(options))
 	}
 	var option emby.GetLiveTvEPGOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetLiveTvEPGEach(ctx context.Context, options ...emby.GetLiveTvE
 	return func(yield func(emby.ApiEpgRow, error) bool) {
 		var zero emby.ApiEpgRow
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLiveTvEPGEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLiveTvEPGEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetLiveTvEPGOptions

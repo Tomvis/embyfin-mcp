@@ -16,7 +16,7 @@ import (
 func (c Client) GetSpecialFeatures(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetSpecialFeaturesResponse, err error) {
 	var option jf.GetSpecialFeaturesOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetSpecialFeatures takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetSpecialFeatures, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

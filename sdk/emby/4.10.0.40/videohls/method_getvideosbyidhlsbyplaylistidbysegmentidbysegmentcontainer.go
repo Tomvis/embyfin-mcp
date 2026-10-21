@@ -12,7 +12,7 @@ import (
 )
 
 // GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainer calls GET /Videos/{Id}/hls/{PlaylistId}/{SegmentId}.{SegmentContainer}. Requires authentication as user.
-func (c Client) GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainer(ctx context.Context, id emby.ItemID, playlistId string, segmentId string, segmentContainer string) (result emby.GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainerResponse, err error) {
+func (c Client) GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainer(ctx context.Context, id emby.ItemID, playlistId, segmentId, segmentContainer string) (result emby.GetVideosByIdHlsByPlaylistIdBySegmentIdBySegmentContainerResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "application/octet-stream",
 		ExpectedStatusCodes: []int{

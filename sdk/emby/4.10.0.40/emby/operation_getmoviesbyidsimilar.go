@@ -31,7 +31,7 @@ func (r GetMoviesByIdSimilarResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetMoviesByIdSimilarResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetMoviesByIdSimilar answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetMoviesByIdSimilar")
 	}
 
 	return *r.Answer, nil

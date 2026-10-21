@@ -12,7 +12,7 @@ import (
 )
 
 // TvEpisodeTranslations calls GET /3/tv/{series_id}/season/{season_number}/episode/{episode_number}/translations. Translations.
-func (c Client) TvEpisodeTranslations(ctx context.Context, seriesId int, seasonNumber int, episodeNumber int) (result tmdb.TvEpisodeTranslationsResponse, err error) {
+func (c Client) TvEpisodeTranslations(ctx context.Context, seriesId, seasonNumber, episodeNumber int) (result tmdb.TvEpisodeTranslationsResponse, err error) {
 	result.TvEpisodeTranslationsAnswer = &tmdb.TvEpisodeTranslationsAnswer{}
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{

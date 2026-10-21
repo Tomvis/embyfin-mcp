@@ -15,7 +15,7 @@ import (
 // GetLiveTvChannels calls GET /LiveTv/Channels. Gets available live tv channels.
 func (c Client) GetLiveTvChannels(ctx context.Context, options ...jf.GetLiveTvChannelsOptions) (result jf.GetLiveTvChannelsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvChannels takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvChannels, not %d", len(options))
 	}
 	var option jf.GetLiveTvChannelsOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetLiveTvChannels(ctx context.Context, options ...jf.GetLiveTvCh
 // unset.
 func (c Client) GetLiveTvChannelsComplete(ctx context.Context, options ...jf.GetLiveTvChannelsOptions) (result jf.GetLiveTvChannelsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvChannelsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvChannelsComplete, not %d", len(options))
 	}
 	var option jf.GetLiveTvChannelsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetLiveTvChannelsEach(ctx context.Context, options ...jf.GetLive
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLiveTvChannelsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLiveTvChannelsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetLiveTvChannelsOptions

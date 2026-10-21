@@ -30,7 +30,7 @@ func (r GetConnectExchangeResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetConnectExchangeResponse) Record() (ConnectConnectAuthenticationExchangeResult, error) {
 	if r.Answer == nil {
-		return ConnectConnectAuthenticationExchangeResult{}, errors.New("GetConnectExchange answered no ConnectConnectAuthenticationExchangeResult")
+		return ConnectConnectAuthenticationExchangeResult{}, errors.New("no ConnectConnectAuthenticationExchangeResult answered by GetConnectExchange")
 	}
 
 	return *r.Answer, nil

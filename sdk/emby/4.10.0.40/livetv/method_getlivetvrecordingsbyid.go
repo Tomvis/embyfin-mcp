@@ -16,7 +16,7 @@ import (
 func (c Client) GetLiveTvRecordingsById(ctx context.Context, id emby.ItemID, userId ...emby.UserID) (result emby.GetLiveTvRecordingsByIdResponse, err error) {
 	var option emby.GetLiveTvRecordingsByIdOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetLiveTvRecordingsById takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetLiveTvRecordingsById, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

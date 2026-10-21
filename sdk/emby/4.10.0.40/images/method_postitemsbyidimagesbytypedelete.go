@@ -16,7 +16,7 @@ import (
 func (c Client) PostItemsByIdImagesByTypeDelete(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index ...int) (result emby.PostItemsByIdImagesByTypeDeleteResponse, err error) {
 	var option emby.PostItemsByIdImagesByTypeDeleteOptions
 	if len(index) > 1 {
-		return result, fmt.Errorf("PostItemsByIdImagesByTypeDelete takes one index at most, not %d", len(index))
+		return result, fmt.Errorf("at most one index for PostItemsByIdImagesByTypeDelete, not %d", len(index))
 	}
 	if len(index) == 1 {
 		option.Index = &index[0]

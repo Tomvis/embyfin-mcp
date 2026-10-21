@@ -16,7 +16,7 @@ import (
 // GetItemsByIdImagesByTypeByIndex calls GET /Items/{Id}/Images/{Type}/{Index}. Requires authentication as user.
 func (c Client) GetItemsByIdImagesByTypeByIndex(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index int, options ...emby.GetItemsByIdImagesByTypeByIndexOptions) (result emby.GetItemsByIdImagesByTypeByIndexResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdImagesByTypeByIndex takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdImagesByTypeByIndex, not %d", len(options))
 	}
 	var option emby.GetItemsByIdImagesByTypeByIndexOptions
 	if len(options) == 1 {

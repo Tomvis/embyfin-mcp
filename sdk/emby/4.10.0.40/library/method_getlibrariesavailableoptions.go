@@ -14,7 +14,7 @@ import (
 // GetLibrariesAvailableOptions calls GET /Libraries/AvailableOptions. Requires authentication as user.
 func (c Client) GetLibrariesAvailableOptions(ctx context.Context, options ...emby.GetLibrariesAvailableOptionsOptions) (result emby.GetLibrariesAvailableOptionsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLibrariesAvailableOptions takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLibrariesAvailableOptions, not %d", len(options))
 	}
 	var option emby.GetLibrariesAvailableOptionsOptions
 	if len(options) == 1 {

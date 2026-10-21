@@ -30,7 +30,7 @@ func (r PostUsersByIdConnectLinkResponse) Answered() bool { return r.Answer != n
 // error when the server answered none.
 func (r PostUsersByIdConnectLinkResponse) Record() (ConnectUserLinkResult, error) {
 	if r.Answer == nil {
-		return ConnectUserLinkResult{}, errors.New("PostUsersByIdConnectLink answered no ConnectUserLinkResult")
+		return ConnectUserLinkResult{}, errors.New("no ConnectUserLinkResult answered by PostUsersByIdConnectLink")
 	}
 
 	return *r.Answer, nil

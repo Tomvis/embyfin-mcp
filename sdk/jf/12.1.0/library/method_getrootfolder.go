@@ -15,7 +15,7 @@ import (
 func (c Client) GetRootFolder(ctx context.Context, userId ...jf.UserID) (result jf.GetRootFolderResponse, err error) {
 	var option jf.GetRootFolderOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetRootFolder takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetRootFolder, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

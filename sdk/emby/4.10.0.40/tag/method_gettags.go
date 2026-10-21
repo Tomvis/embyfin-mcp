@@ -15,7 +15,7 @@ import (
 // GetTags calls GET /Tags. Gets items based on a query.
 func (c Client) GetTags(ctx context.Context, options ...emby.GetTagsOptions) (result emby.GetTagsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTags takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTags, not %d", len(options))
 	}
 	var option emby.GetTagsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetTags(ctx context.Context, options ...emby.GetTagsOptions) (re
 // unset.
 func (c Client) GetTagsComplete(ctx context.Context, options ...emby.GetTagsOptions) (result emby.GetTagsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTagsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTagsComplete, not %d", len(options))
 	}
 	var option emby.GetTagsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetTagsEach(ctx context.Context, options ...emby.GetTagsOptions)
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetTagsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetTagsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetTagsOptions

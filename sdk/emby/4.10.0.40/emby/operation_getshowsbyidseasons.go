@@ -31,7 +31,7 @@ func (r GetShowsByIdSeasonsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetShowsByIdSeasonsResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetShowsByIdSeasons answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetShowsByIdSeasons")
 	}
 
 	return *r.Answer, nil

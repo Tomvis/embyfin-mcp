@@ -14,7 +14,7 @@ import (
 // DeleteLibraryVirtualFolders calls DELETE /Library/VirtualFolders. Requires authentication as administrator.
 func (c Client) DeleteLibraryVirtualFolders(ctx context.Context, options ...emby.DeleteLibraryVirtualFoldersOptions) (result emby.DeleteLibraryVirtualFoldersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("DeleteLibraryVirtualFolders takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for DeleteLibraryVirtualFolders, not %d", len(options))
 	}
 	var option emby.DeleteLibraryVirtualFoldersOptions
 	if len(options) == 1 {

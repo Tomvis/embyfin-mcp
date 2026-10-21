@@ -14,10 +14,10 @@ import (
 )
 
 // GetTrickplayTileImage calls GET /Videos/{itemId}/Trickplay/{width}/{index}.jpg. Gets a trickplay tile image.
-func (c Client) GetTrickplayTileImage(ctx context.Context, itemId jf.ItemID, width int, index int, mediaSourceId ...jf.MediaSourceID) (result jf.GetTrickplayTileImageResponse, err error) {
+func (c Client) GetTrickplayTileImage(ctx context.Context, itemId jf.ItemID, width, index int, mediaSourceId ...jf.MediaSourceID) (result jf.GetTrickplayTileImageResponse, err error) {
 	var option jf.GetTrickplayTileImageOptions
 	if len(mediaSourceId) > 1 {
-		return result, fmt.Errorf("GetTrickplayTileImage takes one mediaSourceId at most, not %d", len(mediaSourceId))
+		return result, fmt.Errorf("at most one mediaSourceId for GetTrickplayTileImage, not %d", len(mediaSourceId))
 	}
 	if len(mediaSourceId) == 1 {
 		option.MediaSourceId = mediaSourceId[0]

@@ -28,7 +28,7 @@ func (r AuthenticationCreateRequestTokenResponse) Answered() bool { return r.Ans
 // error when the server answered none.
 func (r AuthenticationCreateRequestTokenResponse) Record() (AuthenticationCreateRequestTokenAnswer, error) {
 	if r.Answer == nil {
-		return AuthenticationCreateRequestTokenAnswer{}, errors.New("AuthenticationCreateRequestToken answered no AuthenticationCreateRequestTokenAnswer")
+		return AuthenticationCreateRequestTokenAnswer{}, errors.New("no AuthenticationCreateRequestTokenAnswer answered by AuthenticationCreateRequestToken")
 	}
 
 	return *r.Answer, nil

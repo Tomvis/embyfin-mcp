@@ -15,7 +15,7 @@ import (
 // GetSystemLogsQuery calls GET /System/Logs/Query. Gets a list of available server log files.
 func (c Client) GetSystemLogsQuery(ctx context.Context, options ...emby.GetSystemLogsQueryOptions) (result emby.GetSystemLogsQueryResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSystemLogsQuery takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSystemLogsQuery, not %d", len(options))
 	}
 	var option emby.GetSystemLogsQueryOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetSystemLogsQuery(ctx context.Context, options ...emby.GetSyste
 // unset.
 func (c Client) GetSystemLogsQueryComplete(ctx context.Context, options ...emby.GetSystemLogsQueryOptions) (result emby.GetSystemLogsQueryCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSystemLogsQueryComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSystemLogsQueryComplete, not %d", len(options))
 	}
 	var option emby.GetSystemLogsQueryOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetSystemLogsQueryEach(ctx context.Context, options ...emby.GetS
 	return func(yield func(emby.LogFile, error) bool) {
 		var zero emby.LogFile
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetSystemLogsQueryEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetSystemLogsQueryEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetSystemLogsQueryOptions

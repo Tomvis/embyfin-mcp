@@ -28,7 +28,7 @@ func (r KeywordDetailsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r KeywordDetailsResponse) Record() (KeywordDetailsAnswer, error) {
 	if r.Answer == nil {
-		return KeywordDetailsAnswer{}, errors.New("KeywordDetails answered no KeywordDetailsAnswer")
+		return KeywordDetailsAnswer{}, errors.New("no KeywordDetailsAnswer answered by KeywordDetails")
 	}
 
 	return *r.Answer, nil

@@ -13,7 +13,7 @@ import (
 )
 
 // UpdateItemImageIndex calls POST /Items/{itemId}/Images/{imageType}/{imageIndex}/Index. Updates the index for an item image.
-func (c Client) UpdateItemImageIndex(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex int, newIndex int) (result jf.UpdateItemImageIndexResponse, err error) {
+func (c Client) UpdateItemImageIndex(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex, newIndex int) (result jf.UpdateItemImageIndexResponse, err error) {
 	var option jf.UpdateItemImageIndexOptions
 	option.NewIndex = &newIndex
 

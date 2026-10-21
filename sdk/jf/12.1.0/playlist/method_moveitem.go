@@ -13,7 +13,7 @@ import (
 )
 
 // MoveItem calls POST /Playlists/{playlistId}/Items/{itemId}/Move/{newIndex}. Moves a playlist item.
-func (c Client) MoveItem(ctx context.Context, playlistId jf.ItemID, itemId jf.ItemID, newIndex int) (result jf.MoveItemResponse, err error) {
+func (c Client) MoveItem(ctx context.Context, playlistId, itemId jf.ItemID, newIndex int) (result jf.MoveItemResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,

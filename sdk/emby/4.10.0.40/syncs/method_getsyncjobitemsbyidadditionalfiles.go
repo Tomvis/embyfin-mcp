@@ -12,7 +12,7 @@ import (
 )
 
 // GetSyncJobItemsByIdAdditionalFiles calls GET /Sync/JobItems/{Id}/AdditionalFiles. Gets a sync job item file.
-func (c Client) GetSyncJobItemsByIdAdditionalFiles(ctx context.Context, id string, name string) (result emby.GetSyncJobItemsByIdAdditionalFilesResponse, err error) {
+func (c Client) GetSyncJobItemsByIdAdditionalFiles(ctx context.Context, id, name string) (result emby.GetSyncJobItemsByIdAdditionalFilesResponse, err error) {
 	var option emby.GetSyncJobItemsByIdAdditionalFilesOptions
 	option.Name = name
 

@@ -16,7 +16,7 @@ import (
 func (c Client) GetItemsByIdAncestors(ctx context.Context, id emby.ItemID, userId ...emby.UserID) (result emby.GetItemsByIdAncestorsResponse, err error) {
 	var option emby.GetItemsByIdAncestorsOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetItemsByIdAncestors takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetItemsByIdAncestors, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

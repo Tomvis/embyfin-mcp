@@ -15,7 +15,7 @@ import (
 // GetSeasons calls GET /Shows/{seriesId}/Seasons. Gets seasons for a tv series.
 func (c Client) GetSeasons(ctx context.Context, seriesId jf.ItemID, options ...jf.GetSeasonsOptions) (result jf.GetSeasonsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSeasons takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSeasons, not %d", len(options))
 	}
 	var option jf.GetSeasonsOptions
 	if len(options) == 1 {

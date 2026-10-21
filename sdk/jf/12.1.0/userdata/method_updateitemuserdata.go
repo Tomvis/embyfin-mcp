@@ -16,7 +16,7 @@ import (
 func (c Client) UpdateItemUserData(ctx context.Context, itemId jf.ItemID, input jf.UpdateUserItemDataDto, userId ...jf.UserID) (result jf.UpdateItemUserDataResponse, err error) {
 	var option jf.UpdateItemUserDataOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("UpdateItemUserData takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for UpdateItemUserData, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

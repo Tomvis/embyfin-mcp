@@ -15,7 +15,7 @@ import (
 // GetGenres calls GET /Genres. Gets all genres from a given item, folder, or the entire library.
 func (c Client) GetGenres(ctx context.Context, options ...emby.GetGenresOptions) (result emby.GetGenresResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetGenres takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetGenres, not %d", len(options))
 	}
 	var option emby.GetGenresOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetGenres(ctx context.Context, options ...emby.GetGenresOptions)
 // unset.
 func (c Client) GetGenresComplete(ctx context.Context, options ...emby.GetGenresOptions) (result emby.GetGenresCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetGenresComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetGenresComplete, not %d", len(options))
 	}
 	var option emby.GetGenresOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetGenresEach(ctx context.Context, options ...emby.GetGenresOpti
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetGenresEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetGenresEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetGenresOptions

@@ -16,7 +16,7 @@ import (
 // GetSubtitleWithTicks calls GET /Videos/{routeItemId}/{routeMediaSourceId}/Subtitles/{routeIndex}/{routeStartPositionTicks}/Stream.{routeFormat}. Gets subtitles in a specified format.
 func (c Client) GetSubtitleWithTicks(ctx context.Context, routeItemId jf.ItemID, routeMediaSourceId jf.MediaSourceID, routeIndex int, routeStartPositionTicks int64, routeFormat string, options ...jf.GetSubtitleWithTicksOptions) (result jf.GetSubtitleWithTicksResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSubtitleWithTicks takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSubtitleWithTicks, not %d", len(options))
 	}
 	var option jf.GetSubtitleWithTicksOptions
 	if len(options) == 1 {

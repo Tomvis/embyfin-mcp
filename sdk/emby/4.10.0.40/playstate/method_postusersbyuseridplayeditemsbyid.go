@@ -16,7 +16,7 @@ import (
 func (c Client) PostUsersByUserIdPlayedItemsById(ctx context.Context, userId emby.UserID, id emby.ItemID, datePlayed ...string) (result emby.PostUsersByUserIdPlayedItemsByIdResponse, err error) {
 	var option emby.PostUsersByUserIdPlayedItemsByIdOptions
 	if len(datePlayed) > 1 {
-		return result, fmt.Errorf("PostUsersByUserIdPlayedItemsById takes one datePlayed at most, not %d", len(datePlayed))
+		return result, fmt.Errorf("at most one datePlayed for PostUsersByUserIdPlayedItemsById, not %d", len(datePlayed))
 	}
 	if len(datePlayed) == 1 {
 		option.DatePlayed = datePlayed[0]

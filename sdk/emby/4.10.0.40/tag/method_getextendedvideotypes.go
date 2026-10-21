@@ -15,7 +15,7 @@ import (
 // GetExtendedVideoTypes calls GET /ExtendedVideoTypes. Gets items based on a query.
 func (c Client) GetExtendedVideoTypes(ctx context.Context, options ...emby.GetExtendedVideoTypesOptions) (result emby.GetExtendedVideoTypesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetExtendedVideoTypes takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetExtendedVideoTypes, not %d", len(options))
 	}
 	var option emby.GetExtendedVideoTypesOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetExtendedVideoTypes(ctx context.Context, options ...emby.GetEx
 // unset.
 func (c Client) GetExtendedVideoTypesComplete(ctx context.Context, options ...emby.GetExtendedVideoTypesOptions) (result emby.GetExtendedVideoTypesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetExtendedVideoTypesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetExtendedVideoTypesComplete, not %d", len(options))
 	}
 	var option emby.GetExtendedVideoTypesOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetExtendedVideoTypesEach(ctx context.Context, options ...emby.G
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetExtendedVideoTypesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetExtendedVideoTypesEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetExtendedVideoTypesOptions

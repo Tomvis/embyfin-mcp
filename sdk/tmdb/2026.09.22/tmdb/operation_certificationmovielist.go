@@ -28,7 +28,7 @@ func (r CertificationMovieListResponse) Answered() bool { return r.Answer != nil
 // error when the server answered none.
 func (r CertificationMovieListResponse) Record() (CertificationMovieListAnswer, error) {
 	if r.Answer == nil {
-		return CertificationMovieListAnswer{}, errors.New("CertificationMovieList answered no CertificationMovieListAnswer")
+		return CertificationMovieListAnswer{}, errors.New("no CertificationMovieListAnswer answered by CertificationMovieList")
 	}
 
 	return *r.Answer, nil

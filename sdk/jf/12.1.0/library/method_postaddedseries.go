@@ -15,7 +15,7 @@ import (
 func (c Client) PostAddedSeries(ctx context.Context, tvdbId ...string) (result jf.PostAddedSeriesResponse, err error) {
 	var option jf.PostAddedSeriesOptions
 	if len(tvdbId) > 1 {
-		return result, fmt.Errorf("PostAddedSeries takes one tvdbId at most, not %d", len(tvdbId))
+		return result, fmt.Errorf("at most one tvdbId for PostAddedSeries, not %d", len(tvdbId))
 	}
 	if len(tvdbId) == 1 {
 		option.TvdbId = tvdbId[0]

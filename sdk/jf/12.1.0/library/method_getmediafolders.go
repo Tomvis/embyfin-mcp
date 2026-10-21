@@ -15,7 +15,7 @@ import (
 func (c Client) GetMediaFolders(ctx context.Context, isHidden ...bool) (result jf.GetMediaFoldersResponse, err error) {
 	var option jf.GetMediaFoldersOptions
 	if len(isHidden) > 1 {
-		return result, fmt.Errorf("GetMediaFolders takes one isHidden at most, not %d", len(isHidden))
+		return result, fmt.Errorf("at most one isHidden for GetMediaFolders, not %d", len(isHidden))
 	}
 	if len(isHidden) == 1 {
 		option.IsHidden = &isHidden[0]

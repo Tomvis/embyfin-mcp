@@ -15,7 +15,7 @@ import (
 // GetVideosByIdAdditionalParts calls GET /Videos/{Id}/AdditionalParts. Gets additional parts for a video.
 func (c Client) GetVideosByIdAdditionalParts(ctx context.Context, id emby.ItemID, options ...emby.GetVideosByIdAdditionalPartsOptions) (result emby.GetVideosByIdAdditionalPartsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetVideosByIdAdditionalParts takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetVideosByIdAdditionalParts, not %d", len(options))
 	}
 	var option emby.GetVideosByIdAdditionalPartsOptions
 	if len(options) == 1 {

@@ -16,7 +16,7 @@ import (
 func (c Client) GetPackageInfo(ctx context.Context, name string, assemblyGuid ...string) (result jf.GetPackageInfoResponse, err error) {
 	var option jf.GetPackageInfoOptions
 	if len(assemblyGuid) > 1 {
-		return result, fmt.Errorf("GetPackageInfo takes one assemblyGuid at most, not %d", len(assemblyGuid))
+		return result, fmt.Errorf("at most one assemblyGuid for GetPackageInfo, not %d", len(assemblyGuid))
 	}
 	if len(assemblyGuid) == 1 {
 		option.AssemblyGuid = assemblyGuid[0]

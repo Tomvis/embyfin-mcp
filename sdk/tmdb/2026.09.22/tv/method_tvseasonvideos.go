@@ -13,9 +13,9 @@ import (
 )
 
 // TvSeasonVideos calls GET /3/tv/{series_id}/season/{season_number}/videos. Videos.
-func (c Client) TvSeasonVideos(ctx context.Context, seriesId int, seasonNumber int, options ...tmdb.TvSeasonVideosOptions) (result tmdb.TvSeasonVideosResponse, err error) {
+func (c Client) TvSeasonVideos(ctx context.Context, seriesId, seasonNumber int, options ...tmdb.TvSeasonVideosOptions) (result tmdb.TvSeasonVideosResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeasonVideos takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeasonVideos, not %d", len(options))
 	}
 	var option tmdb.TvSeasonVideosOptions
 	if len(options) == 1 {

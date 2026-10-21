@@ -15,7 +15,7 @@ import (
 // GetOfficialRatings calls GET /OfficialRatings. Gets items based on a query.
 func (c Client) GetOfficialRatings(ctx context.Context, options ...emby.GetOfficialRatingsOptions) (result emby.GetOfficialRatingsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetOfficialRatings takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetOfficialRatings, not %d", len(options))
 	}
 	var option emby.GetOfficialRatingsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetOfficialRatings(ctx context.Context, options ...emby.GetOffic
 // unset.
 func (c Client) GetOfficialRatingsComplete(ctx context.Context, options ...emby.GetOfficialRatingsOptions) (result emby.GetOfficialRatingsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetOfficialRatingsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetOfficialRatingsComplete, not %d", len(options))
 	}
 	var option emby.GetOfficialRatingsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetOfficialRatingsEach(ctx context.Context, options ...emby.GetO
 	return func(yield func(emby.UserLibraryOfficialRatingItem, error) bool) {
 		var zero emby.UserLibraryOfficialRatingItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetOfficialRatingsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetOfficialRatingsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetOfficialRatingsOptions

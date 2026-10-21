@@ -28,7 +28,7 @@ func (r AuthenticationDeleteSessionResponse) Answered() bool { return r.Answer !
 // error when the server answered none.
 func (r AuthenticationDeleteSessionResponse) Record() (AuthenticationDeleteSessionAnswer, error) {
 	if r.Answer == nil {
-		return AuthenticationDeleteSessionAnswer{}, errors.New("AuthenticationDeleteSession answered no AuthenticationDeleteSessionAnswer")
+		return AuthenticationDeleteSessionAnswer{}, errors.New("no AuthenticationDeleteSessionAnswer answered by AuthenticationDeleteSession")
 	}
 
 	return *r.Answer, nil

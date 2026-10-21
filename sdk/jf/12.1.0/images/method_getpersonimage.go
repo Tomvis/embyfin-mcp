@@ -15,7 +15,7 @@ import (
 // GetPersonImage calls GET /Persons/{name}/Images/{imageType}. Get person image by name.
 func (c Client) GetPersonImage(ctx context.Context, name string, imageType jf.ImageType, options ...jf.GetPersonImageOptions) (result jf.GetPersonImageResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPersonImage takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPersonImage, not %d", len(options))
 	}
 	var option jf.GetPersonImageOptions
 	if len(options) == 1 {

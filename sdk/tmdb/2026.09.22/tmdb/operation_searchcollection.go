@@ -31,7 +31,7 @@ func (r SearchCollectionResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r SearchCollectionResponse) Record() (SearchCollectionAnswer, error) {
 	if r.Answer == nil {
-		return SearchCollectionAnswer{}, errors.New("SearchCollection answered no SearchCollectionAnswer")
+		return SearchCollectionAnswer{}, errors.New("no SearchCollectionAnswer answered by SearchCollection")
 	}
 
 	return *r.Answer, nil

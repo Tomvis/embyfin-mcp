@@ -30,7 +30,7 @@ func (r MarkUnplayedItemResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r MarkUnplayedItemResponse) Record() (UserItemDataDto, error) {
 	if r.Answer == nil {
-		return UserItemDataDto{}, errors.New("MarkUnplayedItem answered no UserItemDataDto")
+		return UserItemDataDto{}, errors.New("no UserItemDataDto answered by MarkUnplayedItem")
 	}
 
 	return *r.Answer, nil

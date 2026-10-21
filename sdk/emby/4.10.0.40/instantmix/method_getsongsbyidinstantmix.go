@@ -16,7 +16,7 @@ import (
 // GetSongsByIdInstantMix calls GET /Songs/{Id}/InstantMix. Creates an instant playlist based on a given song.
 func (c Client) GetSongsByIdInstantMix(ctx context.Context, id emby.ItemID, options ...emby.GetSongsByIdInstantMixOptions) (result emby.GetSongsByIdInstantMixResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSongsByIdInstantMix takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSongsByIdInstantMix, not %d", len(options))
 	}
 	var option emby.GetSongsByIdInstantMixOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetSongsByIdInstantMix(ctx context.Context, id emby.ItemID, opti
 // unset.
 func (c Client) GetSongsByIdInstantMixComplete(ctx context.Context, id emby.ItemID, options ...emby.GetSongsByIdInstantMixOptions) (result emby.GetSongsByIdInstantMixCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSongsByIdInstantMixComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSongsByIdInstantMixComplete, not %d", len(options))
 	}
 	var option emby.GetSongsByIdInstantMixOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetSongsByIdInstantMixEach(ctx context.Context, id emby.ItemID, 
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetSongsByIdInstantMixEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetSongsByIdInstantMixEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetSongsByIdInstantMixOptions

@@ -16,7 +16,7 @@ import (
 func (c Client) GetPackagesByName(ctx context.Context, name string, assemblyGuid ...string) (result emby.GetPackagesByNameResponse, err error) {
 	var option emby.GetPackagesByNameOptions
 	if len(assemblyGuid) > 1 {
-		return result, fmt.Errorf("GetPackagesByName takes one assemblyGuid at most, not %d", len(assemblyGuid))
+		return result, fmt.Errorf("at most one assemblyGuid for GetPackagesByName, not %d", len(assemblyGuid))
 	}
 	if len(assemblyGuid) == 1 {
 		option.AssemblyGuid = assemblyGuid[0]

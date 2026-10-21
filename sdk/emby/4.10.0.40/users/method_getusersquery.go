@@ -15,7 +15,7 @@ import (
 // GetUsersQuery calls GET /Users/Query. Gets a list of users.
 func (c Client) GetUsersQuery(ctx context.Context, options ...emby.GetUsersQueryOptions) (result emby.GetUsersQueryResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersQuery takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersQuery, not %d", len(options))
 	}
 	var option emby.GetUsersQueryOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetUsersQuery(ctx context.Context, options ...emby.GetUsersQuery
 // unset.
 func (c Client) GetUsersQueryComplete(ctx context.Context, options ...emby.GetUsersQueryOptions) (result emby.GetUsersQueryCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersQueryComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersQueryComplete, not %d", len(options))
 	}
 	var option emby.GetUsersQueryOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetUsersQueryEach(ctx context.Context, options ...emby.GetUsersQ
 	return func(yield func(emby.UserDto, error) bool) {
 		var zero emby.UserDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetUsersQueryEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetUsersQueryEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetUsersQueryOptions

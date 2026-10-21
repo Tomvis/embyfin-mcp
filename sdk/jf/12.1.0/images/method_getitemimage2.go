@@ -14,9 +14,9 @@ import (
 )
 
 // GetItemImage2 calls GET /Items/{itemId}/Images/{imageType}/{imageIndex}/{tag}/{format}/{maxWidth}/{maxHeight}/{percentPlayed}/{unplayedCount}. Gets the item's image.
-func (c Client) GetItemImage2(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex int, tag string, format jf.ImageFormat, maxWidth int, maxHeight int, percentPlayed float64, unplayedCount int, options ...jf.GetItemImage2Options) (result jf.GetItemImage2Response, err error) {
+func (c Client) GetItemImage2(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex int, tag string, format jf.ImageFormat, maxWidth, maxHeight int, percentPlayed float64, unplayedCount int, options ...jf.GetItemImage2Options) (result jf.GetItemImage2Response, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemImage2 takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemImage2, not %d", len(options))
 	}
 	var option jf.GetItemImage2Options
 	if len(options) == 1 {

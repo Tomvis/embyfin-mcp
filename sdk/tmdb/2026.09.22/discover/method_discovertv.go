@@ -15,7 +15,7 @@ import (
 // DiscoverTv calls GET /3/discover/tv. TV.
 func (c Client) DiscoverTv(ctx context.Context, options ...tmdb.DiscoverTvOptions) (result tmdb.DiscoverTvResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("DiscoverTv takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for DiscoverTv, not %d", len(options))
 	}
 	var option tmdb.DiscoverTvOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) DiscoverTv(ctx context.Context, options ...tmdb.DiscoverTvOption
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) DiscoverTvComplete(ctx context.Context, options ...tmdb.DiscoverTvOptions) (result tmdb.DiscoverTvCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("DiscoverTvComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for DiscoverTvComplete, not %d", len(options))
 	}
 	var option tmdb.DiscoverTvOptions
 	if len(options) == 1 {
@@ -115,7 +115,7 @@ func (c Client) DiscoverTvEach(ctx context.Context, options ...tmdb.DiscoverTvOp
 	return func(yield func(tmdb.DiscoverTvAnswerResults, error) bool) {
 		var zero tmdb.DiscoverTvAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("DiscoverTvEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for DiscoverTvEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.DiscoverTvOptions

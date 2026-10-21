@@ -15,7 +15,7 @@ import (
 // GetStreamLanguages calls GET /StreamLanguages. Gets items based on a query.
 func (c Client) GetStreamLanguages(ctx context.Context, options ...emby.GetStreamLanguagesOptions) (result emby.GetStreamLanguagesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetStreamLanguages takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetStreamLanguages, not %d", len(options))
 	}
 	var option emby.GetStreamLanguagesOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetStreamLanguages(ctx context.Context, options ...emby.GetStrea
 // unset.
 func (c Client) GetStreamLanguagesComplete(ctx context.Context, options ...emby.GetStreamLanguagesOptions) (result emby.GetStreamLanguagesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetStreamLanguagesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetStreamLanguagesComplete, not %d", len(options))
 	}
 	var option emby.GetStreamLanguagesOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetStreamLanguagesEach(ctx context.Context, options ...emby.GetS
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetStreamLanguagesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetStreamLanguagesEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetStreamLanguagesOptions

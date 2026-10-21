@@ -15,7 +15,7 @@ import (
 // TvSeriesAccountStates calls GET /3/tv/{series_id}/account_states. Account States.
 func (c Client) TvSeriesAccountStates(ctx context.Context, seriesId int, options ...tmdb.TvSeriesAccountStatesOptions) (result tmdb.TvSeriesAccountStatesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeriesAccountStates takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeriesAccountStates, not %d", len(options))
 	}
 	var option tmdb.TvSeriesAccountStatesOptions
 	if len(options) == 1 {

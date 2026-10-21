@@ -15,7 +15,7 @@ import (
 // GetVideoStream calls GET /Videos/{itemId}/stream. Gets a video stream.
 func (c Client) GetVideoStream(ctx context.Context, itemId jf.ItemID, options ...jf.GetVideoStreamOptions) (result jf.GetVideoStreamResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetVideoStream takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetVideoStream, not %d", len(options))
 	}
 	var option jf.GetVideoStreamOptions
 	if len(options) == 1 {

@@ -15,7 +15,7 @@ import (
 // GetLogEntries calls GET /System/ActivityLog/Entries. Gets activity log entries.
 func (c Client) GetLogEntries(ctx context.Context, options ...jf.GetLogEntriesOptions) (result jf.GetLogEntriesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLogEntries takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLogEntries, not %d", len(options))
 	}
 	var option jf.GetLogEntriesOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetLogEntries(ctx context.Context, options ...jf.GetLogEntriesOp
 // unset.
 func (c Client) GetLogEntriesComplete(ctx context.Context, options ...jf.GetLogEntriesOptions) (result jf.GetLogEntriesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLogEntriesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLogEntriesComplete, not %d", len(options))
 	}
 	var option jf.GetLogEntriesOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetLogEntriesEach(ctx context.Context, options ...jf.GetLogEntri
 	return func(yield func(jf.ActivityLogEntry, error) bool) {
 		var zero jf.ActivityLogEntry
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLogEntriesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLogEntriesEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetLogEntriesOptions

@@ -31,7 +31,7 @@ func (r GetStreamLanguagesResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetStreamLanguagesResponse) Record() (QueryResultUserLibraryTagItem, error) {
 	if r.Answer == nil {
-		return QueryResultUserLibraryTagItem{}, errors.New("GetStreamLanguages answered no QueryResultUserLibraryTagItem")
+		return QueryResultUserLibraryTagItem{}, errors.New("no QueryResultUserLibraryTagItem answered by GetStreamLanguages")
 	}
 
 	return *r.Answer, nil

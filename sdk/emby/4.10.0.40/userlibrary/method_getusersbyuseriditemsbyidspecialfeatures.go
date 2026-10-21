@@ -15,7 +15,7 @@ import (
 // GetUsersByUserIdItemsByIdSpecialFeatures calls GET /Users/{UserId}/Items/{Id}/SpecialFeatures. Gets special features for an item.
 func (c Client) GetUsersByUserIdItemsByIdSpecialFeatures(ctx context.Context, userId emby.UserID, id emby.ItemID, options ...emby.GetUsersByUserIdItemsByIdSpecialFeaturesOptions) (result emby.GetUsersByUserIdItemsByIdSpecialFeaturesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByUserIdItemsByIdSpecialFeatures takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByUserIdItemsByIdSpecialFeatures, not %d", len(options))
 	}
 	var option emby.GetUsersByUserIdItemsByIdSpecialFeaturesOptions
 	if len(options) == 1 {

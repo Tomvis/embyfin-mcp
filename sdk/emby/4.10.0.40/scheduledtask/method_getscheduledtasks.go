@@ -14,7 +14,7 @@ import (
 // GetScheduledTasks calls GET /ScheduledTasks. Gets scheduled tasks.
 func (c Client) GetScheduledTasks(ctx context.Context, options ...emby.GetScheduledTasksOptions) (result emby.GetScheduledTasksResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetScheduledTasks takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetScheduledTasks, not %d", len(options))
 	}
 	var option emby.GetScheduledTasksOptions
 	if len(options) == 1 {

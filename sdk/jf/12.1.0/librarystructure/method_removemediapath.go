@@ -14,7 +14,7 @@ import (
 // RemoveMediaPath calls DELETE /Library/VirtualFolders/Paths. Remove a media path.
 func (c Client) RemoveMediaPath(ctx context.Context, options ...jf.RemoveMediaPathOptions) (result jf.RemoveMediaPathResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("RemoveMediaPath takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for RemoveMediaPath, not %d", len(options))
 	}
 	var option jf.RemoveMediaPathOptions
 	if len(options) == 1 {

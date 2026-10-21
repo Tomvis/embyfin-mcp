@@ -30,7 +30,7 @@ func (r AccountAddFavoriteResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r AccountAddFavoriteResponse) Record() (AccountAddFavoriteAnswer, error) {
 	if r.Answer == nil {
-		return AccountAddFavoriteAnswer{}, errors.New("AccountAddFavorite answered no AccountAddFavoriteAnswer")
+		return AccountAddFavoriteAnswer{}, errors.New("no AccountAddFavoriteAnswer answered by AccountAddFavorite")
 	}
 
 	return *r.Answer, nil

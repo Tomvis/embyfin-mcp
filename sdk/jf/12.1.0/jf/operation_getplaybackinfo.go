@@ -30,7 +30,7 @@ func (r GetPlaybackInfoResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetPlaybackInfoResponse) Record() (PlaybackInfoResponse, error) {
 	if r.Answer == nil {
-		return PlaybackInfoResponse{}, errors.New("GetPlaybackInfo answered no PlaybackInfoResponse")
+		return PlaybackInfoResponse{}, errors.New("no PlaybackInfoResponse answered by GetPlaybackInfo")
 	}
 
 	return *r.Answer, nil

@@ -13,10 +13,10 @@ import (
 )
 
 // TvSeasonAggregateCredits calls GET /3/tv/{series_id}/season/{season_number}/aggregate_credits. Aggregate Credits.
-func (c Client) TvSeasonAggregateCredits(ctx context.Context, seriesId int, seasonNumber int, language ...string) (result tmdb.TvSeasonAggregateCreditsResponse, err error) {
+func (c Client) TvSeasonAggregateCredits(ctx context.Context, seriesId, seasonNumber int, language ...string) (result tmdb.TvSeasonAggregateCreditsResponse, err error) {
 	var option tmdb.TvSeasonAggregateCreditsOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("TvSeasonAggregateCredits takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for TvSeasonAggregateCredits, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

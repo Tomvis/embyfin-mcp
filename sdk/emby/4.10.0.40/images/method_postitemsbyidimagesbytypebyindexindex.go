@@ -13,7 +13,7 @@ import (
 )
 
 // PostItemsByIdImagesByTypeByIndexIndex calls POST /Items/{Id}/Images/{Type}/{Index}/Index. Updates the index for an item image.
-func (c Client) PostItemsByIdImagesByTypeByIndexIndex(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index int, newIndex int) (result emby.PostItemsByIdImagesByTypeByIndexIndexResponse, err error) {
+func (c Client) PostItemsByIdImagesByTypeByIndexIndex(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, index, newIndex int) (result emby.PostItemsByIdImagesByTypeByIndexIndexResponse, err error) {
 	var option emby.PostItemsByIdImagesByTypeByIndexIndexOptions
 	option.NewIndex = &newIndex
 

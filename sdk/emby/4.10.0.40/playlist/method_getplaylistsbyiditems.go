@@ -16,7 +16,7 @@ import (
 // GetPlaylistsByIdItems calls GET /Playlists/{Id}/Items. Gets the original items of a playlist.
 func (c Client) GetPlaylistsByIdItems(ctx context.Context, id emby.ItemID, options ...emby.GetPlaylistsByIdItemsOptions) (result emby.GetPlaylistsByIdItemsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPlaylistsByIdItems takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPlaylistsByIdItems, not %d", len(options))
 	}
 	var option emby.GetPlaylistsByIdItemsOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetPlaylistsByIdItems(ctx context.Context, id emby.ItemID, optio
 // unset.
 func (c Client) GetPlaylistsByIdItemsComplete(ctx context.Context, id emby.ItemID, options ...emby.GetPlaylistsByIdItemsOptions) (result emby.GetPlaylistsByIdItemsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPlaylistsByIdItemsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPlaylistsByIdItemsComplete, not %d", len(options))
 	}
 	var option emby.GetPlaylistsByIdItemsOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetPlaylistsByIdItemsEach(ctx context.Context, id emby.ItemID, o
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetPlaylistsByIdItemsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetPlaylistsByIdItemsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetPlaylistsByIdItemsOptions

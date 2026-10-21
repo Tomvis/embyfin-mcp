@@ -30,7 +30,7 @@ func (r GetDefaultTimerResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetDefaultTimerResponse) Record() (SeriesTimerInfoDto, error) {
 	if r.Answer == nil {
-		return SeriesTimerInfoDto{}, errors.New("GetDefaultTimer answered no SeriesTimerInfoDto")
+		return SeriesTimerInfoDto{}, errors.New("no SeriesTimerInfoDto answered by GetDefaultTimer")
 	}
 
 	return *r.Answer, nil

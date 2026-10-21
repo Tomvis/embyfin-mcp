@@ -16,7 +16,7 @@ import (
 func (c Client) MovieCredits(ctx context.Context, movieId int, language ...string) (result tmdb.MovieCreditsResponse, err error) {
 	var option tmdb.MovieCreditsOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("MovieCredits takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for MovieCredits, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

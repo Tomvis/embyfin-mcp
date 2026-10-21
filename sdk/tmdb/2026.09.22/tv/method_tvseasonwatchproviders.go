@@ -13,10 +13,10 @@ import (
 )
 
 // TvSeasonWatchProviders calls GET /3/tv/{series_id}/season/{season_number}/watch/providers. Watch Providers.
-func (c Client) TvSeasonWatchProviders(ctx context.Context, seriesId int, seasonNumber int, language ...string) (result tmdb.TvSeasonWatchProvidersResponse, err error) {
+func (c Client) TvSeasonWatchProviders(ctx context.Context, seriesId, seasonNumber int, language ...string) (result tmdb.TvSeasonWatchProvidersResponse, err error) {
 	var option tmdb.TvSeasonWatchProvidersOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("TvSeasonWatchProviders takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for TvSeasonWatchProviders, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

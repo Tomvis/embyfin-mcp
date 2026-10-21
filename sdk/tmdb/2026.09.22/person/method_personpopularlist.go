@@ -15,7 +15,7 @@ import (
 // PersonPopularList calls GET /3/person/popular. Popular.
 func (c Client) PersonPopularList(ctx context.Context, options ...tmdb.PersonPopularListOptions) (result tmdb.PersonPopularListResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PersonPopularList takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PersonPopularList, not %d", len(options))
 	}
 	var option tmdb.PersonPopularListOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) PersonPopularList(ctx context.Context, options ...tmdb.PersonPop
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) PersonPopularListComplete(ctx context.Context, options ...tmdb.PersonPopularListOptions) (result tmdb.PersonPopularListCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PersonPopularListComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PersonPopularListComplete, not %d", len(options))
 	}
 	var option tmdb.PersonPopularListOptions
 	if len(options) == 1 {
@@ -115,7 +115,7 @@ func (c Client) PersonPopularListEach(ctx context.Context, options ...tmdb.Perso
 	return func(yield func(tmdb.PersonPopularListAnswerResults, error) bool) {
 		var zero tmdb.PersonPopularListAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("PersonPopularListEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for PersonPopularListEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.PersonPopularListOptions

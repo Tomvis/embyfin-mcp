@@ -14,7 +14,7 @@ import (
 // GetLibraryOptionsInfo calls GET /Libraries/AvailableOptions. Gets the library options info.
 func (c Client) GetLibraryOptionsInfo(ctx context.Context, options ...jf.GetLibraryOptionsInfoOptions) (result jf.GetLibraryOptionsInfoResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLibraryOptionsInfo takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLibraryOptionsInfo, not %d", len(options))
 	}
 	var option jf.GetLibraryOptionsInfoOptions
 	if len(options) == 1 {

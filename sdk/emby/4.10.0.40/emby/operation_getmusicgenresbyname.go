@@ -30,7 +30,7 @@ func (r GetMusicGenresByNameResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetMusicGenresByNameResponse) Record() (BaseItemDto, error) {
 	if r.Answer == nil {
-		return BaseItemDto{}, errors.New("GetMusicGenresByName answered no BaseItemDto")
+		return BaseItemDto{}, errors.New("no BaseItemDto answered by GetMusicGenresByName")
 	}
 
 	return *r.Answer, nil

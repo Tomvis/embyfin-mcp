@@ -18,7 +18,7 @@ import (
 func (c Client) GetArtistByName(ctx context.Context, name string, userId ...jf.UserID) (result jf.GetArtistByNameResponse, err error) {
 	var option jf.GetArtistByNameOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetArtistByName takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetArtistByName, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

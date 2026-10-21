@@ -30,7 +30,7 @@ func (r UnmarkFavoriteItemResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r UnmarkFavoriteItemResponse) Record() (UserItemDataDto, error) {
 	if r.Answer == nil {
-		return UserItemDataDto{}, errors.New("UnmarkFavoriteItem answered no UserItemDataDto")
+		return UserItemDataDto{}, errors.New("no UserItemDataDto answered by UnmarkFavoriteItem")
 	}
 
 	return *r.Answer, nil

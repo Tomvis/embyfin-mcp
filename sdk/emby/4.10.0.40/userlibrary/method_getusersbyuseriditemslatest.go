@@ -15,7 +15,7 @@ import (
 // GetUsersByUserIdItemsLatest calls GET /Users/{UserId}/Items/Latest. Gets latest media.
 func (c Client) GetUsersByUserIdItemsLatest(ctx context.Context, userId emby.UserID, options ...emby.GetUsersByUserIdItemsLatestOptions) (result emby.GetUsersByUserIdItemsLatestResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByUserIdItemsLatest takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByUserIdItemsLatest, not %d", len(options))
 	}
 	var option emby.GetUsersByUserIdItemsLatestOptions
 	if len(options) == 1 {

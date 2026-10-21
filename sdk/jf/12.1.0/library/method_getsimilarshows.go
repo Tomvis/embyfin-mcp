@@ -15,7 +15,7 @@ import (
 // GetSimilarShows calls GET /Shows/{itemId}/Similar. Gets similar items.
 func (c Client) GetSimilarShows(ctx context.Context, itemId jf.ItemID, options ...jf.GetSimilarShowsOptions) (result jf.GetSimilarShowsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSimilarShows takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSimilarShows, not %d", len(options))
 	}
 	var option jf.GetSimilarShowsOptions
 	if len(options) == 1 {

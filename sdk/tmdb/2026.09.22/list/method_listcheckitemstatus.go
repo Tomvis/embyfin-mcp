@@ -15,7 +15,7 @@ import (
 // ListCheckItemStatus calls GET /3/list/{list_id}/item_status. Check Item Status.
 func (c Client) ListCheckItemStatus(ctx context.Context, listId int, options ...tmdb.ListCheckItemStatusOptions) (result tmdb.ListCheckItemStatusResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ListCheckItemStatus takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ListCheckItemStatus, not %d", len(options))
 	}
 	var option tmdb.ListCheckItemStatusOptions
 	if len(options) == 1 {

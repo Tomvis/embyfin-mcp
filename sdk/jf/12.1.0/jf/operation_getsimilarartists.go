@@ -31,7 +31,7 @@ func (r GetSimilarArtistsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetSimilarArtistsResponse) Record() (BaseItemDtoQueryResult, error) {
 	if r.Answer == nil {
-		return BaseItemDtoQueryResult{}, errors.New("GetSimilarArtists answered no BaseItemDtoQueryResult")
+		return BaseItemDtoQueryResult{}, errors.New("no BaseItemDtoQueryResult answered by GetSimilarArtists")
 	}
 
 	return *r.Answer, nil

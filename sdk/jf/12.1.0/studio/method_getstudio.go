@@ -16,7 +16,7 @@ import (
 func (c Client) GetStudio(ctx context.Context, name string, userId ...jf.UserID) (result jf.GetStudioResponse, err error) {
 	var option jf.GetStudioOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetStudio takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetStudio, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

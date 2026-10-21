@@ -15,7 +15,7 @@ import (
 // GetLiveTvChannelTags calls GET /LiveTv/ChannelTags. Gets live tv channel tags.
 func (c Client) GetLiveTvChannelTags(ctx context.Context, options ...emby.GetLiveTvChannelTagsOptions) (result emby.GetLiveTvChannelTagsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvChannelTags takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvChannelTags, not %d", len(options))
 	}
 	var option emby.GetLiveTvChannelTagsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetLiveTvChannelTags(ctx context.Context, options ...emby.GetLiv
 // unset.
 func (c Client) GetLiveTvChannelTagsComplete(ctx context.Context, options ...emby.GetLiveTvChannelTagsOptions) (result emby.GetLiveTvChannelTagsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvChannelTagsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvChannelTagsComplete, not %d", len(options))
 	}
 	var option emby.GetLiveTvChannelTagsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetLiveTvChannelTagsEach(ctx context.Context, options ...emby.Ge
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLiveTvChannelTagsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLiveTvChannelTagsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetLiveTvChannelTagsOptions

@@ -15,7 +15,7 @@ import (
 func (c Client) DeleteListingProvider(ctx context.Context, id ...string) (result jf.DeleteListingProviderResponse, err error) {
 	var option jf.DeleteListingProviderOptions
 	if len(id) > 1 {
-		return result, fmt.Errorf("DeleteListingProvider takes one id at most, not %d", len(id))
+		return result, fmt.Errorf("at most one id for DeleteListingProvider, not %d", len(id))
 	}
 	if len(id) == 1 {
 		option.Id = id[0]

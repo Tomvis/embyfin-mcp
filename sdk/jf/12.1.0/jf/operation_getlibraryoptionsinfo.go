@@ -31,7 +31,7 @@ func (r GetLibraryOptionsInfoResponse) Answered() bool { return r.Answer != nil 
 // error when the server answered none.
 func (r GetLibraryOptionsInfoResponse) Record() (LibraryOptionsResultDto, error) {
 	if r.Answer == nil {
-		return LibraryOptionsResultDto{}, errors.New("GetLibraryOptionsInfo answered no LibraryOptionsResultDto")
+		return LibraryOptionsResultDto{}, errors.New("no LibraryOptionsResultDto answered by GetLibraryOptionsInfo")
 	}
 
 	return *r.Answer, nil

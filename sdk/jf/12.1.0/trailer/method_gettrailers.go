@@ -17,7 +17,7 @@ import (
 // Deprecated: the document marks this operation deprecated.
 func (c Client) GetTrailers(ctx context.Context, options ...jf.GetTrailersOptions) (result jf.GetTrailersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTrailers takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTrailers, not %d", len(options))
 	}
 	var option jf.GetTrailersOptions
 	if len(options) == 1 {
@@ -64,7 +64,7 @@ func (c Client) GetTrailers(ctx context.Context, options ...jf.GetTrailersOption
 // unset.
 func (c Client) GetTrailersComplete(ctx context.Context, options ...jf.GetTrailersOptions) (result jf.GetTrailersCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTrailersComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTrailersComplete, not %d", len(options))
 	}
 	var option jf.GetTrailersOptions
 	if len(options) == 1 {
@@ -118,7 +118,7 @@ func (c Client) GetTrailersEach(ctx context.Context, options ...jf.GetTrailersOp
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetTrailersEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetTrailersEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetTrailersOptions

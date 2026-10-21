@@ -15,7 +15,7 @@ import (
 func (c Client) DeleteTunerHost(ctx context.Context, id ...string) (result jf.DeleteTunerHostResponse, err error) {
 	var option jf.DeleteTunerHostOptions
 	if len(id) > 1 {
-		return result, fmt.Errorf("DeleteTunerHost takes one id at most, not %d", len(id))
+		return result, fmt.Errorf("at most one id for DeleteTunerHost, not %d", len(id))
 	}
 	if len(id) == 1 {
 		option.Id = id[0]

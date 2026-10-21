@@ -12,7 +12,7 @@ import (
 )
 
 // DisablePlugin calls POST /Plugins/{pluginId}/{version}/Disable. Disable a plugin.
-func (c Client) DisablePlugin(ctx context.Context, pluginId string, version string) (result jf.DisablePluginResponse, err error) {
+func (c Client) DisablePlugin(ctx context.Context, pluginId, version string) (result jf.DisablePluginResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,

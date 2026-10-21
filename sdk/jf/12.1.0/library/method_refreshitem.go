@@ -15,7 +15,7 @@ import (
 // RefreshItem calls POST /Items/{itemId}/Refresh. Refreshes metadata for an item.
 func (c Client) RefreshItem(ctx context.Context, itemId jf.ItemID, options ...jf.RefreshItemOptions) (result jf.RefreshItemResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("RefreshItem takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for RefreshItem, not %d", len(options))
 	}
 	var option jf.RefreshItemOptions
 	if len(options) == 1 {

@@ -15,7 +15,7 @@ import (
 // GetUsersItemAccess calls GET /Users/ItemAccess. Gets a list of users.
 func (c Client) GetUsersItemAccess(ctx context.Context, options ...emby.GetUsersItemAccessOptions) (result emby.GetUsersItemAccessResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersItemAccess takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersItemAccess, not %d", len(options))
 	}
 	var option emby.GetUsersItemAccessOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetUsersItemAccess(ctx context.Context, options ...emby.GetUsers
 // unset.
 func (c Client) GetUsersItemAccessComplete(ctx context.Context, options ...emby.GetUsersItemAccessOptions) (result emby.GetUsersItemAccessCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersItemAccessComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersItemAccessComplete, not %d", len(options))
 	}
 	var option emby.GetUsersItemAccessOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetUsersItemAccessEach(ctx context.Context, options ...emby.GetU
 	return func(yield func(emby.UserDto, error) bool) {
 		var zero emby.UserDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetUsersItemAccessEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetUsersItemAccessEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetUsersItemAccessOptions
