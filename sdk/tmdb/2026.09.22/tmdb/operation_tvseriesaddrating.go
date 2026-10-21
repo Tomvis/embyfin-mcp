@@ -30,7 +30,7 @@ func (r TvSeriesAddRatingResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r TvSeriesAddRatingResponse) Record() (TvSeriesAddRatingAnswer, error) {
 	if r.Answer == nil {
-		return TvSeriesAddRatingAnswer{}, errors.New("TvSeriesAddRating answered no TvSeriesAddRatingAnswer")
+		return TvSeriesAddRatingAnswer{}, errors.New("no TvSeriesAddRatingAnswer answered by TvSeriesAddRating")
 	}
 
 	return *r.Answer, nil

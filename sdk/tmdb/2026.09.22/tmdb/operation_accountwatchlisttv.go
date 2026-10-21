@@ -31,7 +31,7 @@ func (r AccountWatchlistTvResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r AccountWatchlistTvResponse) Record() (AccountWatchlistTvAnswer, error) {
 	if r.Answer == nil {
-		return AccountWatchlistTvAnswer{}, errors.New("AccountWatchlistTv answered no AccountWatchlistTvAnswer")
+		return AccountWatchlistTvAnswer{}, errors.New("no AccountWatchlistTvAnswer answered by AccountWatchlistTv")
 	}
 
 	return *r.Answer, nil

@@ -15,7 +15,7 @@ import (
 func (c Client) GetBitrateTestBytes(ctx context.Context, size ...int) (result jf.GetBitrateTestBytesResponse, err error) {
 	var option jf.GetBitrateTestBytesOptions
 	if len(size) > 1 {
-		return result, fmt.Errorf("GetBitrateTestBytes takes one size at most, not %d", len(size))
+		return result, fmt.Errorf("at most one size for GetBitrateTestBytes, not %d", len(size))
 	}
 	if len(size) == 1 {
 		option.Size = &size[0]

@@ -15,7 +15,7 @@ import (
 // TvSeasonChangesById calls GET /3/tv/season/{season_id}/changes. Changes.
 func (c Client) TvSeasonChangesById(ctx context.Context, seasonId int, options ...tmdb.TvSeasonChangesByIdOptions) (result tmdb.TvSeasonChangesByIdResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeasonChangesById takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeasonChangesById, not %d", len(options))
 	}
 	var option tmdb.TvSeasonChangesByIdOptions
 	if len(options) == 1 {

@@ -30,7 +30,7 @@ func (r GetPlaylistsByIdAddToPlaylistInfoResponse) Answered() bool { return r.An
 // error when the server answered none.
 func (r GetPlaylistsByIdAddToPlaylistInfoResponse) Record() (PlaylistsAddToPlaylistInfo, error) {
 	if r.Answer == nil {
-		return PlaylistsAddToPlaylistInfo{}, errors.New("GetPlaylistsByIdAddToPlaylistInfo answered no PlaylistsAddToPlaylistInfo")
+		return PlaylistsAddToPlaylistInfo{}, errors.New("no PlaylistsAddToPlaylistInfo answered by GetPlaylistsByIdAddToPlaylistInfo")
 	}
 
 	return *r.Answer, nil

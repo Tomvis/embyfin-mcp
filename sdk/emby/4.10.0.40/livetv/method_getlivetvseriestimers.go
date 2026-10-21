@@ -15,7 +15,7 @@ import (
 // GetLiveTvSeriesTimers calls GET /LiveTv/SeriesTimers. Gets live tv series timers.
 func (c Client) GetLiveTvSeriesTimers(ctx context.Context, options ...emby.GetLiveTvSeriesTimersOptions) (result emby.GetLiveTvSeriesTimersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvSeriesTimers takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvSeriesTimers, not %d", len(options))
 	}
 	var option emby.GetLiveTvSeriesTimersOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetLiveTvSeriesTimers(ctx context.Context, options ...emby.GetLi
 // unset.
 func (c Client) GetLiveTvSeriesTimersComplete(ctx context.Context, options ...emby.GetLiveTvSeriesTimersOptions) (result emby.GetLiveTvSeriesTimersCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvSeriesTimersComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvSeriesTimersComplete, not %d", len(options))
 	}
 	var option emby.GetLiveTvSeriesTimersOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetLiveTvSeriesTimersEach(ctx context.Context, options ...emby.G
 	return func(yield func(emby.LiveTvSeriesTimerInfoDto, error) bool) {
 		var zero emby.LiveTvSeriesTimerInfoDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLiveTvSeriesTimersEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLiveTvSeriesTimersEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetLiveTvSeriesTimersOptions

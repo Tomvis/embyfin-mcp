@@ -15,7 +15,7 @@ import (
 // AddItemToPlaylist calls POST /Playlists/{playlistId}/Items. Adds items to a playlist.
 func (c Client) AddItemToPlaylist(ctx context.Context, playlistId jf.ItemID, options ...jf.AddItemToPlaylistOptions) (result jf.AddItemToPlaylistResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("AddItemToPlaylist takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for AddItemToPlaylist, not %d", len(options))
 	}
 	var option jf.AddItemToPlaylistOptions
 	if len(options) == 1 {

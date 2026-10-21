@@ -14,7 +14,7 @@ import (
 // GetMoviesRecommendations calls GET /Movies/Recommendations. Gets movie recommendations.
 func (c Client) GetMoviesRecommendations(ctx context.Context, options ...emby.GetMoviesRecommendationsOptions) (result emby.GetMoviesRecommendationsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetMoviesRecommendations takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetMoviesRecommendations, not %d", len(options))
 	}
 	var option emby.GetMoviesRecommendationsOptions
 	if len(options) == 1 {

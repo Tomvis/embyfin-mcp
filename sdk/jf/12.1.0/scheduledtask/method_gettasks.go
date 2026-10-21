@@ -14,7 +14,7 @@ import (
 // GetTasks calls GET /ScheduledTasks. Get tasks.
 func (c Client) GetTasks(ctx context.Context, options ...jf.GetTasksOptions) (result jf.GetTasksResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTasks takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTasks, not %d", len(options))
 	}
 	var option jf.GetTasksOptions
 	if len(options) == 1 {

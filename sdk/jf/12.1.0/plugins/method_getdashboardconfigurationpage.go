@@ -15,7 +15,7 @@ import (
 func (c Client) GetDashboardConfigurationPage(ctx context.Context, name ...string) (result jf.GetDashboardConfigurationPageResponse, err error) {
 	var option jf.GetDashboardConfigurationPageOptions
 	if len(name) > 1 {
-		return result, fmt.Errorf("GetDashboardConfigurationPage takes one name at most, not %d", len(name))
+		return result, fmt.Errorf("at most one name for GetDashboardConfigurationPage, not %d", len(name))
 	}
 	if len(name) == 1 {
 		option.Name = name[0]

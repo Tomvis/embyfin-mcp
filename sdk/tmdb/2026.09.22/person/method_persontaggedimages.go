@@ -16,7 +16,7 @@ import (
 // PersonTaggedImages calls GET /3/person/{person_id}/tagged_images. Tagged Images.
 func (c Client) PersonTaggedImages(ctx context.Context, personId int, options ...tmdb.PersonTaggedImagesOptions) (result tmdb.PersonTaggedImagesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PersonTaggedImages takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PersonTaggedImages, not %d", len(options))
 	}
 	var option tmdb.PersonTaggedImagesOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) PersonTaggedImages(ctx context.Context, personId int, options ..
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) PersonTaggedImagesComplete(ctx context.Context, personId int, options ...tmdb.PersonTaggedImagesOptions) (result tmdb.PersonTaggedImagesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PersonTaggedImagesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PersonTaggedImagesComplete, not %d", len(options))
 	}
 	var option tmdb.PersonTaggedImagesOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) PersonTaggedImagesEach(ctx context.Context, personId int, option
 	return func(yield func(tmdb.PersonTaggedImagesAnswerResults, error) bool) {
 		var zero tmdb.PersonTaggedImagesAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("PersonTaggedImagesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for PersonTaggedImagesEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.PersonTaggedImagesOptions

@@ -31,7 +31,7 @@ func (r GetInstantMixFromArtistsResponse) Answered() bool { return r.Answer != n
 // error when the server answered none.
 func (r GetInstantMixFromArtistsResponse) Record() (BaseItemDtoQueryResult, error) {
 	if r.Answer == nil {
-		return BaseItemDtoQueryResult{}, errors.New("GetInstantMixFromArtists answered no BaseItemDtoQueryResult")
+		return BaseItemDtoQueryResult{}, errors.New("no BaseItemDtoQueryResult answered by GetInstantMixFromArtists")
 	}
 
 	return *r.Answer, nil

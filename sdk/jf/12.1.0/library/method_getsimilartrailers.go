@@ -15,7 +15,7 @@ import (
 // GetSimilarTrailers calls GET /Trailers/{itemId}/Similar. Gets similar items.
 func (c Client) GetSimilarTrailers(ctx context.Context, itemId jf.ItemID, options ...jf.GetSimilarTrailersOptions) (result jf.GetSimilarTrailersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSimilarTrailers takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSimilarTrailers, not %d", len(options))
 	}
 	var option jf.GetSimilarTrailersOptions
 	if len(options) == 1 {

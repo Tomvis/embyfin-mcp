@@ -31,7 +31,7 @@ func (r GetOfficialRatingsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetOfficialRatingsResponse) Record() (QueryResultUserLibraryOfficialRatingItem, error) {
 	if r.Answer == nil {
-		return QueryResultUserLibraryOfficialRatingItem{}, errors.New("GetOfficialRatings answered no QueryResultUserLibraryOfficialRatingItem")
+		return QueryResultUserLibraryOfficialRatingItem{}, errors.New("no QueryResultUserLibraryOfficialRatingItem answered by GetOfficialRatings")
 	}
 
 	return *r.Answer, nil

@@ -31,7 +31,7 @@ func (r GetItemsByIdThumbnailSetResponse) Answered() bool { return r.Answer != n
 // error when the server answered none.
 func (r GetItemsByIdThumbnailSetResponse) Record() (RokuMetadataApiThumbnailSetInfo, error) {
 	if r.Answer == nil {
-		return RokuMetadataApiThumbnailSetInfo{}, errors.New("GetItemsByIdThumbnailSet answered no RokuMetadataApiThumbnailSetInfo")
+		return RokuMetadataApiThumbnailSetInfo{}, errors.New("no RokuMetadataApiThumbnailSetInfo answered by GetItemsByIdThumbnailSet")
 	}
 
 	return *r.Answer, nil

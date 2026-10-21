@@ -19,7 +19,7 @@ import (
 func (c Client) PostItemsByIdImagesByType(ctx context.Context, id emby.ItemID, typeParam emby.ImageType, input io.Reader, contentType string, index ...int) (result emby.PostItemsByIdImagesByTypeResponse, err error) {
 	var option emby.PostItemsByIdImagesByTypeOptions
 	if len(index) > 1 {
-		return result, fmt.Errorf("PostItemsByIdImagesByType takes one index at most, not %d", len(index))
+		return result, fmt.Errorf("at most one index for PostItemsByIdImagesByType, not %d", len(index))
 	}
 	if len(index) == 1 {
 		option.Index = &index[0]

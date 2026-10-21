@@ -16,7 +16,7 @@ import (
 func (c Client) MovieAlternativeTitles(ctx context.Context, movieId int, country ...string) (result tmdb.MovieAlternativeTitlesResponse, err error) {
 	var option tmdb.MovieAlternativeTitlesOptions
 	if len(country) > 1 {
-		return result, fmt.Errorf("MovieAlternativeTitles takes one country at most, not %d", len(country))
+		return result, fmt.Errorf("at most one country for MovieAlternativeTitles, not %d", len(country))
 	}
 	if len(country) == 1 {
 		option.Country = country[0]

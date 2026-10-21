@@ -31,7 +31,7 @@ func (r GetTimersResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetTimersResponse) Record() (TimerInfoDtoQueryResult, error) {
 	if r.Answer == nil {
-		return TimerInfoDtoQueryResult{}, errors.New("GetTimers answered no TimerInfoDtoQueryResult")
+		return TimerInfoDtoQueryResult{}, errors.New("no TimerInfoDtoQueryResult answered by GetTimers")
 	}
 
 	return *r.Answer, nil

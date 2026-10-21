@@ -31,7 +31,7 @@ func (r GetTagsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetTagsResponse) Record() (QueryResultUserLibraryTagItem, error) {
 	if r.Answer == nil {
-		return QueryResultUserLibraryTagItem{}, errors.New("GetTags answered no QueryResultUserLibraryTagItem")
+		return QueryResultUserLibraryTagItem{}, errors.New("no QueryResultUserLibraryTagItem answered by GetTags")
 	}
 
 	return *r.Answer, nil

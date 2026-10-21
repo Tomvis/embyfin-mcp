@@ -12,7 +12,7 @@ import (
 )
 
 // GetLiveTvLiveStreamFilesByIdStreamByContainer calls GET /LiveTv/LiveStreamFiles/{Id}/stream.{Container}. Gets a live tv channel.
-func (c Client) GetLiveTvLiveStreamFilesByIdStreamByContainer(ctx context.Context, id string, container string) (result emby.GetLiveTvLiveStreamFilesByIdStreamByContainerResponse, err error) {
+func (c Client) GetLiveTvLiveStreamFilesByIdStreamByContainer(ctx context.Context, id, container string) (result emby.GetLiveTvLiveStreamFilesByIdStreamByContainerResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "video/*",
 		ExpectedStatusCodes: []int{

@@ -14,7 +14,7 @@ import (
 // RemoveVirtualFolder calls DELETE /Library/VirtualFolders. Removes a virtual folder.
 func (c Client) RemoveVirtualFolder(ctx context.Context, options ...jf.RemoveVirtualFolderOptions) (result jf.RemoveVirtualFolderResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("RemoveVirtualFolder takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for RemoveVirtualFolder, not %d", len(options))
 	}
 	var option jf.RemoveVirtualFolderOptions
 	if len(options) == 1 {

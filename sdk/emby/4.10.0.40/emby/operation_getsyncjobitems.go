@@ -30,7 +30,7 @@ func (r GetSyncJobItemsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetSyncJobItemsResponse) Record() (QueryResultSyncJobItem, error) {
 	if r.Answer == nil {
-		return QueryResultSyncJobItem{}, errors.New("GetSyncJobItems answered no QueryResultSyncJobItem")
+		return QueryResultSyncJobItem{}, errors.New("no QueryResultSyncJobItem answered by GetSyncJobItems")
 	}
 
 	return *r.Answer, nil

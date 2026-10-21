@@ -16,7 +16,7 @@ import (
 func (c Client) GetProgram(ctx context.Context, programId string, userId ...jf.UserID) (result jf.GetProgramResponse, err error) {
 	var option jf.GetProgramOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetProgram takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetProgram, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

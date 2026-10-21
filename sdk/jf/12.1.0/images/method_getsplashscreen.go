@@ -14,7 +14,7 @@ import (
 // GetSplashscreen calls GET /Branding/Splashscreen. Generates or gets the splashscreen.
 func (c Client) GetSplashscreen(ctx context.Context, options ...jf.GetSplashscreenOptions) (result jf.GetSplashscreenResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSplashscreen takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSplashscreen, not %d", len(options))
 	}
 	var option jf.GetSplashscreenOptions
 	if len(options) == 1 {

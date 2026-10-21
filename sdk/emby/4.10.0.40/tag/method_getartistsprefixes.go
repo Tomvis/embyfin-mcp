@@ -14,7 +14,7 @@ import (
 // GetArtistsPrefixes calls GET /Artists/Prefixes. Gets items based on a query.
 func (c Client) GetArtistsPrefixes(ctx context.Context, options ...emby.GetArtistsPrefixesOptions) (result emby.GetArtistsPrefixesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetArtistsPrefixes takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetArtistsPrefixes, not %d", len(options))
 	}
 	var option emby.GetArtistsPrefixesOptions
 	if len(options) == 1 {

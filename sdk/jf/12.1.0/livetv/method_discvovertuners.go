@@ -15,7 +15,7 @@ import (
 func (c Client) DiscvoverTuners(ctx context.Context, newDevicesOnly ...bool) (result jf.DiscvoverTunersResponse, err error) {
 	var option jf.DiscvoverTunersOptions
 	if len(newDevicesOnly) > 1 {
-		return result, fmt.Errorf("DiscvoverTuners takes one newDevicesOnly at most, not %d", len(newDevicesOnly))
+		return result, fmt.Errorf("at most one newDevicesOnly for DiscvoverTuners, not %d", len(newDevicesOnly))
 	}
 	if len(newDevicesOnly) == 1 {
 		option.NewDevicesOnly = &newDevicesOnly[0]

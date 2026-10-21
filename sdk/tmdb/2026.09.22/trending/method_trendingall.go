@@ -16,7 +16,7 @@ import (
 func (c Client) TrendingAll(ctx context.Context, timeWindow string, language ...string) (result tmdb.TrendingAllResponse, err error) {
 	var option tmdb.TrendingAllOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("TrendingAll takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for TrendingAll, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

@@ -15,7 +15,7 @@ import (
 // ChangesMovieList calls GET /3/movie/changes. Movie List.
 func (c Client) ChangesMovieList(ctx context.Context, options ...tmdb.ChangesMovieListOptions) (result tmdb.ChangesMovieListResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ChangesMovieList takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ChangesMovieList, not %d", len(options))
 	}
 	var option tmdb.ChangesMovieListOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) ChangesMovieList(ctx context.Context, options ...tmdb.ChangesMov
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) ChangesMovieListComplete(ctx context.Context, options ...tmdb.ChangesMovieListOptions) (result tmdb.ChangesMovieListCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ChangesMovieListComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ChangesMovieListComplete, not %d", len(options))
 	}
 	var option tmdb.ChangesMovieListOptions
 	if len(options) == 1 {
@@ -115,7 +115,7 @@ func (c Client) ChangesMovieListEach(ctx context.Context, options ...tmdb.Change
 	return func(yield func(tmdb.ChangesMovieListAnswerResults, error) bool) {
 		var zero tmdb.ChangesMovieListAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("ChangesMovieListEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for ChangesMovieListEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.ChangesMovieListOptions

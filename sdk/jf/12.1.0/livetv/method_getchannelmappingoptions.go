@@ -15,7 +15,7 @@ import (
 func (c Client) GetChannelMappingOptions(ctx context.Context, providerId ...string) (result jf.GetChannelMappingOptionsResponse, err error) {
 	var option jf.GetChannelMappingOptionsOptions
 	if len(providerId) > 1 {
-		return result, fmt.Errorf("GetChannelMappingOptions takes one providerId at most, not %d", len(providerId))
+		return result, fmt.Errorf("at most one providerId for GetChannelMappingOptions, not %d", len(providerId))
 	}
 	if len(providerId) == 1 {
 		option.ProviderId = providerId[0]

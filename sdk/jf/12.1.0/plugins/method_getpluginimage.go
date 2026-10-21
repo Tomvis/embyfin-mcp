@@ -12,7 +12,7 @@ import (
 )
 
 // GetPluginImage calls GET /Plugins/{pluginId}/{version}/Image. Gets a plugin's image.
-func (c Client) GetPluginImage(ctx context.Context, pluginId string, version string) (result jf.GetPluginImageResponse, err error) {
+func (c Client) GetPluginImage(ctx context.Context, pluginId, version string) (result jf.GetPluginImageResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "image/*",
 		ExpectedStatusCodes: []int{

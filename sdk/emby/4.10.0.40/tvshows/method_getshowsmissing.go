@@ -15,7 +15,7 @@ import (
 // GetShowsMissing calls GET /Shows/Missing. Gets a list of missing episodes.
 func (c Client) GetShowsMissing(ctx context.Context, options ...emby.GetShowsMissingOptions) (result emby.GetShowsMissingResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetShowsMissing takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetShowsMissing, not %d", len(options))
 	}
 	var option emby.GetShowsMissingOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetShowsMissing(ctx context.Context, options ...emby.GetShowsMis
 // unset.
 func (c Client) GetShowsMissingComplete(ctx context.Context, options ...emby.GetShowsMissingOptions) (result emby.GetShowsMissingCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetShowsMissingComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetShowsMissingComplete, not %d", len(options))
 	}
 	var option emby.GetShowsMissingOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetShowsMissingEach(ctx context.Context, options ...emby.GetShow
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetShowsMissingEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetShowsMissingEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetShowsMissingOptions

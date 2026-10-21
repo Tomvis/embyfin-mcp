@@ -30,7 +30,7 @@ func (r ListCreateResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r ListCreateResponse) Record() (ListCreateAnswer, error) {
 	if r.Answer == nil {
-		return ListCreateAnswer{}, errors.New("ListCreate answered no ListCreateAnswer")
+		return ListCreateAnswer{}, errors.New("no ListCreateAnswer answered by ListCreate")
 	}
 
 	return *r.Answer, nil

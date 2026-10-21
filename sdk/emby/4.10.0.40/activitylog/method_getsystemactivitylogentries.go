@@ -15,7 +15,7 @@ import (
 // GetSystemActivityLogEntries calls GET /System/ActivityLog/Entries. Gets activity log entries.
 func (c Client) GetSystemActivityLogEntries(ctx context.Context, options ...emby.GetSystemActivityLogEntriesOptions) (result emby.GetSystemActivityLogEntriesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSystemActivityLogEntries takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSystemActivityLogEntries, not %d", len(options))
 	}
 	var option emby.GetSystemActivityLogEntriesOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetSystemActivityLogEntries(ctx context.Context, options ...emby
 // unset.
 func (c Client) GetSystemActivityLogEntriesComplete(ctx context.Context, options ...emby.GetSystemActivityLogEntriesOptions) (result emby.GetSystemActivityLogEntriesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSystemActivityLogEntriesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSystemActivityLogEntriesComplete, not %d", len(options))
 	}
 	var option emby.GetSystemActivityLogEntriesOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetSystemActivityLogEntriesEach(ctx context.Context, options ...
 	return func(yield func(emby.ActivityLogEntry, error) bool) {
 		var zero emby.ActivityLogEntry
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetSystemActivityLogEntriesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetSystemActivityLogEntriesEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetSystemActivityLogEntriesOptions

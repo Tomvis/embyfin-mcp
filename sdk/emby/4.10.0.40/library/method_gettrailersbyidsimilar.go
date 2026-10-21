@@ -16,7 +16,7 @@ import (
 // GetTrailersByIdSimilar calls GET /Trailers/{Id}/Similar. Finds movies and trailers similar to a given trailer.
 func (c Client) GetTrailersByIdSimilar(ctx context.Context, id emby.ItemID, options ...emby.GetTrailersByIdSimilarOptions) (result emby.GetTrailersByIdSimilarResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTrailersByIdSimilar takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTrailersByIdSimilar, not %d", len(options))
 	}
 	var option emby.GetTrailersByIdSimilarOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetTrailersByIdSimilar(ctx context.Context, id emby.ItemID, opti
 // unset.
 func (c Client) GetTrailersByIdSimilarComplete(ctx context.Context, id emby.ItemID, options ...emby.GetTrailersByIdSimilarOptions) (result emby.GetTrailersByIdSimilarCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTrailersByIdSimilarComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTrailersByIdSimilarComplete, not %d", len(options))
 	}
 	var option emby.GetTrailersByIdSimilarOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetTrailersByIdSimilarEach(ctx context.Context, id emby.ItemID, 
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetTrailersByIdSimilarEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetTrailersByIdSimilarEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetTrailersByIdSimilarOptions

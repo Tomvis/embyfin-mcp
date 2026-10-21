@@ -15,7 +15,7 @@ import (
 // GetLiveTvRecordingsFolders calls GET /LiveTv/Recordings/Folders. Gets recording folders.
 func (c Client) GetLiveTvRecordingsFolders(ctx context.Context, options ...emby.GetLiveTvRecordingsFoldersOptions) (result emby.GetLiveTvRecordingsFoldersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvRecordingsFolders takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvRecordingsFolders, not %d", len(options))
 	}
 	var option emby.GetLiveTvRecordingsFoldersOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetLiveTvRecordingsFolders(ctx context.Context, options ...emby.
 // unset.
 func (c Client) GetLiveTvRecordingsFoldersComplete(ctx context.Context, options ...emby.GetLiveTvRecordingsFoldersOptions) (result emby.GetLiveTvRecordingsFoldersCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvRecordingsFoldersComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvRecordingsFoldersComplete, not %d", len(options))
 	}
 	var option emby.GetLiveTvRecordingsFoldersOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetLiveTvRecordingsFoldersEach(ctx context.Context, options ...e
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLiveTvRecordingsFoldersEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLiveTvRecordingsFoldersEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetLiveTvRecordingsFoldersOptions

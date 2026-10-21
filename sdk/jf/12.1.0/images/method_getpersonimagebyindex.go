@@ -16,7 +16,7 @@ import (
 // GetPersonImageByIndex calls GET /Persons/{name}/Images/{imageType}/{imageIndex}. Get person image by name.
 func (c Client) GetPersonImageByIndex(ctx context.Context, name string, imageType jf.ImageType, imageIndex int, options ...jf.GetPersonImageByIndexOptions) (result jf.GetPersonImageByIndexResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPersonImageByIndex takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPersonImageByIndex, not %d", len(options))
 	}
 	var option jf.GetPersonImageByIndexOptions
 	if len(options) == 1 {

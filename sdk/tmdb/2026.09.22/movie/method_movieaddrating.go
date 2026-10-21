@@ -15,7 +15,7 @@ import (
 // MovieAddRating calls POST /3/movie/{movie_id}/rating. Add Rating.
 func (c Client) MovieAddRating(ctx context.Context, movieId int, input tmdb.MovieAddRatingRequest, options ...tmdb.MovieAddRatingOptions) (result tmdb.MovieAddRatingResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MovieAddRating takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MovieAddRating, not %d", len(options))
 	}
 	var option tmdb.MovieAddRatingOptions
 	if len(options) == 1 {

@@ -12,7 +12,7 @@ import (
 )
 
 // GetDlnaByUuIdIconsByFilename calls GET /Dlna/{UuId}/icons/{Filename}. Gets a server icon.
-func (c Client) GetDlnaByUuIdIconsByFilename(ctx context.Context, uuId string, filename string) (result emby.GetDlnaByUuIdIconsByFilenameResponse, err error) {
+func (c Client) GetDlnaByUuIdIconsByFilename(ctx context.Context, uuId, filename string) (result emby.GetDlnaByUuIdIconsByFilenameResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "image/*",
 		ExpectedStatusCodes: []int{

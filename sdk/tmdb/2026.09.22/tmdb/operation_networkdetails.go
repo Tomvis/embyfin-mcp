@@ -28,7 +28,7 @@ func (r NetworkDetailsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r NetworkDetailsResponse) Record() (NetworkDetailsAnswer, error) {
 	if r.Answer == nil {
-		return NetworkDetailsAnswer{}, errors.New("NetworkDetails answered no NetworkDetailsAnswer")
+		return NetworkDetailsAnswer{}, errors.New("no NetworkDetailsAnswer answered by NetworkDetails")
 	}
 
 	return *r.Answer, nil

@@ -15,7 +15,7 @@ import (
 // GetItemsByIdRemoteImages calls GET /Items/{Id}/RemoteImages. Gets available remote images for an item.
 func (c Client) GetItemsByIdRemoteImages(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdRemoteImagesOptions) (result emby.GetItemsByIdRemoteImagesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdRemoteImages takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdRemoteImages, not %d", len(options))
 	}
 	var option emby.GetItemsByIdRemoteImagesOptions
 	if len(options) == 1 {

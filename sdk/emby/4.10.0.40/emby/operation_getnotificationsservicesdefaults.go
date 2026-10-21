@@ -30,7 +30,7 @@ func (r GetNotificationsServicesDefaultsResponse) Answered() bool { return r.Ans
 // error when the server answered none.
 func (r GetNotificationsServicesDefaultsResponse) Record() (UserNotificationInfo, error) {
 	if r.Answer == nil {
-		return UserNotificationInfo{}, errors.New("GetNotificationsServicesDefaults answered no UserNotificationInfo")
+		return UserNotificationInfo{}, errors.New("no UserNotificationInfo answered by GetNotificationsServicesDefaults")
 	}
 
 	return *r.Answer, nil

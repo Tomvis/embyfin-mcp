@@ -16,7 +16,7 @@ import (
 // AccountGetFavorites calls GET /3/account/{account_id}/favorite/movies. Favorite Movies.
 func (c Client) AccountGetFavorites(ctx context.Context, accountId int, options ...tmdb.AccountGetFavoritesOptions) (result tmdb.AccountGetFavoritesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("AccountGetFavorites takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for AccountGetFavorites, not %d", len(options))
 	}
 	var option tmdb.AccountGetFavoritesOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) AccountGetFavorites(ctx context.Context, accountId int, options 
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) AccountGetFavoritesComplete(ctx context.Context, accountId int, options ...tmdb.AccountGetFavoritesOptions) (result tmdb.AccountGetFavoritesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("AccountGetFavoritesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for AccountGetFavoritesComplete, not %d", len(options))
 	}
 	var option tmdb.AccountGetFavoritesOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) AccountGetFavoritesEach(ctx context.Context, accountId int, opti
 	return func(yield func(tmdb.AccountGetFavoritesAnswerResults, error) bool) {
 		var zero tmdb.AccountGetFavoritesAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("AccountGetFavoritesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for AccountGetFavoritesEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.AccountGetFavoritesOptions

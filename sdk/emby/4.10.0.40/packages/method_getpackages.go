@@ -14,7 +14,7 @@ import (
 // GetPackages calls GET /Packages. Gets available packages.
 func (c Client) GetPackages(ctx context.Context, options ...emby.GetPackagesOptions) (result emby.GetPackagesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPackages takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPackages, not %d", len(options))
 	}
 	var option emby.GetPackagesOptions
 	if len(options) == 1 {

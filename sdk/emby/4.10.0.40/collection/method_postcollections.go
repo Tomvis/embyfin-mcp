@@ -14,7 +14,7 @@ import (
 // PostCollections calls POST /Collections. Creates a new collection.
 func (c Client) PostCollections(ctx context.Context, options ...emby.PostCollectionsOptions) (result emby.PostCollectionsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PostCollections takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PostCollections, not %d", len(options))
 	}
 	var option emby.PostCollectionsOptions
 	if len(options) == 1 {

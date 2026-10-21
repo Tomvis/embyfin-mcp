@@ -16,7 +16,7 @@ import (
 // GetGenresByNameImagesByTypeByIndex calls GET /Genres/{Name}/Images/{Type}/{Index}. Requires authentication as user.
 func (c Client) GetGenresByNameImagesByTypeByIndex(ctx context.Context, name string, typeParam emby.ImageType, index int, options ...emby.GetGenresByNameImagesByTypeByIndexOptions) (result emby.GetGenresByNameImagesByTypeByIndexResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetGenresByNameImagesByTypeByIndex takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetGenresByNameImagesByTypeByIndex, not %d", len(options))
 	}
 	var option emby.GetGenresByNameImagesByTypeByIndexOptions
 	if len(options) == 1 {

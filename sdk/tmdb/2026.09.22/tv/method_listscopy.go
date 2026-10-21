@@ -16,7 +16,7 @@ import (
 // ListsCopy calls GET /3/tv/{series_id}/lists. Lists.
 func (c Client) ListsCopy(ctx context.Context, seriesId int, options ...tmdb.ListsCopyOptions) (result tmdb.ListsCopyResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ListsCopy takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ListsCopy, not %d", len(options))
 	}
 	var option tmdb.ListsCopyOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) ListsCopy(ctx context.Context, seriesId int, options ...tmdb.Lis
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) ListsCopyComplete(ctx context.Context, seriesId int, options ...tmdb.ListsCopyOptions) (result tmdb.ListsCopyCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("ListsCopyComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for ListsCopyComplete, not %d", len(options))
 	}
 	var option tmdb.ListsCopyOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) ListsCopyEach(ctx context.Context, seriesId int, options ...tmdb
 	return func(yield func(tmdb.ListsCopyAnswerResults, error) bool) {
 		var zero tmdb.ListsCopyAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("ListsCopyEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for ListsCopyEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.ListsCopyOptions

@@ -31,7 +31,7 @@ func (r GetMusicGenresByNameInstantMixResponse) Answered() bool { return r.Answe
 // error when the server answered none.
 func (r GetMusicGenresByNameInstantMixResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetMusicGenresByNameInstantMix answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetMusicGenresByNameInstantMix")
 	}
 
 	return *r.Answer, nil

@@ -15,7 +15,7 @@ import (
 // GetMusicGenreImage calls GET /MusicGenres/{name}/Images/{imageType}. Get music genre image by name.
 func (c Client) GetMusicGenreImage(ctx context.Context, name string, imageType jf.ImageType, options ...jf.GetMusicGenreImageOptions) (result jf.GetMusicGenreImageResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetMusicGenreImage takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetMusicGenreImage, not %d", len(options))
 	}
 	var option jf.GetMusicGenreImageOptions
 	if len(options) == 1 {

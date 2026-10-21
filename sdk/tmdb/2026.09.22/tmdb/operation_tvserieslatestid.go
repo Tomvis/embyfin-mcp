@@ -28,7 +28,7 @@ func (r TvSeriesLatestIdResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r TvSeriesLatestIdResponse) Record() (TvSeriesLatestIdAnswer, error) {
 	if r.Answer == nil {
-		return TvSeriesLatestIdAnswer{}, errors.New("TvSeriesLatestId answered no TvSeriesLatestIdAnswer")
+		return TvSeriesLatestIdAnswer{}, errors.New("no TvSeriesLatestIdAnswer answered by TvSeriesLatestId")
 	}
 
 	return *r.Answer, nil

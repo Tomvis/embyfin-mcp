@@ -16,7 +16,7 @@ import (
 // MovieSimilar calls GET /3/movie/{movie_id}/similar. Similar.
 func (c Client) MovieSimilar(ctx context.Context, movieId int, options ...tmdb.MovieSimilarOptions) (result tmdb.MovieSimilarResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MovieSimilar takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MovieSimilar, not %d", len(options))
 	}
 	var option tmdb.MovieSimilarOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) MovieSimilar(ctx context.Context, movieId int, options ...tmdb.M
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) MovieSimilarComplete(ctx context.Context, movieId int, options ...tmdb.MovieSimilarOptions) (result tmdb.MovieSimilarCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MovieSimilarComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MovieSimilarComplete, not %d", len(options))
 	}
 	var option tmdb.MovieSimilarOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) MovieSimilarEach(ctx context.Context, movieId int, options ...tm
 	return func(yield func(tmdb.MovieSimilarAnswerResults, error) bool) {
 		var zero tmdb.MovieSimilarAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("MovieSimilarEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for MovieSimilarEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.MovieSimilarOptions

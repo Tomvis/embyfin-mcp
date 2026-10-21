@@ -15,7 +15,7 @@ import (
 // MovieNowPlayingList calls GET /3/movie/now_playing. Now Playing.
 func (c Client) MovieNowPlayingList(ctx context.Context, options ...tmdb.MovieNowPlayingListOptions) (result tmdb.MovieNowPlayingListResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MovieNowPlayingList takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MovieNowPlayingList, not %d", len(options))
 	}
 	var option tmdb.MovieNowPlayingListOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) MovieNowPlayingList(ctx context.Context, options ...tmdb.MovieNo
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) MovieNowPlayingListComplete(ctx context.Context, options ...tmdb.MovieNowPlayingListOptions) (result tmdb.MovieNowPlayingListCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MovieNowPlayingListComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MovieNowPlayingListComplete, not %d", len(options))
 	}
 	var option tmdb.MovieNowPlayingListOptions
 	if len(options) == 1 {
@@ -115,7 +115,7 @@ func (c Client) MovieNowPlayingListEach(ctx context.Context, options ...tmdb.Mov
 	return func(yield func(tmdb.MovieNowPlayingListAnswerResults, error) bool) {
 		var zero tmdb.MovieNowPlayingListAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("MovieNowPlayingListEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for MovieNowPlayingListEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.MovieNowPlayingListOptions

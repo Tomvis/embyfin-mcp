@@ -31,7 +31,7 @@ func (r GetItemCountsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetItemCountsResponse) Record() (ItemCounts, error) {
 	if r.Answer == nil {
-		return ItemCounts{}, errors.New("GetItemCounts answered no ItemCounts")
+		return ItemCounts{}, errors.New("no ItemCounts answered by GetItemCounts")
 	}
 
 	return *r.Answer, nil

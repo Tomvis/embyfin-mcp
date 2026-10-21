@@ -12,7 +12,7 @@ import (
 )
 
 // GetLiveStreamFile calls GET /LiveTv/LiveStreamFiles/{streamId}/stream.{container}. Gets a live tv channel stream.
-func (c Client) GetLiveStreamFile(ctx context.Context, streamId string, container string) (result jf.GetLiveStreamFileResponse, err error) {
+func (c Client) GetLiveStreamFile(ctx context.Context, streamId, container string) (result jf.GetLiveStreamFileResponse, err error) {
 	opts := client.RequestOptions{
 		Accept: "video/*",
 		ExpectedStatusCodes: []int{

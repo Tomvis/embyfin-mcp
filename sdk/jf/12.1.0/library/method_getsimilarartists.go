@@ -15,7 +15,7 @@ import (
 // GetSimilarArtists calls GET /Artists/{itemId}/Similar. Gets similar items.
 func (c Client) GetSimilarArtists(ctx context.Context, itemId jf.ItemID, options ...jf.GetSimilarArtistsOptions) (result jf.GetSimilarArtistsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSimilarArtists takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSimilarArtists, not %d", len(options))
 	}
 	var option jf.GetSimilarArtistsOptions
 	if len(options) == 1 {

@@ -31,7 +31,7 @@ func (r GetItemsByIdRemoteImagesResponse) Answered() bool { return r.Answer != n
 // error when the server answered none.
 func (r GetItemsByIdRemoteImagesResponse) Record() (RemoteImageResult, error) {
 	if r.Answer == nil {
-		return RemoteImageResult{}, errors.New("GetItemsByIdRemoteImages answered no RemoteImageResult")
+		return RemoteImageResult{}, errors.New("no RemoteImageResult answered by GetItemsByIdRemoteImages")
 	}
 
 	return *r.Answer, nil

@@ -31,7 +31,7 @@ func (r GetAlbumsByIdInstantMixResponse) Answered() bool { return r.Answer != ni
 // error when the server answered none.
 func (r GetAlbumsByIdInstantMixResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetAlbumsByIdInstantMix answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetAlbumsByIdInstantMix")
 	}
 
 	return *r.Answer, nil

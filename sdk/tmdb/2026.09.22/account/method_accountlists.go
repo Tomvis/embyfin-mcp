@@ -16,7 +16,7 @@ import (
 // AccountLists calls GET /3/account/{account_id}/lists. Lists.
 func (c Client) AccountLists(ctx context.Context, accountId int, options ...tmdb.AccountListsOptions) (result tmdb.AccountListsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("AccountLists takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for AccountLists, not %d", len(options))
 	}
 	var option tmdb.AccountListsOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) AccountLists(ctx context.Context, accountId int, options ...tmdb
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) AccountListsComplete(ctx context.Context, accountId int, options ...tmdb.AccountListsOptions) (result tmdb.AccountListsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("AccountListsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for AccountListsComplete, not %d", len(options))
 	}
 	var option tmdb.AccountListsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) AccountListsEach(ctx context.Context, accountId int, options ...
 	return func(yield func(tmdb.AccountListsAnswerResults, error) bool) {
 		var zero tmdb.AccountListsAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("AccountListsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for AccountListsEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.AccountListsOptions

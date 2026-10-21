@@ -16,7 +16,7 @@ import (
 func (c Client) CollectionDetails(ctx context.Context, collectionId int, language ...string) (result tmdb.CollectionDetailsResponse, err error) {
 	var option tmdb.CollectionDetailsOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("CollectionDetails takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for CollectionDetails, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

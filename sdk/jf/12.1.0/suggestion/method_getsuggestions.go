@@ -15,7 +15,7 @@ import (
 // GetSuggestions calls GET /Items/Suggestions. Gets suggestions.
 func (c Client) GetSuggestions(ctx context.Context, options ...jf.GetSuggestionsOptions) (result jf.GetSuggestionsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSuggestions takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSuggestions, not %d", len(options))
 	}
 	var option jf.GetSuggestionsOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetSuggestions(ctx context.Context, options ...jf.GetSuggestions
 // unset.
 func (c Client) GetSuggestionsComplete(ctx context.Context, options ...jf.GetSuggestionsOptions) (result jf.GetSuggestionsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSuggestionsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSuggestionsComplete, not %d", len(options))
 	}
 	var option jf.GetSuggestionsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetSuggestionsEach(ctx context.Context, options ...jf.GetSuggest
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetSuggestionsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetSuggestionsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetSuggestionsOptions

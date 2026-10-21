@@ -31,7 +31,7 @@ func (r GetYearsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetYearsResponse) Record() (QueryResultUserLibraryTagItem, error) {
 	if r.Answer == nil {
-		return QueryResultUserLibraryTagItem{}, errors.New("GetYears answered no QueryResultUserLibraryTagItem")
+		return QueryResultUserLibraryTagItem{}, errors.New("no QueryResultUserLibraryTagItem answered by GetYears")
 	}
 
 	return *r.Answer, nil

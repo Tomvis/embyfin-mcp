@@ -15,7 +15,7 @@ import (
 // GetUsersByIdImagesByType calls GET /Users/{Id}/Images/{Type}. Requires authentication as user.
 func (c Client) GetUsersByIdImagesByType(ctx context.Context, id emby.UserID, typeParam emby.ImageType, options ...emby.GetUsersByIdImagesByTypeOptions) (result emby.GetUsersByIdImagesByTypeResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByIdImagesByType takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByIdImagesByType, not %d", len(options))
 	}
 	var option emby.GetUsersByIdImagesByTypeOptions
 	if len(options) == 1 {

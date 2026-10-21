@@ -31,7 +31,7 @@ func (r GetShowsNextUpResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetShowsNextUpResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetShowsNextUp answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetShowsNextUp")
 	}
 
 	return *r.Answer, nil

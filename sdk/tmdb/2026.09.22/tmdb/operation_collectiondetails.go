@@ -30,7 +30,7 @@ func (r CollectionDetailsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r CollectionDetailsResponse) Record() (CollectionDetailsAnswer, error) {
 	if r.Answer == nil {
-		return CollectionDetailsAnswer{}, errors.New("CollectionDetails answered no CollectionDetailsAnswer")
+		return CollectionDetailsAnswer{}, errors.New("no CollectionDetailsAnswer answered by CollectionDetails")
 	}
 
 	return *r.Answer, nil

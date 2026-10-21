@@ -31,7 +31,7 @@ func (r GetMediaFoldersResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetMediaFoldersResponse) Record() (BaseItemDtoQueryResult, error) {
 	if r.Answer == nil {
-		return BaseItemDtoQueryResult{}, errors.New("GetMediaFolders answered no BaseItemDtoQueryResult")
+		return BaseItemDtoQueryResult{}, errors.New("no BaseItemDtoQueryResult answered by GetMediaFolders")
 	}
 
 	return *r.Answer, nil

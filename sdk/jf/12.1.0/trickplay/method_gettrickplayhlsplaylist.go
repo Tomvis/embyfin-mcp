@@ -17,7 +17,7 @@ import (
 func (c Client) GetTrickplayHlsPlaylist(ctx context.Context, itemId jf.ItemID, width int, mediaSourceId ...jf.MediaSourceID) (result jf.GetTrickplayHlsPlaylistResponse, err error) {
 	var option jf.GetTrickplayHlsPlaylistOptions
 	if len(mediaSourceId) > 1 {
-		return result, fmt.Errorf("GetTrickplayHlsPlaylist takes one mediaSourceId at most, not %d", len(mediaSourceId))
+		return result, fmt.Errorf("at most one mediaSourceId for GetTrickplayHlsPlaylist, not %d", len(mediaSourceId))
 	}
 	if len(mediaSourceId) == 1 {
 		option.MediaSourceId = mediaSourceId[0]

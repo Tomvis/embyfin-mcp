@@ -30,7 +30,7 @@ func (r GetQueryFiltersLegacyResponse) Answered() bool { return r.Answer != nil 
 // error when the server answered none.
 func (r GetQueryFiltersLegacyResponse) Record() (QueryFiltersLegacy, error) {
 	if r.Answer == nil {
-		return QueryFiltersLegacy{}, errors.New("GetQueryFiltersLegacy answered no QueryFiltersLegacy")
+		return QueryFiltersLegacy{}, errors.New("no QueryFiltersLegacy answered by GetQueryFiltersLegacy")
 	}
 
 	return *r.Answer, nil

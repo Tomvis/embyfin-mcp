@@ -16,7 +16,7 @@ import (
 // GetShowsByIdSimilar calls GET /Shows/{Id}/Similar. Finds tv shows similar to a given one.
 func (c Client) GetShowsByIdSimilar(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdSimilarOptions) (result emby.GetShowsByIdSimilarResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetShowsByIdSimilar takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetShowsByIdSimilar, not %d", len(options))
 	}
 	var option emby.GetShowsByIdSimilarOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetShowsByIdSimilar(ctx context.Context, id emby.ItemID, options
 // unset.
 func (c Client) GetShowsByIdSimilarComplete(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdSimilarOptions) (result emby.GetShowsByIdSimilarCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetShowsByIdSimilarComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetShowsByIdSimilarComplete, not %d", len(options))
 	}
 	var option emby.GetShowsByIdSimilarOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetShowsByIdSimilarEach(ctx context.Context, id emby.ItemID, opt
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetShowsByIdSimilarEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetShowsByIdSimilarEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetShowsByIdSimilarOptions

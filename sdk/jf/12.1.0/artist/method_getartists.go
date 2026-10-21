@@ -17,7 +17,7 @@ import (
 // Deprecated: the document marks this operation deprecated.
 func (c Client) GetArtists(ctx context.Context, options ...jf.GetArtistsOptions) (result jf.GetArtistsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetArtists takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetArtists, not %d", len(options))
 	}
 	var option jf.GetArtistsOptions
 	if len(options) == 1 {
@@ -64,7 +64,7 @@ func (c Client) GetArtists(ctx context.Context, options ...jf.GetArtistsOptions)
 // unset.
 func (c Client) GetArtistsComplete(ctx context.Context, options ...jf.GetArtistsOptions) (result jf.GetArtistsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetArtistsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetArtistsComplete, not %d", len(options))
 	}
 	var option jf.GetArtistsOptions
 	if len(options) == 1 {
@@ -118,7 +118,7 @@ func (c Client) GetArtistsEach(ctx context.Context, options ...jf.GetArtistsOpti
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetArtistsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetArtistsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetArtistsOptions

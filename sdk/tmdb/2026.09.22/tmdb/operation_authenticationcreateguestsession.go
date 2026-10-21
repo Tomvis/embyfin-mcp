@@ -28,7 +28,7 @@ func (r AuthenticationCreateGuestSessionResponse) Answered() bool { return r.Ans
 // error when the server answered none.
 func (r AuthenticationCreateGuestSessionResponse) Record() (AuthenticationCreateGuestSessionAnswer, error) {
 	if r.Answer == nil {
-		return AuthenticationCreateGuestSessionAnswer{}, errors.New("AuthenticationCreateGuestSession answered no AuthenticationCreateGuestSessionAnswer")
+		return AuthenticationCreateGuestSessionAnswer{}, errors.New("no AuthenticationCreateGuestSessionAnswer answered by AuthenticationCreateGuestSession")
 	}
 
 	return *r.Answer, nil

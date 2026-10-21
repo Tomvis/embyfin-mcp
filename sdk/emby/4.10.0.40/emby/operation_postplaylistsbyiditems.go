@@ -30,7 +30,7 @@ func (r PostPlaylistsByIdItemsResponse) Answered() bool { return r.Answer != nil
 // error when the server answered none.
 func (r PostPlaylistsByIdItemsResponse) Record() (PlaylistsAddToPlaylistResult, error) {
 	if r.Answer == nil {
-		return PlaylistsAddToPlaylistResult{}, errors.New("PostPlaylistsByIdItems answered no PlaylistsAddToPlaylistResult")
+		return PlaylistsAddToPlaylistResult{}, errors.New("no PlaylistsAddToPlaylistResult answered by PostPlaylistsByIdItems")
 	}
 
 	return *r.Answer, nil

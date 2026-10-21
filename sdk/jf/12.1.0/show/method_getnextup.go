@@ -15,7 +15,7 @@ import (
 // GetNextUp calls GET /Shows/NextUp. Gets a list of next up episodes.
 func (c Client) GetNextUp(ctx context.Context, options ...jf.GetNextUpOptions) (result jf.GetNextUpResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetNextUp takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetNextUp, not %d", len(options))
 	}
 	var option jf.GetNextUpOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetNextUp(ctx context.Context, options ...jf.GetNextUpOptions) (
 // unset.
 func (c Client) GetNextUpComplete(ctx context.Context, options ...jf.GetNextUpOptions) (result jf.GetNextUpCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetNextUpComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetNextUpComplete, not %d", len(options))
 	}
 	var option jf.GetNextUpOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetNextUpEach(ctx context.Context, options ...jf.GetNextUpOption
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetNextUpEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetNextUpEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetNextUpOptions

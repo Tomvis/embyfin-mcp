@@ -15,7 +15,7 @@ import (
 // GetMusicGenresByNameImagesByType calls GET /MusicGenres/{Name}/Images/{Type}. Requires authentication as user.
 func (c Client) GetMusicGenresByNameImagesByType(ctx context.Context, name string, typeParam emby.ImageType, options ...emby.GetMusicGenresByNameImagesByTypeOptions) (result emby.GetMusicGenresByNameImagesByTypeResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetMusicGenresByNameImagesByType takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetMusicGenresByNameImagesByType, not %d", len(options))
 	}
 	var option emby.GetMusicGenresByNameImagesByTypeOptions
 	if len(options) == 1 {

@@ -14,7 +14,7 @@ import (
 // PostUpdatedMovies calls POST /Library/Movies/Updated. Reports that new movies have been added by an external source.
 func (c Client) PostUpdatedMovies(ctx context.Context, options ...jf.PostUpdatedMoviesOptions) (result jf.PostUpdatedMoviesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PostUpdatedMovies takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PostUpdatedMovies, not %d", len(options))
 	}
 	var option jf.PostUpdatedMoviesOptions
 	if len(options) == 1 {

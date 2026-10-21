@@ -15,7 +15,7 @@ import (
 func (c Client) GetConfigurationPages(ctx context.Context, enableInMainMenu ...bool) (result jf.GetConfigurationPagesResponse, err error) {
 	var option jf.GetConfigurationPagesOptions
 	if len(enableInMainMenu) > 1 {
-		return result, fmt.Errorf("GetConfigurationPages takes one enableInMainMenu at most, not %d", len(enableInMainMenu))
+		return result, fmt.Errorf("at most one enableInMainMenu for GetConfigurationPages, not %d", len(enableInMainMenu))
 	}
 	if len(enableInMainMenu) == 1 {
 		option.EnableInMainMenu = &enableInMainMenu[0]

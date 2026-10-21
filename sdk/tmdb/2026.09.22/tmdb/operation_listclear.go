@@ -31,7 +31,7 @@ func (r ListClearResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r ListClearResponse) Record() (ListClearAnswer, error) {
 	if r.Answer == nil {
-		return ListClearAnswer{}, errors.New("ListClear answered no ListClearAnswer")
+		return ListClearAnswer{}, errors.New("no ListClearAnswer answered by ListClear")
 	}
 
 	return *r.Answer, nil

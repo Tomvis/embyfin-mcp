@@ -16,7 +16,7 @@ import (
 // GetPersonsByNameImagesByTypeByIndex calls GET /Persons/{Name}/Images/{Type}/{Index}. Requires authentication as user.
 func (c Client) GetPersonsByNameImagesByTypeByIndex(ctx context.Context, name string, typeParam emby.ImageType, index int, options ...emby.GetPersonsByNameImagesByTypeByIndexOptions) (result emby.GetPersonsByNameImagesByTypeByIndexResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetPersonsByNameImagesByTypeByIndex takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetPersonsByNameImagesByTypeByIndex, not %d", len(options))
 	}
 	var option emby.GetPersonsByNameImagesByTypeByIndexOptions
 	if len(options) == 1 {

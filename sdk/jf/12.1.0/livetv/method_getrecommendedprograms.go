@@ -15,7 +15,7 @@ import (
 // GetRecommendedPrograms calls GET /LiveTv/Programs/Recommended. Gets recommended live tv epgs.
 func (c Client) GetRecommendedPrograms(ctx context.Context, options ...jf.GetRecommendedProgramsOptions) (result jf.GetRecommendedProgramsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetRecommendedPrograms takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetRecommendedPrograms, not %d", len(options))
 	}
 	var option jf.GetRecommendedProgramsOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetRecommendedPrograms(ctx context.Context, options ...jf.GetRec
 // unset.
 func (c Client) GetRecommendedProgramsComplete(ctx context.Context, options ...jf.GetRecommendedProgramsOptions) (result jf.GetRecommendedProgramsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetRecommendedProgramsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetRecommendedProgramsComplete, not %d", len(options))
 	}
 	var option jf.GetRecommendedProgramsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetRecommendedProgramsEach(ctx context.Context, options ...jf.Ge
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetRecommendedProgramsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetRecommendedProgramsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetRecommendedProgramsOptions

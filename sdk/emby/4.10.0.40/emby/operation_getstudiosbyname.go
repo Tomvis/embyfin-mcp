@@ -30,7 +30,7 @@ func (r GetStudiosByNameResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetStudiosByNameResponse) Record() (BaseItemDto, error) {
 	if r.Answer == nil {
-		return BaseItemDto{}, errors.New("GetStudiosByName answered no BaseItemDto")
+		return BaseItemDto{}, errors.New("no BaseItemDto answered by GetStudiosByName")
 	}
 
 	return *r.Answer, nil

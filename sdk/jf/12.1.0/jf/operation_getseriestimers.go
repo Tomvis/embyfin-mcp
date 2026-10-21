@@ -30,7 +30,7 @@ func (r GetSeriesTimersResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetSeriesTimersResponse) Record() (SeriesTimerInfoDtoQueryResult, error) {
 	if r.Answer == nil {
-		return SeriesTimerInfoDtoQueryResult{}, errors.New("GetSeriesTimers answered no SeriesTimerInfoDtoQueryResult")
+		return SeriesTimerInfoDtoQueryResult{}, errors.New("no SeriesTimerInfoDtoQueryResult answered by GetSeriesTimers")
 	}
 
 	return *r.Answer, nil

@@ -30,7 +30,7 @@ func (r WatchProvidersAvailableRegionsResponse) Answered() bool { return r.Answe
 // error when the server answered none.
 func (r WatchProvidersAvailableRegionsResponse) Record() (WatchProvidersAvailableRegionsAnswer, error) {
 	if r.Answer == nil {
-		return WatchProvidersAvailableRegionsAnswer{}, errors.New("WatchProvidersAvailableRegions answered no WatchProvidersAvailableRegionsAnswer")
+		return WatchProvidersAvailableRegionsAnswer{}, errors.New("no WatchProvidersAvailableRegionsAnswer answered by WatchProvidersAvailableRegions")
 	}
 
 	return *r.Answer, nil

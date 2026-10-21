@@ -31,7 +31,7 @@ func (r AccountGetFavoritesResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r AccountGetFavoritesResponse) Record() (AccountGetFavoritesAnswer, error) {
 	if r.Answer == nil {
-		return AccountGetFavoritesAnswer{}, errors.New("AccountGetFavorites answered no AccountGetFavoritesAnswer")
+		return AccountGetFavoritesAnswer{}, errors.New("no AccountGetFavoritesAnswer answered by AccountGetFavorites")
 	}
 
 	return *r.Answer, nil

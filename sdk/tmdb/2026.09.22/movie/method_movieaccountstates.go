@@ -15,7 +15,7 @@ import (
 // MovieAccountStates calls GET /3/movie/{movie_id}/account_states. Account States.
 func (c Client) MovieAccountStates(ctx context.Context, movieId int, options ...tmdb.MovieAccountStatesOptions) (result tmdb.MovieAccountStatesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MovieAccountStates takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MovieAccountStates, not %d", len(options))
 	}
 	var option tmdb.MovieAccountStatesOptions
 	if len(options) == 1 {

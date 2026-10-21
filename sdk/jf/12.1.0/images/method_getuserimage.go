@@ -14,7 +14,7 @@ import (
 // GetUserImage calls GET /UserImage. Get user profile image.
 func (c Client) GetUserImage(ctx context.Context, options ...jf.GetUserImageOptions) (result jf.GetUserImageResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUserImage takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUserImage, not %d", len(options))
 	}
 	var option jf.GetUserImageOptions
 	if len(options) == 1 {

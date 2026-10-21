@@ -15,7 +15,7 @@ import (
 // GetArtistsAlbumArtists calls GET /Artists/AlbumArtists. Gets all album artists from a given item, folder, or the entire library.
 func (c Client) GetArtistsAlbumArtists(ctx context.Context, options ...emby.GetArtistsAlbumArtistsOptions) (result emby.GetArtistsAlbumArtistsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetArtistsAlbumArtists takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetArtistsAlbumArtists, not %d", len(options))
 	}
 	var option emby.GetArtistsAlbumArtistsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetArtistsAlbumArtists(ctx context.Context, options ...emby.GetA
 // unset.
 func (c Client) GetArtistsAlbumArtistsComplete(ctx context.Context, options ...emby.GetArtistsAlbumArtistsOptions) (result emby.GetArtistsAlbumArtistsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetArtistsAlbumArtistsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetArtistsAlbumArtistsComplete, not %d", len(options))
 	}
 	var option emby.GetArtistsAlbumArtistsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetArtistsAlbumArtistsEach(ctx context.Context, options ...emby.
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetArtistsAlbumArtistsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetArtistsAlbumArtistsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetArtistsAlbumArtistsOptions

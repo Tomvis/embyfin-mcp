@@ -16,7 +16,7 @@ import (
 func (c Client) UpdateItemContentType(ctx context.Context, itemId jf.ItemID, contentTypeOption ...string) (result jf.UpdateItemContentTypeResponse, err error) {
 	var option jf.UpdateItemContentTypeOptions
 	if len(contentTypeOption) > 1 {
-		return result, fmt.Errorf("UpdateItemContentType takes one contentTypeOption at most, not %d", len(contentTypeOption))
+		return result, fmt.Errorf("at most one contentTypeOption for UpdateItemContentType, not %d", len(contentTypeOption))
 	}
 	if len(contentTypeOption) == 1 {
 		option.ContentType = contentTypeOption[0]

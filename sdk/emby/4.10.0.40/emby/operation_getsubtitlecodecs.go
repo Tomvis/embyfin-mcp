@@ -31,7 +31,7 @@ func (r GetSubtitleCodecsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetSubtitleCodecsResponse) Record() (QueryResultUserLibraryTagItem, error) {
 	if r.Answer == nil {
-		return QueryResultUserLibraryTagItem{}, errors.New("GetSubtitleCodecs answered no QueryResultUserLibraryTagItem")
+		return QueryResultUserLibraryTagItem{}, errors.New("no QueryResultUserLibraryTagItem answered by GetSubtitleCodecs")
 	}
 
 	return *r.Answer, nil

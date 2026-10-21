@@ -12,7 +12,7 @@ import (
 )
 
 // EnablePlugin calls POST /Plugins/{pluginId}/{version}/Enable. Enables a disabled plugin.
-func (c Client) EnablePlugin(ctx context.Context, pluginId string, version string) (result jf.EnablePluginResponse, err error) {
+func (c Client) EnablePlugin(ctx context.Context, pluginId, version string) (result jf.EnablePluginResponse, err error) {
 	opts := client.RequestOptions{
 		ExpectedStatusCodes: []int{
 			http.StatusNoContent,

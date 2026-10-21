@@ -28,7 +28,7 @@ func (r PersonLatestIdResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r PersonLatestIdResponse) Record() (PersonLatestIdAnswer, error) {
 	if r.Answer == nil {
-		return PersonLatestIdAnswer{}, errors.New("PersonLatestId answered no PersonLatestIdAnswer")
+		return PersonLatestIdAnswer{}, errors.New("no PersonLatestIdAnswer answered by PersonLatestId")
 	}
 
 	return *r.Answer, nil

@@ -15,7 +15,7 @@ import (
 // GetUpcomingEpisodes calls GET /Shows/Upcoming. Gets a list of upcoming episodes.
 func (c Client) GetUpcomingEpisodes(ctx context.Context, options ...jf.GetUpcomingEpisodesOptions) (result jf.GetUpcomingEpisodesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUpcomingEpisodes takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUpcomingEpisodes, not %d", len(options))
 	}
 	var option jf.GetUpcomingEpisodesOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetUpcomingEpisodes(ctx context.Context, options ...jf.GetUpcomi
 // unset.
 func (c Client) GetUpcomingEpisodesComplete(ctx context.Context, options ...jf.GetUpcomingEpisodesOptions) (result jf.GetUpcomingEpisodesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUpcomingEpisodesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUpcomingEpisodesComplete, not %d", len(options))
 	}
 	var option jf.GetUpcomingEpisodesOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetUpcomingEpisodesEach(ctx context.Context, options ...jf.GetUp
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetUpcomingEpisodesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetUpcomingEpisodesEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetUpcomingEpisodesOptions

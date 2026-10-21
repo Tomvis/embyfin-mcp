@@ -16,7 +16,7 @@ import (
 func (c Client) GetAncestors(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetAncestorsResponse, err error) {
 	var option jf.GetAncestorsOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetAncestors takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetAncestors, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

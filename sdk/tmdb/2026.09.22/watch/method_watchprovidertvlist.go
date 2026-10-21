@@ -14,7 +14,7 @@ import (
 // WatchProviderTvList calls GET /3/watch/providers/tv. TV Providers.
 func (c Client) WatchProviderTvList(ctx context.Context, options ...tmdb.WatchProviderTvListOptions) (result tmdb.WatchProviderTvListResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("WatchProviderTvList takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for WatchProviderTvList, not %d", len(options))
 	}
 	var option tmdb.WatchProviderTvListOptions
 	if len(options) == 1 {

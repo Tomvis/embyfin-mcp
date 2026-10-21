@@ -16,7 +16,7 @@ import (
 // GetShowsByIdSeasons calls GET /Shows/{Id}/Seasons. Gets seasons for a tv series.
 func (c Client) GetShowsByIdSeasons(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdSeasonsOptions) (result emby.GetShowsByIdSeasonsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetShowsByIdSeasons takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetShowsByIdSeasons, not %d", len(options))
 	}
 	var option emby.GetShowsByIdSeasonsOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetShowsByIdSeasons(ctx context.Context, id emby.ItemID, options
 // unset.
 func (c Client) GetShowsByIdSeasonsComplete(ctx context.Context, id emby.ItemID, options ...emby.GetShowsByIdSeasonsOptions) (result emby.GetShowsByIdSeasonsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetShowsByIdSeasonsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetShowsByIdSeasonsComplete, not %d", len(options))
 	}
 	var option emby.GetShowsByIdSeasonsOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetShowsByIdSeasonsEach(ctx context.Context, id emby.ItemID, opt
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetShowsByIdSeasonsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetShowsByIdSeasonsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetShowsByIdSeasonsOptions

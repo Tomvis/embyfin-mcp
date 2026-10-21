@@ -31,7 +31,7 @@ func (r GetUserViewsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetUserViewsResponse) Record() (BaseItemDtoQueryResult, error) {
 	if r.Answer == nil {
-		return BaseItemDtoQueryResult{}, errors.New("GetUserViews answered no BaseItemDtoQueryResult")
+		return BaseItemDtoQueryResult{}, errors.New("no BaseItemDtoQueryResult answered by GetUserViews")
 	}
 
 	return *r.Answer, nil

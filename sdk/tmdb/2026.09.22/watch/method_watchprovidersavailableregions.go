@@ -15,7 +15,7 @@ import (
 func (c Client) WatchProvidersAvailableRegions(ctx context.Context, language ...string) (result tmdb.WatchProvidersAvailableRegionsResponse, err error) {
 	var option tmdb.WatchProvidersAvailableRegionsOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("WatchProvidersAvailableRegions takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for WatchProvidersAvailableRegions, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

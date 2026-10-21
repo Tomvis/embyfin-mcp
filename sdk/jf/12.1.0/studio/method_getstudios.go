@@ -15,7 +15,7 @@ import (
 // GetStudios calls GET /Studios. Gets all studios from a given item, folder, or the entire library.
 func (c Client) GetStudios(ctx context.Context, options ...jf.GetStudiosOptions) (result jf.GetStudiosResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetStudios takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetStudios, not %d", len(options))
 	}
 	var option jf.GetStudiosOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetStudios(ctx context.Context, options ...jf.GetStudiosOptions)
 // unset.
 func (c Client) GetStudiosComplete(ctx context.Context, options ...jf.GetStudiosOptions) (result jf.GetStudiosCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetStudiosComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetStudiosComplete, not %d", len(options))
 	}
 	var option jf.GetStudiosOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetStudiosEach(ctx context.Context, options ...jf.GetStudiosOpti
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetStudiosEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetStudiosEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetStudiosOptions

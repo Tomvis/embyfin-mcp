@@ -31,7 +31,7 @@ func (r ListCheckItemStatusResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r ListCheckItemStatusResponse) Record() (ListCheckItemStatusAnswer, error) {
 	if r.Answer == nil {
-		return ListCheckItemStatusAnswer{}, errors.New("ListCheckItemStatus answered no ListCheckItemStatusAnswer")
+		return ListCheckItemStatusAnswer{}, errors.New("no ListCheckItemStatusAnswer answered by ListCheckItemStatus")
 	}
 
 	return *r.Answer, nil

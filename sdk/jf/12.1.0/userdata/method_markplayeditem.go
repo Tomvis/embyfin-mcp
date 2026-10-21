@@ -15,7 +15,7 @@ import (
 // MarkPlayedItem calls POST /UserPlayedItems/{itemId}. Marks an item as played for user.
 func (c Client) MarkPlayedItem(ctx context.Context, itemId jf.ItemID, options ...jf.MarkPlayedItemOptions) (result jf.MarkPlayedItemResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MarkPlayedItem takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MarkPlayedItem, not %d", len(options))
 	}
 	var option jf.MarkPlayedItemOptions
 	if len(options) == 1 {

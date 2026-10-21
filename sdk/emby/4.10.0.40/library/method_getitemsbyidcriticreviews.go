@@ -16,7 +16,7 @@ import (
 // GetItemsByIdCriticReviews calls GET /Items/{Id}/CriticReviews. Gets critic reviews for an item.
 func (c Client) GetItemsByIdCriticReviews(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdCriticReviewsOptions) (result emby.GetItemsByIdCriticReviewsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdCriticReviews takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdCriticReviews, not %d", len(options))
 	}
 	var option emby.GetItemsByIdCriticReviewsOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetItemsByIdCriticReviews(ctx context.Context, id emby.ItemID, o
 // unset.
 func (c Client) GetItemsByIdCriticReviewsComplete(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdCriticReviewsOptions) (result emby.GetItemsByIdCriticReviewsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdCriticReviewsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdCriticReviewsComplete, not %d", len(options))
 	}
 	var option emby.GetItemsByIdCriticReviewsOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetItemsByIdCriticReviewsEach(ctx context.Context, id emby.ItemI
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetItemsByIdCriticReviewsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetItemsByIdCriticReviewsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetItemsByIdCriticReviewsOptions

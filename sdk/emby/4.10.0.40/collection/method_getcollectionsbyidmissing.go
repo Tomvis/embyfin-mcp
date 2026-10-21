@@ -16,7 +16,7 @@ import (
 // GetCollectionsByIdMissing calls GET /Collections/{Id}/Missing. Gets a list of missing items.
 func (c Client) GetCollectionsByIdMissing(ctx context.Context, id emby.ItemID, options ...emby.GetCollectionsByIdMissingOptions) (result emby.GetCollectionsByIdMissingResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetCollectionsByIdMissing takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetCollectionsByIdMissing, not %d", len(options))
 	}
 	var option emby.GetCollectionsByIdMissingOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetCollectionsByIdMissing(ctx context.Context, id emby.ItemID, o
 // unset.
 func (c Client) GetCollectionsByIdMissingComplete(ctx context.Context, id emby.ItemID, options ...emby.GetCollectionsByIdMissingOptions) (result emby.GetCollectionsByIdMissingCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetCollectionsByIdMissingComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetCollectionsByIdMissingComplete, not %d", len(options))
 	}
 	var option emby.GetCollectionsByIdMissingOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetCollectionsByIdMissingEach(ctx context.Context, id emby.ItemI
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetCollectionsByIdMissingEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetCollectionsByIdMissingEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetCollectionsByIdMissingOptions

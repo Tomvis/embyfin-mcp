@@ -16,7 +16,7 @@ import (
 func (c Client) ApplySearchCriteria(ctx context.Context, itemId jf.ItemID, input jf.RemoteSearchResult, replaceAllImages ...bool) (result jf.ApplySearchCriteriaResponse, err error) {
 	var option jf.ApplySearchCriteriaOptions
 	if len(replaceAllImages) > 1 {
-		return result, fmt.Errorf("ApplySearchCriteria takes one replaceAllImages at most, not %d", len(replaceAllImages))
+		return result, fmt.Errorf("at most one replaceAllImages for ApplySearchCriteria, not %d", len(replaceAllImages))
 	}
 	if len(replaceAllImages) == 1 {
 		option.ReplaceAllImages = &replaceAllImages[0]

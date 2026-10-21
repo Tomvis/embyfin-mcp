@@ -16,7 +16,7 @@ import (
 // GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat calls GET /Items/{Id}/{MediaSourceId}/Subtitles/{Index}/{StartPositionTicks}/Stream.{Format}. Gets subtitles in a specified format.
 func (c Client) GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat(ctx context.Context, id emby.ItemID, mediaSourceId emby.MediaSourceID, index int, startPositionTicks int64, format string, options ...emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions) (result emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormat, not %d", len(options))
 	}
 	var option emby.GetItemsByIdByMediaSourceIdSubtitlesByIndexByStartPositionTicksStreamByFormatOptions
 	if len(options) == 1 {

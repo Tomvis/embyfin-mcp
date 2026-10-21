@@ -14,7 +14,7 @@ import (
 // GetQueryFiltersLegacy calls GET /Items/Filters. Gets legacy query filters.
 func (c Client) GetQueryFiltersLegacy(ctx context.Context, options ...jf.GetQueryFiltersLegacyOptions) (result jf.GetQueryFiltersLegacyResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetQueryFiltersLegacy takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetQueryFiltersLegacy, not %d", len(options))
 	}
 	var option jf.GetQueryFiltersLegacyOptions
 	if len(options) == 1 {

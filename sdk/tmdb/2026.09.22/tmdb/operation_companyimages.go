@@ -28,7 +28,7 @@ func (r CompanyImagesResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r CompanyImagesResponse) Record() (CompanyImagesAnswer, error) {
 	if r.Answer == nil {
-		return CompanyImagesAnswer{}, errors.New("CompanyImages answered no CompanyImagesAnswer")
+		return CompanyImagesAnswer{}, errors.New("no CompanyImagesAnswer answered by CompanyImages")
 	}
 
 	return *r.Answer, nil

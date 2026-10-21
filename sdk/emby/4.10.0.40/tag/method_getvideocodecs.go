@@ -15,7 +15,7 @@ import (
 // GetVideoCodecs calls GET /VideoCodecs. Gets items based on a query.
 func (c Client) GetVideoCodecs(ctx context.Context, options ...emby.GetVideoCodecsOptions) (result emby.GetVideoCodecsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetVideoCodecs takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetVideoCodecs, not %d", len(options))
 	}
 	var option emby.GetVideoCodecsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetVideoCodecs(ctx context.Context, options ...emby.GetVideoCode
 // unset.
 func (c Client) GetVideoCodecsComplete(ctx context.Context, options ...emby.GetVideoCodecsOptions) (result emby.GetVideoCodecsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetVideoCodecsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetVideoCodecsComplete, not %d", len(options))
 	}
 	var option emby.GetVideoCodecsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetVideoCodecsEach(ctx context.Context, options ...emby.GetVideo
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetVideoCodecsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetVideoCodecsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetVideoCodecsOptions

@@ -16,7 +16,7 @@ import (
 func (c Client) GetChannel(ctx context.Context, channelId string, userId ...jf.UserID) (result jf.GetChannelResponse, err error) {
 	var option jf.GetChannelOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetChannel takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetChannel, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

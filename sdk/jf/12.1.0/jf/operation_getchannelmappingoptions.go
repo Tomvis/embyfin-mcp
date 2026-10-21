@@ -30,7 +30,7 @@ func (r GetChannelMappingOptionsResponse) Answered() bool { return r.Answer != n
 // error when the server answered none.
 func (r GetChannelMappingOptionsResponse) Record() (ChannelMappingOptionsDto, error) {
 	if r.Answer == nil {
-		return ChannelMappingOptionsDto{}, errors.New("GetChannelMappingOptions answered no ChannelMappingOptionsDto")
+		return ChannelMappingOptionsDto{}, errors.New("no ChannelMappingOptionsDto answered by GetChannelMappingOptions")
 	}
 
 	return *r.Answer, nil

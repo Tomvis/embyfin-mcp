@@ -18,7 +18,7 @@ import (
 func (c Client) GetMusicGenre(ctx context.Context, genreName string, userId ...jf.UserID) (result jf.GetMusicGenreResponse, err error) {
 	var option jf.GetMusicGenreOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetMusicGenre takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetMusicGenre, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

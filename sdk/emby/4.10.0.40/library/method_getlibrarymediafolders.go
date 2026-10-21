@@ -15,7 +15,7 @@ import (
 func (c Client) GetLibraryMediaFolders(ctx context.Context, isHidden ...bool) (result emby.GetLibraryMediaFoldersResponse, err error) {
 	var option emby.GetLibraryMediaFoldersOptions
 	if len(isHidden) > 1 {
-		return result, fmt.Errorf("GetLibraryMediaFolders takes one isHidden at most, not %d", len(isHidden))
+		return result, fmt.Errorf("at most one isHidden for GetLibraryMediaFolders, not %d", len(isHidden))
 	}
 	if len(isHidden) == 1 {
 		option.IsHidden = &isHidden[0]

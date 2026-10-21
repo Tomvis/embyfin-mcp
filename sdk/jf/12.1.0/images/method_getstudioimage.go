@@ -15,7 +15,7 @@ import (
 // GetStudioImage calls GET /Studios/{name}/Images/{imageType}. Get studio image by name.
 func (c Client) GetStudioImage(ctx context.Context, name string, imageType jf.ImageType, options ...jf.GetStudioImageOptions) (result jf.GetStudioImageResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetStudioImage takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetStudioImage, not %d", len(options))
 	}
 	var option jf.GetStudioImageOptions
 	if len(options) == 1 {

@@ -16,7 +16,7 @@ import (
 func (c Client) UnmarkFavoriteItem(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.UnmarkFavoriteItemResponse, err error) {
 	var option jf.UnmarkFavoriteItemOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("UnmarkFavoriteItem takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for UnmarkFavoriteItem, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

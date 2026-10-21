@@ -30,7 +30,7 @@ func (r GetSyncOptionsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetSyncOptionsResponse) Record() (SyncDialogOptions, error) {
 	if r.Answer == nil {
-		return SyncDialogOptions{}, errors.New("GetSyncOptions answered no SyncDialogOptions")
+		return SyncDialogOptions{}, errors.New("no SyncDialogOptions answered by GetSyncOptions")
 	}
 
 	return *r.Answer, nil

@@ -16,7 +16,7 @@ import (
 func (c Client) CreditDetails(ctx context.Context, creditId string, language ...string) (result tmdb.CreditDetailsResponse, err error) {
 	var option tmdb.CreditDetailsOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("CreditDetails takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for CreditDetails, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

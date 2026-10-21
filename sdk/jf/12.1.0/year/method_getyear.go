@@ -16,7 +16,7 @@ import (
 func (c Client) GetYear(ctx context.Context, year int, userId ...jf.UserID) (result jf.GetYearResponse, err error) {
 	var option jf.GetYearOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetYear takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetYear, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

@@ -15,7 +15,7 @@ import (
 // GetLibraryVirtualFoldersQuery calls GET /Library/VirtualFolders/Query. Requires authentication as user.
 func (c Client) GetLibraryVirtualFoldersQuery(ctx context.Context, options ...emby.GetLibraryVirtualFoldersQueryOptions) (result emby.GetLibraryVirtualFoldersQueryResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLibraryVirtualFoldersQuery takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLibraryVirtualFoldersQuery, not %d", len(options))
 	}
 	var option emby.GetLibraryVirtualFoldersQueryOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetLibraryVirtualFoldersQuery(ctx context.Context, options ...em
 // unset.
 func (c Client) GetLibraryVirtualFoldersQueryComplete(ctx context.Context, options ...emby.GetLibraryVirtualFoldersQueryOptions) (result emby.GetLibraryVirtualFoldersQueryCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLibraryVirtualFoldersQueryComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLibraryVirtualFoldersQueryComplete, not %d", len(options))
 	}
 	var option emby.GetLibraryVirtualFoldersQueryOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetLibraryVirtualFoldersQueryEach(ctx context.Context, options .
 	return func(yield func(emby.VirtualFolderInfo, error) bool) {
 		var zero emby.VirtualFolderInfo
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLibraryVirtualFoldersQueryEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLibraryVirtualFoldersQueryEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetLibraryVirtualFoldersQueryOptions

@@ -16,7 +16,7 @@ import (
 // GetChannelItems calls GET /Channels/{channelId}/Items. Get channel items.
 func (c Client) GetChannelItems(ctx context.Context, channelId string, options ...jf.GetChannelItemsOptions) (result jf.GetChannelItemsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetChannelItems takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetChannelItems, not %d", len(options))
 	}
 	var option jf.GetChannelItemsOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) GetChannelItems(ctx context.Context, channelId string, options .
 // unset.
 func (c Client) GetChannelItemsComplete(ctx context.Context, channelId string, options ...jf.GetChannelItemsOptions) (result jf.GetChannelItemsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetChannelItemsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetChannelItemsComplete, not %d", len(options))
 	}
 	var option jf.GetChannelItemsOptions
 	if len(options) == 1 {
@@ -117,7 +117,7 @@ func (c Client) GetChannelItemsEach(ctx context.Context, channelId string, optio
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetChannelItemsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetChannelItemsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetChannelItemsOptions

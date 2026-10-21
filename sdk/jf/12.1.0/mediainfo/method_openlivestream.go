@@ -14,7 +14,7 @@ import (
 // OpenLiveStream calls POST /LiveStreams/Open. Opens a media source.
 func (c Client) OpenLiveStream(ctx context.Context, input jf.OpenLiveStreamDto, options ...jf.OpenLiveStreamOptions) (result jf.OpenLiveStreamResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("OpenLiveStream takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for OpenLiveStream, not %d", len(options))
 	}
 	var option jf.OpenLiveStreamOptions
 	if len(options) == 1 {

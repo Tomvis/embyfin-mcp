@@ -31,7 +31,7 @@ func (r GetContainersResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetContainersResponse) Record() (QueryResultUserLibraryTagItem, error) {
 	if r.Answer == nil {
-		return QueryResultUserLibraryTagItem{}, errors.New("GetContainers answered no QueryResultUserLibraryTagItem")
+		return QueryResultUserLibraryTagItem{}, errors.New("no QueryResultUserLibraryTagItem answered by GetContainers")
 	}
 
 	return *r.Answer, nil

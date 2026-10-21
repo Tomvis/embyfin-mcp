@@ -14,7 +14,7 @@ import (
 // GetWebStrings calls GET /web/strings. Requires authentication as user.
 func (c Client) GetWebStrings(ctx context.Context, options ...emby.GetWebStringsOptions) (result emby.GetWebStringsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetWebStrings takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetWebStrings, not %d", len(options))
 	}
 	var option emby.GetWebStringsOptions
 	if len(options) == 1 {

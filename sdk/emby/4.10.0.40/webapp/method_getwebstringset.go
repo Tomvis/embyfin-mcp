@@ -15,7 +15,7 @@ import (
 func (c Client) GetWebStringset(ctx context.Context, pluginId ...string) (result emby.GetWebStringsetResponse, err error) {
 	var option emby.GetWebStringsetOptions
 	if len(pluginId) > 1 {
-		return result, fmt.Errorf("GetWebStringset takes one pluginId at most, not %d", len(pluginId))
+		return result, fmt.Errorf("at most one pluginId for GetWebStringset, not %d", len(pluginId))
 	}
 	if len(pluginId) == 1 {
 		option.PluginId = pluginId[0]

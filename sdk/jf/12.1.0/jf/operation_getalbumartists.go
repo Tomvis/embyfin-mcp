@@ -31,7 +31,7 @@ func (r GetAlbumArtistsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetAlbumArtistsResponse) Record() (BaseItemDtoQueryResult, error) {
 	if r.Answer == nil {
-		return BaseItemDtoQueryResult{}, errors.New("GetAlbumArtists answered no BaseItemDtoQueryResult")
+		return BaseItemDtoQueryResult{}, errors.New("no BaseItemDtoQueryResult answered by GetAlbumArtists")
 	}
 
 	return *r.Answer, nil

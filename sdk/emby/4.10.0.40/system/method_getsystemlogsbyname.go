@@ -16,7 +16,7 @@ import (
 func (c Client) GetSystemLogsByName(ctx context.Context, name string, sanitize ...bool) (result emby.GetSystemLogsByNameResponse, err error) {
 	var option emby.GetSystemLogsByNameOptions
 	if len(sanitize) > 1 {
-		return result, fmt.Errorf("GetSystemLogsByName takes one sanitize at most, not %d", len(sanitize))
+		return result, fmt.Errorf("at most one sanitize for GetSystemLogsByName, not %d", len(sanitize))
 	}
 	if len(sanitize) == 1 {
 		option.Sanitize = &sanitize[0]

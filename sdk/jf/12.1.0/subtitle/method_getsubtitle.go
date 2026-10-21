@@ -16,7 +16,7 @@ import (
 // GetSubtitle calls GET /Videos/{routeItemId}/{routeMediaSourceId}/Subtitles/{routeIndex}/Stream.{routeFormat}. Gets subtitles in a specified format.
 func (c Client) GetSubtitle(ctx context.Context, routeItemId jf.ItemID, routeMediaSourceId jf.MediaSourceID, routeIndex int, routeFormat string, options ...jf.GetSubtitleOptions) (result jf.GetSubtitleResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetSubtitle takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetSubtitle, not %d", len(options))
 	}
 	var option jf.GetSubtitleOptions
 	if len(options) == 1 {

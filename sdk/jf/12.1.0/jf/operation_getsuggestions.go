@@ -31,7 +31,7 @@ func (r GetSuggestionsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetSuggestionsResponse) Record() (BaseItemDtoQueryResult, error) {
 	if r.Answer == nil {
-		return BaseItemDtoQueryResult{}, errors.New("GetSuggestions answered no BaseItemDtoQueryResult")
+		return BaseItemDtoQueryResult{}, errors.New("no BaseItemDtoQueryResult answered by GetSuggestions")
 	}
 
 	return *r.Answer, nil

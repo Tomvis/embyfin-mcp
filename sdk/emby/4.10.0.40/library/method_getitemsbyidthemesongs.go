@@ -16,7 +16,7 @@ import (
 // GetItemsByIdThemeSongs calls GET /Items/{Id}/ThemeSongs. Gets theme songs for an item.
 func (c Client) GetItemsByIdThemeSongs(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeSongsOptions) (result emby.GetItemsByIdThemeSongsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdThemeSongs takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdThemeSongs, not %d", len(options))
 	}
 	var option emby.GetItemsByIdThemeSongsOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetItemsByIdThemeSongs(ctx context.Context, id emby.ItemID, opti
 // unset.
 func (c Client) GetItemsByIdThemeSongsComplete(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeSongsOptions) (result emby.GetItemsByIdThemeSongsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdThemeSongsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdThemeSongsComplete, not %d", len(options))
 	}
 	var option emby.GetItemsByIdThemeSongsOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetItemsByIdThemeSongsEach(ctx context.Context, id emby.ItemID, 
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetItemsByIdThemeSongsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetItemsByIdThemeSongsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetItemsByIdThemeSongsOptions

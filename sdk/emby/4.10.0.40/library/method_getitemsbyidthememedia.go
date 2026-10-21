@@ -15,7 +15,7 @@ import (
 // GetItemsByIdThemeMedia calls GET /Items/{Id}/ThemeMedia. Gets theme videos and songs for an item.
 func (c Client) GetItemsByIdThemeMedia(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeMediaOptions) (result emby.GetItemsByIdThemeMediaResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdThemeMedia takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdThemeMedia, not %d", len(options))
 	}
 	var option emby.GetItemsByIdThemeMediaOptions
 	if len(options) == 1 {

@@ -16,7 +16,7 @@ import (
 // GetItemsByIdThemeVideos calls GET /Items/{Id}/ThemeVideos. Gets theme videos for an item.
 func (c Client) GetItemsByIdThemeVideos(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeVideosOptions) (result emby.GetItemsByIdThemeVideosResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdThemeVideos takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdThemeVideos, not %d", len(options))
 	}
 	var option emby.GetItemsByIdThemeVideosOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetItemsByIdThemeVideos(ctx context.Context, id emby.ItemID, opt
 // unset.
 func (c Client) GetItemsByIdThemeVideosComplete(ctx context.Context, id emby.ItemID, options ...emby.GetItemsByIdThemeVideosOptions) (result emby.GetItemsByIdThemeVideosCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemsByIdThemeVideosComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemsByIdThemeVideosComplete, not %d", len(options))
 	}
 	var option emby.GetItemsByIdThemeVideosOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetItemsByIdThemeVideosEach(ctx context.Context, id emby.ItemID,
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetItemsByIdThemeVideosEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetItemsByIdThemeVideosEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetItemsByIdThemeVideosOptions

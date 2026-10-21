@@ -16,7 +16,7 @@ import (
 func (c Client) GetDlnaIconsByFilename(ctx context.Context, filename string, uuId ...string) (result emby.GetDlnaIconsByFilenameResponse, err error) {
 	var option emby.GetDlnaIconsByFilenameOptions
 	if len(uuId) > 1 {
-		return result, fmt.Errorf("GetDlnaIconsByFilename takes one uuId at most, not %d", len(uuId))
+		return result, fmt.Errorf("at most one uuId for GetDlnaIconsByFilename, not %d", len(uuId))
 	}
 	if len(uuId) == 1 {
 		option.UuId = uuId[0]

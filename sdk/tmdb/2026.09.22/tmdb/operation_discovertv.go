@@ -31,7 +31,7 @@ func (r DiscoverTvResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r DiscoverTvResponse) Record() (DiscoverTvAnswer, error) {
 	if r.Answer == nil {
-		return DiscoverTvAnswer{}, errors.New("DiscoverTv answered no DiscoverTvAnswer")
+		return DiscoverTvAnswer{}, errors.New("no DiscoverTvAnswer answered by DiscoverTv")
 	}
 
 	return *r.Answer, nil

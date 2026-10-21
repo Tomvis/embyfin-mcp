@@ -15,7 +15,7 @@ import (
 // GetThemeVideos calls GET /Items/{itemId}/ThemeVideos. Get theme videos for an item.
 func (c Client) GetThemeVideos(ctx context.Context, itemId jf.ItemID, options ...jf.GetThemeVideosOptions) (result jf.GetThemeVideosResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetThemeVideos takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetThemeVideos, not %d", len(options))
 	}
 	var option jf.GetThemeVideosOptions
 	if len(options) == 1 {

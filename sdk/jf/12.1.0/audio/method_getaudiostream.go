@@ -15,7 +15,7 @@ import (
 // GetAudioStream calls GET /Audio/{itemId}/stream. Gets an audio stream.
 func (c Client) GetAudioStream(ctx context.Context, itemId jf.ItemID, options ...jf.GetAudioStreamOptions) (result jf.GetAudioStreamResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetAudioStream takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetAudioStream, not %d", len(options))
 	}
 	var option jf.GetAudioStreamOptions
 	if len(options) == 1 {

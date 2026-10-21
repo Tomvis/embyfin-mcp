@@ -15,7 +15,7 @@ import (
 func (c Client) DeleteLiveTvListingProviders(ctx context.Context, id ...string) (result emby.DeleteLiveTvListingProvidersResponse, err error) {
 	var option emby.DeleteLiveTvListingProvidersOptions
 	if len(id) > 1 {
-		return result, fmt.Errorf("DeleteLiveTvListingProviders takes one id at most, not %d", len(id))
+		return result, fmt.Errorf("at most one id for DeleteLiveTvListingProviders, not %d", len(id))
 	}
 	if len(id) == 1 {
 		option.Id = id[0]

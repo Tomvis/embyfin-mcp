@@ -16,7 +16,7 @@ import (
 func (c Client) GetStudiosByName(ctx context.Context, name string, userId ...emby.UserID) (result emby.GetStudiosByNameResponse, err error) {
 	var option emby.GetStudiosByNameOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetStudiosByName takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetStudiosByName, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

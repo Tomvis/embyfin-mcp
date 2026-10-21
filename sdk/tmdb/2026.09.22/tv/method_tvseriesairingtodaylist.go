@@ -15,7 +15,7 @@ import (
 // TvSeriesAiringTodayList calls GET /3/tv/airing_today. Airing Today.
 func (c Client) TvSeriesAiringTodayList(ctx context.Context, options ...tmdb.TvSeriesAiringTodayListOptions) (result tmdb.TvSeriesAiringTodayListResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeriesAiringTodayList takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeriesAiringTodayList, not %d", len(options))
 	}
 	var option tmdb.TvSeriesAiringTodayListOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) TvSeriesAiringTodayList(ctx context.Context, options ...tmdb.TvS
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) TvSeriesAiringTodayListComplete(ctx context.Context, options ...tmdb.TvSeriesAiringTodayListOptions) (result tmdb.TvSeriesAiringTodayListCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvSeriesAiringTodayListComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvSeriesAiringTodayListComplete, not %d", len(options))
 	}
 	var option tmdb.TvSeriesAiringTodayListOptions
 	if len(options) == 1 {
@@ -115,7 +115,7 @@ func (c Client) TvSeriesAiringTodayListEach(ctx context.Context, options ...tmdb
 	return func(yield func(tmdb.TvSeriesAiringTodayListAnswerResults, error) bool) {
 		var zero tmdb.TvSeriesAiringTodayListAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("TvSeriesAiringTodayListEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for TvSeriesAiringTodayListEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.TvSeriesAiringTodayListOptions

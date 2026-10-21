@@ -14,7 +14,7 @@ import (
 // AddListingProvider calls POST /LiveTv/ListingProviders. Adds a listings provider.
 func (c Client) AddListingProvider(ctx context.Context, input jf.ListingsProviderInfo, options ...jf.AddListingProviderOptions) (result jf.AddListingProviderResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("AddListingProvider takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for AddListingProvider, not %d", len(options))
 	}
 	var option jf.AddListingProviderOptions
 	if len(options) == 1 {

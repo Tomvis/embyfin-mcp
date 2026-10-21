@@ -31,7 +31,7 @@ func (r PostCollectionsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r PostCollectionsResponse) Record() (CollectionsCollectionCreationResult, error) {
 	if r.Answer == nil {
-		return CollectionsCollectionCreationResult{}, errors.New("PostCollections answered no CollectionsCollectionCreationResult")
+		return CollectionsCollectionCreationResult{}, errors.New("no CollectionsCollectionCreationResult answered by PostCollections")
 	}
 
 	return *r.Answer, nil

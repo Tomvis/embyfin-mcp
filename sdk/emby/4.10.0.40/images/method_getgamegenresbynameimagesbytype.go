@@ -15,7 +15,7 @@ import (
 // GetGameGenresByNameImagesByType calls GET /GameGenres/{Name}/Images/{Type}. Requires authentication as user.
 func (c Client) GetGameGenresByNameImagesByType(ctx context.Context, name string, typeParam emby.ImageType, options ...emby.GetGameGenresByNameImagesByTypeOptions) (result emby.GetGameGenresByNameImagesByTypeResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetGameGenresByNameImagesByType takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetGameGenresByNameImagesByType, not %d", len(options))
 	}
 	var option emby.GetGameGenresByNameImagesByTypeOptions
 	if len(options) == 1 {

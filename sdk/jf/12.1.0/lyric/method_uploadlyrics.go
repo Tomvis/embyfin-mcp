@@ -15,7 +15,7 @@ import (
 // UploadLyrics calls POST /Audio/{itemId}/Lyrics. Upload an external lyric file.
 //
 // input is sent as contentType, or as text/plain when that is empty.
-func (c Client) UploadLyrics(ctx context.Context, itemId jf.ItemID, input io.Reader, contentType string, fileName string) (result jf.UploadLyricsResponse, err error) {
+func (c Client) UploadLyrics(ctx context.Context, itemId jf.ItemID, input io.Reader, contentType, fileName string) (result jf.UploadLyricsResponse, err error) {
 	var option jf.UploadLyricsOptions
 	option.FileName = fileName
 

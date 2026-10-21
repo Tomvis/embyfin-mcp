@@ -15,7 +15,7 @@ import (
 // PersonChanges calls GET /3/person/{person_id}/changes. Changes.
 func (c Client) PersonChanges(ctx context.Context, personId int, options ...tmdb.PersonChangesOptions) (result tmdb.PersonChangesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PersonChanges takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PersonChanges, not %d", len(options))
 	}
 	var option tmdb.PersonChangesOptions
 	if len(options) == 1 {

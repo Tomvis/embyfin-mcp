@@ -30,7 +30,7 @@ func (r GetPackagesByNameResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetPackagesByNameResponse) Record() (PackageInfo, error) {
 	if r.Answer == nil {
-		return PackageInfo{}, errors.New("GetPackagesByName answered no PackageInfo")
+		return PackageInfo{}, errors.New("no PackageInfo answered by GetPackagesByName")
 	}
 
 	return *r.Answer, nil

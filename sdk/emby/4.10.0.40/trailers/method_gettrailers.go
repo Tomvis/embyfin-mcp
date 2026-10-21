@@ -15,7 +15,7 @@ import (
 // GetTrailers calls GET /Trailers. Finds movies and trailers similar to a given trailer.
 func (c Client) GetTrailers(ctx context.Context, options ...emby.GetTrailersOptions) (result emby.GetTrailersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTrailers takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTrailers, not %d", len(options))
 	}
 	var option emby.GetTrailersOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetTrailers(ctx context.Context, options ...emby.GetTrailersOpti
 // unset.
 func (c Client) GetTrailersComplete(ctx context.Context, options ...emby.GetTrailersOptions) (result emby.GetTrailersCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetTrailersComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetTrailersComplete, not %d", len(options))
 	}
 	var option emby.GetTrailersOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetTrailersEach(ctx context.Context, options ...emby.GetTrailers
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetTrailersEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetTrailersEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetTrailersOptions

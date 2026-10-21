@@ -16,7 +16,7 @@ import (
 func (c Client) GetLocalTrailers(ctx context.Context, itemId jf.ItemID, userId ...jf.UserID) (result jf.GetLocalTrailersResponse, err error) {
 	var option jf.GetLocalTrailersOptions
 	if len(userId) > 1 {
-		return result, fmt.Errorf("GetLocalTrailers takes one userId at most, not %d", len(userId))
+		return result, fmt.Errorf("at most one userId for GetLocalTrailers, not %d", len(userId))
 	}
 	if len(userId) == 1 {
 		option.UserId = userId[0]

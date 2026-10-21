@@ -16,7 +16,7 @@ import (
 // GuestSessionRatedMovies calls GET /3/guest_session/{guest_session_id}/rated/movies. Rated Movies.
 func (c Client) GuestSessionRatedMovies(ctx context.Context, guestSessionId string, options ...tmdb.GuestSessionRatedMoviesOptions) (result tmdb.GuestSessionRatedMoviesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GuestSessionRatedMovies takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GuestSessionRatedMovies, not %d", len(options))
 	}
 	var option tmdb.GuestSessionRatedMoviesOptions
 	if len(options) == 1 {
@@ -63,7 +63,7 @@ func (c Client) GuestSessionRatedMovies(ctx context.Context, guestSessionId stri
 // The page size is the server's: a page shorter than the first is the last.
 func (c Client) GuestSessionRatedMoviesComplete(ctx context.Context, guestSessionId string, options ...tmdb.GuestSessionRatedMoviesOptions) (result tmdb.GuestSessionRatedMoviesCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GuestSessionRatedMoviesComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GuestSessionRatedMoviesComplete, not %d", len(options))
 	}
 	var option tmdb.GuestSessionRatedMoviesOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GuestSessionRatedMoviesEach(ctx context.Context, guestSessionId 
 	return func(yield func(tmdb.GuestSessionRatedMoviesAnswerResults, error) bool) {
 		var zero tmdb.GuestSessionRatedMoviesAnswerResults
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GuestSessionRatedMoviesEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GuestSessionRatedMoviesEach, not %d", len(options)))
 			return
 		}
 		var option tmdb.GuestSessionRatedMoviesOptions

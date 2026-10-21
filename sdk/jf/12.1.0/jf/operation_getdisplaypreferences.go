@@ -30,7 +30,7 @@ func (r GetDisplayPreferencesResponse) Answered() bool { return r.Answer != nil 
 // error when the server answered none.
 func (r GetDisplayPreferencesResponse) Record() (DisplayPreferencesDto, error) {
 	if r.Answer == nil {
-		return DisplayPreferencesDto{}, errors.New("GetDisplayPreferences answered no DisplayPreferencesDto")
+		return DisplayPreferencesDto{}, errors.New("no DisplayPreferencesDto answered by GetDisplayPreferences")
 	}
 
 	return *r.Answer, nil

@@ -31,7 +31,7 @@ func (r GetInstantMixFromSongResponse) Answered() bool { return r.Answer != nil 
 // error when the server answered none.
 func (r GetInstantMixFromSongResponse) Record() (BaseItemDtoQueryResult, error) {
 	if r.Answer == nil {
-		return BaseItemDtoQueryResult{}, errors.New("GetInstantMixFromSong answered no BaseItemDtoQueryResult")
+		return BaseItemDtoQueryResult{}, errors.New("no BaseItemDtoQueryResult answered by GetInstantMixFromSong")
 	}
 
 	return *r.Answer, nil

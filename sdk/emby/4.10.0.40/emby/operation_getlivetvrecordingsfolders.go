@@ -31,7 +31,7 @@ func (r GetLiveTvRecordingsFoldersResponse) Answered() bool { return r.Answer !=
 // error when the server answered none.
 func (r GetLiveTvRecordingsFoldersResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetLiveTvRecordingsFolders answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetLiveTvRecordingsFolders")
 	}
 
 	return *r.Answer, nil

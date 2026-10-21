@@ -16,7 +16,7 @@ import (
 func (c Client) PersonCombinedCredits(ctx context.Context, personId int, language ...string) (result tmdb.PersonCombinedCreditsResponse, err error) {
 	var option tmdb.PersonCombinedCreditsOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("PersonCombinedCredits takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for PersonCombinedCredits, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

@@ -31,7 +31,7 @@ func (r GetChannelsResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetChannelsResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetChannels answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetChannels")
 	}
 
 	return *r.Answer, nil

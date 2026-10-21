@@ -14,7 +14,7 @@ import (
 // CreateCollection calls POST /Collections. Creates a new collection.
 func (c Client) CreateCollection(ctx context.Context, options ...jf.CreateCollectionOptions) (result jf.CreateCollectionResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("CreateCollection takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for CreateCollection, not %d", len(options))
 	}
 	var option jf.CreateCollectionOptions
 	if len(options) == 1 {

@@ -15,7 +15,7 @@ import (
 // GetLiveTvPrograms calls GET /LiveTv/Programs. Gets available live tv epgs..
 func (c Client) GetLiveTvPrograms(ctx context.Context, options ...emby.GetLiveTvProgramsOptions) (result emby.GetLiveTvProgramsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvPrograms takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvPrograms, not %d", len(options))
 	}
 	var option emby.GetLiveTvProgramsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetLiveTvPrograms(ctx context.Context, options ...emby.GetLiveTv
 // unset.
 func (c Client) GetLiveTvProgramsComplete(ctx context.Context, options ...emby.GetLiveTvProgramsOptions) (result emby.GetLiveTvProgramsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvProgramsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvProgramsComplete, not %d", len(options))
 	}
 	var option emby.GetLiveTvProgramsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetLiveTvProgramsEach(ctx context.Context, options ...emby.GetLi
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLiveTvProgramsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLiveTvProgramsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetLiveTvProgramsOptions

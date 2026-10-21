@@ -15,7 +15,7 @@ import (
 func (c Client) GenreMovieList(ctx context.Context, language ...string) (result tmdb.GenreMovieListResponse, err error) {
 	var option tmdb.GenreMovieListOptions
 	if len(language) > 1 {
-		return result, fmt.Errorf("GenreMovieList takes one language at most, not %d", len(language))
+		return result, fmt.Errorf("at most one language for GenreMovieList, not %d", len(language))
 	}
 	if len(language) == 1 {
 		option.Language = language[0]

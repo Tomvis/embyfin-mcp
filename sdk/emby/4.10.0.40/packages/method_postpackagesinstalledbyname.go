@@ -15,7 +15,7 @@ import (
 // PostPackagesInstalledByName calls POST /Packages/Installed/{Name}. Installs a package.
 func (c Client) PostPackagesInstalledByName(ctx context.Context, name string, options ...emby.PostPackagesInstalledByNameOptions) (result emby.PostPackagesInstalledByNameResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PostPackagesInstalledByName takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PostPackagesInstalledByName, not %d", len(options))
 	}
 	var option emby.PostPackagesInstalledByNameOptions
 	if len(options) == 1 {

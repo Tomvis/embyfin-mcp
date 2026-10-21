@@ -14,7 +14,7 @@ import (
 // GetUsers calls GET /Users. Gets a list of users.
 func (c Client) GetUsers(ctx context.Context, options ...jf.GetUsersOptions) (result jf.GetUsersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsers takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsers, not %d", len(options))
 	}
 	var option jf.GetUsersOptions
 	if len(options) == 1 {

@@ -31,7 +31,7 @@ func (r GetAudioBooksNextUpResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetAudioBooksNextUpResponse) Record() (QueryResultBaseItemDto, error) {
 	if r.Answer == nil {
-		return QueryResultBaseItemDto{}, errors.New("GetAudioBooksNextUp answered no QueryResultBaseItemDto")
+		return QueryResultBaseItemDto{}, errors.New("no QueryResultBaseItemDto answered by GetAudioBooksNextUp")
 	}
 
 	return *r.Answer, nil

@@ -14,7 +14,7 @@ import (
 // PostPlaylists calls POST /Playlists. Creates a new playlist.
 func (c Client) PostPlaylists(ctx context.Context, options ...emby.PostPlaylistsOptions) (result emby.PostPlaylistsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("PostPlaylists takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for PostPlaylists, not %d", len(options))
 	}
 	var option emby.PostPlaylistsOptions
 	if len(options) == 1 {

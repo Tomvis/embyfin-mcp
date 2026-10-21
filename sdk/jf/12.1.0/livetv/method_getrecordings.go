@@ -15,7 +15,7 @@ import (
 // GetRecordings calls GET /LiveTv/Recordings. Gets live tv recordings.
 func (c Client) GetRecordings(ctx context.Context, options ...jf.GetRecordingsOptions) (result jf.GetRecordingsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetRecordings takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetRecordings, not %d", len(options))
 	}
 	var option jf.GetRecordingsOptions
 	if len(options) == 1 {
@@ -62,7 +62,7 @@ func (c Client) GetRecordings(ctx context.Context, options ...jf.GetRecordingsOp
 // unset.
 func (c Client) GetRecordingsComplete(ctx context.Context, options ...jf.GetRecordingsOptions) (result jf.GetRecordingsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetRecordingsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetRecordingsComplete, not %d", len(options))
 	}
 	var option jf.GetRecordingsOptions
 	if len(options) == 1 {
@@ -116,7 +116,7 @@ func (c Client) GetRecordingsEach(ctx context.Context, options ...jf.GetRecordin
 	return func(yield func(jf.BaseItemDto, error) bool) {
 		var zero jf.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetRecordingsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetRecordingsEach, not %d", len(options)))
 			return
 		}
 		var option jf.GetRecordingsOptions

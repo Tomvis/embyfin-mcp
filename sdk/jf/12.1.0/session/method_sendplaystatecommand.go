@@ -15,7 +15,7 @@ import (
 // SendPlaystateCommand calls POST /Sessions/{sessionId}/Playing/{command}. Issues a playstate command to a client.
 func (c Client) SendPlaystateCommand(ctx context.Context, sessionId jf.SessionID, command jf.PlaystateCommand, options ...jf.SendPlaystateCommandOptions) (result jf.SendPlaystateCommandResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("SendPlaystateCommand takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for SendPlaystateCommand, not %d", len(options))
 	}
 	var option jf.SendPlaystateCommandOptions
 	if len(options) == 1 {

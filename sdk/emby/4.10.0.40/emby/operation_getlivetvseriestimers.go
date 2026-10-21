@@ -31,7 +31,7 @@ func (r GetLiveTvSeriesTimersResponse) Answered() bool { return r.Answer != nil 
 // error when the server answered none.
 func (r GetLiveTvSeriesTimersResponse) Record() (QueryResultLiveTvSeriesTimerInfoDto, error) {
 	if r.Answer == nil {
-		return QueryResultLiveTvSeriesTimerInfoDto{}, errors.New("GetLiveTvSeriesTimers answered no QueryResultLiveTvSeriesTimerInfoDto")
+		return QueryResultLiveTvSeriesTimerInfoDto{}, errors.New("no QueryResultLiveTvSeriesTimerInfoDto answered by GetLiveTvSeriesTimers")
 	}
 
 	return *r.Answer, nil

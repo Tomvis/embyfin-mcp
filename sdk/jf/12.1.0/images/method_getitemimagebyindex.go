@@ -16,7 +16,7 @@ import (
 // GetItemImageByIndex calls GET /Items/{itemId}/Images/{imageType}/{imageIndex}. Gets the item's image.
 func (c Client) GetItemImageByIndex(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex int, options ...jf.GetItemImageByIndexOptions) (result jf.GetItemImageByIndexResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetItemImageByIndex takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetItemImageByIndex, not %d", len(options))
 	}
 	var option jf.GetItemImageByIndexOptions
 	if len(options) == 1 {

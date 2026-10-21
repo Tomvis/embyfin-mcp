@@ -30,7 +30,7 @@ func (r GetRecordingFoldersResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetRecordingFoldersResponse) Record() (BaseItemDtoQueryResult, error) {
 	if r.Answer == nil {
-		return BaseItemDtoQueryResult{}, errors.New("GetRecordingFolders answered no BaseItemDtoQueryResult")
+		return BaseItemDtoQueryResult{}, errors.New("no BaseItemDtoQueryResult answered by GetRecordingFolders")
 	}
 
 	return *r.Answer, nil

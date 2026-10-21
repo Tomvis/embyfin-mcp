@@ -15,7 +15,7 @@ import (
 // GetAudioCodecs calls GET /AudioCodecs. Gets items based on a query.
 func (c Client) GetAudioCodecs(ctx context.Context, options ...emby.GetAudioCodecsOptions) (result emby.GetAudioCodecsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetAudioCodecs takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetAudioCodecs, not %d", len(options))
 	}
 	var option emby.GetAudioCodecsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetAudioCodecs(ctx context.Context, options ...emby.GetAudioCode
 // unset.
 func (c Client) GetAudioCodecsComplete(ctx context.Context, options ...emby.GetAudioCodecsOptions) (result emby.GetAudioCodecsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetAudioCodecsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetAudioCodecsComplete, not %d", len(options))
 	}
 	var option emby.GetAudioCodecsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetAudioCodecsEach(ctx context.Context, options ...emby.GetAudio
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetAudioCodecsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetAudioCodecsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetAudioCodecsOptions

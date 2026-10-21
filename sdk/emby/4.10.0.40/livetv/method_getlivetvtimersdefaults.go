@@ -15,7 +15,7 @@ import (
 func (c Client) GetLiveTvTimersDefaults(ctx context.Context, programId ...string) (result emby.GetLiveTvTimersDefaultsResponse, err error) {
 	var option emby.GetLiveTvTimersDefaultsOptions
 	if len(programId) > 1 {
-		return result, fmt.Errorf("GetLiveTvTimersDefaults takes one programId at most, not %d", len(programId))
+		return result, fmt.Errorf("at most one programId for GetLiveTvTimersDefaults, not %d", len(programId))
 	}
 	if len(programId) == 1 {
 		option.ProgramId = programId[0]

@@ -16,7 +16,7 @@ import (
 func (c Client) DeleteItemImage(ctx context.Context, itemId jf.ItemID, imageType jf.ImageType, imageIndex ...int) (result jf.DeleteItemImageResponse, err error) {
 	var option jf.DeleteItemImageOptions
 	if len(imageIndex) > 1 {
-		return result, fmt.Errorf("DeleteItemImage takes one imageIndex at most, not %d", len(imageIndex))
+		return result, fmt.Errorf("at most one imageIndex for DeleteItemImage, not %d", len(imageIndex))
 	}
 	if len(imageIndex) == 1 {
 		option.ImageIndex = &imageIndex[0]

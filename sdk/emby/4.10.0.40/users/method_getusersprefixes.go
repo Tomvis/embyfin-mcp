@@ -14,7 +14,7 @@ import (
 // GetUsersPrefixes calls GET /Users/Prefixes. Gets a list of users.
 func (c Client) GetUsersPrefixes(ctx context.Context, options ...emby.GetUsersPrefixesOptions) (result emby.GetUsersPrefixesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersPrefixes takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersPrefixes, not %d", len(options))
 	}
 	var option emby.GetUsersPrefixesOptions
 	if len(options) == 1 {

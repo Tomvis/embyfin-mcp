@@ -16,7 +16,7 @@ import (
 // GetUsersByUserIdSectionsBySectionIdItems calls GET /Users/{UserId}/Sections/{SectionId}/Items. Requires authentication as user.
 func (c Client) GetUsersByUserIdSectionsBySectionIdItems(ctx context.Context, userId emby.UserID, sectionId string, options ...emby.GetUsersByUserIdSectionsBySectionIdItemsOptions) (result emby.GetUsersByUserIdSectionsBySectionIdItemsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByUserIdSectionsBySectionIdItems takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByUserIdSectionsBySectionIdItems, not %d", len(options))
 	}
 	var option emby.GetUsersByUserIdSectionsBySectionIdItemsOptions
 	if len(options) == 1 {
@@ -68,7 +68,7 @@ func (c Client) GetUsersByUserIdSectionsBySectionIdItems(ctx context.Context, us
 // unset.
 func (c Client) GetUsersByUserIdSectionsBySectionIdItemsComplete(ctx context.Context, userId emby.UserID, sectionId string, options ...emby.GetUsersByUserIdSectionsBySectionIdItemsOptions) (result emby.GetUsersByUserIdSectionsBySectionIdItemsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetUsersByUserIdSectionsBySectionIdItemsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetUsersByUserIdSectionsBySectionIdItemsComplete, not %d", len(options))
 	}
 	var option emby.GetUsersByUserIdSectionsBySectionIdItemsOptions
 	if len(options) == 1 {
@@ -122,7 +122,7 @@ func (c Client) GetUsersByUserIdSectionsBySectionIdItemsEach(ctx context.Context
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetUsersByUserIdSectionsBySectionIdItemsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetUsersByUserIdSectionsBySectionIdItemsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetUsersByUserIdSectionsBySectionIdItemsOptions

@@ -15,7 +15,7 @@ import (
 // MovieChanges calls GET /3/movie/{movie_id}/changes. Changes.
 func (c Client) MovieChanges(ctx context.Context, movieId int, options ...tmdb.MovieChangesOptions) (result tmdb.MovieChangesResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("MovieChanges takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for MovieChanges, not %d", len(options))
 	}
 	var option tmdb.MovieChangesOptions
 	if len(options) == 1 {

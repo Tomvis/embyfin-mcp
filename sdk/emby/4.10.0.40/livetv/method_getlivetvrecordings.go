@@ -15,7 +15,7 @@ import (
 // GetLiveTvRecordings calls GET /LiveTv/Recordings. Gets live tv recordings.
 func (c Client) GetLiveTvRecordings(ctx context.Context, options ...emby.GetLiveTvRecordingsOptions) (result emby.GetLiveTvRecordingsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvRecordings takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvRecordings, not %d", len(options))
 	}
 	var option emby.GetLiveTvRecordingsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetLiveTvRecordings(ctx context.Context, options ...emby.GetLive
 // unset.
 func (c Client) GetLiveTvRecordingsComplete(ctx context.Context, options ...emby.GetLiveTvRecordingsOptions) (result emby.GetLiveTvRecordingsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetLiveTvRecordingsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetLiveTvRecordingsComplete, not %d", len(options))
 	}
 	var option emby.GetLiveTvRecordingsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetLiveTvRecordingsEach(ctx context.Context, options ...emby.Get
 	return func(yield func(emby.BaseItemDto, error) bool) {
 		var zero emby.BaseItemDto
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetLiveTvRecordingsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetLiveTvRecordingsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetLiveTvRecordingsOptions

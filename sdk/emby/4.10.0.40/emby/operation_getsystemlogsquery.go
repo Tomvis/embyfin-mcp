@@ -31,7 +31,7 @@ func (r GetSystemLogsQueryResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetSystemLogsQueryResponse) Record() (QueryResultLogFile, error) {
 	if r.Answer == nil {
-		return QueryResultLogFile{}, errors.New("GetSystemLogsQuery answered no QueryResultLogFile")
+		return QueryResultLogFile{}, errors.New("no QueryResultLogFile answered by GetSystemLogsQuery")
 	}
 
 	return *r.Answer, nil

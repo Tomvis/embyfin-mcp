@@ -31,7 +31,7 @@ func (r GetThemeVideosResponse) Answered() bool { return r.Answer != nil }
 // error when the server answered none.
 func (r GetThemeVideosResponse) Record() (ThemeMediaResult, error) {
 	if r.Answer == nil {
-		return ThemeMediaResult{}, errors.New("GetThemeVideos answered no ThemeMediaResult")
+		return ThemeMediaResult{}, errors.New("no ThemeMediaResult answered by GetThemeVideos")
 	}
 
 	return *r.Answer, nil

@@ -13,9 +13,9 @@ import (
 )
 
 // TvEpisodeDeleteRating calls DELETE /3/tv/{series_id}/season/{season_number}/episode/{episode_number}/rating. Delete Rating.
-func (c Client) TvEpisodeDeleteRating(ctx context.Context, seriesId int, seasonNumber int, episodeNumber int, options ...tmdb.TvEpisodeDeleteRatingOptions) (result tmdb.TvEpisodeDeleteRatingResponse, err error) {
+func (c Client) TvEpisodeDeleteRating(ctx context.Context, seriesId, seasonNumber, episodeNumber int, options ...tmdb.TvEpisodeDeleteRatingOptions) (result tmdb.TvEpisodeDeleteRatingResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("TvEpisodeDeleteRating takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for TvEpisodeDeleteRating, not %d", len(options))
 	}
 	var option tmdb.TvEpisodeDeleteRatingOptions
 	if len(options) == 1 {

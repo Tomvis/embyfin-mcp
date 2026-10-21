@@ -15,7 +15,7 @@ import (
 // GetContainers calls GET /Containers. Gets items based on a query.
 func (c Client) GetContainers(ctx context.Context, options ...emby.GetContainersOptions) (result emby.GetContainersResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetContainers takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetContainers, not %d", len(options))
 	}
 	var option emby.GetContainersOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetContainers(ctx context.Context, options ...emby.GetContainers
 // unset.
 func (c Client) GetContainersComplete(ctx context.Context, options ...emby.GetContainersOptions) (result emby.GetContainersCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetContainersComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetContainersComplete, not %d", len(options))
 	}
 	var option emby.GetContainersOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetContainersEach(ctx context.Context, options ...emby.GetContai
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetContainersEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetContainersEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetContainersOptions

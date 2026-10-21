@@ -15,7 +15,7 @@ import (
 // GetYears calls GET /Years. Gets items based on a query.
 func (c Client) GetYears(ctx context.Context, options ...emby.GetYearsOptions) (result emby.GetYearsResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetYears takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetYears, not %d", len(options))
 	}
 	var option emby.GetYearsOptions
 	if len(options) == 1 {
@@ -67,7 +67,7 @@ func (c Client) GetYears(ctx context.Context, options ...emby.GetYearsOptions) (
 // unset.
 func (c Client) GetYearsComplete(ctx context.Context, options ...emby.GetYearsOptions) (result emby.GetYearsCompleteResult, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetYearsComplete takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetYearsComplete, not %d", len(options))
 	}
 	var option emby.GetYearsOptions
 	if len(options) == 1 {
@@ -121,7 +121,7 @@ func (c Client) GetYearsEach(ctx context.Context, options ...emby.GetYearsOption
 	return func(yield func(emby.UserLibraryTagItem, error) bool) {
 		var zero emby.UserLibraryTagItem
 		if len(options) > 1 {
-			yield(zero, fmt.Errorf("GetYearsEach takes one options struct at most, not %d", len(options)))
+			yield(zero, fmt.Errorf("at most one options struct for GetYearsEach, not %d", len(options)))
 			return
 		}
 		var option emby.GetYearsOptions

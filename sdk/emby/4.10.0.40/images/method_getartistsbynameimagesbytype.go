@@ -15,7 +15,7 @@ import (
 // GetArtistsByNameImagesByType calls GET /Artists/{Name}/Images/{Type}. Requires authentication as user.
 func (c Client) GetArtistsByNameImagesByType(ctx context.Context, name string, typeParam emby.ImageType, options ...emby.GetArtistsByNameImagesByTypeOptions) (result emby.GetArtistsByNameImagesByTypeResponse, err error) {
 	if len(options) > 1 {
-		return result, fmt.Errorf("GetArtistsByNameImagesByType takes one options struct at most, not %d", len(options))
+		return result, fmt.Errorf("at most one options struct for GetArtistsByNameImagesByType, not %d", len(options))
 	}
 	var option emby.GetArtistsByNameImagesByTypeOptions
 	if len(options) == 1 {

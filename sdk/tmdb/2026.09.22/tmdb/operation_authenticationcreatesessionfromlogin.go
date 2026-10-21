@@ -28,7 +28,7 @@ func (r AuthenticationCreateSessionFromLoginResponse) Answered() bool { return r
 // error when the server answered none.
 func (r AuthenticationCreateSessionFromLoginResponse) Record() (AuthenticationCreateSessionFromLoginAnswer, error) {
 	if r.Answer == nil {
-		return AuthenticationCreateSessionFromLoginAnswer{}, errors.New("AuthenticationCreateSessionFromLogin answered no AuthenticationCreateSessionFromLoginAnswer")
+		return AuthenticationCreateSessionFromLoginAnswer{}, errors.New("no AuthenticationCreateSessionFromLoginAnswer answered by AuthenticationCreateSessionFromLogin")
 	}
 
 	return *r.Answer, nil
